@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/")({ component: App })
+export const Route = createFileRoute('/_public-layout/')({
+  component: App,
+})
 
 function App() {
   return (
@@ -11,7 +13,12 @@ function App() {
           <h1 className="font-medium">Project ready!</h1>
           <p>You may now add components and start building.</p>
           <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+          <Button
+            className="mt-2"
+            nativeButton={false}
+            role="button"
+            render={<Link to="/login">Login</Link>}
+          />
         </div>
       </div>
     </div>

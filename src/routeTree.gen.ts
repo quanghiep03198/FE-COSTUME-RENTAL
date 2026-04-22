@@ -8,59 +8,373 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root"
-import { Route as IndexRouteImport } from "./routes/index"
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PublicLayoutRouteImport } from './routes/_public-layout'
+import { Route as PrivateLayoutRouteImport } from './routes/_private-layout'
+import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.index'
+import { Route as PrivateLayoutUsersRouteImport } from './routes/_private-layout.users'
+import { Route as PrivateLayoutStatisticsRouteImport } from './routes/_private-layout.statistics'
+import { Route as PrivateLayoutRentalReceiptsRouteImport } from './routes/_private-layout.rental-receipts'
+import { Route as PrivateLayoutMaintenanceRouteImport } from './routes/_private-layout.maintenance'
+import { Route as PrivateLayoutInvoicesRouteImport } from './routes/_private-layout.invoices'
+import { Route as PrivateLayoutInternalBorrowingRouteImport } from './routes/_private-layout.internal-borrowing'
+import { Route as PrivateLayoutEmployeesRouteImport } from './routes/_private-layout.employees'
+import { Route as PrivateLayoutDashboardRouteImport } from './routes/_private-layout.dashboard'
+import { Route as PrivateLayoutCustomerRentalAgreementRouteImport } from './routes/_private-layout.customer-rental-agreement'
+import { Route as PrivateLayoutCostumesRouteImport } from './routes/_private-layout.costumes'
+import { Route as PrivateLayoutCostumeWarehouseRouteImport } from './routes/_private-layout.costume-warehouse'
 
-const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicLayoutRoute = PublicLayoutRouteImport.update({
+  id: '/_public-layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivateLayoutRoute = PrivateLayoutRouteImport.update({
+  id: '/_private-layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicLayoutIndexRoute = PublicLayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicLayoutRoute,
+} as any)
+const PrivateLayoutUsersRoute = PrivateLayoutUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutStatisticsRoute = PrivateLayoutStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutRentalReceiptsRoute =
+  PrivateLayoutRentalReceiptsRouteImport.update({
+    id: '/rental-receipts',
+    path: '/rental-receipts',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutMaintenanceRoute =
+  PrivateLayoutMaintenanceRouteImport.update({
+    id: '/maintenance',
+    path: '/maintenance',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutInvoicesRoute = PrivateLayoutInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutInternalBorrowingRoute =
+  PrivateLayoutInternalBorrowingRouteImport.update({
+    id: '/internal-borrowing',
+    path: '/internal-borrowing',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutEmployeesRoute = PrivateLayoutEmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutDashboardRoute = PrivateLayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutCustomerRentalAgreementRoute =
+  PrivateLayoutCustomerRentalAgreementRouteImport.update({
+    id: '/customer-rental-agreement',
+    path: '/customer-rental-agreement',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutCostumesRoute = PrivateLayoutCostumesRouteImport.update({
+  id: '/costumes',
+  path: '/costumes',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutCostumeWarehouseRoute =
+  PrivateLayoutCostumeWarehouseRouteImport.update({
+    id: '/costume-warehouse',
+    path: '/costume-warehouse',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
+  '/': typeof PublicLayoutIndexRoute
+  '/login': typeof LoginRoute
+  '/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
+  '/costumes': typeof PrivateLayoutCostumesRoute
+  '/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
+  '/dashboard': typeof PrivateLayoutDashboardRoute
+  '/employees': typeof PrivateLayoutEmployeesRoute
+  '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/invoices': typeof PrivateLayoutInvoicesRoute
+  '/maintenance': typeof PrivateLayoutMaintenanceRoute
+  '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
+  '/statistics': typeof PrivateLayoutStatisticsRoute
+  '/users': typeof PrivateLayoutUsersRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
+  '/': typeof PublicLayoutIndexRoute
+  '/login': typeof LoginRoute
+  '/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
+  '/costumes': typeof PrivateLayoutCostumesRoute
+  '/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
+  '/dashboard': typeof PrivateLayoutDashboardRoute
+  '/employees': typeof PrivateLayoutEmployeesRoute
+  '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/invoices': typeof PrivateLayoutInvoicesRoute
+  '/maintenance': typeof PrivateLayoutMaintenanceRoute
+  '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
+  '/statistics': typeof PrivateLayoutStatisticsRoute
+  '/users': typeof PrivateLayoutUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  "/": typeof IndexRoute
+  '/_private-layout': typeof PrivateLayoutRouteWithChildren
+  '/_public-layout': typeof PublicLayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_private-layout/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
+  '/_private-layout/costumes': typeof PrivateLayoutCostumesRoute
+  '/_private-layout/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
+  '/_private-layout/dashboard': typeof PrivateLayoutDashboardRoute
+  '/_private-layout/employees': typeof PrivateLayoutEmployeesRoute
+  '/_private-layout/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/_private-layout/invoices': typeof PrivateLayoutInvoicesRoute
+  '/_private-layout/maintenance': typeof PrivateLayoutMaintenanceRoute
+  '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
+  '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
+  '/_private-layout/users': typeof PrivateLayoutUsersRoute
+  '/_public-layout/': typeof PublicLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/"
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/costume-warehouse'
+    | '/costumes'
+    | '/customer-rental-agreement'
+    | '/dashboard'
+    | '/employees'
+    | '/internal-borrowing'
+    | '/invoices'
+    | '/maintenance'
+    | '/rental-receipts'
+    | '/statistics'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: "/"
-  id: "__root__" | "/"
+  to:
+    | '/'
+    | '/login'
+    | '/costume-warehouse'
+    | '/costumes'
+    | '/customer-rental-agreement'
+    | '/dashboard'
+    | '/employees'
+    | '/internal-borrowing'
+    | '/invoices'
+    | '/maintenance'
+    | '/rental-receipts'
+    | '/statistics'
+    | '/users'
+  id:
+    | '__root__'
+    | '/_private-layout'
+    | '/_public-layout'
+    | '/login'
+    | '/_private-layout/costume-warehouse'
+    | '/_private-layout/costumes'
+    | '/_private-layout/customer-rental-agreement'
+    | '/_private-layout/dashboard'
+    | '/_private-layout/employees'
+    | '/_private-layout/internal-borrowing'
+    | '/_private-layout/invoices'
+    | '/_private-layout/maintenance'
+    | '/_private-layout/rental-receipts'
+    | '/_private-layout/statistics'
+    | '/_private-layout/users'
+    | '/_public-layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  PrivateLayoutRoute: typeof PrivateLayoutRouteWithChildren
+  PublicLayoutRoute: typeof PublicLayoutRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_public-layout': {
+      id: '/_public-layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_private-layout': {
+      id: '/_private-layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PrivateLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public-layout/': {
+      id: '/_public-layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PublicLayoutIndexRouteImport
+      parentRoute: typeof PublicLayoutRoute
+    }
+    '/_private-layout/users': {
+      id: '/_private-layout/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof PrivateLayoutUsersRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/statistics': {
+      id: '/_private-layout/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof PrivateLayoutStatisticsRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/rental-receipts': {
+      id: '/_private-layout/rental-receipts'
+      path: '/rental-receipts'
+      fullPath: '/rental-receipts'
+      preLoaderRoute: typeof PrivateLayoutRentalReceiptsRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/maintenance': {
+      id: '/_private-layout/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof PrivateLayoutMaintenanceRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/invoices': {
+      id: '/_private-layout/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof PrivateLayoutInvoicesRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/internal-borrowing': {
+      id: '/_private-layout/internal-borrowing'
+      path: '/internal-borrowing'
+      fullPath: '/internal-borrowing'
+      preLoaderRoute: typeof PrivateLayoutInternalBorrowingRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/employees': {
+      id: '/_private-layout/employees'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof PrivateLayoutEmployeesRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/dashboard': {
+      id: '/_private-layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof PrivateLayoutDashboardRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/customer-rental-agreement': {
+      id: '/_private-layout/customer-rental-agreement'
+      path: '/customer-rental-agreement'
+      fullPath: '/customer-rental-agreement'
+      preLoaderRoute: typeof PrivateLayoutCustomerRentalAgreementRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/costumes': {
+      id: '/_private-layout/costumes'
+      path: '/costumes'
+      fullPath: '/costumes'
+      preLoaderRoute: typeof PrivateLayoutCostumesRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/costume-warehouse': {
+      id: '/_private-layout/costume-warehouse'
+      path: '/costume-warehouse'
+      fullPath: '/costume-warehouse'
+      preLoaderRoute: typeof PrivateLayoutCostumeWarehouseRouteImport
+      parentRoute: typeof PrivateLayoutRoute
     }
   }
 }
 
+interface PrivateLayoutRouteChildren {
+  PrivateLayoutCostumeWarehouseRoute: typeof PrivateLayoutCostumeWarehouseRoute
+  PrivateLayoutCostumesRoute: typeof PrivateLayoutCostumesRoute
+  PrivateLayoutCustomerRentalAgreementRoute: typeof PrivateLayoutCustomerRentalAgreementRoute
+  PrivateLayoutDashboardRoute: typeof PrivateLayoutDashboardRoute
+  PrivateLayoutEmployeesRoute: typeof PrivateLayoutEmployeesRoute
+  PrivateLayoutInternalBorrowingRoute: typeof PrivateLayoutInternalBorrowingRoute
+  PrivateLayoutInvoicesRoute: typeof PrivateLayoutInvoicesRoute
+  PrivateLayoutMaintenanceRoute: typeof PrivateLayoutMaintenanceRoute
+  PrivateLayoutRentalReceiptsRoute: typeof PrivateLayoutRentalReceiptsRoute
+  PrivateLayoutStatisticsRoute: typeof PrivateLayoutStatisticsRoute
+  PrivateLayoutUsersRoute: typeof PrivateLayoutUsersRoute
+}
+
+const PrivateLayoutRouteChildren: PrivateLayoutRouteChildren = {
+  PrivateLayoutCostumeWarehouseRoute: PrivateLayoutCostumeWarehouseRoute,
+  PrivateLayoutCostumesRoute: PrivateLayoutCostumesRoute,
+  PrivateLayoutCustomerRentalAgreementRoute:
+    PrivateLayoutCustomerRentalAgreementRoute,
+  PrivateLayoutDashboardRoute: PrivateLayoutDashboardRoute,
+  PrivateLayoutEmployeesRoute: PrivateLayoutEmployeesRoute,
+  PrivateLayoutInternalBorrowingRoute: PrivateLayoutInternalBorrowingRoute,
+  PrivateLayoutInvoicesRoute: PrivateLayoutInvoicesRoute,
+  PrivateLayoutMaintenanceRoute: PrivateLayoutMaintenanceRoute,
+  PrivateLayoutRentalReceiptsRoute: PrivateLayoutRentalReceiptsRoute,
+  PrivateLayoutStatisticsRoute: PrivateLayoutStatisticsRoute,
+  PrivateLayoutUsersRoute: PrivateLayoutUsersRoute,
+}
+
+const PrivateLayoutRouteWithChildren = PrivateLayoutRoute._addFileChildren(
+  PrivateLayoutRouteChildren,
+)
+
+interface PublicLayoutRouteChildren {
+  PublicLayoutIndexRoute: typeof PublicLayoutIndexRoute
+}
+
+const PublicLayoutRouteChildren: PublicLayoutRouteChildren = {
+  PublicLayoutIndexRoute: PublicLayoutIndexRoute,
+}
+
+const PublicLayoutRouteWithChildren = PublicLayoutRoute._addFileChildren(
+  PublicLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  PrivateLayoutRoute: PrivateLayoutRouteWithChildren,
+  PublicLayoutRoute: PublicLayoutRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx"
-import type { createStart } from "@tanstack/react-start"
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>

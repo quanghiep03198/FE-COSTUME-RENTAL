@@ -1,0 +1,136 @@
+{
+	"type": "object",
+	"$defs": {
+		"BaseEntity": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "number"
+				},
+				"is_active": {
+					"type": "boolean",
+					"default": true
+				},
+				"created_at": {
+					"type": "string",
+					"format": "date-time",
+					"default": "2026-04-19T00:00:00.000Z"
+				},
+				"updated_at": {
+					"type": ["string", "null"],
+					"format": "date-time"
+				},
+				"remark": {
+					"type": "string"
+				}
+			},
+			"required": ["id"]
+		}
+	},
+	"properties": {
+		"users": {
+			"type": "array",
+			"items": {
+				"allOf": [
+					{
+						"$ref": "#/$defs/BaseEntity"
+					},
+					{
+						"type": "object",
+						"properties": {
+							"username": {
+								"type": "string"
+							},
+							"employee_id": {
+								"type": ["number", "null"]
+							},
+							"email": {
+								"type": "string"
+							},
+							"phone": {
+								"type": "string"
+							},
+							"password": {
+								"type": "string"
+							},
+							"role": {
+								"type": "string",
+								"enum": ["ADMIN", "USER"]
+							}
+						}
+					}
+				]
+			},
+			"description": "Users collection"
+		},
+		"employees": {
+			"type": "array",
+			"items": {
+				"allOf": [
+					{
+						"$ref": "#/$defs/BaseEntity"
+					},
+					{
+						"type": "object",
+						"properties": {
+							"employee_code": {
+								"type": "string"
+							},
+							"userId": {
+								"type": ["number", "null"]
+							},
+							"full_name": {
+								"type": "string"
+							},
+							"phone": {
+								"type": "string"
+							},
+							"address": {
+								"type": "string"
+							},
+							"dob": {
+								"type": "string"
+							},
+							"citizen_id_number": {
+								"type": "string",
+								"format": "number"
+							},
+							"position": {
+								"type": "string",
+								"enum": [
+									"MANAGER",
+									"WAREHOUSE_MANAGER",
+									"ORDER_PROCESSOR",
+									"TALENT",
+									"TECHICAL_CREW",
+									"WARDROBE"
+								]
+							},
+							"hire_date": {
+								"type": "string",
+								"format": "date"
+							},
+							"work_status": {
+								"type": "string",
+								"enum": ["ACTIVE", "SUSPENDED", "EXITED"]
+							}
+						}
+					}
+				]
+			},
+			"required": ["id", "full_name", "phone", "position", "dob", "citizen_id_number", "hire_date", "address"],
+			"description": "Employee collection"
+		},
+		"revoke_tokens": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"access_token": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
