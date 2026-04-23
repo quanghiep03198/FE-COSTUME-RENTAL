@@ -16,9 +16,9 @@
       "password": "$2b$10$fb5Kdj4TDzJde6OCf9LgceP3eKMgTiUt65YyFOBiC5KsgVjJ5ZC4W",
       "role": "USER",
       "employee_id": 4,
-      "is_active": false,
+      "is_active": true,
       "created_at": "2026-04-23T14:49:05.966Z",
-      "updated_at": "2026-04-23T15:01:00.713Z",
+      "updated_at": "2026-04-23T17:26:25.087Z",
       "id": 2
     },
     {
@@ -49,9 +49,9 @@
         "id": 2,
         "full_name": "Trương Thanh Hảo"
       },
-      "is_active": true,
+      "is_active": false,
       "created_at": "2026-04-23T15:48:01.650Z",
-      "updated_at": "2026-04-23T17:24:54.794Z",
+      "updated_at": "2026-04-23T17:25:45.947Z",
       "id": 5,
       "employee": {
         "id": 2,
@@ -69,6 +69,16 @@
         "created_at": "2026-04-21T15:43:42.651Z"
       },
       "avatar": "https://api.dicebear.com/9.x/initials/svg?background=%23525252&color=%23fafafa&length=1&bold=true&format=svg&seed=Tr%C6%B0%C6%A1ng%20Thanh%20H%E1%BA%A3o"
+    },
+    {
+      "username": "D00008",
+      "password": "$2b$10$0Uvx5f5QHlyWDo.q0ZyaeuHlp6r0PHYtXGE.u3QdH7.XKMXXzvjGq",
+      "role": "USER",
+      "employee_id": 8,
+      "is_active": true,
+      "created_at": "2026-04-23T17:26:34.499Z",
+      "updated_at": null,
+      "id": 6
     }
   ],
   "revoke_tokens": [
@@ -341,6 +351,12 @@
     },
     {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3Njk2NTAxOSwiZXhwIjoxNzc2OTY1MDI5fQ.lKdxzJEJKQlDOIMLpjLmoyN6SBuuTDw8o2L2wWWcSWU"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3Njk2NTA5MywiZXhwIjoxNzc2OTY1MTAzfQ.Srlb15T7ZzDrk1AEHo1my1wN1TMjle2TSnzcb5m3A48"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3Njk2NTE0NSwiZXhwIjoxNzc2OTY1MTU1fQ.BizvJTrJyN5RMZyWqtj25ufFskXhWyi5wrgiEFrnJHw"
     }
   ],
   "employees": [

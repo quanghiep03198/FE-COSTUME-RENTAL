@@ -3,6 +3,7 @@ import { GET_EMPLOYEE_QUERY_KEY } from '@/apis/employee/hooks/use-employee-reque
 import { CommonActions } from '@/common/constants/enums'
 import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
 import type { AxiosResponse } from 'axios'
 import { useRef } from 'react'
 import { toast } from 'sonner'
@@ -64,7 +65,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
   }
 
   const toastRef = useRef<string | number | null>(null)
-
+  const router = useRouter()
   const currentConfig = mutationConfigFactory[action]
 
   return useMutation({
@@ -88,6 +89,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
     },
     onSuccess: () => {
       const message = currentConfig?.message || 'Thao tác thành công'
+      router.invalidate()
       toast.success(message, { id: toastRef.current! })
     },
     onError: () => {
