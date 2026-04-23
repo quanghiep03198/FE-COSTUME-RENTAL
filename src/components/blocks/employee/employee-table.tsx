@@ -11,6 +11,7 @@ import { formatPhoneNumber } from '@/common/helpers/format-intl'
 import TableCellText from '@/components/shared/data-grid/components/table-cell-text'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import generateAvatar from '@/lib/generate-avatar'
+import { cn } from '@/lib/utils'
 import { format, isValid } from 'date-fns'
 import { useMemo } from 'react'
 import EmployeeActionDropdown from './employee-action-dropdown'
@@ -39,7 +40,7 @@ const EmployeeTable: React.FC = () => {
                 </Avatar>
               </ItemMedia>
               <ItemContent>
-                <ItemTitle className={!row.original.is_active && 'line-through'}>{getValue()}</ItemTitle>
+                <ItemTitle className={cn({ 'line-through': !row.original.is_active })}>{getValue()}</ItemTitle>
                 <ItemDescription>{row.original.email}</ItemDescription>
               </ItemContent>
             </Item>
@@ -91,8 +92,9 @@ const EmployeeTable: React.FC = () => {
       columnHelper.accessor('created_at', {
         header: 'Ngày đăng bắt đầu làm việc',
         cell: ({ getValue }) => {
-          return isValid(new Date(getValue())) ? (
-            format(new Date(getValue()), 'dd/MM/yyyy')
+          const value = getValue()
+          return value && isValid(new Date(value)) ? (
+            format(new Date(value), 'dd/MM/yyyy')
           ) : (
             <Typography variant="small" color="muted">
               Chưa xác định

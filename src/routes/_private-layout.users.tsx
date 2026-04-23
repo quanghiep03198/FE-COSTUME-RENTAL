@@ -12,13 +12,13 @@ export const Route = createFileRoute('/_private-layout/users')({
   }),
   beforeLoad: async ({ context }) => {
     await Promise.all([
-      context.queryClient.ensureQueryData(getUsersQueryOptions()),
+      context.queryClient.prefetchQuery(getUsersQueryOptions()),
       context.queryClient.ensureQueryData(
         getEmployeeQueryOptions({
           'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
           'is_active:eq': true,
           'work_status:ne': WorkStatus.EXITED,
-          'user_id:eq': 'null',
+          'user_id:eq': null,
         })
       ),
     ])

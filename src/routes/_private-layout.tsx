@@ -1,4 +1,5 @@
 import { getAuthUserQueryOptions } from '@/apis/auth/hooks/use-auth-request'
+import { authMiddleware } from '@/apis/auth/middlewares/auth.middleware'
 import { ErrorBoundaryFallback } from '@/components/errors/error-boundary-fallback'
 import AppNavbar from '@/components/layouts/app/app-navbar'
 import AppSidebar from '@/components/layouts/app/app-sidebar'
@@ -9,8 +10,9 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout')({
   component: RouteComponent,
-  beforeLoad: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getAuthUserQueryOptions())
+  server: { middleware: [authMiddleware] },
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData(getAuthUserQueryOptions())
   },
 })
 

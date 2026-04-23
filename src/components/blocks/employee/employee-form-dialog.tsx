@@ -85,7 +85,7 @@ const EmployeeFormDialog: React.FC = () => {
         }
       }}
     >
-      <DialogContent className="max-w-2xl @container">
+      <DialogContent className="max-w-3xl w-full @container">
         <form onSubmit={handleSubmit} className="space-y-6">
           <FieldGroup>
             <FieldSet>

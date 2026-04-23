@@ -1,20 +1,9 @@
 import { getEmployeeQueryOptions } from '@/apis/employee/hooks/use-employee-request'
-import CreateEmployeeFormDialogTrigger from '@/components/blocks/employee/create-employee-dialog-form-trigger'
-import EmployeeFormDialog from '@/components/blocks/employee/employee-form-dialog'
-import EmployeeTable from '@/components/blocks/employee/employee-table'
-import {
-  PageAction,
-  PageDescription,
-  PageHeader,
-  PageSeparator,
-  PageTitle,
-  PageWrapper,
-} from '@/components/layouts/app/app-page'
-import { PageEventProvider } from '@/contexts/event-context'
+import EmployeePage from '@/components/blocks/employee'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/employees')({
-  component: RouteComponent,
+  component: EmployeePage,
   head: () => ({
     meta: [
       { title: 'Quản lý nhân sự' },
@@ -28,24 +17,3 @@ export const Route = createFileRoute('/_private-layout/employees')({
     await context.queryClient.ensureQueryData(getEmployeeQueryOptions())
   },
 })
-
-function RouteComponent() {
-  return (
-    <PageEventProvider>
-      <PageWrapper>
-        <PageHeader>
-          <PageTitle>Quản lý nhân sự</PageTitle>
-          <PageDescription>
-            Trung tâm điều phối thông tin toàn bộ nhân sự: Thêm mới, chỉnh sửa, phân quyền và xuất báo cáo tập trung.
-          </PageDescription>
-          <PageAction>
-            <CreateEmployeeFormDialogTrigger />
-          </PageAction>
-        </PageHeader>
-        <PageSeparator />
-        <EmployeeTable />
-      </PageWrapper>
-      <EmployeeFormDialog />
-    </PageEventProvider>
-  )
-}

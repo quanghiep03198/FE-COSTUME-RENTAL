@@ -11,6 +11,7 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/comp
 import { Typography } from '@/components/ui/typography'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
+import { format, isValid } from 'date-fns'
 import { useMemo } from 'react'
 import RoleBadge from './role-badge'
 import UserActionDropdown from './user-action-dropdown'
@@ -24,7 +25,7 @@ const UserTable: React.FC = () => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('employee.full_name', {
-        header: 'Họ tên & Email',
+        header: 'Tài khoản',
         size: 200,
         cell: ({ getValue, row }) => {
           return (
@@ -73,7 +74,16 @@ const UserTable: React.FC = () => {
       }),
       columnHelper.accessor('created_at', {
         header: 'Ngày đăng ký',
-        cell: ({ getValue }) => getValue(),
+        cell: ({ getValue }) => {
+          const value = getValue()
+          return value && isValid(new Date(value)) ? (
+            format(new Date(value), 'dd/MM/yyyy')
+          ) : (
+            <Typography variant="small" color="muted">
+              Chưa xác định
+            </Typography>
+          )
+        },
       }),
       columnHelper.accessor('is_active', {
         id: 'is_active',
