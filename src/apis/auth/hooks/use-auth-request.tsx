@@ -1,8 +1,8 @@
 'use server'
 
-import { useAuthStore } from '@/apis/auth/stores'
 import type { IUser } from '@/apis/user/types'
 import { axiosClient } from '@/configs/axios.config'
+import { useAuthStore } from '@/stores/auth.store'
 import { queryOptions, useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'

@@ -1,9 +1,8 @@
-import env from '@/lib/utils'
 import { createIsomorphicFn, createServerFn } from '@tanstack/react-start'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import z from 'zod'
+import { useAuthStore } from '../../../stores/auth.store'
 import { authMiddleware } from '../middlewares/auth.middleware'
-import { useAuthStore } from '../stores'
 
 type CookieSerializeOptions = Parameters<typeof setCookie>[2]
 
@@ -64,16 +63,4 @@ export const logOutFn = createServerFn({ method: 'POST' })
   .inputValidator(z.void())
   .handler(async () => {
     setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
-  })
-
-export const updateUserStatusFn = createServerFn({ method: 'POST' })
-  .inputValidator(z.object({ id: z.number(), is_active: z.boolean() }))
-  .handler(async ({ data }) => {
-    const accessToken = getCookie('accessToken')
-
-    await fetch(`${env('VITE_BASE_API_URL')}/users/update/${data.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authoriztion: `Bearer ${accessToken}` },
-      body: JSON.stringify({ is_active: data.is_active }),
-    })
   })
