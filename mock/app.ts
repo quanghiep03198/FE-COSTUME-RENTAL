@@ -16,7 +16,30 @@ export const router = jsonServer.router('mock/db.json')
 bootstrap(router)
 
 const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRES_IN = '7d'
+const JWT_EXPIRES_IN = '10s'
+
+function getTokenFromCookieHeader(cookieHeader?: string) {
+  if (!cookieHeader) return null
+
+  const cookies = cookieHeader.split(';')
+  for (const cookie of cookies) {
+    const [rawName, ...rawValue] = cookie.trim().split('=')
+    if (rawName !== 'accessToken') continue
+
+    const token = rawValue.join('=')
+    return token ? decodeURIComponent(token) : null
+  }
+
+  return null
+}
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: '/',
+}
 
 // Bind the router db to the app (required for json-server-auth)
 app.db = router.db
@@ -55,6 +78,8 @@ app.post('/api/auth/login', (req: Request, res: Response) => {
   const accessToken = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET!, {
     expiresIn: JWT_EXPIRES_IN,
   })
+
+  res.cookie('accessToken', accessToken, cookieOptions)
 
   const { password: _, ...userWithoutPassword } = user
 
@@ -115,6 +140,7 @@ app.post('/api/auth/logout', authMiddleware, (req: Request, res: Response) => {
   const db = router.db as any
 
   db.get('revoke_tokens').push({ access_token: token }).write()
+  res.clearCookie('accessToken', { path: '/' })
 
   return res.status(200).json({ message: 'Logged out successfully' })
 })
@@ -122,13 +148,7 @@ app.post('/api/auth/logout', authMiddleware, (req: Request, res: Response) => {
 // * Custom route: GET /refresh
 app.get('/api/auth/refresh', (req: Request, res: Response) => {
   try {
-    const authHeader = req.headers.authorization
-
-    if (!authHeader?.startsWith('Bearer ')) {
-      return res.status(403).json({ message: 'Missing or invalid authorization header' })
-    }
-
-    const expiredAccessToken = authHeader.replace('Bearer', ''.trim())
+    const expiredAccessToken = getTokenFromCookieHeader(req.headers.cookie)
 
     if (!expiredAccessToken) return res.status(403).json({ message: 'Invalid access token' })
 
@@ -151,6 +171,8 @@ app.get('/api/auth/refresh', (req: Request, res: Response) => {
     const accessToken = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET!, {
       expiresIn: JWT_EXPIRES_IN,
     })
+
+    res.cookie('accessToken', accessToken, cookieOptions)
 
     console.log(__filename, 'Refresh token :>>', accessToken)
 
@@ -239,53 +261,49 @@ app.post('/api/users', authMiddleware, (req: Request, res: Response) => {
   })
 })
 
-app.patch(
-  '/api/users/update/:id',
-  // authMiddleware,
-  (req: Request, res: Response) => {
-    const db = getDb()
-    const id = Number(req.params.id)
+app.patch('/api/users/update/:id', authMiddleware, (req: Request, res: Response) => {
+  const db = getDb()
+  const id = Number(req.params.id)
 
-    const existing = db.get('users').find({ id }).value()
-    if (!existing) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    // Prevent updating sensitive/immutable fields
-    const { password, id: _id, created_at, ...updateData } = req.body
-
-    // Check duplicate username/email if being changed
-    if (updateData.username || updateData.email) {
-      const duplicate = db
-        .get('users')
-        .find((u: any) => {
-          if (u.id === id) return false
-          return (
-            (updateData.username && u.username === updateData.username) ||
-            (updateData.email && u.email === updateData.email)
-          )
-        })
-        .value()
-
-      if (duplicate) {
-        return res.status(409).json({ message: 'Username or email already exists' })
-      }
-    }
-
-    const updated = db
-      .get('users')
-      .find({ id })
-      .assign({ ...updateData, updated_at: new Date().toISOString() })
-      .write()
-
-    const { password: _, ...userWithoutPassword } = updated
-
-    return res.status(200).json({
-      ...userWithoutPassword,
-      avatar: generateAvatar({ name: userWithoutPassword.display_name }),
-    })
+  const existing = db.get('users').find({ id }).value()
+  if (!existing) {
+    return res.status(404).json({ message: 'User not found' })
   }
-)
+
+  // Prevent updating sensitive/immutable fields
+  const { password, id: _id, created_at, ...updateData } = req.body
+
+  // Check duplicate username/email if being changed
+  if (updateData.username || updateData.email) {
+    const duplicate = db
+      .get('users')
+      .find((u: any) => {
+        if (u.id === id) return false
+        return (
+          (updateData.username && u.username === updateData.username) ||
+          (updateData.email && u.email === updateData.email)
+        )
+      })
+      .value()
+
+    if (duplicate) {
+      return res.status(409).json({ message: 'Username or email already exists' })
+    }
+  }
+
+  const updated = db
+    .get('users')
+    .find({ id })
+    .assign({ ...updateData, updated_at: new Date().toISOString() })
+    .write()
+
+  const { password: _, ...userWithoutPassword } = updated
+
+  return res.status(200).json({
+    ...userWithoutPassword,
+    avatar: generateAvatar({ name: userWithoutPassword.display_name }),
+  })
+})
 
 app.delete('/api/users/:id', authMiddleware, (req: Request, res: Response) => {
   const db = getDb()
