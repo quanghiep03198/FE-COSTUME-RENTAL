@@ -17,9 +17,7 @@ const UserPage: React.FC = () => {
       <PageWrapper>
         <PageHeader>
           <PageTitle>Quản lý truy cập</PageTitle>
-          <PageDescription>
-            Quản lý người dùng và quyền truy cập của họ vào hệ thống
-          </PageDescription>
+          <PageDescription>Quản lý người dùng và quyền truy cập của họ vào hệ thống</PageDescription>
           <PageAction>
             <CreateUserFormDialogTrigger />
           </PageAction>

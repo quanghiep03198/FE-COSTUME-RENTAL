@@ -10,11 +10,10 @@ import type { TLoginResponse } from '../types'
 
 export class AuthService {
   public static async login(payload: TLoginValues) {
-    return await axiosClient.post<
-      AxiosError<ResponseBody<null>>,
-      ResponseBody<TLoginResponse>,
-      TLoginValues
-    >('/auth/login', payload)
+    return await axiosClient.post<AxiosError<ResponseBody<null>>, ResponseBody<TLoginResponse>, TLoginValues>(
+      '/auth/login',
+      payload
+    )
   }
 
   public static async profile() {
@@ -30,10 +29,7 @@ export class AuthService {
   }
 
   public static async refreshToken(signal: AbortSignal) {
-    const { accessToken } = await axiosClient.get<
-      void,
-      { accessToken: string }
-    >('/auth/refresh', {
+    const { accessToken } = await axiosClient.get<void, { accessToken: string }>('/auth/refresh', {
       signal,
     })
 

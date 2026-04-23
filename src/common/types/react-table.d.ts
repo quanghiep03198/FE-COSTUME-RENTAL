@@ -1,8 +1,4 @@
-import {
-  DropdownSelectProps,
-  MultiSelectProps,
-  TableCell,
-} from '@/components/ui'
+import { DropdownSelectProps, MultiSelectProps, TableCell } from '@/components/ui'
 import { DateRangePickerProps } from '@/components/ui/@core/date-range-picker'
 import { DebouncedInputProps } from '@/components/ui/@custom/debounced-input'
 import { NumberRangeFilterProps } from '@/components/ui/@react-table/components/number-range-filter'
@@ -18,13 +14,7 @@ declare module '@tanstack/react-table' {
     ['multi-select']?: MultiSelectProps<any>
   }
 
-  export type ColumnFilterVariant =
-    | 'text'
-    | 'range'
-    | 'select'
-    | 'date'
-    | 'multi-select'
-    | 'autocomplete'
+  export type ColumnFilterVariant = 'text' | 'range' | 'select' | 'date' | 'multi-select' | 'autocomplete'
 
   interface ColumnMeta {
     facetedUniqueValues?: Array<Record<'label' | 'value', any>>
@@ -50,9 +40,7 @@ declare module '@tanstack/react-table' {
 
   interface TableMeta<TData extends RowData> {
     editedRows: Record<Row<TData>['id'], boolean>
-    setEditedRows: React.Dispatch<
-      React.SetStateAction<Record<Row<TData>['id'], boolean>>
-    >
+    setEditedRows: React.Dispatch<React.SetStateAction<Record<Row<TData>['id'], boolean>>>
     updateRow: (rowIndex: number, columnId: string, value: unknown) => void
     discardChanges: (rowIndex?: number) => void
     getUnsavedChanges: () => TData[]

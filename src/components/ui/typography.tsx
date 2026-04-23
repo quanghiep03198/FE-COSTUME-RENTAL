@@ -41,27 +41,15 @@ export const typographyVariants = cva('font-sans', {
 })
 
 export const Typography: React.FC<TypographyProps> = ({ ref, ...props }) => {
-  const {
-    as,
-    className,
-    children,
-    color,
-    variant = 'default',
-    ...restProps
-  } = props
+  const { as, className, children, color, variant = 'default', ...restProps } = props
 
   const localRef = useRef(null)
   const resolvedRef = ref ?? localRef
 
-  const Element: React.ElementType =
-    as || (variant === 'default' ? 'p' : variant)!
+  const Element: React.ElementType = as || (variant === 'default' ? 'p' : variant)!
 
   return (
-    <Element
-      ref={resolvedRef}
-      className={cn(typographyVariants({ variant, color, className }))}
-      {...restProps}
-    >
+    <Element ref={resolvedRef} className={cn(typographyVariants({ variant, color, className }))} {...restProps}>
       {children}
     </Element>
   )

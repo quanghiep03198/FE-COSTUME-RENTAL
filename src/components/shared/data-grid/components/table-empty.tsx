@@ -9,9 +9,7 @@ const DataTableEmpty: React.FC = () => {
   return (
     <TableBody
       className={
-        filterOpen
-          ? 'h-[calc(100cqh-2*var(--header-row-height)-2px)]'
-          : 'h-[calc(100cqh-var(--header-row-height)-1px)]'
+        filterOpen ? 'h-[calc(100cqh-2*var(--header-row-height)-2px)]' : 'h-[calc(100cqh-var(--header-row-height)-1px)]'
       }
     >
       <TableRow>

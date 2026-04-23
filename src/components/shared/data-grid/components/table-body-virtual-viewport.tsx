@@ -8,28 +8,14 @@ type TableBodyVirtualViewportProps = React.PropsWithChildren & {
   columnCount: number
 }
 
-const TableBodyVirtualViewport: React.FC<TableBodyVirtualViewportProps> = ({
-  children,
-  virtualizer,
-  columnCount,
-}) => {
+const TableBodyVirtualViewport: React.FC<TableBodyVirtualViewportProps> = ({ children, virtualizer, columnCount }) => {
   const { before, after } = useVirtualScrollPadding(virtualizer)
 
   return (
     <Fragment>
-      {before > 0 && (
-        <VirtualPlaceholderRow
-          colSpan={columnCount}
-          style={{ height: before }}
-        />
-      )}
+      {before > 0 && <VirtualPlaceholderRow colSpan={columnCount} style={{ height: before }} />}
       {children}
-      {after > 0 && (
-        <VirtualPlaceholderRow
-          colSpan={columnCount}
-          style={{ height: after }}
-        />
-      )}
+      {after > 0 && <VirtualPlaceholderRow colSpan={columnCount} style={{ height: after }} />}
     </Fragment>
   )
 }

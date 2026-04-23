@@ -8,10 +8,7 @@ const CreateUserFormDialogTrigger: React.FC<ButtonProps> = (props) => {
   const { event$ } = usePageEventContext()
 
   return (
-    <Button
-      {...props}
-      onClick={() => event$.emit({ action: CommonActions.CREATE })}
-    >
+    <Button {...props} onClick={() => event$.emit({ action: CommonActions.CREATE })}>
       <Icon name="Plus" />
       Thêm người dùng
     </Button>

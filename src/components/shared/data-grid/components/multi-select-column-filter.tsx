@@ -1,13 +1,8 @@
-import {
-  MultiSelect,
-  type MultiSelectProps,
-} from '@/components/shared/multi-select'
+import { MultiSelect, type MultiSelectProps } from '@/components/shared/multi-select'
 import { sortBy, uniqBy } from 'lodash-es'
 import { useMemo, useState } from 'react'
 
-function MultiSelectColumnFilter<
-  TData extends Record<'label' | 'value', string>,
->({
+function MultiSelectColumnFilter<TData extends Record<'label' | 'value', string>>({
   datalist,
   value,
   onValueChange,
@@ -17,13 +12,8 @@ function MultiSelectColumnFilter<
   const filteredDataList = useMemo(() => {
     if (!datalist?.length) return []
     const normalizedSearchTerm = searchTerm.trim().toLowerCase()
-    const result = datalist.filter(({ value }) =>
-      value.trim().toLowerCase().includes(normalizedSearchTerm)
-    )
-    const uniqueValues = uniqBy(
-      [...result, ...value.map((val) => ({ label: val, value: val }))],
-      'value'
-    )
+    const result = datalist.filter(({ value }) => value.trim().toLowerCase().includes(normalizedSearchTerm))
+    const uniqueValues = uniqBy([...result, ...value.map((val) => ({ label: val, value: val }))], 'value')
     return sortBy(uniqueValues, 'value')
   }, [datalist, searchTerm, value])
 

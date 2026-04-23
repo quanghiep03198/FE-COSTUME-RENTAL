@@ -10,11 +10,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command'
 import { Icon, type IconProps } from '@/components/ui/icon'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { type Column } from '@tanstack/react-table'
@@ -32,11 +28,7 @@ export interface IDataTableFacetedFilterProps<TData = any, TValue = any> {
   }[]
 }
 
-export function DataTableFacetedFilter({
-  column,
-  title,
-  options,
-}: IDataTableFacetedFilterProps) {
+export function DataTableFacetedFilter({ column, title, options }: IDataTableFacetedFilterProps) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue?.() as string[])
 
@@ -52,21 +44,14 @@ export function DataTableFacetedFilter({
                 <Separator orientation="vertical" className="mx-2 h-4" />
                 <div className="flex gap-1">
                   {selectedValues.size > 2 ? (
-                    <Badge
-                      variant="secondary"
-                      className="rounded-sm px-1.5 font-normal"
-                    >
+                    <Badge variant="secondary" className="rounded-sm px-1.5 font-normal">
                       {`${selectedValues.size} đã chọn`}
                     </Badge>
                   ) : (
                     options
                       .filter((option) => selectedValues.has(option.value))
                       .map((option) => (
-                        <Badge
-                          variant="secondary"
-                          key={option.value}
-                          className="rounded-sm px-1.5 font-normal"
-                        >
+                        <Badge variant="secondary" key={option.value} className="rounded-sm px-1.5 font-normal">
                           {option.label}
                         </Badge>
                       ))
@@ -94,9 +79,7 @@ export function DataTableFacetedFilter({
                       if (isSelected) selectedValues.delete(option.value)
                       else selectedValues.add(option.value)
                       const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      )
+                      column?.setFilterValue(filterValues.length ? filterValues : undefined)
                     }}
                   >
                     <div
@@ -113,11 +96,7 @@ export function DataTableFacetedFilter({
                       <Icon
                         name={option.icon}
                         className="text-muted-foreground size-4"
-                        stroke={
-                          option.color
-                            ? option.color
-                            : 'var(--muted-foreground)'
-                        }
+                        stroke={option.color ? option.color : 'var(--muted-foreground)'}
                       />
                     )}
                     <span>{option.label}</span>

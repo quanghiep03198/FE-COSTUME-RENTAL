@@ -1,7 +1,6 @@
 import { TableBody } from '@/components/ui/table'
 import useScrollToFn from '@/hooks/use-scroll-fn'
 import useVirtualScrollPadding from '@/hooks/use-virtual-scroll-padding'
-import env from '@/lib/utils'
 import { type Table, type Row as TRow } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Activity, memo, useCallback, useMemo } from 'react'
@@ -25,20 +24,11 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
 }) => {
   const { table } = useTableContext('table')
   const { rows } = table.getRowModel()
-  const overscan = useMemo(
-    () => (table.getIsSomeRowsExpanded() ? 20 : 10),
-    [table.getState().expanded]
-  )
+  const overscan = useMemo(() => (table.getIsSomeRowsExpanded() ? 20 : 10), [table.getState().expanded])
   const scrollToFn = useScrollToFn(containerRef)
-  const estimateSize = useCallback(
-    () => estimatedRowHeight,
-    [estimatedRowHeight]
-  )
+  const estimateSize = useCallback(() => estimatedRowHeight, [estimatedRowHeight])
   const getScrollElement = () => containerRef.current
-  const getItemKey = useCallback(
-    (index: number) => table.getRowModel().rows[index]?.id,
-    [table.options.data]
-  )
+  const getItemKey = useCallback((index: number) => table.getRowModel().rows[index]?.id, [table.options.data])
 
   const virtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
     count: rows.length,
@@ -51,13 +41,10 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
     enabled: shouldEnableVirtualizer,
     measureElement: undefined, // Disable auto measurement
     initialRect: containerRef?.current?.getBoundingClientRect?.(),
-    debug: env<RuntimeEnvironment>('VITE_NODE_ENV') === 'development',
+    debug: false,
   })
 
-  const { before, after } = useVirtualScrollPadding<
-    HTMLDivElement,
-    HTMLTableRowElement
-  >(virtualizer)
+  const { before, after } = useVirtualScrollPadding<HTMLDivElement, HTMLTableRowElement>(virtualizer)
 
   const virtualItems = virtualizer.getVirtualItems()
   const colSpan = table.getAllColumns().length
@@ -66,12 +53,7 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
     return (
       <TableBody>
         {rows.map((row) => (
-          <MemoizedVirtualTableRow
-            key={row.id}
-            row={row}
-            index={row.index}
-            renderSubComponent={renderSubComponent}
-          />
+          <MemoizedVirtualTableRow key={row.id} row={row} index={row.index} renderSubComponent={renderSubComponent} />
         ))}
       </TableBody>
     )
@@ -103,6 +85,5 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
 
 export default memo(
   DataTableBody,
-  (_prevProps, nextProps) =>
-    nextProps.table.getState()?.columnSizingInfo?.isResizingColumn !== false
+  (_prevProps, nextProps) => nextProps.table.getState()?.columnSizingInfo?.isResizingColumn !== false
 ) as typeof DataTableBody

@@ -22,14 +22,13 @@ import { usePageEventContext } from '@/contexts/event-context'
 import type { CellContext } from '@tanstack/react-table'
 import { useState } from 'react'
 
-const EmployeeActionDropdown: React.FC<CellContext<IEmployee, any>> = ({
-  row,
-}) => {
+const EmployeeActionDropdown: React.FC<CellContext<IEmployee, any>> = ({ row }) => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
 
-  const { mutateAsync: updateUserStatusAsync, isPending: isUpdatingStatus } =
-    useCreateOrUpdateEmployeeMutataion(CommonActions.UPDATE)
+  const { mutateAsync: updateUserStatusAsync, isPending: isUpdatingStatus } = useCreateOrUpdateEmployeeMutataion(
+    CommonActions.UPDATE
+  )
 
   return (
     <DropdownMenu open={open || isUpdatingStatus} onOpenChange={setOpen}>
@@ -76,15 +75,9 @@ const EmployeeActionDropdown: React.FC<CellContext<IEmployee, any>> = ({
                   } as TUpdateEmployeeValues)
                 }}
               >
-                <DropdownMenuRadioItem value={WorkStatus.ACTIVE}>
-                  Đang làm việc
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value={WorkStatus.SUSPENDED}>
-                  Tạm hoãn
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value={WorkStatus.EXITED}>
-                  Thôi việc
-                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value={WorkStatus.ACTIVE}>Đang làm việc</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value={WorkStatus.SUSPENDED}>Tạm hoãn</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value={WorkStatus.EXITED}>Thôi việc</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>

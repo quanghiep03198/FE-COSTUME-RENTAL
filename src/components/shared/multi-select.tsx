@@ -30,103 +30,100 @@ type SelectItem = { disabled?: boolean; [key: string]: any }
 /**
  * Props for MultiSelect component
  */
-export type MultiSelectProps<T extends SelectItem> =
-  React.ButtonHTMLAttributes<HTMLButtonElement> &
-    Pick<React.ComponentProps<typeof CommandInput>, 'onInput'> & {
-      ref?: React.RefObject<HTMLButtonElement>
+export type MultiSelectProps<T extends SelectItem> = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  Pick<React.ComponentProps<typeof CommandInput>, 'onInput'> & {
+    ref?: React.RefObject<HTMLButtonElement>
 
-      value?: Array<T[keyof T]>
+    value?: Array<T[keyof T]>
 
-      /**
-       * Determines whether command should filter the datalist automatically or manually.
-       */
-      shouldFilter?: boolean
+    /**
+     * Determines whether command should filter the datalist automatically or manually.
+     */
+    shouldFilter?: boolean
 
-      /**
-       * If true, allows selecting all options at once.
-       */
-      canSelectAll?: boolean
+    /**
+     * If true, allows selecting all options at once.
+     */
+    canSelectAll?: boolean
 
-      /**
-       * An array of option objects to be displayed in the multi-select component.
-       */
-      datalist: Array<T>
+    /**
+     * An array of option objects to be displayed in the multi-select component.
+     */
+    datalist: Array<T>
 
-      /**
-       * The field in the option object that represents the label of the option.
-       */
-      labelField: keyof T
+    /**
+     * The field in the option object that represents the label of the option.
+     */
+    labelField: keyof T
 
-      /**
-       * The field in the option object that represents the value of the option.
-       */
-      valueField: keyof T
+    /**
+     * The field in the option object that represents the value of the option.
+     */
+    valueField: keyof T
 
-      search?: string
+    search?: string
 
-      /**
-       * Callback function triggered when the selected values change.
-       * Receives an array of the new selected values.
-       */
-      onValueChange: (
-        value: Array<T[MultiSelectProps<T>['valueField']]>
-      ) => void
+    /**
+     * Callback function triggered when the selected values change.
+     * Receives an array of the new selected values.
+     */
+    onValueChange: (value: Array<T[MultiSelectProps<T>['valueField']]>) => void
 
-      /**
-       * Callback function triggered when the selected values change.
-       * Receives an array of the new selected values.
-       */
-      onInput?: (value: string) => unknown
+    /**
+     * Callback function triggered when the selected values change.
+     * Receives an array of the new selected values.
+     */
+    onInput?: (value: string) => unknown
 
-      /**
-       * Callback function triggered when the component is reset.
-       */
-      onReset?: () => void
+    /**
+     * Callback function triggered when the component is reset.
+     */
+    onReset?: () => void
 
-      /** The default selected values when the component mounts. */
-      defaultValue?: Array<T[keyof T]>
+    /** The default selected values when the component mounts. */
+    defaultValue?: Array<T[keyof T]>
 
-      /**
-       * Placeholder text to be displayed when no values are selected.
-       * Optional, defaults to "Select options".
-       */
-      placeholder?: string
+    /**
+     * Placeholder text to be displayed when no values are selected.
+     * Optional, defaults to "Select options".
+     */
+    placeholder?: string
 
-      /**
-       * Maximum number of items to display. Extra selected items will be summarized.
-       * Optional, defaults to 3.
-       */
-      maxCount?: number
+    /**
+     * Maximum number of items to display. Extra selected items will be summarized.
+     * Optional, defaults to 3.
+     */
+    maxCount?: number
 
-      /**
-       * The modality of the popover. When set to true, interaction with outside elements
-       * will be disabled and only popover content will be visible to screen readers.
-       * Optional, defaults to false.
-       */
-      modalPopover?: boolean
+    /**
+     * The modality of the popover. When set to true, interaction with outside elements
+     * will be disabled and only popover content will be visible to screen readers.
+     * Optional, defaults to false.
+     */
+    modalPopover?: boolean
 
-      /**
-       * If true, renders the multi-select component as a child of another component.
-       * Optional, defaults to false.
-       */
-      asChild?: boolean
+    /**
+     * If true, renders the multi-select component as a child of another component.
+     * Optional, defaults to false.
+     */
+    asChild?: boolean
 
-      /**
-       * Additional class names to apply custom styles to the multi-select component.
-       * Optional, can be used to add custom styles.
-       */
-      classNames?: {
-        popoverTrigger?: string
-        popoverContent?: string
-        selectedItem?: string
-      }
-
-      /**
-       * Additional class names to apply custom styles to the multi-select component.
-       * Optional, can be used to add custom styles.
-       */
-      loading?: boolean
+    /**
+     * Additional class names to apply custom styles to the multi-select component.
+     * Optional, can be used to add custom styles.
+     */
+    classNames?: {
+      popoverTrigger?: string
+      popoverContent?: string
+      selectedItem?: string
     }
+
+    /**
+     * Additional class names to apply custom styles to the multi-select component.
+     * Optional, can be used to add custom styles.
+     */
+    loading?: boolean
+  }
 
 const ESTIMATE_SIZE = 32
 const PRERENDER_COUNT = 5
@@ -152,8 +149,7 @@ export function MultiSelect<D extends SelectItem>({
   ref,
   ...props
 }: MultiSelectProps<D>) {
-  const [selectedValues, setSelectedValues] =
-    useState<Array<D[keyof D]>>(defaultValue)
+  const [selectedValues, setSelectedValues] = useState<Array<D[keyof D]>>(defaultValue)
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false)
   const [searchTerm, setSearchTerm] = useState<string>('')
 
@@ -209,9 +205,7 @@ export function MultiSelect<D extends SelectItem>({
   }
 
   // TODO: Implement virtual scroll for better performance with large list
-  const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(
-    null
-  )
+  const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
   const refCallback = useCallback((node: HTMLDivElement) => {
     if (node) {
       setScrollElement(node)
@@ -239,10 +233,7 @@ export function MultiSelect<D extends SelectItem>({
     if (Array.isArray(value)) setSelectedValues(value)
   }, [value])
 
-  useClickAway(
-    () => setIsPopoverOpen(false),
-    [popoverTriggerRef, popoverContentRef]
-  )
+  useClickAway(() => setIsPopoverOpen(false), [popoverTriggerRef, popoverContentRef])
 
   return (
     <Popover modal={modalPopover} open={isPopoverOpen}>
@@ -257,9 +248,7 @@ export function MultiSelect<D extends SelectItem>({
           classNames?.popoverTrigger
         )}
       >
-        {Array.isArray(datalist) &&
-        Array.isArray(selectedValues) &&
-        selectedValues?.length > 0 ? (
+        {Array.isArray(datalist) && Array.isArray(selectedValues) && selectedValues?.length > 0 ? (
           <>
             <ScrollShadow
               orientation="horizontal"
@@ -267,15 +256,9 @@ export function MultiSelect<D extends SelectItem>({
             >
               {Array.isArray(selectedValues) &&
                 selectedValues.slice(0, maxCount).map((value) => {
-                  const option = datalist.find(
-                    (item) => item?.[valueField] === value
-                  )
+                  const option = datalist.find((item) => item?.[valueField] === value)
                   return (
-                    <Badge
-                      key={String(value)}
-                      variant="secondary"
-                      className={classNames?.selectedItem}
-                    >
+                    <Badge key={String(value)} variant="secondary" className={classNames?.selectedItem}>
                       <Typography
                         variant="small"
                         className="max-w-16 truncate text-xs"
@@ -287,41 +270,37 @@ export function MultiSelect<D extends SelectItem>({
                     </Badge>
                   )
                 })}
-              {Array.isArray(selectedValues) &&
-                selectedValues?.length > maxCount && (
-                  <HoverCard>
-                    <HoverCardTrigger>
-                      <Badge
-                        variant="secondary"
-                        className={'whitespace-nowrap'}
-                      >
-                        {`+ ${selectedValues?.length - maxCount} more`}
-                        <XCircle
-                          className="ml-2 h-4 w-4 cursor-pointer"
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            clearExtraOptions()
-                          }}
-                        />
-                      </Badge>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="flex max-h-56 max-w-sm flex-wrap items-center gap-x-1 gap-y-2 overflow-y-auto p-2">
-                      {Array.isArray(selectedValues) &&
-                        selectedValues.slice(maxCount).map((item) => (
-                          <Badge key={String(item)} variant="secondary">
-                            {String(item)}
-                            <XCircle
-                              className="ml-2 h-4 w-4 cursor-pointer"
-                              onClick={(event) => {
-                                event.stopPropagation()
-                                toggleOption(item)
-                              }}
-                            />
-                          </Badge>
-                        ))}
-                    </HoverCardContent>
-                  </HoverCard>
-                )}
+              {Array.isArray(selectedValues) && selectedValues?.length > maxCount && (
+                <HoverCard>
+                  <HoverCardTrigger>
+                    <Badge variant="secondary" className={'whitespace-nowrap'}>
+                      {`+ ${selectedValues?.length - maxCount} more`}
+                      <XCircle
+                        className="ml-2 h-4 w-4 cursor-pointer"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          clearExtraOptions()
+                        }}
+                      />
+                    </Badge>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="flex max-h-56 max-w-sm flex-wrap items-center gap-x-1 gap-y-2 overflow-y-auto p-2">
+                    {Array.isArray(selectedValues) &&
+                      selectedValues.slice(maxCount).map((item) => (
+                        <Badge key={String(item)} variant="secondary">
+                          {String(item)}
+                          <XCircle
+                            className="ml-2 h-4 w-4 cursor-pointer"
+                            onClick={(event) => {
+                              event.stopPropagation()
+                              toggleOption(item)
+                            }}
+                          />
+                        </Badge>
+                      ))}
+                  </HoverCardContent>
+                </HoverCard>
+              )}
             </ScrollShadow>
             <div className="bg-background flex items-center justify-end gap-x-2">
               <Icon
@@ -332,37 +311,22 @@ export function MultiSelect<D extends SelectItem>({
                   handleClear()
                 }}
               />
-              <Separator
-                orientation="vertical"
-                className="flex h-full min-h-4"
-              />
-              <Icon
-                name="ChevronsUpDown"
-                className="text-muted-foreground size-4 rotate-90 cursor-pointer"
-              />
+              <Separator orientation="vertical" className="flex h-full min-h-4" />
+              <Icon name="ChevronsUpDown" className="text-muted-foreground size-4 rotate-90 cursor-pointer" />
             </div>
           </>
         ) : (
           <>
-            <Typography
-              variant="small"
-              className="text-muted-foreground block text-left text-sm font-normal"
-            >
+            <Typography variant="small" className="text-muted-foreground block text-left text-sm font-normal">
               {placeholder}
             </Typography>
-            <Icon
-              name="ChevronsUpDown"
-              className="text-muted-foreground ml-auto size-4 rotate-90 cursor-pointer"
-            />
+            <Icon name="ChevronsUpDown" className="text-muted-foreground ml-auto size-4 rotate-90 cursor-pointer" />
           </>
         )}
       </PopoverTrigger>
       <PopoverContent
         ref={popoverContentRef}
-        className={cn(
-          'w-(--radix-popover-trigger-width) p-0',
-          classNames?.popoverContent
-        )}
+        className={cn('w-(--radix-popover-trigger-width) p-0', classNames?.popoverContent)}
         align="start"
       >
         <Command
@@ -371,9 +335,7 @@ export function MultiSelect<D extends SelectItem>({
             const normalizedSearchTerm = normalizeString(search)
             const normalizedValue = normalizeString(value)
             return normalizedValue.includes(normalizedSearchTerm) ||
-              keywords?.some((kw) =>
-                normalizeString(kw).includes(normalizedSearchTerm)
-              ) ||
+              keywords?.some((kw) => normalizeString(kw).includes(normalizedSearchTerm)) ||
               keywords?.some((kw) => kw === 'all')
               ? 1
               : 0
@@ -386,8 +348,7 @@ export function MultiSelect<D extends SelectItem>({
             onInput={(e) => {
               e.stopPropagation()
               setSearchTerm(e.currentTarget.value)
-              if (typeof onInput === 'function')
-                onInput(String(e.currentTarget.value))
+              if (typeof onInput === 'function') onInput(String(e.currentTarget.value))
             }}
           />
           <CommandList ref={refCallback}>
@@ -411,8 +372,7 @@ export function MultiSelect<D extends SelectItem>({
                       <div
                         className={cn(
                           'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
-                          selectedValues?.length === datalist?.length &&
-                            datalist?.length > 0
+                          selectedValues?.length === datalist?.length && datalist?.length > 0
                             ? 'bg-primary text-primary-foreground'
                             : 'opacity-50 [&_svg]:invisible'
                         )}
@@ -422,17 +382,10 @@ export function MultiSelect<D extends SelectItem>({
                       <Typography variant="small">(Chọn tất cả)</Typography>
                     </CommandItem>
                   )}
-                  {before > 0 && (
-                    <CommandItem
-                      disabled
-                      style={{ width: '100%', height: before }}
-                    />
-                  )}
+                  {before > 0 && <CommandItem disabled style={{ width: '100%', height: before }} />}
                   {virtualItems.map((item) => {
                     const option = datalist[item.index]
-                    const isSelected = selectedValues.includes(
-                      option?.[valueField]
-                    )
+                    const isSelected = selectedValues.includes(option?.[valueField])
                     return (
                       <CommandItem
                         key={item.key}
@@ -443,18 +396,11 @@ export function MultiSelect<D extends SelectItem>({
                         onSelect={() => toggleOption(option[valueField])}
                       >
                         <Checkbox checked={isSelected} />
-                        <Typography variant="small">
-                          {String(option?.[labelField])}
-                        </Typography>
+                        <Typography variant="small">{String(option?.[labelField])}</Typography>
                       </CommandItem>
                     )
                   })}
-                  {after > 0 && (
-                    <CommandItem
-                      disabled
-                      style={{ width: '100%', height: after }}
-                    />
-                  )}
+                  {after > 0 && <CommandItem disabled style={{ width: '100%', height: after }} />}
                 </CommandGroup>
               </Fragment>
             )}
@@ -471,10 +417,7 @@ export function MultiSelect<D extends SelectItem>({
                   >
                     Đặt lại
                   </CommandItem>
-                  <Separator
-                    orientation="vertical"
-                    className="flex h-full min-h-6"
-                  />
+                  <Separator orientation="vertical" className="flex h-full min-h-6" />
                 </Fragment>
               )}
               <CommandItem
@@ -496,9 +439,7 @@ function Checkbox({ checked }: { checked: boolean }) {
     <div
       className={cn(
         'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border transition-all duration-100',
-        checked
-          ? 'bg-primary text-primary-foreground'
-          : 'opacity-50 [&_svg]:invisible'
+        checked ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'
       )}
     >
       <Icon name="Check" className="size-3!" />

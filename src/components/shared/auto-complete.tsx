@@ -1,8 +1,4 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import tw from '@/lib/tw'
 import { cn } from '@/lib/utils'
 import { uniqueId } from 'lodash-es'
@@ -22,9 +18,7 @@ type AutoCompleteProps<D extends object> = {
   valueField: keyof D
   template?: React.FC<
     { value: D } & React.ComponentProps<
-      'div' extends keyof HTMLElementTagNameMap
-        ? keyof HTMLElementTagNameMap
-        : React.ElementType
+      'div' extends keyof HTMLElementTagNameMap ? keyof HTMLElementTagNameMap : React.ElementType
     >
   >
   onInput?: (value: string) => any
@@ -51,8 +45,7 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
   } = props
   const id = useId()
   const internalRef = useRef<HTMLInputElement>(null)
-  const resolvedRef = (forwardedRef ||
-    internalRef) as React.RefObject<HTMLInputElement>
+  const resolvedRef = (forwardedRef || internalRef) as React.RefObject<HTMLInputElement>
 
   const filteredDatalist = useMemo(() => {
     if (!shouldFilter) return datalist ?? []
@@ -77,11 +70,7 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
 
   return (
     <Popover open={open} onOpenChange={setOpen} modal={false}>
-      <PopoverTrigger
-        type="button"
-        className="relative w-full"
-        onClick={(e) => e.preventDefault()}
-      >
+      <PopoverTrigger type="button" className="relative w-full" onClick={(e) => e.preventDefault()}>
         <DebouncedInput
           id={id}
           ref={resolvedRef}
@@ -123,8 +112,7 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
                 onClick={(e) => {
                   e.stopPropagation()
                   setOpen(false)
-                  if (typeof onSelect === 'function')
-                    onSelect(String(item[valueField]))
+                  if (typeof onSelect === 'function') onSelect(String(item[valueField]))
                 }}
               >
                 <Typography variant="small" className="line-clamp-1 flex-1">
@@ -134,20 +122,14 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
                   name="Check"
                   className={cn(
                     'ml-auto transition-opacity duration-200',
-                    currentValue === item[valueField]
-                      ? 'opacity-100'
-                      : 'opacity-0'
+                    currentValue === item[valueField] ? 'opacity-100' : 'opacity-0'
                   )}
                 />
               </AutoCompleteItem>
             )
           })
         ) : (
-          <Typography
-            variant="small"
-            color="muted"
-            className="block h-full p-10 text-center"
-          >
+          <Typography variant="small" color="muted" className="block h-full p-10 text-center">
             Không có dữ liệu
           </Typography>
         )}

@@ -1,8 +1,6 @@
-import { setServerTokenFn, setTokenFn } from '@/apis/auth/functions'
-import {
-  loginSchema,
-  type TLoginValues,
-} from '@/apis/auth/schemas/login.schema'
+import { setServerTokenFn } from '@/apis/auth/functions'
+import { loginSchema, type TLoginValues } from '@/apis/auth/schemas/login.schema'
+import { useAuthStore } from '@/apis/auth/stores'
 import type { TLoginResponse } from '@/apis/auth/types'
 import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
@@ -25,13 +23,9 @@ const LoginForm = () => {
     validators: { onSubmit: loginSchema },
     onSubmit: async ({ value }) => {
       try {
-        const { accessToken } = await axiosClient.post<
-          any,
-          TLoginResponse,
-          TLoginValues
-        >('/auth/login', value)
-        setTokenFn(accessToken)
+        const { accessToken } = await axiosClient.post<any, TLoginResponse, TLoginValues>('/auth/login', value)
         setCookieToken({ data: accessToken })
+        useAuthStore.getState().setAccessToken(accessToken)
         toast.success('Đăng nhập thành công')
         router.navigate({ to: '/statistics' })
       } catch {
@@ -51,8 +45,7 @@ const LoginForm = () => {
     <form className="space-y-4" onSubmit={onSubmit}>
       <FormField name="username">
         {(field) => {
-          const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+          const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
           return (
             <Field>
               <FieldLabel htmlFor={field.name}>Tài khoản</FieldLabel>
@@ -71,8 +64,7 @@ const LoginForm = () => {
       </FormField>
       <FormField name="password">
         {(field) => {
-          const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+          const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
           return (
             <Field>
               <FieldLabel htmlFor={field.name}>Mật khẩu</FieldLabel>

@@ -13,11 +13,7 @@ import useMediaQuery from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { type Table } from '@tanstack/react-table'
 
-export function UserTableViewOptions<TData>({
-  table,
-}: {
-  table: Table<TData>
-}) {
+export function UserTableViewOptions<TData>({ table }: { table: Table<TData> }) {
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   return (
@@ -46,10 +42,7 @@ export function UserTableViewOptions<TData>({
           <DropdownMenuLabel>Tùy chỉnh hiển thị</DropdownMenuLabel>
           {table
             .getAllColumns()
-            .filter(
-              (column) =>
-                typeof column.accessorFn !== 'undefined' && column.getCanHide()
-            )
+            .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
             .map((column) => {
               return (
                 <DropdownMenuCheckboxItem

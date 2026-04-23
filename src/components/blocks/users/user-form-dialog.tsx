@@ -1,3 +1,5 @@
+import { Position, WorkStatus } from '@/apis/employee/constants'
+import { getEmployeeQueryOptions } from '@/apis/employee/hooks/use-employee-request'
 import type { IEmployee } from '@/apis/employee/types'
 import { ROLE_OPTIONS } from '@/apis/user/constants'
 import { useCreateOrUpdateUserMutataion } from '@/apis/user/hooks/use-user-request'
@@ -34,13 +36,7 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import {
   Select,
   SelectContent,
@@ -54,31 +50,31 @@ import { usePageEventContext } from '@/contexts/event-context'
 import generateAvatar from '@/lib/generate-avatar'
 
 import { useForm } from '@tanstack/react-form'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { omit } from 'lodash-es'
 import React, { useRef, useState } from 'react'
 
-const DEFAULT_FORM_VALUES = Object.freeze({
+const DEFAULT_FORM_VALUES: Partial<TCreateUserValues> = {
   username: '',
-  role: '',
-  employee_id: null,
-})
+  password: undefined,
+  role: undefined,
+  employee_id: undefined,
+}
 
 const UserFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
-  const [action, setAction] = useState<
-    CommonActions.CREATE | CommonActions.UPDATE | null
-  >(null)
+  const [action, setAction] = useState<CommonActions.CREATE | CommonActions.UPDATE | 'none'>('none')
   const [open, setOpen] = useState<boolean>(!!action)
-  const formSchemaRef = useRef<
-    TCreateUserSchema | TUpdateUserSchema | undefined
-  >(undefined)
-  // const { data: employees } = useQuery(
-  // 	getEmployeeQueryOptions({
-  // 		'position:in': `${Position.MANAGER},${Position.WAREHOUSE_MANAGER},${Position.ORDER_PROCESSOR}`,
-  // 		'user_id:eq': null
-  // 	})
-  // )
+  const formSchemaRef = useRef<TCreateUserSchema | TUpdateUserSchema>(createUserSchema)
 
-  const employees = []
+  const { data: employees } = useSuspenseQuery(
+    getEmployeeQueryOptions({
+      'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
+      'is_active:eq': true,
+      'work_status:ne': WorkStatus.EXITED,
+      'user_id:eq': 'null',
+    })
+  )
   const mutation = useCreateOrUpdateUserMutataion(action)
 
   const form = useForm({
@@ -98,14 +94,11 @@ const UserFormDialog: React.FC = () => {
       }
       setOpen(false)
     },
-    validators: { onSubmit: formSchemaRef.current } as Parameter<
-      typeof useForm
-    >['validators'],
+    validators: { onSubmit: formSchemaRef.current! },
   })
 
   event$.useSubscription((e) => {
-    if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE)
-      return
+    if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE) return
     setAction(e.action)
     setOpen(true)
     if (e.action === CommonActions.CREATE) {
@@ -126,12 +119,12 @@ const UserFormDialog: React.FC = () => {
 
   return (
     <Dialog
-      open={open}
+      open={open && action !== 'none'}
       onOpenChange={setOpen}
       onOpenChangeComplete={(open) => {
         if (!open) {
           form.reset()
-          setAction(null)
+          setAction('none')
         }
       }}
     >
@@ -140,9 +133,7 @@ const UserFormDialog: React.FC = () => {
           <FieldGroup>
             <FieldSet>
               <FieldLegend>Thông tin đăng nhập</FieldLegend>
-              <FieldDescription>
-                Người dùng sẽ sử dụng thông tin này để đăng nhập vào tài khoản.
-              </FieldDescription>
+              <FieldDescription>Người dùng sẽ sử dụng thông tin này để đăng nhập vào tài khoản.</FieldDescription>
               <FieldGroup>
                 <FormField
                   name="employee_id"
@@ -154,8 +145,7 @@ const UserFormDialog: React.FC = () => {
                   }}
                 >
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
                         <FieldLabel>Nhân viên</FieldLabel>
@@ -163,23 +153,12 @@ const UserFormDialog: React.FC = () => {
                           name={field.name}
                           items={employees}
                           value={field.state.value as IEmployee}
-                          itemToStringLabel={(value: IEmployee) =>
-                            value.full_name
-                          }
-                          itemToStringValue={(value: IEmployee) =>
-                            String(value.id)
-                          }
-                          isItemEqualToValue={(itemValue, value) =>
-                            itemValue.id === value.id
-                          }
-                          onValueChange={field.handleChange}
-                          // readOnly={action === CommonActions.UPDATE}
+                          itemToStringLabel={(value: IEmployee) => value.full_name}
+                          itemToStringValue={(value: IEmployee) => String(value.id)}
+                          isItemEqualToValue={(itemValue, value) => itemValue.id === value.id}
+                          onValueChange={(value: any) => field.handleChange(value)}
                         >
-                          <ComboboxInput
-                            placeholder="Chọn nhân viên"
-                            // readOnly={action === CommonActions.UPDATE}
-                            showClear
-                          />
+                          <ComboboxInput placeholder="Chọn nhân viên" showClear />
                           <ComboboxContent>
                             <ComboboxGroup>
                               <ComboboxLabel>Nhân sự hiện có</ComboboxLabel>
@@ -198,19 +177,13 @@ const UserFormDialog: React.FC = () => {
                                               })}
                                             />
                                             <AvatarFallback>
-                                              {employee.full_name
-                                                .slice(0, 2)
-                                                .toUpperCase()}
+                                              {employee.full_name.slice(0, 2).toUpperCase()}
                                             </AvatarFallback>
                                           </Avatar>
                                         </ItemMedia>
                                         <ItemContent>
-                                          <ItemTitle className="capitalize">
-                                            {employee.full_name}
-                                          </ItemTitle>
-                                          <ItemDescription>
-                                            {employee.phone}
-                                          </ItemDescription>
+                                          <ItemTitle className="capitalize">{employee.full_name}</ItemTitle>
+                                          <ItemDescription>{employee.phone}</ItemDescription>
                                         </ItemContent>
                                       </Item>
                                     }
@@ -220,17 +193,14 @@ const UserFormDialog: React.FC = () => {
                             </ComboboxGroup>
                           </ComboboxContent>
                         </Combobox>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="username">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Tài khoản</FieldLabel>
@@ -244,20 +214,15 @@ const UserFormDialog: React.FC = () => {
                           readOnly
                           placeholder="Tên đăng nhập"
                         />
-                        <FieldDescription>
-                          Tên đăng nhập mặc định sẽ là mã nhân viên
-                        </FieldDescription>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        <FieldDescription>Tên đăng nhập mặc định sẽ là mã nhân viên</FieldDescription>
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="password">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Mật khẩu</FieldLabel>
@@ -272,13 +237,10 @@ const UserFormDialog: React.FC = () => {
                           type="password"
                         />
                         <FieldDescription>
-                          Mật khẩu đăng nhập mặc định sẽ là mã nhân viên. Bạn có
-                          thể đặt 1 mật khẩu tạm thời khác để người dùng dễ nhớ
-                          hơn, sau đó yêu cầu họ thay đổi đổi.
+                          Mật khẩu đăng nhập mặc định sẽ là mã nhân viên. Bạn có thể đặt 1 mật khẩu tạm thời khác để
+                          người dùng dễ nhớ hơn, sau đó yêu cầu họ thay đổi đổi.
                         </FieldDescription>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
@@ -286,20 +248,15 @@ const UserFormDialog: React.FC = () => {
                 <FormField
                   name="role"
                   children={(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid} className="col-span-2">
                         <FieldLabel>Vai trò</FieldLabel>
                         <Select
                           name={field.name}
-                          items={ROLE_OPTIONS}
+                          items={ROLE_OPTIONS.map((item) => omit(item, 'icon'))}
                           value={field.state.value}
-                          onValueChange={({
-                            value,
-                          }: Record<'label' | 'value', string>) =>
-                            field.handleChange(value)
-                          }
+                          onValueChange={({ value }: any) => field.handleChange(value)}
                         >
                           <SelectTrigger aria-invalid={isInvalid}>
                             <SelectValue placeholder="Chọn vai trò" />
@@ -314,16 +271,12 @@ const UserFormDialog: React.FC = () => {
                                   </SelectItem>
                                 ))
                               ) : (
-                                <SelectItem disabled>
-                                  Không có dữ liệu
-                                </SelectItem>
+                                <SelectItem disabled>Không có dữ liệu</SelectItem>
                               )}
                             </SelectGroup>
                           </SelectContent>
                         </Select>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}

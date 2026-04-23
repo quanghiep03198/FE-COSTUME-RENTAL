@@ -1,15 +1,6 @@
-import useAuth, {
-  useGetAuthUserQuery,
-} from '@/apis/auth/hooks/use-auth-request'
+import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
 import type { IUser } from '@/apis/user/types'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ChevronsUpDown } from 'lucide-react'
 import type React from 'react'
@@ -90,25 +81,18 @@ const NavUserSkeleton: React.FC = () => {
   )
 }
 
-const NavUserItem: React.FC<{ user: IUser; showIcon?: boolean }> = ({
-  user,
-  showIcon = true,
-}) => {
+const NavUserItem: React.FC<{ user: IUser | null | undefined; showIcon?: boolean }> = ({ user, showIcon = true }) => {
   return (
     <Item size="xs" className="flex-nowrap hover:bg-accent">
       <ItemMedia>
         <Avatar className="size-8 rounded-lg">
           <AvatarImage src={user?.avatar} alt={user?.employee?.full_name} />
-          <AvatarFallback className="rounded-lg">
-            {user?.employee?.full_name.at(0)}
-          </AvatarFallback>
+          <AvatarFallback className="rounded-lg">{user?.employee?.full_name.at(0)}</AvatarFallback>
         </Avatar>
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{user?.employee?.full_name}</ItemTitle>
-        <ItemDescription className="line-clamp-1 text-xs">
-          {user?.employee?.email}
-        </ItemDescription>
+        <ItemDescription className="line-clamp-1 text-xs">{user?.employee?.email}</ItemDescription>
       </ItemContent>
       {showIcon && (
         <ItemActions>

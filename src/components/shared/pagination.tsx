@@ -74,11 +74,7 @@ const Pagination: React.FC<PaginationProps> = ({
   continuousInterval = 200,
 }) => {
   const { setParams } = useQueryParams<{ page: number }>()
-  const paginationRange = calculatePaginationRange(
-    currentPage,
-    totalPages,
-    range
-  )
+  const paginationRange = calculatePaginationRange(currentPage, totalPages, range)
 
   // Refs for managing prefetch state
   const prefetchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -106,13 +102,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const debouncedPrefetch = useCallback(
     async (page: number, delay: number = 150) => {
-      if (
-        !handlePrefetch ||
-        prefetchedPagesRef.current.has(page) ||
-        page < 1 ||
-        page > totalPages
-      )
-        return
+      if (!handlePrefetch || prefetchedPagesRef.current.has(page) || page < 1 || page > totalPages) return
 
       // Clear existing timeout
       if (prefetchTimeoutRef.current) {
@@ -165,10 +155,7 @@ const Pagination: React.FC<PaginationProps> = ({
           return
         }
 
-        const nextPageToPrefetch =
-          direction === 'next'
-            ? currentPage + currentOffset
-            : currentPage - currentOffset
+        const nextPageToPrefetch = direction === 'next' ? currentPage + currentOffset : currentPage - currentOffset
 
         // Check bounds
         if (nextPageToPrefetch < 1 || nextPageToPrefetch > totalPages) {
@@ -186,14 +173,7 @@ const Pagination: React.FC<PaginationProps> = ({
         currentDelay = Math.min(currentDelay * 1.2, 2000)
       }, currentDelay)
     },
-    [
-      handlePrefetch,
-      debouncedPrefetch,
-      currentPage,
-      totalPages,
-      maxContinuousPrefetch,
-      continuousInterval,
-    ]
+    [handlePrefetch, debouncedPrefetch, currentPage, totalPages, maxContinuousPrefetch, continuousInterval]
   )
 
   // Stop continuous prefetch
@@ -239,14 +219,10 @@ const Pagination: React.FC<PaginationProps> = ({
         variant="ghost"
         size="sm"
         onClick={() => setParams({ page: currentPage - 1 })}
-        onMouseEnter={() =>
-          hasPrevPage && handleNavButtonHover(currentPage - 1, 'prev')
-        }
+        onMouseEnter={() => hasPrevPage && handleNavButtonHover(currentPage - 1, 'prev')}
         onMouseLeave={stopContinuousPrefetch}
         className={
-          continuousPrefetchState.isActive &&
-          continuousPrefetchState.direction === 'prev' &&
-          'animate-pulse delay-100'
+          continuousPrefetchState.isActive && continuousPrefetchState.direction === 'prev' && 'animate-pulse delay-100'
         }
       >
         <Icon name="ChevronLeft" />
@@ -293,14 +269,10 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={!hasNextPage}
         size="sm"
         onClick={() => setParams({ page: currentPage + 1 })}
-        onMouseEnter={() =>
-          hasNextPage && handleNavButtonHover(nextPage, 'next')
-        }
+        onMouseEnter={() => hasNextPage && handleNavButtonHover(nextPage, 'next')}
         onMouseLeave={stopContinuousPrefetch}
         className={
-          continuousPrefetchState.isActive &&
-          continuousPrefetchState.direction === 'next' &&
-          'animate-pulse delay-100'
+          continuousPrefetchState.isActive && continuousPrefetchState.direction === 'next' && 'animate-pulse delay-100'
         }
       >
         Trang tiếp

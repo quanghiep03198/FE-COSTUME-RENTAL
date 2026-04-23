@@ -16,10 +16,7 @@ const AppNavbar: React.FC = () => {
       <nav className="flex h-full items-center justify-center gap-x-4">
         <AppNavUser />
         <div className="py-3">
-          <Separator
-            orientation="vertical"
-            className="h-6 min-w-0.5 self-center"
-          />
+          <Separator orientation="vertical" className="h-6 min-w-0.5 self-center" />
         </div>
         <SidebarTrigger
           className="mr-auto"

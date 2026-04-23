@@ -55,16 +55,12 @@ type ColumnFilterProps =
   | {
       manualFiltering: true
       columnFilters: ColumnFiltersState
-      onColumnFiltersChange: React.Dispatch<
-        React.SetStateAction<ColumnFiltersState>
-      >
+      onColumnFiltersChange: React.Dispatch<React.SetStateAction<ColumnFiltersState>>
     }
   | {
       manualFiltering?: false
       columnFilters?: ColumnFiltersState
-      onColumnFiltersChange?: React.Dispatch<
-        React.SetStateAction<ColumnFiltersState>
-      >
+      onColumnFiltersChange?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>
     }
 
 // #region Global filter prop types
@@ -73,17 +69,13 @@ type GlobalFilterProps =
       manualFiltering: true
       enableGlobalFilter: true
       globalFilter: GlobalFilterTableState['globalFilter']
-      onGlobalFilterChange: React.Dispatch<
-        React.SetStateAction<GlobalFilterTableState['globalFilter']>
-      >
+      onGlobalFilterChange: React.Dispatch<React.SetStateAction<GlobalFilterTableState['globalFilter']>>
     }
   | {
       manualFiltering?: true | false
       enableGlobalFilter?: false
       globalFilter?: GlobalFilterTableState['globalFilter']
-      onGlobalFilterChange?: React.Dispatch<
-        React.SetStateAction<GlobalFilterTableState['globalFilter']>
-      >
+      onGlobalFilterChange?: React.Dispatch<React.SetStateAction<GlobalFilterTableState['globalFilter']>>
     }
 
 // #region Sorting prop types
@@ -104,10 +96,7 @@ type RenderSubComponentProps<TData = any> = {
   table: Table<TData>
 }
 
-export type RenderSubComponent<TData = any> = (props: {
-  row: Row<TData>
-  table: Table<TData>
-}) => React.ReactElement
+export type RenderSubComponent<TData = any> = (props: { row: Row<TData>; table: Table<TData> }) => React.ReactElement
 
 type PartialTableOptions = Partial<Omit<TableOptions<any>, 'data' | 'columns'>>
 
@@ -190,10 +179,7 @@ export type DataTableProps = PartialTableOptions &
     /**
      * Optional function to render a custom caption for the table.
      */
-    virtualizerOptions?: Pick<
-      VirtualizerOptions<HTMLDivElement, HTMLTableRowElement>,
-      'enabled' | 'overscan'
-    > & {
+    virtualizerOptions?: Pick<VirtualizerOptions<HTMLDivElement, HTMLTableRowElement>, 'enabled' | 'overscan'> & {
       estimateSize?: number
     }
     /**
@@ -207,9 +193,7 @@ export type DataTableProps = PartialTableOptions &
      * @param {RenderSubComponentProps<any>} props
      * @returns
      */
-    renderSubComponent?: (
-      props: RenderSubComponentProps<any>
-    ) => React.ReactElement | React.JSX.Element
+    renderSubComponent?: (props: RenderSubComponentProps<any>) => React.ReactElement | React.JSX.Element
   }
 
 export type RowSelectionType = 'single' | 'multiple' | undefined

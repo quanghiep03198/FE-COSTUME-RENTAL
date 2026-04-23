@@ -1,7 +1,4 @@
-import {
-  DropdownSelect,
-  type DropdownSelectProps,
-} from '@/components/shared/dropdown-select'
+import { DropdownSelect, type DropdownSelectProps } from '@/components/shared/dropdown-select'
 import { Combobox } from '@/components/ui/combobox'
 import { Input, type InputProps } from '@/components/ui/input'
 import type { CellContext } from '@tanstack/react-table'
@@ -49,8 +46,7 @@ const CellEditor: React.FC<CellEditorProps> = ({
   }, [getValue()])
 
   // If cell is not being edited, return cell transformed/original value
-  if (!table.options.meta?.editedRows[row.id])
-    return <Fragment>{transformedValue ?? getValue()}</Fragment>
+  if (!table.options.meta?.editedRows[row.id]) return <Fragment>{transformedValue ?? getValue()}</Fragment>
 
   switch (cellEditorVariant) {
     case 'input':

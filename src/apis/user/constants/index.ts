@@ -5,7 +5,7 @@ export const PHONE_REGEX = /^\d{10}$/
 
 export const ROLE_OPTIONS: Array<{
   label: string
-  value: string
+  value: UserRole
   icon: IconProps['name']
 }> = [
   {

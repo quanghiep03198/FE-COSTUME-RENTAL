@@ -5,19 +5,13 @@ import { router } from './app'
 
 const JWT_SECRET = process.env.JWT_SECRET
 
-export function authMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
 
-  console.log('authHeader', authHeader)
+  console.log(__filename, 'Request access token :>>', authHeader)
 
   if (!authHeader?.startsWith('Bearer ')) {
-    return res
-      .status(403)
-      .json({ message: 'Missing or invalid authorization header' })
+    return res.status(403).json({ message: 'Missing or invalid authorization header' })
   }
 
   const accessToken = authHeader.split(' ')[1]
@@ -26,10 +20,7 @@ export function authMiddleware(
     const payload = jwt.verify(accessToken, JWT_SECRET!) as jwt.JwtPayload
 
     const db = router.db as any
-    const isRevoked = db
-      .get('revoke_tokens')
-      .find({ access_token: accessToken })
-      .value()
+    const isRevoked = db.get('revoke_tokens').find({ access_token: accessToken }).value()
     if (isRevoked) {
       console.log('Is token revoked ?')
       return res.status(403).json({ message: 'Token has been revoked' })

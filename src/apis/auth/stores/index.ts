@@ -10,7 +10,7 @@ export interface IAuthStoreCredentials {
 }
 
 export interface IAuthStoreStates extends IAuthStoreCredentials {
-  setAccessToken: (accessToken: string) => any
+  setAccessToken: (accessToken: string | null) => any
   setProfile: (profile: IUser) => any
   resetCredentials: () => void
 }

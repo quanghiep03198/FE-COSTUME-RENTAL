@@ -6,9 +6,7 @@ import useMediaQuery from '@/hooks/use-media-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 
-const UserTableRefetchButton: React.FC<React.ComponentProps<typeof Button>> = (
-  props
-) => {
+const UserTableRefetchButton: React.FC<React.ComponentProps<typeof Button>> = (props) => {
   const isMobile = useMediaQuery('(max-width: 767px')
   const { refetch } = useSuspenseQuery(getUsersQueryOptions())
   const router = useRouter()

@@ -16,6 +16,7 @@ import {
   type PaginationState,
   type RowSelectionState,
   type SortingState,
+  type Table,
 } from '@tanstack/react-table'
 import { useDeepCompareEffect, useEventEmitter, useResetState } from 'ahooks'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -25,16 +26,9 @@ import { MemoizedTableRowCount, TableRowCount } from './components/row-count'
 import DataTable from './components/table'
 import DataTablePagination from './components/table-pagination'
 import TableToolbar from './components/table-toolbar'
-import {
-  ROW_ACTIONS_COLUMN_ID,
-  ROW_EXPANSION_COLUMN_ID,
-  ROW_SELECTION_COLUMN_ID,
-} from './constants'
-import {
-  TableContextProvider,
-  type TableContextStore,
-} from './context/table.context'
-import { type DataTableProps } from './types'
+import { ROW_ACTIONS_COLUMN_ID, ROW_EXPANSION_COLUMN_ID, ROW_SELECTION_COLUMN_ID } from './constants'
+import { TableContextProvider, type TableContextStore } from './context/table.context'
+import { type DataTableProps, type TableFooterProps, type ToolbarProps } from './types'
 import { fuzzyFilter } from './utils/fuzzy-filter.util'
 import { fuzzySort } from './utils/fuzzy-sort.util'
 import { dateRangeFilter } from './utils/in-date-range-filter.util'
@@ -90,17 +84,13 @@ export const DataGrid: React.FC<DataTableProps> = ({
   const originalData = useMemo(() => data ?? [], [data])
 
   // * Table states declaration
-
   const [_data, setData, resetData] = useResetState(originalData)
   const [_columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [_sorting, setSorting] = useState<SortingState>([])
-  const [_globalFilter, setGlobalFilter] =
-    useState<GlobalFilterTableState['globalFilter']>('')
+  const [_globalFilter, setGlobalFilter] = useState<GlobalFilterTableState['globalFilter']>('')
   const [_expanded, setExpanded] = useState<ExpandedState>({})
   const [autoResetPageIndex, setAutoResetPageIndex] = useState<boolean>(false)
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
-    initialState?.rowSelection ?? {}
-  )
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(initialState?.rowSelection ?? {})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [editedRows, setEditedRows, resetEditedRows] = useResetState({})
   const [pagination, setPagination] = useState<PaginationState>(() =>
@@ -115,7 +105,7 @@ export const DataGrid: React.FC<DataTableProps> = ({
   const event$ = useEventEmitter<Record<string, unknown>>()
 
   // * Table declaration
-  const table = useReactTable<any>({
+  const table = useReactTable({
     data: _data,
     columns,
     initialState: {
@@ -170,18 +160,13 @@ export const DataGrid: React.FC<DataTableProps> = ({
     globalFilterFn: globalFilterFn,
     onPaginationChange: manualPagination ? onPaginationChange : setPagination,
     onSortingChange: manualSorting ? onSortingChange : setSorting,
-    onColumnFiltersChange: manualFiltering
-      ? onColumnFiltersChange
-      : setColumnFilters,
-    onGlobalFilterChange: manualFiltering
-      ? onGlobalFilterChange
-      : setGlobalFilter,
+    onColumnFiltersChange: manualFiltering ? onColumnFiltersChange : setColumnFilters,
+    onGlobalFilterChange: manualFiltering ? onGlobalFilterChange : setGlobalFilter,
     onExpandedChange: manualExpanding ? onExpandedChange : setExpanded,
     onColumnOrderChange: setColumnOrder,
     onRowSelectionChange: (updateFn) => {
       setRowSelection(updateFn)
-      if (typeof onRowSelectionChange === 'function')
-        onRowSelectionChange(updateFn)
+      if (typeof onRowSelectionChange === 'function') onRowSelectionChange(updateFn)
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -219,24 +204,18 @@ export const DataGrid: React.FC<DataTableProps> = ({
           resetData()
           return
         }
-        setData((old) =>
-          old.map((row, index) =>
-            index === rowIndex ? originalData[rowIndex] : row
-          )
-        )
+        setData((old) => old.map((row, index) => (index === rowIndex ? originalData[rowIndex] : row)))
       },
       getUnsavedChanges: () => {
         return table
           .getRowModel()
-          .flatRows.filter((row) =>
-            Object.keys(editedRows).some((id) => id === row.id)
-          )
+          .flatRows.filter((row) => Object.keys(editedRows).some((id) => id === row.id))
           .map((row) => row.original)
       },
     },
     ...props,
     // getSubRows: (row) => row.subRows,
-  })
+  }) as Table<any>
 
   /**
    * * Forward table instance to ref if provided
@@ -290,14 +269,14 @@ export const DataGrid: React.FC<DataTableProps> = ({
   return (
     <TableContextProvider value={store.current}>
       <DataTableWrapper data-border={border}>
-        <TableToolbar {...{ ...toolbarProps, table }} />
+        <TableToolbar {...({ ...toolbarProps, table } as unknown as ToolbarProps)} />
         <DataTable
           columns={columns.filter((col) => !col.meta?.hidden)}
           loading={loading}
           caption={caption}
           virtualizerOptions={virtualizerOptions}
           containerProps={containerProps}
-          footerProps={footerProps}
+          footerProps={footerProps as TableFooterProps}
           renderSubComponent={renderSubComponent}
           getRowCanExpand={getRowCanExpand}
         />

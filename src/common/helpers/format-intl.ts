@@ -28,10 +28,7 @@ export default function formatIntlNumber(value: any) {
  * formatPhoneNumber('84912345678', 'international') // '+84 912 345 678'
  * formatPhoneNumber('+84912345678', 'local') // '0912-345-678'
  */
-export function formatPhoneNumber(
-  phoneNumber: string,
-  format: 'local' | 'international' = 'local'
-): string {
+export function formatPhoneNumber(phoneNumber: string, format: 'local' | 'international' = 'local'): string {
   if (!phoneNumber) return ''
 
   // Remove all non-digit characters except +

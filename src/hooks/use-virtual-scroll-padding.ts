@@ -14,14 +14,8 @@ export default function useVirtualScrollPadding<
 
   if (virtualItems?.length > 0)
     offsetRef.current = {
-      before: Math.max(
-        0,
-        virtualItems[0].start - virtualizer.options.scrollMargin
-      ),
-      after: Math.max(
-        0,
-        virtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end
-      ),
+      before: Math.max(0, virtualItems[0].start - virtualizer.options.scrollMargin),
+      after: Math.max(0, virtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end),
     }
   else {
     offsetRef.current = { before: 0, after: 0 }

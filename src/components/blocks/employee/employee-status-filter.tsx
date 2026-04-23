@@ -19,9 +19,7 @@ import { cn } from '@/lib/utils'
 import type { Table } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
 
-const EmployeeStatusFilter: React.FC<{ table: Table<IEmployee> }> = ({
-  table,
-}) => {
+const EmployeeStatusFilter: React.FC<{ table: Table<IEmployee> }> = ({ table }) => {
   const { data } = table.options
 
   const currentFilterValue = table.getColumn('work_status').getFilterValue()
@@ -58,10 +56,7 @@ const EmployeeStatusFilter: React.FC<{ table: Table<IEmployee> }> = ({
             {typeof currentFilterValue === 'boolean' && (
               <div className="inline-flex items-center">
                 <Separator orientation="vertical" className="mx-2 h-4" />
-                <Badge
-                  variant="secondary"
-                  className="mx-1 rounded-sm px-1.5 font-normal"
-                >
+                <Badge variant="secondary" className="mx-1 rounded-sm px-1.5 font-normal">
                   {currentFilterValue ? 'Đang hoạt động' : 'Tạm khóa'}
                 </Badge>
               </div>
@@ -70,22 +65,14 @@ const EmployeeStatusFilter: React.FC<{ table: Table<IEmployee> }> = ({
         }
       />
       <DropdownMenuContent className="w-64" align="end">
-        <DropdownMenuRadioGroup
-          value={currentFilterValue}
-          onValueChange={handleValueChange}
-        >
+        <DropdownMenuRadioGroup value={currentFilterValue} onValueChange={handleValueChange}>
           {dropdownOptions.map((option) => (
-            <DropdownMenuRadioItem
-              key={option.label}
-              value={option.value}
-              className="gap-x-2"
-            >
+            <DropdownMenuRadioItem key={option.label} value={option.value} className="gap-x-2">
               <Icon
                 name={option.icon}
                 className={cn('size-4', {
                   'stroke-success': option.value === WorkStatus.ACTIVE,
-                  'stroke-muted-foreground':
-                    option.value === WorkStatus.SUSPENDED,
+                  'stroke-muted-foreground': option.value === WorkStatus.SUSPENDED,
                   'stroke-destructive': option.value === WorkStatus.EXITED,
                 })}
               />

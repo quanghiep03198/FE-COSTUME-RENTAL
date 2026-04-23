@@ -1,7 +1,7 @@
 import { GlobalConfig } from '@/configs/global.config'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { broadcastQueryClient } from '@tanstack/query-broadcast-client-experimental'
-import { QueryClient, type QueryKey } from '@tanstack/react-query'
+import { MutationCache, QueryClient, type QueryKey } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import type { AxiosError } from 'axios'
 
@@ -28,14 +28,19 @@ export const queryClient = new QueryClient({
       networkMode: 'always',
     },
   },
+  mutationCache: new MutationCache({
+    onSuccess: (_data, _variables, _context, mutation) => {
+      queryClient.invalidateQueries({
+        queryKey: mutation.options.mutationKey,
+      })
+    },
+  }),
 })
 
 // Only persist on client side — SSR hydration is handled by TanStack Start
 if (typeof window !== 'undefined') {
   broadcastQueryClient({
-    queryClient: queryClient as unknown as Parameter<
-      typeof broadcastQueryClient
-    >['queryClient'],
+    queryClient: queryClient as unknown as Parameter<typeof broadcastQueryClient>['queryClient'],
     broadcastChannel: 'costume-rental', // Optional: defaults to 'react-query'
   })
 

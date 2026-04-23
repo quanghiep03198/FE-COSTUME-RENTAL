@@ -14,12 +14,7 @@ type VirtualTableRowProps = Pick<TableBodyProps, 'renderSubComponent'> & {
   index: number
 }
 
-const VirtualTableRow: React.FC<VirtualTableRowProps> = ({
-  row,
-  isScrolling,
-  index,
-  renderSubComponent,
-}) => {
+const VirtualTableRow: React.FC<VirtualTableRowProps> = ({ row, isScrolling, index, renderSubComponent }) => {
   const { table } = useTableContext('table')
   const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
@@ -33,10 +28,7 @@ const VirtualTableRow: React.FC<VirtualTableRowProps> = ({
         data-role="data-grid-row"
         aria-selected={isSelected}
         aria-expanded={isExpanded}
-        className={cn(
-          'group h-(--row-height,40px)',
-          isScrolling && 'will-change-scroll'
-        )}
+        className={cn('group h-(--row-height,40px)', isScrolling && 'will-change-scroll')}
       >
         {row.getVisibleCells().map((cell) => {
           return (
@@ -83,21 +75,16 @@ const VirtualTableRow: React.FC<VirtualTableRowProps> = ({
   )
 }
 
-const VirtualPlaceholderRow: React.FC<React.ComponentProps<'td'>> = memo(
-  (props) => {
-    return (
-      <tr role="placeholder-row" style={props.style}>
-        <td colSpan={props.colSpan} />
-      </tr>
-    )
-  }
-)
+const VirtualPlaceholderRow: React.FC<React.ComponentProps<'td'>> = memo((props) => {
+  return (
+    <tr role="placeholder-row" style={props.style}>
+      <td colSpan={props.colSpan} />
+    </tr>
+  )
+})
 
 VirtualPlaceholderRow.displayName = 'VirtualPlaceholderRow'
 
-const MemoizedVirtualTableRow = memo(
-  VirtualTableRow,
-  (_, nextProps) => nextProps.isScrolling
-)
+const MemoizedVirtualTableRow = memo(VirtualTableRow, (_, nextProps) => nextProps.isScrolling)
 
 export { MemoizedVirtualTableRow, VirtualPlaceholderRow }

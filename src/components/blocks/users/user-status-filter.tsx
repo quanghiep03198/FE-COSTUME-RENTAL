@@ -72,10 +72,7 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
             {typeof currentFilterValue === 'boolean' && (
               <div className="inline-flex items-center">
                 <Separator orientation="vertical" className="mx-2 h-4" />
-                <Badge
-                  variant="secondary"
-                  className="mx-1 rounded-sm px-1.5 font-normal"
-                >
+                <Badge variant="secondary" className="mx-1 rounded-sm px-1.5 font-normal">
                   {currentFilterValue ? 'Đang hoạt động' : 'Tạm khóa'}
                 </Badge>
               </div>
@@ -84,16 +81,9 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
         }
       />
       <DropdownMenuContent className="w-64" align="end">
-        <DropdownMenuRadioGroup
-          value={currentFilterValue}
-          onValueChange={handleValueChange}
-        >
+        <DropdownMenuRadioGroup value={currentFilterValue} onValueChange={handleValueChange}>
           {dropdownOptions.map((option) => (
-            <DropdownMenuRadioItem
-              key={option.label}
-              value={option.value}
-              className="gap-x-2"
-            >
+            <DropdownMenuRadioItem key={option.label} value={option.value} className="gap-x-2">
               <Icon
                 name={option.icon}
                 className={cn('size-4', {

@@ -4,8 +4,7 @@ import { useRafState, useScroll } from 'ahooks'
 import { debounce } from 'lodash-es'
 import React, { useCallback, useMemo, useRef } from 'react'
 
-export interface ScrollShadowProps
-  extends React.PropsWithChildren, React.ComponentProps<'div'> {
+export interface ScrollShadowProps extends React.PropsWithChildren, React.ComponentProps<'div'> {
   orientation?: 'vertical' | 'horizontal'
   ref?: React.RefObject<HTMLDivElement> | ((node: HTMLDivElement) => void)
 }
@@ -34,9 +33,7 @@ const ScrollShadow: React.FC<ScrollShadowProps> = ({
     const isScrolledToBottom = scrollHeight - scrollTop - scrollClientHeight < 1
     const isScrollToStart = scrollLeft === 0
     const isScrollToEnd = scrollWidth - scrollLeft - scrollClientWidth < 1
-    const isAwayFromEdge =
-      (!isScrolledToTop && !isScrolledToBottom) ||
-      (!isScrollToStart && !isScrollToEnd)
+    const isAwayFromEdge = (!isScrolledToTop && !isScrolledToBottom) || (!isScrollToStart && !isScrollToEnd)
 
     return {
       isScrolledToTop,

@@ -1,6 +1,8 @@
+import env from '@/lib/utils'
 import { createIsomorphicFn, createServerFn } from '@tanstack/react-start'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import z from 'zod'
+import { authMiddleware } from '../middlewares/auth.middleware'
 import { useAuthStore } from '../stores'
 
 type CookieSerializeOptions = Parameters<typeof setCookie>[2]
@@ -13,6 +15,18 @@ export const cookieOptions: CookieSerializeOptions = {
   path: '/',
 }
 
+export const getCurrentUserFn = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
+  .handler(({ context }) => {
+    try {
+      console.log('context', context)
+      return context
+    } catch (error) {
+      console.error(error)
+      return { accessToken: null, user: null }
+    }
+  })
+
 export const setCookieTokenFn = createServerFn({ method: 'POST' })
   .inputValidator(z.string().nonempty())
   .handler(async ({ data }) => {
@@ -21,20 +35,23 @@ export const setCookieTokenFn = createServerFn({ method: 'POST' })
 
 export const getTokenFn = createIsomorphicFn()
   .client(() => {
+    console.log('Get token from Zustand')
     return useAuthStore.getState().accessToken
   })
   .server(() => {
-    console.log('Get access token from cookie')
+    console.log('Get token from Cookie')
     return getCookie('accessToken')
   })
 
 export const setTokenFn = createIsomorphicFn()
-  .client((token: string) => {
+  .client((token: string | null) => {
+    console.log('Set token from client function')
     useAuthStore.getState().setAccessToken(token)
   })
-  .server((token: string) => {
-    console.log('token', token)
-    setCookie('accessToken', token, cookieOptions)
+  .server((token: string | null) => {
+    console.log('Set token from server function')
+    if (typeof token === 'string') setCookie('accessToken', token, cookieOptions)
+    else setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
   })
 
 export const setServerTokenFn = createServerFn({ method: 'POST' })
@@ -43,6 +60,20 @@ export const setServerTokenFn = createServerFn({ method: 'POST' })
     setCookie('accessToken', data, cookieOptions)
   })
 
-export const logOutFn = createServerFn({ method: 'POST' }).handler(async () => {
-  setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
-})
+export const logOutFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.void())
+  .handler(async () => {
+    setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
+  })
+
+export const updateUserStatusFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ id: z.number(), is_active: z.boolean() }))
+  .handler(async ({ data }) => {
+    const accessToken = getCookie('accessToken')
+
+    await fetch(`${env('VITE_BASE_API_URL')}/users/update/${data.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authoriztion: `Bearer ${accessToken}` },
+      body: JSON.stringify({ is_active: data.is_active }),
+    })
+  })

@@ -7,13 +7,7 @@ import { ROW_ACTIONS_COLUMN_ID } from '@/components/shared/data-grid/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Icon, type IconProps } from '@/components/ui/icon'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Typography } from '@/components/ui/typography'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -37,10 +31,7 @@ const UserTable: React.FC = () => {
             <Item size="xs" className="p-0">
               <ItemMedia>
                 <Avatar className="col-start-1 row-span-2">
-                  <AvatarImage
-                    src={row.original.avatar}
-                    alt={row.original.employee?.full_name}
-                  />
+                  <AvatarImage src={row.original.avatar} alt={row.original.employee?.full_name} />
                   <AvatarFallback>G</AvatarFallback>
                 </Avatar>
               </ItemMedia>
@@ -108,15 +99,8 @@ const UserTable: React.FC = () => {
               }
 
           return (
-            <Badge
-              variant="outline"
-              className="justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap"
-            >
-              <Icon
-                aria-current={value}
-                name={badgeHelper?.icon as IconProps['name']}
-                stroke={badgeHelper?.color}
-              />
+            <Badge variant="outline" className="justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap">
+              <Icon aria-current={value} name={badgeHelper?.icon as IconProps['name']} stroke={badgeHelper?.color} />
               {badgeHelper?.text}
             </Badge>
           )

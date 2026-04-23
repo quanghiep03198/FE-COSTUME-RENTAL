@@ -7,9 +7,7 @@ export declare global {
     readonly VITE_BASE_API_URL: string
   }
 
-  type Parameter<T> = T extends (param: infer Argument, ...rest: any) => any
-    ? Argument
-    : never
+  type Parameter<T> = T extends (param: infer Argument, ...rest: any) => any ? Argument : never
 
   interface IBaseEntity {
     id: number

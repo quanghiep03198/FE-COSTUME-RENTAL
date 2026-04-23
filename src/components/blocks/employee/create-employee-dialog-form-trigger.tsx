@@ -8,11 +8,7 @@ const CreateEmployeeFormDialogTrigger: React.FC<ButtonProps> = (props) => {
   const { event$ } = usePageEventContext()
 
   return (
-    <Button
-      type="button"
-      {...props}
-      onClick={() => event$.emit({ action: CommonActions.CREATE })}
-    >
+    <Button type="button" {...props} onClick={() => event$.emit({ action: CommonActions.CREATE })}>
       <Icon name="Plus" />
       Thêm nhân viên
     </Button>

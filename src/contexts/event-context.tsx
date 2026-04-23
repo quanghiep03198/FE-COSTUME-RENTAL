@@ -16,9 +16,7 @@ const PageContext = createContext<TPageContext>(null)
 export function PageEventProvider<T>({ children }: React.PropsWithChildren) {
   const event$ = useEventEmitter<T>()
 
-  return (
-    <PageContext.Provider value={{ event$ }}>{children}</PageContext.Provider>
-  )
+  return <PageContext.Provider value={{ event$ }}>{children}</PageContext.Provider>
 }
 
 export const usePageEventContext = () => use(PageContext)

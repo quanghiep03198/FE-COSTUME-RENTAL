@@ -1,26 +1,10 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/reui/alert'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  formatBytes,
-  useFileUpload,
-  type FileMetadata,
-  type FileWithPreview,
-} from '@/hooks/use-file-upload'
+import { formatBytes, useFileUpload, type FileMetadata, type FileWithPreview } from '@/hooks/use-file-upload'
 import { cn } from '@/lib/utils'
-import {
-  CircleAlertIcon,
-  ImageIcon,
-  UploadIcon,
-  XIcon,
-  ZoomInIcon,
-} from 'lucide-react'
+import { CircleAlertIcon, ImageIcon, UploadIcon, XIcon, ZoomInIcon } from 'lucide-react'
 import { useState } from 'react'
 
 interface GalleryUploadProps {
@@ -43,9 +27,7 @@ export function GallaryUpload({
   onFilesChange,
 }: GalleryUploadProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>(
-    {}
-  )
+  const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>({})
   const [isPreviewLoading, setIsPreviewLoading] = useState(false)
 
   const [
@@ -80,9 +62,7 @@ export function GallaryUpload({
       <div
         className={cn(
           'relative rounded-lg border border-dashed p-8 text-center transition-colors',
-          isDragging
-            ? 'border-primary bg-primary/5'
-            : 'border-muted-foreground/25 hover:border-muted-foreground/50'
+          isDragging ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-muted-foreground/50'
         )}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -98,22 +78,14 @@ export function GallaryUpload({
               isDragging ? 'bg-primary/10' : 'bg-muted'
             )}
           >
-            <ImageIcon
-              className={cn(
-                'h-5 w-5',
-                isDragging ? 'text-primary' : 'text-muted-foreground'
-              )}
-            />
+            <ImageIcon className={cn('h-5 w-5', isDragging ? 'text-primary' : 'text-muted-foreground')} />
           </div>
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold">Tải ảnh lên thư viện</h3>
-            <p className="text-muted-foreground text-sm">
-              Kéo thả ảnh vào đây hoặc bấm để chọn
-            </p>
+            <p className="text-muted-foreground text-sm">Kéo thả ảnh vào đây hoặc bấm để chọn</p>
             <p className="text-muted-foreground text-xs">
-              PNG, JPG, GIF tối đa {formatBytes(maxSize)} mỗi ảnh (tối đa{' '}
-              {maxFiles} ảnh)
+              PNG, JPG, GIF tối đa {formatBytes(maxSize)} mỗi ảnh (tối đa {maxFiles} ảnh)
             </p>
           </div>
 
@@ -132,10 +104,7 @@ export function GallaryUpload({
               Thư viện ({files.length}/{maxFiles})
             </h4>
             <div className="text-muted-foreground text-xs">
-              Tổng dung lượng:{' '}
-              {formatBytes(
-                files.reduce((acc, file) => acc + file.file.size, 0)
-              )}
+              Tổng dung lượng: {formatBytes(files.reduce((acc, file) => acc + file.file.size, 0))}
             </div>
           </div>
           <Button onClick={clearFiles} variant="outline" size="sm">
@@ -148,10 +117,7 @@ export function GallaryUpload({
       {files.length > 0 && (
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {files.map((fileItem) => (
-            <div
-              key={fileItem.id}
-              className="group/item relative aspect-square"
-            >
+            <div key={fileItem.id} className="group/item relative aspect-square">
               {isImage(fileItem.file) && fileItem.preview ? (
                 <>
                   {loadingImages[fileItem.id] !== false && (
@@ -170,9 +136,7 @@ export function GallaryUpload({
                     }
                     className={cn(
                       'h-full w-full rounded-lg border object-cover transition-all group-hover/item:scale-105',
-                      loadingImages[fileItem.id] !== false
-                        ? 'opacity-0'
-                        : 'opacity-100'
+                      loadingImages[fileItem.id] !== false ? 'opacity-0' : 'opacity-100'
                     )}
                   />
                 </>
@@ -200,24 +164,15 @@ export function GallaryUpload({
                 )}
 
                 {/* Remove Button */}
-                <Button
-                  onClick={() => removeFile(fileItem.id)}
-                  variant="secondary"
-                  size="icon"
-                  className="size-7"
-                >
+                <Button onClick={() => removeFile(fileItem.id)} variant="secondary" size="icon" className="size-7">
                   <XIcon className="opacity-100/8" />
                 </Button>
               </div>
 
               {/* File Info */}
               <div className="absolute right-0 bottom-0 left-0 rounded-b-lg bg-black/70 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
-                <p className="truncate text-xs font-medium">
-                  {fileItem.file.name}
-                </p>
-                <p className="text-xs text-gray-300">
-                  {formatBytes(fileItem.file.size)}
-                </p>
+                <p className="truncate text-xs font-medium">{fileItem.file.name}</p>
+                <p className="text-xs text-gray-300">{formatBytes(fileItem.file.size)}</p>
               </div>
             </div>
           ))}
@@ -240,10 +195,7 @@ export function GallaryUpload({
       )}
 
       {/* Image Preview Dialog */}
-      <Dialog
-        open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
-      >
+      <Dialog open={!!selectedImage} onOpenChange={(open) => !open && setSelectedImage(null)}>
         <DialogContent className="**:data-[slot=dialog-close]:text-muted-foreground **:data-[slot=dialog-close]:hover:text-foreground **:data-[slot=dialog-close]:bg-background w-full border-none bg-transparent p-0 shadow-none **:data-[slot=dialog-close]:-inset-e-7 **:data-[slot=dialog-close]:-top-7 **:data-[slot=dialog-close]:size-7 **:data-[slot=dialog-close]:rounded-full sm:max-w-xl">
           <DialogHeader className="sr-only">
             <DialogTitle>Xem trước ảnh</DialogTitle>

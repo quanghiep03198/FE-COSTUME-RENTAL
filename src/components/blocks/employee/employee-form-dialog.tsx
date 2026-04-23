@@ -1,12 +1,10 @@
 import { Position, POSITION_OPTIONS } from '@/apis/employee/constants'
 import { useCreateOrUpdateEmployeeMutataion } from '@/apis/employee/hooks/use-employee-request'
-import {
-  createEmployeeSchema,
-  type TCreateEmployeeSchema,
-} from '@/apis/employee/schemas/create-employee.schema'
+import { createEmployeeSchema, type TCreateEmployeeSchema } from '@/apis/employee/schemas/create-employee.schema'
 import {
   updateEmployeeSchema,
   type TUpdateEmployeeSchema,
+  type TUpdateEmployeeValues,
 } from '@/apis/employee/schemas/update-employee.schema'
 import { CommonActions } from '@/common/constants/enums'
 import { standardizeName } from '@/common/helpers/standardize-name'
@@ -23,35 +21,26 @@ import {
 } from '@/components/ui/field'
 import { Icon } from '@/components/ui/icon'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
+import { omit } from 'lodash-es'
 import React, { useRef, useState } from 'react'
 
-const DEFAULT_FORM_VALUES = Object.freeze({
+const DEFAULT_FORM_VALUES: TUpdateEmployeeValues = {
   full_name: '',
   citizen_id_number: '',
-  email: null,
+  email: undefined,
   phone: '',
   address: '',
-  position: null,
-})
+  position: undefined,
+}
 
 const EmployeeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
-  const [action, setAction] = useState<
-    CommonActions.CREATE | CommonActions.UPDATE | null
-  >(null)
+  const [action, setAction] = useState<CommonActions.CREATE | CommonActions.UPDATE | 'none'>('none')
   const [open, setOpen] = useState<boolean>(!!action)
-  const formSchemaRef = useRef<TCreateEmployeeSchema | TUpdateEmployeeSchema>(
-    undefined
-  )
+  const formSchemaRef = useRef<TCreateEmployeeSchema | TUpdateEmployeeSchema>(createEmployeeSchema)
 
   const mutation = useCreateOrUpdateEmployeeMutataion(action)
 
@@ -62,14 +51,11 @@ const EmployeeFormDialog: React.FC = () => {
       await mutation.mutateAsync(value)
       setOpen(false)
     },
-    validators: { onSubmit: formSchemaRef.current } as Parameter<
-      typeof useForm
-    >['validators'],
+    validators: { onSubmit: formSchemaRef.current! },
   })
 
   event$.useSubscription((e) => {
-    if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE)
-      return
+    if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE) return
     setAction(e.action)
     setOpen(true)
     if (e.action === CommonActions.CREATE) {
@@ -90,12 +76,12 @@ const EmployeeFormDialog: React.FC = () => {
 
   return (
     <Dialog
-      open={open}
+      open={open && action !== 'none'}
       onOpenChange={setOpen}
       onOpenChangeComplete={(open) => {
         if (!open) {
           form.reset()
-          setAction(null)
+          setAction('none')
         }
       }}
     >
@@ -104,9 +90,7 @@ const EmployeeFormDialog: React.FC = () => {
           <FieldGroup>
             <FieldSet>
               <FieldLegend>Thông tin Nhân viên</FieldLegend>
-              <FieldDescription>
-                Hồ sơ thông tin sơ yếu lí lịch nhân viên trên hệ thống
-              </FieldDescription>
+              <FieldDescription>Hồ sơ thông tin sơ yếu lí lịch nhân viên trên hệ thống</FieldDescription>
               <FieldGroup className="grid xl:grid-cols-2">
                 <FormField
                   name="full_name"
@@ -118,8 +102,7 @@ const EmployeeFormDialog: React.FC = () => {
                   }}
                 >
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Họ tên</FieldLabel>
@@ -128,24 +111,19 @@ const EmployeeFormDialog: React.FC = () => {
                           name={field.name}
                           value={field.state.value as string}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(standardizeName(e.target.value))
-                          }
+                          onChange={(e) => field.handleChange(standardizeName(e.target.value))}
                           aria-invalid={isInvalid}
                           type="text"
                           placeholder="Nguyễn Văn A"
                         />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="citizen_id_number">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Số CCCD</FieldLabel>
@@ -160,17 +138,14 @@ const EmployeeFormDialog: React.FC = () => {
                           inputMode="numeric"
                           placeholder="*** *** *** ***"
                         />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="phone">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Số điện thoại</FieldLabel>
@@ -184,17 +159,14 @@ const EmployeeFormDialog: React.FC = () => {
                           type="tel"
                           placeholder="09xx xxx xxx"
                         />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="email">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Email</FieldLabel>
@@ -208,17 +180,14 @@ const EmployeeFormDialog: React.FC = () => {
                           type="email"
                           placeholder="example@gmail.com"
                         />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="address">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Địa chỉ liên hệ</FieldLabel>
@@ -232,24 +201,21 @@ const EmployeeFormDialog: React.FC = () => {
                           type="text"
                           placeholder="Số 1, đường Lạch Tray, TP.Hải Phòng"
                         />
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}
                 </FormField>
                 <FormField name="position">
                   {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field>
                         <FieldLabel>Chức vụ</FieldLabel>
                         <Select
-                          items={POSITION_OPTIONS}
+                          items={POSITION_OPTIONS.map((item) => omit(item, ['icon']))}
                           value={field.state.value as Position}
-                          onValueChange={field.handleChange}
+                          onValueChange={(value) => field.handleChange(value!)}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Chức vụ" />
@@ -265,9 +231,7 @@ const EmployeeFormDialog: React.FC = () => {
                             ))}
                           </SelectContent>
                         </Select>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
-                        )}
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
                   }}

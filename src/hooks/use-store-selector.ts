@@ -9,9 +9,7 @@ import { useShallow } from 'zustand/react/shallow'
  * @param {React.Context<StoreApi<T extends { [K in keyof T]: any }>>} context - The React context containing the Zustand store.
  * @returns A function that takes selectors and returns the selected state.
  */
-export const createStoreSelector = <T extends { [K in keyof T]: any }>(
-  context: React.Context<StoreApi<T>>
-) => {
+export const createStoreSelector = <T extends { [K in keyof T]: any }>(context: React.Context<StoreApi<T>>) => {
   return <K extends keyof T>(...selectors: K[]) => {
     const store = use(context)
     if (!store) throw new Error('Missing store provider')

@@ -1,9 +1,4 @@
-import type {
-  CellContext,
-  HeaderContext,
-  RowSelectionState,
-  TableState,
-} from '@tanstack/react-table'
+import type { CellContext, HeaderContext, RowSelectionState, TableState } from '@tanstack/react-table'
 import { useUpdate } from 'ahooks'
 import { pick } from 'lodash-es'
 import React, { useEffect } from 'react'
@@ -11,17 +6,11 @@ import React, { useEffect } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useTableContext } from '../context/table.context'
 
-type IndeterminateCheckboxProps = HeaderContext<any, unknown> &
-  React.ComponentProps<typeof Checkbox>
+type IndeterminateCheckboxProps = HeaderContext<any, unknown> & React.ComponentProps<typeof Checkbox>
 
-type RowSelectionCheckboxProps = CellContext<any, unknown> &
-  React.ComponentProps<typeof Checkbox>
+type RowSelectionCheckboxProps = CellContext<any, unknown> & React.ComponentProps<typeof Checkbox>
 
-export const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({
-  table,
-  onCheckedChange,
-  ...props
-}) => {
+export const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({ table, onCheckedChange, ...props }) => {
   const { event$ } = useTableContext('table', 'event$')
   const rerender = useUpdate()
 
@@ -33,8 +22,7 @@ export const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({
 
   const handleCheckedChange = (checked: boolean) => {
     table.toggleAllRowsSelected(Boolean(checked))
-    if (typeof checked === 'boolean')
-      event$.emit(pick(table.getState(), ['rowSelection']))
+    if (typeof checked === 'boolean') event$.emit(pick(table.getState(), ['rowSelection']))
     if (typeof onCheckedChange === 'function' && typeof checked === 'boolean')
       onCheckedChange(checked, { reason: 'none' })
   }
@@ -55,11 +43,7 @@ export const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({
 
 IndeterminateCheckbox.displayName = 'IndeterminateCheckbox'
 
-export const RowSelectionCheckbox: React.FC<RowSelectionCheckboxProps> = ({
-  row,
-  disabled,
-  onCheckedChange,
-}) => {
+export const RowSelectionCheckbox: React.FC<RowSelectionCheckboxProps> = ({ row, disabled, onCheckedChange }) => {
   const { table, event$ } = useTableContext('table', 'event$')
   const rerender = useUpdate()
 
@@ -89,13 +73,7 @@ export const RowSelectionCheckbox: React.FC<RowSelectionCheckboxProps> = ({
       })
   }
 
-  return (
-    <Checkbox
-      disabled={disabled}
-      checked={row.getIsSelected()}
-      onCheckedChange={handleCheckedChange}
-    />
-  )
+  return <Checkbox disabled={disabled} checked={row.getIsSelected()} onCheckedChange={handleCheckedChange} />
 }
 
 RowSelectionCheckbox.displayName = 'RowSelectionCheckbox'

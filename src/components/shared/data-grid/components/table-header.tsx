@@ -36,26 +36,17 @@ const DataTableHeader: React.FC = () => {
 
 DataTableHeader.displayName = 'DataTableHeader'
 
-const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
-  headerGroup,
-}) => {
+const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ headerGroup }) => {
   //
 
   const { table } = useTableContext('table')
   const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
   return (
-    <TableRow
-      data-role="data-grid-row"
-      className="h-(--header-row-height,40px) divide-x [&_th]:border-x-0"
-    >
+    <TableRow data-role="data-grid-row" className="h-(--header-row-height,40px) divide-x [&_th]:border-x-0">
       {headerGroup.headers.map((header) => {
         const rowSpan = header.column.columnDef.meta?.rowSpan
-        if (
-          !header.isPlaceholder &&
-          rowSpan !== undefined &&
-          header.id === header.column.id
-        ) {
+        if (!header.isPlaceholder && rowSpan !== undefined && header.id === header.column.id) {
           return null
         }
 
@@ -75,9 +66,7 @@ const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
             }}
           >
             <TableCellHead header={header} />
-            {table?.options?.enableColumnResizing && (
-              <ColumnResizer header={header} />
-            )}
+            {table?.options?.enableColumnResizing && <ColumnResizer header={header} />}
           </TableHead>
         )
       })}
@@ -87,19 +76,14 @@ const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
 
 TableHeaderRow.displayName = 'TableHeaderRow'
 
-const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
-  headerGroup,
-}) => {
+const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ headerGroup }) => {
   //
 
   const { filterOpen } = useTableContext('filterOpen')
   const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
   return (
-    <TableRow
-      data-role="data-grid-row"
-      className="max-h-(--header-row-height,36px)"
-    >
+    <TableRow data-role="data-grid-row" className="max-h-(--header-row-height,36px)">
       {headerGroup.headers.map((header) => {
         if (header.column.columns.length === 0)
           return (
@@ -108,9 +92,7 @@ const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
               colSpan={header.colSpan}
               data-role="data-grid-row"
               className="group relative z-40 p-0"
-              rowSpan={
-                header.column.getIsPinned() ? headerGroup.headers.length : 1
-              }
+              rowSpan={header.column.getIsPinned() ? headerGroup.headers.length : 1}
               style={{
                 ...computeStickyOffsetPosition(header?.column),
                 borderBottomWidth: filterOpen ? '1px' : '0px',

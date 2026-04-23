@@ -42,10 +42,7 @@ const MonthPicker: React.FC<MonthCalendarProps> = (props) => {
         render={
           <Button
             variant="outline"
-            className={cn(
-              'w-72 justify-start text-left font-normal',
-              !props?.selectedMonth && 'text-muted-foreground'
-            )}
+            className={cn('w-72 justify-start text-left font-normal', !props?.selectedMonth && 'text-muted-foreground')}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             <span className="first-letter:uppercase">
@@ -76,12 +73,8 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
   onYearBackward,
   onYearForward,
 }) => {
-  const [year, setYear] = React.useState<number>(
-    selectedMonth?.getFullYear() ?? new Date().getFullYear()
-  )
-  const [month, setMonth] = React.useState<number>(
-    selectedMonth?.getMonth() ?? new Date().getMonth()
-  )
+  const [year, setYear] = React.useState<number>(selectedMonth?.getFullYear() ?? new Date().getFullYear())
+  const [month, setMonth] = React.useState<number>(selectedMonth?.getMonth() ?? new Date().getMonth())
   const [menuYear, setMenuYear] = React.useState<number>(year)
 
   if (minDate && maxDate && minDate > maxDate) minDate = maxDate
@@ -105,9 +98,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
   return (
     <>
       <div className="relative flex items-center justify-center pt-1">
-        <div className="text-sm font-medium">
-          {callbacks?.yearLabel ? callbacks?.yearLabel(menuYear) : menuYear}
-        </div>
+        <div className="text-sm font-medium">{callbacks?.yearLabel ? callbacks?.yearLabel(menuYear) : menuYear}</div>
         <div className="flex items-center space-x-1">
           <button
             onClick={() => {
@@ -150,24 +141,19 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                         onClick={() => {
                           setMonth(m.number)
                           setYear(menuYear)
-                          if (onMonthSelect)
-                            onMonthSelect(new Date(menuYear, m.number))
+                          if (onMonthSelect) onMonthSelect(new Date(menuYear, m.number))
                         }}
                         disabled={
                           (maxDate
                             ? menuYear > maxDate?.getFullYear() ||
-                              (menuYear == maxDate?.getFullYear() &&
-                                m.number > maxDate.getMonth())
+                              (menuYear == maxDate?.getFullYear() && m.number > maxDate.getMonth())
                             : false) ||
                           (minDate
                             ? menuYear < minDate?.getFullYear() ||
-                              (menuYear == minDate?.getFullYear() &&
-                                m.number < minDate.getMonth())
+                              (menuYear == minDate?.getFullYear() && m.number < minDate.getMonth())
                             : false) ||
                           (disabledDatesMapped
-                            ? disabledDatesMapped?.some(
-                                (d) => d.year == menuYear && d.month == m.number
-                              )
+                            ? disabledDatesMapped?.some((d) => d.year == menuYear && d.month == m.number)
                             : false)
                         }
                         className={cn(
@@ -180,9 +166,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                           'h-full w-full p-0 font-normal aria-selected:opacity-100'
                         )}
                       >
-                        {callbacks?.monthLabel
-                          ? callbacks.monthLabel(m)
-                          : m.name}
+                        {callbacks?.monthLabel ? callbacks.monthLabel(m) : m.name}
                       </button>
                     </td>
                   )

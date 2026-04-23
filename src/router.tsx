@@ -8,10 +8,10 @@ import { routeTree } from './routeTree.gen'
 export function getRouter() {
   const router = createTanStackRouter({
     routeTree,
-    context: { queryClient },
+    context: { queryClient: queryClient },
     scrollRestoration: true,
-    defaultPreload: 'render',
-    defaultPreloadStaleTime: 5 * 60 * 1000, // 5 minutes
+    defaultPreload: false,
+    defaultPreloadStaleTime: 0, // 5 minutes
     defaultErrorComponent: ErrorBoundaryFallback,
     defaultNotFoundComponent: NotFoundPage,
   })

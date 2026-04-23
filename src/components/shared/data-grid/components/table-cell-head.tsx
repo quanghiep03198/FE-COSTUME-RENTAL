@@ -22,16 +22,8 @@ type TableCellHeadProps = {
 }
 
 const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
-  const {
-    columnDef,
-    getIsResizing,
-    getIsSorted,
-    getToggleSortingHandler,
-    getNextSortingOrder,
-  } = header.column
-  const toggleSorting = columnDef.enableSorting
-    ? getToggleSortingHandler()
-    : undefined
+  const { columnDef, getIsResizing, getIsSorted, getToggleSortingHandler, getNextSortingOrder } = header.column
+  const toggleSorting = columnDef.enableSorting ? getToggleSortingHandler() : undefined
   const rerender = useUpdate()
   const { table, event$ } = useTableContext('table', 'event$')
 
@@ -54,8 +46,7 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
         : 'Bỏ sắp xếp'
     : undefined
 
-  if (header.colSpan > 1)
-    return <>{flexRender(columnDef.header, header.getContext())}</>
+  if (header.colSpan > 1) return <>{flexRender(columnDef.header, header.getContext())}</>
 
   return (
     <ContextMenu>
@@ -63,11 +54,9 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
         className={cn(
           'flex h-max w-full cursor-auto grid-cols-[14px_auto] items-center px-4 py-2 text-left text-xs capitalize select-none [&:has([role=button])]:w-full [&:has([role=button])]:justify-center [&:has([role=checkbox])]:w-full [&:has([role=checkbox])]:justify-center!',
           {
-            'hover:text-foreground cursor-pointer gap-x-2':
-              columnDef.enableSorting,
+            'hover:text-foreground cursor-pointer gap-x-2': columnDef.enableSorting,
             'cursor-col-resize': getIsResizing(),
-            'justify-center text-center':
-              header.colSpan > 1 || columnDef.meta?.align === 'center',
+            'justify-center text-center': header.colSpan > 1 || columnDef.meta?.align === 'center',
             'justify-start text-left': columnDef.meta?.align === 'left',
             'justify-end': columnDef.meta?.align === 'right',
           }
@@ -91,11 +80,7 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
             className="h-(--icon-size) max-w-(--icon-size) min-w-(--icon-size)"
           />
         )}
-        <Typography
-          as="small"
-          variant="small"
-          className="line-clamp-1 text-left text-sm text-inherit"
-        >
+        <Typography as="small" variant="small" className="line-clamp-1 text-left text-sm text-inherit">
           {flexRender(columnDef.header, header.getContext())}
         </Typography>
       </ContextMenuTrigger>
@@ -119,12 +104,8 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
         <ContextMenuSeparator />
         <ContextMenuSub>
           <ContextMenuSubTrigger
-            aria-disabled={
-              !header.isPlaceholder && !header.column.columnDef.enablePinning
-            }
-            disabled={
-              !header.isPlaceholder && !header.column.columnDef.enablePinning
-            }
+            aria-disabled={!header.isPlaceholder && !header.column.columnDef.enablePinning}
+            disabled={!header.isPlaceholder && !header.column.columnDef.enablePinning}
             className="aria-disabled:text-muted-foreground gap-x-2"
           >
             <Icon name="Pin" />
@@ -164,10 +145,7 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
         <ContextMenuItem className="gap-x-2" onClick={header.column.resetSize}>
           <Icon name="FoldHorizontal" /> Đặt lại kích thước
         </ContextMenuItem>
-        <ContextMenuItem
-          className="gap-x-2"
-          onClick={header.column.getToggleVisibilityHandler()}
-        >
+        <ContextMenuItem className="gap-x-2" onClick={header.column.getToggleVisibilityHandler()}>
           <Icon name="EyeOff" /> Ẩn cột
         </ContextMenuItem>
       </ContextMenuContent>

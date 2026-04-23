@@ -15,18 +15,10 @@ export const NotFoundPage: React.FC = () => {
           <Separator orientation="vertical" className="h-5 w-0.5" />
           <Typography variant="h4">Không tìm thấy trang bạn yêu cầu</Typography>
         </div>
-        <Typography
-          variant="p"
-          className="mt-2 mb-6 text-base leading-7"
-          color="muted"
-        >
+        <Typography variant="p" className="mt-2 mb-6 text-base leading-7" color="muted">
           Trang không tồn tại. Vui lòng kiểm tra lại đường dẫn.
         </Typography>
-        <Button
-          variant="link"
-          onClick={() => window.history.back()}
-          className="p-0"
-        >
+        <Button variant="link" onClick={() => window.history.back()} className="p-0">
           <ArrowLeft />
           Quay lại
         </Button>

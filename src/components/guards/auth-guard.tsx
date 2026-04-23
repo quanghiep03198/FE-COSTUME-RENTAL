@@ -1,6 +1,4 @@
-import useAuth, {
-  useGetAuthUserQuery,
-} from '@/apis/auth/hooks/use-auth-request'
+import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
 import { useHydrated, useRouter } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
@@ -12,13 +10,12 @@ const AuthGuard: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!data) return
-    setProfile(data)
+    setProfile(data.user)
   }, [data])
 
   useEffect(() => {
     if (!hyderated) return
-    if (!isAuthenticated)
-      router.invalidate().finally(() => router.navigate({ to: '/login' }))
+    if (!isAuthenticated) router.invalidate().finally(() => router.navigate({ to: '/login' }))
   }, [isAuthenticated, hyderated])
 
   return children

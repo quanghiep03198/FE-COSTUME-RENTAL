@@ -1,10 +1,7 @@
+'use client'
+
 // import { useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-request'
-import { updateUserStatusFn } from '@/apis/user/functions'
-import {
-  useDeleteUserMutation,
-  useUpdateUserStatusMutation,
-} from '@/apis/user/hooks/use-user-request'
-import type { TUpdateUserValues } from '@/apis/user/schemas/update-user.schema'
+import { useDeleteUserMutation, useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-request'
 import type { IUser } from '@/apis/user/types'
 import { CommonActions } from '@/common/constants/enums'
 import {
@@ -17,19 +14,17 @@ import {
 import { Icon } from '@/components/ui/icon'
 import { Spinner } from '@/components/ui/spinner'
 import { usePageEventContext } from '@/contexts/event-context'
-import { useServerFn } from '@tanstack/react-start'
+import { useRouter } from '@tanstack/react-router'
 import type { CellContext } from '@tanstack/react-table'
 import { useState } from 'react'
 
 const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
+  const router = useRouter()
 
-  const updateUserStatus = useServerFn(updateUserStatusFn)
-  const { mutateAsync: updateAsync, isPending: isUpdating } =
-    useUpdateUserStatusMutation()
-  const { mutateAsync: deleteUserAsync, isPending: isDeleting } =
-    useDeleteUserMutation()
+  const { mutateAsync: updateAsync, isPending: isUpdating } = useUpdateUserStatusMutation()
+  const { mutateAsync: deleteUserAsync, isPending: isDeleting } = useDeleteUserMutation()
 
   const isPending = isUpdating || isDeleting
 
@@ -48,8 +43,7 @@ const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
                   ...row.original,
                   employee_id: {
                     id: row.original.employee?.id ?? null,
-                    full_name:
-                      row.original.employee?.full_name ?? 'Chưa xác định',
+                    full_name: row.original.employee?.full_name ?? 'Chưa xác định',
                   },
                 },
               })
@@ -58,12 +52,11 @@ const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
             Cập nhật
           </DropdownMenuItem>
           <DropdownMenuItem
-            disabled={isPending}
-            onClick={() => {
+            onClick={(e) => {
               updateAsync({
                 id: row.original.id,
                 is_active: !row.original.is_active,
-              } as TUpdateUserValues)
+              }).then(() => router.invalidate())
             }}
           >
             {isUpdating && <Spinner />}

@@ -9,17 +9,11 @@ export type DataTableRowCountProps = {
   manualTotalDocs: number
 }
 
-const TableRowCount: React.FC<DataTableRowCountProps> = ({
-  enableRowSelection,
-  manualPagination,
-  manualTotalDocs,
-}) => {
+const TableRowCount: React.FC<DataTableRowCountProps> = ({ enableRowSelection, manualPagination, manualTotalDocs }) => {
   const { table } = useTableContext('table')
 
   const selectedRows = table.getFilteredSelectedRowModel()?.rows?.length
-  const totalRows = manualPagination
-    ? manualTotalDocs
-    : (table.getFilteredRowModel()?.rows?.length ?? 0)
+  const totalRows = manualPagination ? manualTotalDocs : (table.getFilteredRowModel()?.rows?.length ?? 0)
   const rowSelectionCount = String(selectedRows) + '/' + String(totalRows)
 
   return enableRowSelection ? (

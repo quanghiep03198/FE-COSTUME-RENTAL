@@ -41,8 +41,7 @@ const DataTable: React.FC<TableProps> = (props) => {
     const columnSizes: Record<string, string> = {}
     headers.forEach((header) => {
       columnSizes[`--header-${header.id}-size`] = header.getSize() + 'px'
-      columnSizes[`--column-${header.column.id}-size`] =
-        header.column.getSize() + 'px'
+      columnSizes[`--column-${header.column.id}-size`] = header.column.getSize() + 'px'
     })
     return columnSizes
   }, [table.getState().columnSizingInfo, table.getState().columnSizing])
@@ -59,9 +58,7 @@ const DataTable: React.FC<TableProps> = (props) => {
   useUpdateEffect(() => {
     table.setColumnPinning((prev) => {
       if (prev.right!.includes(ROW_ACTIONS_COLUMN_ID)) {
-        prev.right = prev
-          .right!.filter((id) => id !== ROW_ACTIONS_COLUMN_ID)
-          .concat(ROW_ACTIONS_COLUMN_ID)
+        prev.right = prev.right!.filter((id) => id !== ROW_ACTIONS_COLUMN_ID).concat(ROW_ACTIONS_COLUMN_ID)
       }
       return prev
     })
@@ -69,9 +66,7 @@ const DataTable: React.FC<TableProps> = (props) => {
 
   return (
     <Wrapper style={{ ...computedColumnSizes, ...tableStyles }}>
-      {caption && (
-        <TableHeadCaption id={captionId} aria-description={caption} />
-      )}
+      {caption && <TableHeadCaption id={captionId} aria-description={caption} />}
       <ScrollArea
         ref={containerRef}
         style={{
@@ -82,10 +77,7 @@ const DataTable: React.FC<TableProps> = (props) => {
         }}
         {...containerProps}
       >
-        <Table
-          data-role="data-grid"
-          className="table-auto border-separate border-spacing-0 border-none"
-        >
+        <Table data-role="data-grid" className="table-auto border-separate border-spacing-0 border-none">
           {caption && (
             <TableCaption aria-labelledby={captionId} className="hidden">
               {caption}

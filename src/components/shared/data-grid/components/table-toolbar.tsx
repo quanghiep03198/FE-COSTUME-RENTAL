@@ -6,11 +6,7 @@ import { type Table } from '@tanstack/react-table'
 import { useMemoizedFn } from 'ahooks'
 import { pick } from 'lodash-es'
 import { memo } from 'react'
-import {
-  ROW_ACTIONS_COLUMN_ID,
-  ROW_EXPANSION_COLUMN_ID,
-  ROW_SELECTION_COLUMN_ID,
-} from '../constants'
+import { ROW_ACTIONS_COLUMN_ID, ROW_EXPANSION_COLUMN_ID, ROW_SELECTION_COLUMN_ID } from '../constants'
 import { useTableContext } from '../context/table.context'
 import { type ToolbarProps } from '../types'
 import ColumnFilterToggle from './column-filter-toggle'
@@ -25,15 +21,11 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
     globalFilter,
     columnFilters,
   } = table.getState()
-  const isFilterDirty =
-    globalFilter?.length !== 0 || columnFilters?.length !== 0
+  const isFilterDirty = globalFilter?.length !== 0 || columnFilters?.length !== 0
 
   const isSomeColumnsPinned =
-    left.some(
-      (columnId) =>
-        columnId !== ROW_SELECTION_COLUMN_ID &&
-        columnId !== ROW_EXPANSION_COLUMN_ID
-    ) || right.some((columnId) => columnId !== ROW_ACTIONS_COLUMN_ID)
+    left.some((columnId) => columnId !== ROW_SELECTION_COLUMN_ID && columnId !== ROW_EXPANSION_COLUMN_ID) ||
+    right.some((columnId) => columnId !== ROW_ACTIONS_COLUMN_ID)
 
   const resetAllFilters = useMemoizedFn(() => {
     table.resetGlobalFilter(table.initialState.globalFilter)
@@ -48,13 +40,7 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
   const { slotLeft: SlotLeft, slotRight: SlotRight, rtl } = props
 
   return (
-    <div
-      role="toolbar"
-      className={cn(
-        'flex items-center justify-between py-0.5',
-        rtl && 'flex-row-reverse'
-      )}
-    >
+    <div role="toolbar" className={cn('flex items-center justify-between py-0.5', rtl && 'flex-row-reverse')}>
       {SlotLeft && <SlotLeft table={table} />}
       <div className="ml-auto grid auto-cols-fr grid-flow-col items-center gap-x-1">
         <Tooltip
@@ -98,24 +84,14 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
             onGlobalFilterChange={table.setGlobalFilter}
           />
         )}
-        {table
-          .getAllLeafColumns()
-          .some(({ columnDef }) => columnDef.enableColumnFilter) && (
-          <ColumnFilterToggle />
-        )}
-        {(table
-          .getAllLeafColumns()
-          .some(({ columnDef }) => columnDef.enableResizing) ||
+        {table.getAllLeafColumns().some(({ columnDef }) => columnDef.enableColumnFilter) && <ColumnFilterToggle />}
+        {(table.getAllLeafColumns().some(({ columnDef }) => columnDef.enableResizing) ||
           table.options.enableColumnResizing) && (
           <Tooltip
             message="Đặt lại kích thước cột"
             triggerProps={{
               render: (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => table.resetColumnSizing()}
-                >
+                <Button variant="outline" size="icon" onClick={() => table.resetColumnSizing()}>
                   <Icon name={'FoldHorizontal'} />
                 </Button>
               ),
@@ -132,6 +108,5 @@ TableToolbar.displayName = 'TableToolbar'
 
 export default memo(
   TableToolbar,
-  (_, nextProps) =>
-    nextProps['table'].getState().columnSizingInfo.isResizingColumn !== false
+  (_, nextProps) => nextProps['table'].getState().columnSizingInfo.isResizingColumn !== false
 ) as typeof TableToolbar

@@ -25,11 +25,7 @@ export const TableViewOptions: React.FC = () => {
         message="Columns"
         triggerProps={{
           render: (
-            <DropdownMenuTrigger
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'icon' })
-              )}
-            >
+            <DropdownMenuTrigger className={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}>
               <Icon name="Columns2" />
             </DropdownMenuTrigger>
           ),
@@ -40,10 +36,7 @@ export const TableViewOptions: React.FC = () => {
         <DropdownMenuSeparator />
         {table
           .getAllLeafColumns()
-          .filter(
-            (column) =>
-              typeof column.accessorFn !== 'undefined' && column.getCanHide()
-          )
+          .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
           .map((column) => {
             return (
               <DropdownMenuCheckboxItem

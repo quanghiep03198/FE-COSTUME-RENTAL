@@ -1,17 +1,9 @@
 import { Icon } from '@/components/ui/icon'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from '@/components/ui/input-group'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import type { Table } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 
-export function GlobalFilterInput<T extends IBaseEntity>({
-  table,
-}: {
-  table: Table<T>
-}) {
+export function GlobalFilterInput<T extends IBaseEntity>({ table }: { table: Table<T> }) {
   const [value, setValue] = useState<string>(table.getState().globalFilter)
 
   useEffect(() => {

@@ -1,7 +1,4 @@
-import {
-  DebouncedInput,
-  type DebouncedInputProps,
-} from '@/components/shared/debounced-input'
+import { DebouncedInput, type DebouncedInputProps } from '@/components/shared/debounced-input'
 import { DropdownSelect } from '@/components/shared/dropdown-select'
 import { type Column } from '@tanstack/react-table'
 import { useUpdate } from 'ahooks'
@@ -16,9 +13,7 @@ type ColumnFilterProps<TData, TValue> = {
   column: Column<TData, TValue>
 }
 
-export function TableColumnFilter<TData, TValue>({
-  column,
-}: ColumnFilterProps<TData, TValue>) {
+export function TableColumnFilter<TData, TValue>({ column }: ColumnFilterProps<TData, TValue>) {
   const filterVariant = column.columnDef.meta?.filterVariant
   const columnFilterValue = column.getFilterValue()
   const [isAllFiltersCleared, setIsAllFiltersCleared] = useState(true)
@@ -26,8 +21,7 @@ export function TableColumnFilter<TData, TValue>({
   const rerender = useUpdate()
 
   event$.useSubscription((value) => {
-    if (typeof value.isAllFiltersCleared === 'boolean')
-      setIsAllFiltersCleared(value.isAllFiltersCleared)
+    if (typeof value.isAllFiltersCleared === 'boolean') setIsAllFiltersCleared(value.isAllFiltersCleared)
   })
 
   const getFacetedUniqueValues = () => {
@@ -95,9 +89,7 @@ export function TableColumnFilter<TData, TValue>({
             style: { height: DEFAULT_ESTIMATE_SIZE },
           }}
           selectProps={{
-            value: isAllFiltersCleared
-              ? ''
-              : (column.getFilterValue() as string),
+            value: isAllFiltersCleared ? '' : (column.getFilterValue() as string),
             onValueChange: (value) => {
               column.setFilterValue(value)
             },
@@ -144,11 +136,7 @@ export function TableColumnFilter<TData, TValue>({
       return (
         <DebouncedInput
           id={column.id}
-          value={
-            (isAllFiltersCleared
-              ? ''
-              : (columnFilterValue as DebouncedInputProps['value'])) ?? ''
-          }
+          value={(isAllFiltersCleared ? '' : (columnFilterValue as DebouncedInputProps['value'])) ?? ''}
           placeholder="Nhập giá trị..."
           onChange={(value) => column.setFilterValue(value)}
         />

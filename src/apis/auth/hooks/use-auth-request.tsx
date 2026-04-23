@@ -1,29 +1,25 @@
+'use server'
+
 import { useAuthStore } from '@/apis/auth/stores'
 import type { IUser } from '@/apis/user/types'
 import { axiosClient } from '@/configs/axios.config'
-import {
-  queryOptions,
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-  type QueryKey,
-} from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { logOutFn, setTokenFn } from '../functions'
+import { logOutFn } from '../functions'
 
-export const GET_PROFILE_QUERY_KEY = 'profile' as const
+export const GET_PROFILE_QUERY_KEY = ['profile'] as const
 
 export const getAuthUserQueryOptions = () => {
   return queryOptions({
-    queryKey: [GET_PROFILE_QUERY_KEY],
+    queryKey: GET_PROFILE_QUERY_KEY,
     queryFn: async () => await axiosClient.get<unknown, IUser>('/auth/me'),
   })
 }
 
 export const useGetAuthUserQuery = () => {
-  return useSuspenseQuery(getAuthUserQueryOptions())
+  return useQuery(getAuthUserQueryOptions())
 }
 
 /**
@@ -39,24 +35,17 @@ export default function useAuth() {
     mutationFn: async () => axiosClient.post('/auth/logout'),
     onMutate: () => {
       const queryCache = queryClient.getQueryCache()
-      const cancelledQueryKeys = queryCache
-        .getAll()
-        .reduce<QueryKey>((accumulator, currentQuery) => {
-          if (
-            currentQuery.state.status === 'pending' ||
-            currentQuery.state.status === 'error'
-          )
-            return [
-              ...accumulator,
-              ...currentQuery.queryKey.filter((key) => !!key),
-            ]
-          else return accumulator
-        }, [])
+      const cancelledQueryKeys = queryCache.getAll().reduce<QueryKey>((accumulator, currentQuery) => {
+        if (currentQuery.state.status === 'pending' || currentQuery.state.status === 'error')
+          return [...accumulator, ...currentQuery.queryKey.filter((key) => !!key)]
+        else return accumulator
+      }, [])
       queryClient.cancelQueries({ queryKey: cancelledQueryKeys, exact: false })
       return toast.loading('Đang xử lý ...')
     },
     onSettled: async (_data, _error, _variable, context) => {
-      setTokenFn('')
+      useAuthStore.getState().setAccessToken(null)
+      useAuthStore.getState().resetCredentials()
       await logOut()
       queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
       queryClient.clear() // * clear cached queries

@@ -57,17 +57,7 @@ function matchCondition(record: any, condition: Record<string, any>): boolean {
       const operators = value as Record<string, any>
 
       // Recurse: nested field condition e.g. { author: { name: { lt: 'm' } } }
-      const isOperatorKey = [
-        'gt',
-        'gte',
-        'lt',
-        'lte',
-        'ne',
-        'eq',
-        'like',
-        'in',
-        'nin',
-      ].some((op) => op in operators)
+      const isOperatorKey = ['gt', 'gte', 'lt', 'lte', 'ne', 'eq', 'like', 'in', 'nin'].some((op) => op in operators)
 
       if (!isOperatorKey) {
         // Nested path: recurse with nested object as record
@@ -104,12 +94,10 @@ function matchCondition(record: any, condition: Record<string, any>): boolean {
               return false
             break
           case 'in':
-            if (!Array.isArray(operand) || !operand.includes(fieldValue))
-              return false
+            if (!Array.isArray(operand) || !operand.includes(fieldValue)) return false
             break
           case 'nin':
-            if (!Array.isArray(operand) || operand.includes(fieldValue))
-              return false
+            if (!Array.isArray(operand) || operand.includes(fieldValue)) return false
             break
         }
       }
@@ -122,17 +110,7 @@ function matchCondition(record: any, condition: Record<string, any>): boolean {
 }
 
 /** Filter records by simple query params (ignoring _ prefixed params) */
-type FieldOperator =
-  | 'lt'
-  | 'lte'
-  | 'gt'
-  | 'gte'
-  | 'eq'
-  | 'ne'
-  | 'in'
-  | 'contains'
-  | 'startsWith'
-  | 'endsWith'
+type FieldOperator = 'lt' | 'lte' | 'gt' | 'gte' | 'eq' | 'ne' | 'in' | 'contains' | 'startsWith' | 'endsWith'
 
 const FIELD_OPERATORS = new Set<FieldOperator>([
   'lt',
@@ -151,9 +129,7 @@ const FIELD_OPERATORS = new Set<FieldOperator>([
  * Parse a "field:operator" key into { field, operator }.
  * Returns null if no valid operator suffix found.
  */
-function parseFieldOperator(
-  key: string
-): { field: string; operator: FieldOperator } | null {
+function parseFieldOperator(key: string): { field: string; operator: FieldOperator } | null {
   const colonIdx = key.lastIndexOf(':')
   if (colonIdx === -1) return null
   const op = key.slice(colonIdx + 1) as FieldOperator
@@ -165,12 +141,7 @@ function parseFieldOperator(
  * Evaluate a single field:operator condition against a record.
  * Supports dot-path fields (e.g. "author.name").
  */
-function evalOperator(
-  record: any,
-  field: string,
-  operator: FieldOperator,
-  rawValue: string
-): boolean {
+function evalOperator(record: any, field: string, operator: FieldOperator, rawValue: string): boolean {
   const fieldValue = getNestedValue(record, field)
   const strField = String(fieldValue ?? '').toLowerCase()
 
@@ -207,10 +178,7 @@ function applyFilters(records: any[], filters: QueryParams): any[] {
   // _where: complex JSON filter
   if (filters._where) {
     try {
-      const condition =
-        typeof filters._where === 'string'
-          ? JSON.parse(filters._where)
-          : filters._where
+      const condition = typeof filters._where === 'string' ? JSON.parse(filters._where) : filters._where
       return records.filter((r) => matchCondition(r, condition))
     } catch {
       // invalid JSON → fall through to normal filters
@@ -223,15 +191,11 @@ function applyFilters(records: any[], filters: QueryParams): any[] {
     // field:operator=value syntax (e.g. views:gt=100, title:contains=hello)
     const parsed = parseFieldOperator(key)
     if (parsed) {
-      return result.filter((r) =>
-        evalOperator(r, parsed.field, parsed.operator, String(value))
-      )
+      return result.filter((r) => evalOperator(r, parsed.field, parsed.operator, String(value)))
     }
 
     // Plain equality (e.g. role=MANAGER, author.name=typicode)
-    return result.filter(
-      (r) => String(getNestedValue(r, key)) === String(value)
-    )
+    return result.filter((r) => String(getNestedValue(r, key)) === String(value))
   }, records)
 }
 
@@ -247,12 +211,7 @@ function applySort(records: any[], sort?: string, order?: string): any[] {
 }
 
 /** Paginate records, returns { data, total } and sets X-Total-Count header */
-function applyPagination(
-  records: any[],
-  page?: string,
-  perPage?: string,
-  res?: Response
-): any[] {
+function applyPagination(records: any[], page?: string, perPage?: string, res?: Response): any[] {
   if (!page) return records
   const total = records.length
   const p = Math.max(1, Number(page))
@@ -276,11 +235,7 @@ function applyExpand(record: any, expandList: string[]): any {
 }
 
 /** Embed child relations (e.g. _embed=orders → orders where {collection}Id = record.id) */
-function applyEmbed(
-  record: any,
-  embedList: string[],
-  parentCollection: string
-): any {
+function applyEmbed(record: any, embedList: string[], parentCollection: string): any {
   const db = getDb()
   // parentCollection = "users" → foreignKey = "userId"
   const singularParent = parentCollection.replace(/s$/, '')

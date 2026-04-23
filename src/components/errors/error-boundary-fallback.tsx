@@ -1,13 +1,7 @@
 import { useRouter } from '@tanstack/react-router'
 import { HttpStatusCode } from 'axios'
 import { Button } from '../ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Icon } from '../ui/icon'
 import { Separator } from '../ui/separator'
 import { Typography } from '../ui/typography'
@@ -24,7 +18,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const router = useRouter()
 
   return (
-    <div className="grid h-full place-items-center px-6 py-24 sm:py-32 xl:px-8">
+    <div className="grid h-[var(--outlet-wrapper-height,100vh)] place-items-center px-6 py-24 sm:py-32 xl:px-8">
       <div>
         <div className="flex items-center gap-x-4">
           <Typography color="destructive" className="font-semibold">
@@ -33,16 +27,11 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
           <Separator orientation="vertical" className="h-5 w-0.5" />
           <Typography variant="h4">Đã có lỗi xảy ra</Typography>
         </div>
-        <Typography
-          variant="p"
-          className="mt-2 mb-6 text-base leading-7"
-          color="muted"
-        >
-          Xin lỗi vì sự bất tiện này. Nếu vấn đề vẫn tiếp diễn, vui lòng liên hệ
-          với bộ phận hỗ trợ của chúng tôi. Chúng tôi sẽ cố gắng khắc phục sự cố
-          này càng sớm càng tốt. Cảm ơn bạn đã thông cảm và kiên nhẫn. Chúng tôi
-          đánh giá cao sự hỗ trợ của bạn trong việc cải thiện dịch vụ của chúng
-          tôi. Chúng tôi sẽ thông báo cho bạn khi vấn đề đã được giải quyết.
+        <Typography variant="p" className="mt-2 mb-6 text-base leading-7" color="muted">
+          Xin lỗi vì sự bất tiện này. Nếu vấn đề vẫn tiếp diễn, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi. Chúng
+          tôi sẽ cố gắng khắc phục sự cố này càng sớm càng tốt. Cảm ơn bạn đã thông cảm và kiên nhẫn. Chúng tôi đánh giá
+          cao sự hỗ trợ của bạn trong việc cải thiện dịch vụ của chúng tôi. Chúng tôi sẽ thông báo cho bạn khi vấn đề đã
+          được giải quyết.
         </Typography>
         <Dialog>
           <DialogTrigger

@@ -1,8 +1,6 @@
 import React, { memo } from 'react'
 
-export const TableHeadCaption: React.FC<
-  React.ComponentProps<'div'> & React.PropsWithChildren
-> = memo(
+export const TableHeadCaption: React.FC<React.ComponentProps<'div'> & React.PropsWithChildren> = memo(
   ({ children, ...props }) => {
     return (
       <div

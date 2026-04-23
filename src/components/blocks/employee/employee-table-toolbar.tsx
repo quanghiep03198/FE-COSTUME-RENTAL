@@ -1,7 +1,4 @@
-import {
-  POSITION_OPTIONS,
-  WORK_STATUS_OPTIONS,
-} from '@/apis/employee/constants'
+import { POSITION_OPTIONS, WORK_STATUS_OPTIONS } from '@/apis/employee/constants'
 import type { IEmployee } from '@/apis/employee/types'
 import useMediaQuery from '@/hooks/use-media-query'
 import tw from '@/lib/tw'
@@ -20,8 +17,7 @@ const EmployeeTableToolbar: React.FC<{
   event$: EventEmitter<Record<string, unknown>>
 }> = ({ table }) => {
   const isMobile = useMediaQuery('(max-width: 767px)')
-  const isFiltered =
-    table.getState().columnFilters.length > 0 || table.getState().globalFilter
+  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 
   return (
     <Toolbar>
@@ -35,11 +31,7 @@ const EmployeeTableToolbar: React.FC<{
           />
         )}
         {table.getColumn('position') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('position')}
-            title="Vai trò"
-            options={POSITION_OPTIONS}
-          />
+          <DataTableFacetedFilter column={table.getColumn('position')} title="Vai trò" options={POSITION_OPTIONS} />
         )}
         {isFiltered && (
           <Tooltip
@@ -70,9 +62,7 @@ const EmployeeTableToolbar: React.FC<{
   )
 }
 
-const Toolbar: React.FC<React.ComponentProps<'div'>> =
-  tw.div`flex items-stretch justify-between gap-x-2`
-const ToolbarGroup: React.FC<React.ComponentProps<'div'>> =
-  tw.div`flex items-center gap-x-2`
+const Toolbar: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-stretch justify-between gap-x-2`
+const ToolbarGroup: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-center gap-x-2`
 
 export default EmployeeTableToolbar

@@ -9,13 +9,7 @@ import { getEmployeeQueryOptions } from '@/apis/employee/hooks/use-employee-requ
 import type { IEmployee } from '@/apis/employee/types'
 import { formatPhoneNumber } from '@/common/helpers/format-intl'
 import TableCellText from '@/components/shared/data-grid/components/table-cell-text'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import generateAvatar from '@/lib/generate-avatar'
 import { format, isValid } from 'date-fns'
 import { useMemo } from 'react'
@@ -40,19 +34,12 @@ const EmployeeTable: React.FC = () => {
             <Item size="xs" className="p-0 flex-nowrap">
               <ItemMedia>
                 <Avatar className="col-start-1 row-span-2">
-                  <AvatarImage
-                    src={generateAvatar({ name: row.original.full_name })}
-                    alt={row.original.full_name}
-                  />
+                  <AvatarImage src={generateAvatar({ name: row.original.full_name })} alt={row.original.full_name} />
                   <AvatarFallback>G</AvatarFallback>
                 </Avatar>
               </ItemMedia>
               <ItemContent>
-                <ItemTitle
-                  className={!row.original.is_active && 'line-through'}
-                >
-                  {getValue()}
-                </ItemTitle>
+                <ItemTitle className={!row.original.is_active && 'line-through'}>{getValue()}</ItemTitle>
                 <ItemDescription>{row.original.email}</ItemDescription>
               </ItemContent>
             </Item>

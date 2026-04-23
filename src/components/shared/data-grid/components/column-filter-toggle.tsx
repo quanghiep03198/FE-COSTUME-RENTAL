@@ -4,10 +4,7 @@ import { Toggle } from '@/components/ui/toggle'
 import { useTableContext } from '../context/table.context'
 
 const ColumnFilterToggle: React.FC = () => {
-  const { filterOpen, setFilterOpen } = useTableContext(
-    'filterOpen',
-    'setFilterOpen'
-  )
+  const { filterOpen, setFilterOpen } = useTableContext('filterOpen', 'setFilterOpen')
 
   return (
     <Tooltip

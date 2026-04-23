@@ -7,10 +7,7 @@ export function cn(...inputs: Array<ClassValue>) {
   return twMerge(clsx(inputs))
 }
 
-export default function env<T = string>(
-  key: keyof InternalImportMetaEnv,
-  defaultValue?: T
-) {
+export default function env<T = string>(key: keyof InternalImportMetaEnv, defaultValue?: T) {
   const value = import.meta.env[key]
   if (!isNil(value)) return value as T
   return defaultValue

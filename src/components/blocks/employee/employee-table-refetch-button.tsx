@@ -5,9 +5,7 @@ import { Icon } from '@/components/ui/icon'
 import useMediaQuery from '@/hooks/use-media-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-const EmployeeTableRefetchButton: React.FC<
-  React.ComponentProps<typeof Button>
-> = (props) => {
+const EmployeeTableRefetchButton: React.FC<React.ComponentProps<typeof Button>> = (props) => {
   const isMobile = useMediaQuery('(max-width: 767px')
   const { refetch } = useSuspenseQuery(getEmployeeQueryOptions())
 

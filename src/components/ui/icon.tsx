@@ -9,12 +9,7 @@ export type IconProps = {
 } & React.HTMLAttributes<HTMLOrSVGElement> &
   LucideProps
 
-export const Icon: React.FC<IconProps> = ({
-  name,
-  color,
-  size = 16,
-  ...props
-}) => {
+export const Icon: React.FC<IconProps> = ({ name, color, size = 16, ...props }) => {
   const LucideIcon = icons[name]
 
   return <LucideIcon color={color} size={size} {...props} />

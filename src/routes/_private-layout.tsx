@@ -9,8 +9,8 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout')({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(getAuthUserQueryOptions())
+  beforeLoad: async ({ context }) => {
+    await context.queryClient.prefetchQuery(getAuthUserQueryOptions())
   },
 })
 

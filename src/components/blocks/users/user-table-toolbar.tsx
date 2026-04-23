@@ -19,8 +19,7 @@ const UserTableToolbar: React.FC<{
   event$: EventEmitter<Record<string, unknown>>
 }> = ({ table }) => {
   const isMobile = useMediaQuery('(max-width: 767px)')
-  const isFiltered =
-    table.getState().columnFilters.length > 0 || table.getState().globalFilter
+  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 
   return (
     <Toolbar>
@@ -63,9 +62,7 @@ const UserTableToolbar: React.FC<{
   )
 }
 
-const Toolbar: React.FC<React.ComponentProps<'div'>> =
-  tw.div`flex items-stretch justify-between gap-x-2`
-const ToolbarGroup: React.FC<React.ComponentProps<'div'>> =
-  tw.div`flex items-center gap-x-2`
+const Toolbar: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-stretch justify-between gap-x-2`
+const ToolbarGroup: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-center gap-x-2`
 
 export default UserTableToolbar

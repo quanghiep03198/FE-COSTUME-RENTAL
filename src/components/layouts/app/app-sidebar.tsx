@@ -1,14 +1,6 @@
 import { UserRole } from '@/apis/auth/constants'
-import useAuth, {
-  useGetAuthUserQuery,
-} from '@/apis/auth/hooks/use-auth-request'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import {
   Sidebar,
   SidebarContent,
@@ -30,21 +22,14 @@ import {
 import type { TNavigationConfig } from '@/configs/navigation.config'
 import navigationConfig from '@/configs/navigation.config'
 import useMediaQuery from '@/hooks/use-media-query'
-import { Link, useRouterState, type LinkProps } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { Gem } from 'lucide-react'
 import { Fragment, useEffect, useLayoutEffect, useRef } from 'react'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '../../ui/collapsible'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../ui/collapsible'
 import { Icon } from '../../ui/icon'
 import AppNavUser from './app-nav-user'
 
-type NavLinkProps = Pick<
-  TNavigationConfig,
-  'url' | 'title' | 'icon' | 'authorizedRoles'
-> & {
+type NavLinkProps = Pick<TNavigationConfig, 'url' | 'title' | 'icon' | 'authorizedRoles'> & {
   viewTransition?: boolean
 }
 
@@ -67,10 +52,7 @@ const AppSidebar: React.FC = () => {
     >
       <SidebarHeader>
         <Item size="xs">
-          <ItemMedia
-            variant="image"
-            className="size-10! bg-primary text-primary-foreground"
-          >
+          <ItemMedia variant="image" className="size-10! bg-primary text-primary-foreground">
             <Gem size={24} strokeWidth={1.5} />
           </ItemMedia>
           <ItemContent>
@@ -109,14 +91,9 @@ const AppSidebar: React.FC = () => {
               <SidebarGroupLabel>Menu chính</SidebarGroupLabel>
               <SidebarMenu role="menu" aria-label="Main menu">
                 {navigationConfig.main.map((item, index) => {
-                  if (!Array.isArray(item.items))
-                    return <SidebarMenuLink key={index.toString()} {...item} />
+                  if (!Array.isArray(item.items)) return <SidebarMenuLink key={index.toString()} {...item} />
                   return (
-                    <Collapsible
-                      key={index.toString()}
-                      defaultOpen={true}
-                      className="group/collapsible w-full"
-                    >
+                    <Collapsible key={index.toString()} defaultOpen={true} className="group/collapsible w-full">
                       <CollapsibleTrigger
                         render={
                           <SidebarMenuButton
@@ -143,10 +120,7 @@ const AppSidebar: React.FC = () => {
                       <CollapsibleContent className="scrollbar-none! w-full overflow-auto transition-none data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                         <SidebarMenuSub>
                           {item.items?.map((subItem, subIndex) => (
-                            <SidebarMenuSubLink
-                              key={`${index + 1}.${subIndex + 1}`}
-                              {...subItem}
-                            />
+                            <SidebarMenuSubLink key={`${index + 1}.${subIndex + 1}`} {...subItem} />
                           ))}
                         </SidebarMenuSub>
                       </CollapsibleContent>
@@ -162,9 +136,7 @@ const AppSidebar: React.FC = () => {
                   <SidebarGroupLabel>Quản lý</SidebarGroupLabel>
                   <SidebarMenu role="menu" aria-label="Administration">
                     {navigationConfig.administration.map((item, index) => {
-                      return (
-                        <SidebarMenuLink key={index.toString()} {...item} />
-                      )
+                      return <SidebarMenuLink key={index.toString()} {...item} />
                     })}
                   </SidebarMenu>
                 </SidebarGroup>
@@ -181,32 +153,23 @@ const AppSidebar: React.FC = () => {
   )
 }
 
-const SidebarMenuLink: React.FC<NavLinkProps> = ({
-  url,
-  title,
-  icon,
-  viewTransition,
-  authorizedRoles,
-}) => {
+const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransition, authorizedRoles }) => {
   const isMobile = useMediaQuery('(min-width: 320px) and (max-width: 767px)')
   const { open, openMobile, setOpenMobile } = useSidebar()
-  const location = useRouterState({ select: (s) => s.location })
+  // const location = useRouterState({ select: (s) => s.location })
   const ref = useRef<HTMLLIElement>(null)
-  const { user } = useAuth()
+  const { data: user } = useGetAuthUserQuery()
 
   const isLinkActive =
-    (user &&
-      Array.isArray(authorizedRoles) &&
-      authorizedRoles.includes(user?.role)) ||
-    authorizedRoles === '*'
+    (user && Array.isArray(authorizedRoles) && authorizedRoles.includes(user?.role)) || authorizedRoles === '*'
 
-  const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
+  // const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
 
   useEffect(() => {
-    if (open && isActive && ref.current) {
+    if (open && ref.current) {
       ref.current.scrollIntoView({ behavior: 'auto', block: 'center' })
     }
-  }, [open, location.pathname])
+  }, [open])
 
   return (
     <SidebarMenuItem
@@ -224,12 +187,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({
         tooltip={title}
         render={
           <Link
-            {...{
-              ...(url && { to: url }),
-              ...(isActive && {
-                search: location.search as LinkProps['search'],
-              }),
-            }}
+            to={url}
             viewTransition={viewTransition}
             activeProps={{
               className: 'text-primary hover:text-primary bg-primary/10 ',
@@ -237,13 +195,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({
           >
             {icon && <Icon name={icon} size={20} />}
             <span className="font-medium">{title}</span>
-            {!isLinkActive && (
-              <Icon
-                name="Lock"
-                size={14}
-                className="ml-auto size-3.5 stroke-muted-foreground"
-              />
-            )}
+            {!isLinkActive && <Icon name="Lock" size={14} className="ml-auto size-3.5 stroke-muted-foreground" />}
           </Link>
         }
       />
@@ -251,33 +203,23 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({
   )
 }
 
-const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({
-  url,
-  title,
-  viewTransition,
-  authorizedRoles,
-}) => {
+const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({ url, title, viewTransition, authorizedRoles }) => {
   const ref = useRef<HTMLLIElement>(null)
-  const isSmallScreen = useMediaQuery(
-    '(min-width: 320px) and (max-width: 1365px)'
-  )
+  const isSmallScreen = useMediaQuery('(min-width: 320px) and (max-width: 1365px)')
   const { open, openMobile, setOpenMobile } = useSidebar()
-  const location = useRouterState({ select: (s) => s.location })
+  // const location = useRouterState({ select: (s) => s.location })
   const { user } = useAuth()
 
   const isAccessible =
-    (user &&
-      Array.isArray(authorizedRoles) &&
-      authorizedRoles.includes(user?.role)) ||
-    authorizedRoles === '*'
+    (user && Array.isArray(authorizedRoles) && authorizedRoles.includes(user?.role)) || authorizedRoles === '*'
 
-  const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
+  // const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
 
   useEffect(() => {
-    if (open && isActive && ref.current) {
+    if (open && ref.current) {
       ref.current.scrollIntoView({ behavior: 'auto', block: 'center' })
     }
-  }, [open, location.pathname])
+  }, [open])
 
   return (
     <SidebarMenuSubItem
@@ -294,12 +236,7 @@ const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({
         className="group-aria-disabled/menuitem:cursor-not-allowed"
         render={
           <Link
-            {...{
-              ...(url && { to: url }),
-              ...(isActive && {
-                search: location.search as LinkProps['search'],
-              }),
-            }}
+            to={url}
             preload="intent"
             viewTransition={viewTransition}
             activeProps={{

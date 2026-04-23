@@ -1,11 +1,5 @@
 import AuthBackgroundShape from '@/assets/svg/auth-background-shape'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Gem } from 'lucide-react'
 import LoginForm from './login-form'
 

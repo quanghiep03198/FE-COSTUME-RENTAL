@@ -36,8 +36,7 @@ function RouteComponent() {
         <PageHeader>
           <PageTitle>Quản lý nhân sự</PageTitle>
           <PageDescription>
-            Trung tâm điều phối thông tin toàn bộ nhân sự: Thêm mới, chỉnh sửa,
-            phân quyền và xuất báo cáo tập trung.
+            Trung tâm điều phối thông tin toàn bộ nhân sự: Thêm mới, chỉnh sửa, phân quyền và xuất báo cáo tập trung.
           </PageDescription>
           <PageAction>
             <CreateEmployeeFormDialogTrigger />
