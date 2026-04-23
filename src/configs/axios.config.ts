@@ -1,6 +1,7 @@
-import { getTokenFn, setTokenFn } from '@/apis/auth/functions'
+import { getTokenFn, setServerTokenFn, setTokenFn } from '@/apis/auth/functions'
 import { RequestHeaders } from '@/common/constants/enums'
 import env from '@/lib/utils'
+import { useAuthStore } from '@/stores/auth.store'
 import type { AxiosInstance } from 'axios'
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import qs from 'qs'
@@ -36,12 +37,11 @@ export class AxiosService {
     // * Instance request interceptor
     this.instance.interceptors.request.use(
       (config) => {
-        // If Authorization is already explicitly set (e.g. retry after token refresh),
-        // do NOT overwrite it — getCookie/Zustand may still hold the stale token.
         if (config.headers[RequestHeaders.AUTHORIZATION]) return config
         const accessToken = getTokenFn()
         if (!accessToken) return config
         config.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
+
         return config
       },
       (error) => Promise.reject(error)
@@ -74,7 +74,8 @@ export class AxiosService {
             originalRequest.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
             return this.instance(originalRequest)
           } catch (err) {
-            if (err instanceof AxiosError) this.processQueue(err, null)
+            setTokenFn(null)
+            this.processQueue(err instanceof AxiosError ? err : new AxiosError('Token refresh failed'), null)
             throw err
           }
         }
@@ -91,14 +92,17 @@ export class AxiosService {
   private async refreshToken() {
     if (this.refreshTokenHandler) return this.refreshTokenHandler
     this.isRefreshingToken = true
+    const baseURL = env<string>('VITE_BASE_API_URL')
+
     this.refreshTokenHandler = axios
-      .get(`${env<string>('VITE_BASE_API_URL')}/auth/refresh`, {
-        headers: { Authorization: `Bearer ${getTokenFn()}` },
+      .get(`${baseURL}/auth/refresh`, {
+        withCredentials: true,
       })
-      .then((response) => {
+      .then(async (response) => {
         const accessToken: string = response.data.accessToken
         if (!accessToken) throw new AxiosError('Cannot get access token')
-        setTokenFn(accessToken)
+        useAuthStore.getState().setAccessToken(accessToken)
+        await setServerTokenFn({ data: accessToken }) // Đồng bộ token lên cookie để mock server có thể kiểm tra
         return accessToken
       })
       .finally(() => {

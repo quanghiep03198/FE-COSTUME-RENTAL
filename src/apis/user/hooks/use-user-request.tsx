@@ -4,15 +4,17 @@ import { CommonActions } from '@/common/constants/enums'
 import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
+import { useRef } from 'react'
+import { toast } from 'sonner'
 import type { TCreateUserValues } from '../schemas/create-user.schema'
 import type { TUpdateUserValues } from '../schemas/update-user.schema'
 import type { IUser } from '../types'
 
-export const GET_USERS_QUERY_KEY = ['users_list'] as const
+export const GET_USERS_QUERY_KEY = 'users' as const
 
 export const getUsersQueryOptions = () => {
   return queryOptions({
-    queryKey: GET_USERS_QUERY_KEY,
+    queryKey: [GET_USERS_QUERY_KEY],
     queryFn: async () =>
       await axiosClient.get<void, Array<IUser>, void>('/users', {
         params: { _expand: 'employee' },
@@ -35,6 +37,7 @@ type TMutateConfigFactory = {
   }
   none: {
     handler: AnonymousFunction
+    message?: string
   }
 }
 
@@ -60,31 +63,36 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
     },
   }
 
+  const toastRef = useRef<string | number | null>(null)
+
   const currentConfig = mutationConfigFactory[action]
 
   return useMutation({
-    mutationKey: [
-      ...GET_USERS_QUERY_KEY,
-      ...GET_EMPLOYEE_QUERY_KEY,
-      {
-        'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
-        'is_active:eq': true,
-        'work_status:ne': WorkStatus.EXITED,
-        'user_id:eq': 'null',
-      },
-    ],
     mutationFn: action !== 'none' ? currentConfig?.handler : () => {},
-  })
-}
-
-export const useUpdateUserStatusMutation = () => {
-  return useMutation({
-    // mutationKey: GET_USERS_QUERY_KEY,
-    mutationFn: async ({ id, is_active }: Pick<IUser, 'id'> & { is_active: boolean }) =>
-      await axiosClient.patch(`/users/update/${id}`, {
-        is_active,
-        updated_at: new Date(),
-      }),
+    meta: {
+      invalidates: [
+        [GET_USERS_QUERY_KEY],
+        [
+          GET_EMPLOYEE_QUERY_KEY,
+          {
+            'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
+            'is_active:eq': true,
+            'work_status:ne': WorkStatus.EXITED,
+            'user_id:eq': 'null',
+          },
+        ],
+      ],
+    },
+    onMutate: () => {
+      toastRef.current = toast.loading('Đang xử lý ...')
+    },
+    onSuccess: () => {
+      const message = currentConfig?.message || 'Thao tác thành công'
+      toast.success(message, { id: toastRef.current! })
+    },
+    onError: () => {
+      toast.error('Đã có lỗi xảy ra !', { id: toastRef.current! })
+    },
   })
 }
 
@@ -92,9 +100,22 @@ export const useDeleteUserMutation = () => {
   // const accessToken = getTokenFn()
 
   return useMutation({
-    mutationKey: GET_USERS_QUERY_KEY,
     mutationFn: async (id: number) => {
       return await axiosClient.delete(`/users/${id}`)
+    },
+    meta: {
+      invalidates: [
+        [GET_USERS_QUERY_KEY],
+        [
+          GET_EMPLOYEE_QUERY_KEY,
+          {
+            'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
+            'is_active:eq': true,
+            'work_status:ne': WorkStatus.EXITED,
+            'user_id:eq': 'null',
+          },
+        ],
+      ],
     },
   })
 }

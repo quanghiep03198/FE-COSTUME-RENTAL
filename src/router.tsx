@@ -1,8 +1,9 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
 import { ErrorBoundaryFallback } from './components/errors/error-boundary-fallback'
 import { NotFoundPage } from './components/errors/not-found'
-import { queryClient } from './providers/query-client-provider'
+import { queryClient } from './integrations/tanstack-query'
 import { routeTree } from './routeTree.gen'
 
 export function getRouter() {
@@ -10,10 +11,13 @@ export function getRouter() {
     routeTree,
     context: { queryClient: queryClient },
     scrollRestoration: true,
-    defaultPreload: false,
-    defaultPreloadStaleTime: 0, // 5 minutes
+    defaultPreload: 'intent',
+    defaultPreloadStaleTime: 0,
     defaultErrorComponent: ErrorBoundaryFallback,
     defaultNotFoundComponent: NotFoundPage,
+    Wrap: ({ children }: React.PropsWithChildren) => {
+      return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    },
   })
 
   setupRouterSsrQueryIntegration({ router, queryClient })

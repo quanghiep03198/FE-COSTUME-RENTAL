@@ -1,7 +1,7 @@
 import { GlobalConfig } from '@/configs/global.config'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { broadcastQueryClient } from '@tanstack/query-broadcast-client-experimental'
-import { MutationCache, QueryClient, type QueryKey } from '@tanstack/react-query'
+import { matchQuery, MutationCache, QueryClient, type QueryKey } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import type { AxiosError } from 'axios'
 
@@ -9,9 +9,7 @@ declare module '@tanstack/react-query' {
   interface Register {
     defaultError: AxiosError
     mutationMeta: {
-      invalidatesQuery?: QueryKey
-      successMessage?: string
-      errorMessage?: string
+      invalidates?: Array<QueryKey>
     }
   }
 }
@@ -31,7 +29,10 @@ export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
       queryClient.invalidateQueries({
-        queryKey: mutation.options.mutationKey,
+        predicate: (query) =>
+          // invalidate all matching tags at once
+          // or everything if no meta is provided
+          mutation.meta?.invalidates?.some((queryKey) => matchQuery({ queryKey }, query)) ?? true,
       })
     },
   }),
