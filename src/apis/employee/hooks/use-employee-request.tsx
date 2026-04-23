@@ -1,7 +1,6 @@
-import { GET_USERS_QUERY_KEY } from '@/apis/user/hooks/use-user-request'
 import { CommonActions } from '@/common/constants/enums'
 import { axiosClient } from '@/configs/axios.config'
-import { queryOptions, useMutation } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useRef } from 'react'
 import { toast } from 'sonner'
@@ -9,15 +8,19 @@ import type { TCreateEmployeeValues } from '../schemas/create-employee.schema'
 import type { TUpdateEmployeeValues } from '../schemas/update-employee.schema'
 import type { IEmployee } from '../types'
 
-export const GET_EMPLOYEE_QUERY_KEY = ['employees'] as const
+export const GET_EMPLOYEE_QUERY_KEY = 'employees'
 
 export const getEmployeeQueryOptions = (params?: AxiosRequestConfig['params']) => {
-  const queryKey = [...GET_EMPLOYEE_QUERY_KEY]
+  const queryKey = [GET_EMPLOYEE_QUERY_KEY]
   if (params) queryKey.push(params)
   return queryOptions({
     queryKey,
     queryFn: async () => await axiosClient.get<unknown, IEmployee[]>('/employees', { params }),
   })
+}
+
+export const useGetEmployeesQuery = (params?: AxiosRequestConfig['params']) => {
+  return useSuspenseQuery(getEmployeeQueryOptions(params))
 }
 
 type TMutationFactory = {
@@ -34,6 +37,7 @@ type TMutationFactory = {
 
 export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
   const toastRef = useRef<string | number | null>(null)
+  const queryClient = useQueryClient()
 
   const mutationConfigFactory: TMutationFactory = {
     [CommonActions.CREATE]: {
@@ -61,7 +65,9 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
   const currentConfig = mutationConfigFactory[action]
 
   return useMutation({
-    mutationKey: GET_USERS_QUERY_KEY,
+    meta: {
+      invalidates: [[GET_EMPLOYEE_QUERY_KEY]],
+    },
     mutationFn: action !== 'none' ? currentConfig?.handler : () => {},
     onMutate: () => {
       toastRef.current = toast.loading('Đang xử lý ...')
@@ -77,18 +83,22 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
 
 export const useUpdateUserStatusMutation = () => {
   return useMutation({
-    mutationKey: GET_USERS_QUERY_KEY,
     mutationFn: async ({ id, is_active }: { id: number; is_active: boolean }) => {
       return await axiosClient.patch(`/employees/update/${id}`, { is_active })
+    },
+    meta: {
+      invalidates: [[GET_EMPLOYEE_QUERY_KEY]],
     },
   })
 }
 
 export const useDeleteUserMutation = () => {
   return useMutation({
-    mutationKey: GET_USERS_QUERY_KEY,
     mutationFn: async (id: number) => {
       return await axiosClient.delete(`/employees/${id}`)
+    },
+    meta: {
+      invalidates: [[GET_EMPLOYEE_QUERY_KEY]],
     },
   })
 }
