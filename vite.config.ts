@@ -20,12 +20,8 @@ const config = defineConfig({
   ],
   server: {
     port: 5000,
-    proxy: {
-      '/api': {
-        target: process.env.VITE_API_BASE_URL,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
+    watch: {
+      ignored: ['**/mock/**'],
     },
   },
 })
