@@ -279,10 +279,7 @@ app.patch('/api/users/update/:id', authMiddleware, (req: Request, res: Response)
       .get('users')
       .find((u: any) => {
         if (u.id === id) return false
-        return (
-          (updateData.username && u.username === updateData.username) ||
-          (updateData.email && u.email === updateData.email)
-        )
+        return updateData.username && u.username === updateData.username
       })
       .value()
 

@@ -1,8 +1,7 @@
 'use client'
 
-import { useCreateOrUpdateEmployeeMutataion } from '@/apis/employee/hooks/use-employee-request'
 // import { useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-request'
-import { useDeleteUserMutation } from '@/apis/user/hooks/use-user-request'
+import { useCreateOrUpdateUserMutataion, useDeleteUserMutation } from '@/apis/user/hooks/use-user-request'
 import type { IUser } from '@/apis/user/types'
 import { CommonActions } from '@/common/constants/enums'
 import {
@@ -24,7 +23,7 @@ const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
   const [open, setOpen] = useState<boolean>(false)
   const router = useRouter()
 
-  const { mutateAsync: updateAsync, isPending: isUpdating } = useCreateOrUpdateEmployeeMutataion(CommonActions.UPDATE)
+  const { mutateAsync: updateAsync, isPending: isUpdating } = useCreateOrUpdateUserMutataion(CommonActions.UPDATE)
   const { mutateAsync: deleteUserAsync, isPending: isDeleting } = useDeleteUserMutation()
 
   const isPending = isUpdating || isDeleting
