@@ -52,7 +52,7 @@ const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
             Cập nhật
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={(e) => {
+            onClick={() => {
               updateAsync({
                 id: row.original.id,
                 is_active: !row.original.is_active,
