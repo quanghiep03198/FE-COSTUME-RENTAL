@@ -67,8 +67,8 @@ export function registerUserRoutes(app: Application) {
     })
   })
 
-  // * PATCH /users/update/:id
-  app.patch('/api/users/update/:id', authMiddleware, (req: Request, res: Response) => {
+  // * PATCH /users/:id
+  app.patch('/api/users/:id', authMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

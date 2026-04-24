@@ -6,15 +6,39 @@ export type TNavigationConfig = {
   icon?: IconProps['name']
   title: string
   url?: FileRouteTypes['to']
-  items?: Omit<TNavigationConfig, 'icon'>[]
+  items?: Omit<TNavigationConfig, 'icon'>[] & Required<Pick<TNavigationConfig, 'url'>>
   authorizedRoles?: UserRole[] | '*'
   description: string
 }
 const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> = {
   main: [
     {
-      title: 'Kho đạo cụ & trang phục',
-      url: '/costume-warehouse',
+      title: 'Thống kê',
+      url: '/statistics',
+      icon: 'ChartColumnBig',
+      authorizedRoles: [UserRole.ADMIN],
+      description:
+        'Báo cáo và phân tích hiệu suất nhà hàng: doanh thu, đặt bàn, món bán chạy và hoạt động nhân viên để ra quyết định hiệu quả.',
+    },
+    {
+      title: 'Quản lý trang phục',
+      url: '/costumes',
+      icon: 'Shirt',
+      authorizedRoles: [UserRole.ADMIN, UserRole.USER],
+      description:
+        'Quản lý trang phục: thêm, sửa, xóa trang phục, phân loại theo loại, kích cỡ, màu sắc và tình trạng để vận hành hiệu quả.',
+    },
+    {
+      title: 'Quản lý đạo cụ',
+      url: '/equipment-props',
+      icon: 'ToolCase',
+      authorizedRoles: [UserRole.ADMIN, UserRole.USER],
+      description:
+        'Quản lý đạo cụ: thêm, sửa, xóa đạo cụ, phân loại theo loại, kích cỡ, màu sắc và tình trạng để vận hành hiệu quả.',
+    },
+    {
+      title: 'Kiểm kê kho',
+      url: '/inventory',
       icon: 'Warehouse',
       authorizedRoles: [UserRole.ADMIN, UserRole.USER],
       description:
@@ -60,14 +84,6 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
     },
   ],
   administration: [
-    {
-      title: 'Thống kê',
-      url: '/statistics',
-      icon: 'ChartColumnBig',
-      authorizedRoles: [UserRole.ADMIN],
-      description:
-        'Báo cáo và phân tích hiệu suất nhà hàng: doanh thu, đặt bàn, món bán chạy và hoạt động nhân viên để ra quyết định hiệu quả.',
-    },
     {
       title: 'Quản lý truy cập',
       url: '/users',

@@ -46,8 +46,8 @@ export function registerEmployeeRoutes(app: Application) {
     return res.status(201).json(db.get('employees').find({ id: created.id }).value())
   })
 
-  // * PATCH /employees/update/:id
-  app.patch('/api/employees/update/:id', authMiddleware, (req: Request, res: Response) => {
+  // * PATCH /employees/:id
+  app.patch('/api/employees/:id', authMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -72,8 +72,8 @@ export function registerEmployeeRoutes(app: Application) {
     return res.status(200).json(updated)
   })
 
-  // * DELETE /employees/delete/:id
-  app.delete('/api/employees/delete/:id', authMiddleware, (req: Request, res: Response) => {
+  // * DELETE /employees/:id
+  app.delete('/api/employees/:id', authMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

@@ -19,7 +19,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
 
   // * POST /equipment-props
   app.post('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
-    const { name, category_id, rental_price_per_day, weight_kg, dimensions, is_fragile, description, image_ids, tags } =
+    const { name, category_id, rental_price_per_day, weight_kg, dimensions, is_fragile, description, image_id, tags } =
       req.body
 
     if (!name || !category_id || !rental_price_per_day) {
@@ -40,7 +40,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
       dimensions: dimensions ?? null,
       is_fragile: is_fragile ?? false,
       description: description ?? null,
-      image_ids: Array.isArray(image_ids) ? image_ids : [],
+      image_id,
       tags: Array.isArray(tags) ? tags : [],
       is_active: true,
       created_at: new Date().toISOString(),
@@ -68,10 +68,6 @@ export function registerEquipmentPropsRoutes(app: Application) {
       updateData.slug = generateUniqueSlug(updateData.name, 'equipment_props', db, id)
     }
 
-    // Convert single values to arrays if needed
-    if (updateData.image_ids && !Array.isArray(updateData.image_ids)) {
-      updateData.image_ids = [updateData.image_ids]
-    }
     if (updateData.tags && !Array.isArray(updateData.tags)) {
       updateData.tags = [updateData.tags]
     }

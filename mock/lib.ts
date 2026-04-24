@@ -1,4 +1,5 @@
 import type { Response, Router } from 'express'
+import type { JsonServerRouter } from 'json-server'
 
 // ============================================================
 // Query helpers
@@ -14,12 +15,68 @@ function bootstrap(r: Router) {
 }
 
 function getDb() {
-  return (_router as any).db as any
+  return (_router as any).db as JsonServerRouter<object>['db']
 }
 
 function toList(value: any): string[] {
   if (!value) return []
-  return Array.isArray(value) ? value : [value]
+  const values = Array.isArray(value) ? value : [value]
+  return values
+    .flatMap((v) => String(v).split(','))
+    .map((v) => v.trim())
+    .filter(Boolean)
+}
+
+function toSingular(name: string): string {
+  if (name.endsWith('ies')) return `${name.slice(0, -3)}y`
+  if (name.endsWith('s')) return name.slice(0, -1)
+  return name
+}
+
+function toPlural(name: string): string {
+  if (name.endsWith('y')) return `${name.slice(0, -1)}ies`
+  if (name.endsWith('s')) return name
+  return `${name}s`
+}
+
+function resolveCollectionName(db: ReturnType<typeof getDb>, relation: string): string | null {
+  const aliases: Record<string, string> = {
+    cate: 'categories',
+    category: 'categories',
+    image: 'images',
+  }
+
+  const lowerRelation = relation.toLowerCase()
+  const candidates = [
+    aliases[lowerRelation],
+    relation,
+    lowerRelation,
+    toPlural(relation),
+    toPlural(lowerRelation),
+  ].filter((candidate): candidate is string => Boolean(candidate))
+
+  for (const candidate of candidates) {
+    try {
+      const maybeCollection = db.get(candidate).value()
+      if (Array.isArray(maybeCollection)) return candidate
+    } catch {
+      // Continue checking next candidate
+    }
+  }
+
+  return null
+}
+
+function getForeignKeyCandidates(parentCollection: string): string[] {
+  const aliases: Record<string, string[]> = {
+    categories: ['cate'],
+  }
+
+  const singularParent = toSingular(parentCollection)
+  const baseCandidates = [parentCollection, singularParent]
+  const aliasCandidates = aliases[parentCollection] ?? []
+
+  return Array.from(new Set([...baseCandidates, ...aliasCandidates])).map((name) => `${name}_id`)
 }
 
 /** Get nested value from object by dot-path (e.g. "author.name") */
@@ -225,11 +282,16 @@ function applyPagination(records: any[], page?: string, perPage?: string, res?: 
 function applyExpand(record: any, expandList: string[]): any {
   const db = getDb()
   for (const relation of expandList) {
-    const fk = `${relation}_id`
-    if (record[fk] != null) {
-      const parent = db.get(`${relation}s`).find({ id: record[fk] }).value()
-      if (parent) record[relation] = parent
-    }
+    const singularRelation = toSingular(relation)
+    const fkCandidates = [`${relation}_id`, `${singularRelation}_id`]
+    const fk = fkCandidates.find((key) => record[key] != null)
+    if (!fk) continue
+
+    const collectionName = resolveCollectionName(db, relation)
+    if (!collectionName) continue
+
+    const parent = db.get(collectionName).find({ id: record[fk] }).value()
+    if (parent) record[singularRelation] = parent
   }
   return record
 }
@@ -237,16 +299,20 @@ function applyExpand(record: any, expandList: string[]): any {
 /** Embed child relations (e.g. _embed=orders → orders where {collection}Id = record.id) */
 function applyEmbed(record: any, embedList: string[], parentCollection: string): any {
   const db = getDb()
-  // parentCollection = "users" → foreignKey = "userId"
-  const singularParent = parentCollection.replace(/s$/, '')
-  const fk = `${singularParent}_id`
+  const fkCandidates = getForeignKeyCandidates(parentCollection)
+
   for (const relation of embedList) {
+    const collectionName = resolveCollectionName(db, relation)
+    if (!collectionName) continue
+
     const children = db
-      .get(relation)
-      .filter({ [fk]: record.id })
+      .get(collectionName)
+      .filter((child: any) => fkCandidates.some((fk) => child?.[fk] === record.id))
       .value()
+
     record[relation] = children || []
   }
+
   return record
 }
 

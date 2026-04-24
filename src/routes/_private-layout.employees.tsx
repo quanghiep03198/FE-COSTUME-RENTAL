@@ -1,5 +1,5 @@
 import { getEmployeeQueryOptions } from '@/apis/employee/hooks/use-employee-request'
-import EmployeePage from '@/components/blocks/employee'
+import EmployeePage from '@/components/blocks/employees'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/employees')({

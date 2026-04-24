@@ -7,6 +7,7 @@ export function registerCostumeRoutes(app: Application) {
   // * GET /costumes
   app.get('/api/costumes', authMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('costumes', req.query, res)
+
     return res.status(200).json(result)
   })
 
@@ -19,7 +20,7 @@ export function registerCostumeRoutes(app: Application) {
 
   // * POST /costumes
   app.post('/api/costumes', authMiddleware, (req: Request, res: Response) => {
-    const { name, category_id, sizes, gender, image_ids, rental_price_per_day, description, tags, color } = req.body
+    const { name, category_id, sizes, gender, image_id, rental_price_per_day, description, tags, color } = req.body
 
     if (!name || !category_id || !sizes || !gender || !rental_price_per_day) {
       return res.status(400).json({
@@ -43,7 +44,7 @@ export function registerCostumeRoutes(app: Application) {
       color: color ?? null,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
       gender,
-      image_ids: Array.isArray(image_ids) ? image_ids : [],
+      image_id,
       rental_price_per_day,
       description: description ?? null,
       tags: Array.isArray(tags) ? tags : [],
@@ -82,9 +83,6 @@ export function registerCostumeRoutes(app: Application) {
     // Convert single values to arrays if needed
     if (updateData.sizes && !Array.isArray(updateData.sizes)) {
       updateData.sizes = [updateData.sizes]
-    }
-    if (updateData.image_ids && !Array.isArray(updateData.image_ids)) {
-      updateData.image_ids = [updateData.image_ids]
     }
     if (updateData.tags && !Array.isArray(updateData.tags)) {
       updateData.tags = [updateData.tags]

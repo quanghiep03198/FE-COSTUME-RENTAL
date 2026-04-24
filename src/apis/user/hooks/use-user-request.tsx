@@ -56,7 +56,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
     },
     [CommonActions.UPDATE]: {
       handler: async ({ id, ...payload }: TUpdateUserValues & Pick<IUser, 'id'>) =>
-        await axiosClient.patch(`/users/update/${id}`, payload),
+        await axiosClient.patch(`/users/${id}`, payload),
       message: 'Đã cập nhật thành công',
     },
     none: {

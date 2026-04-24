@@ -18,12 +18,13 @@ import { Route as PrivateLayoutStatisticsRouteImport } from './routes/_private-l
 import { Route as PrivateLayoutRentalReceiptsRouteImport } from './routes/_private-layout.rental-receipts'
 import { Route as PrivateLayoutMaintenanceRouteImport } from './routes/_private-layout.maintenance'
 import { Route as PrivateLayoutInvoicesRouteImport } from './routes/_private-layout.invoices'
+import { Route as PrivateLayoutInventoryRouteImport } from './routes/_private-layout.inventory'
 import { Route as PrivateLayoutInternalBorrowingRouteImport } from './routes/_private-layout.internal-borrowing'
+import { Route as PrivateLayoutEquipmentPropsRouteImport } from './routes/_private-layout.equipment-props'
 import { Route as PrivateLayoutEmployeesRouteImport } from './routes/_private-layout.employees'
 import { Route as PrivateLayoutDashboardRouteImport } from './routes/_private-layout.dashboard'
 import { Route as PrivateLayoutCustomerRentalAgreementRouteImport } from './routes/_private-layout.customer-rental-agreement'
 import { Route as PrivateLayoutCostumesRouteImport } from './routes/_private-layout.costumes'
-import { Route as PrivateLayoutCostumeWarehouseRouteImport } from './routes/_private-layout.costume-warehouse'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -70,10 +71,21 @@ const PrivateLayoutInvoicesRoute = PrivateLayoutInvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
+const PrivateLayoutInventoryRoute = PrivateLayoutInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
 const PrivateLayoutInternalBorrowingRoute =
   PrivateLayoutInternalBorrowingRouteImport.update({
     id: '/internal-borrowing',
     path: '/internal-borrowing',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutEquipmentPropsRoute =
+  PrivateLayoutEquipmentPropsRouteImport.update({
+    id: '/equipment-props',
+    path: '/equipment-props',
     getParentRoute: () => PrivateLayoutRoute,
   } as any)
 const PrivateLayoutEmployeesRoute = PrivateLayoutEmployeesRouteImport.update({
@@ -97,22 +109,17 @@ const PrivateLayoutCostumesRoute = PrivateLayoutCostumesRouteImport.update({
   path: '/costumes',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
-const PrivateLayoutCostumeWarehouseRoute =
-  PrivateLayoutCostumeWarehouseRouteImport.update({
-    id: '/costume-warehouse',
-    path: '/costume-warehouse',
-    getParentRoute: () => PrivateLayoutRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
-  '/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
   '/costumes': typeof PrivateLayoutCostumesRoute
   '/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
   '/dashboard': typeof PrivateLayoutDashboardRoute
   '/employees': typeof PrivateLayoutEmployeesRoute
+  '/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
   '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/inventory': typeof PrivateLayoutInventoryRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
   '/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
@@ -122,12 +129,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
-  '/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
   '/costumes': typeof PrivateLayoutCostumesRoute
   '/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
   '/dashboard': typeof PrivateLayoutDashboardRoute
   '/employees': typeof PrivateLayoutEmployeesRoute
+  '/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
   '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/inventory': typeof PrivateLayoutInventoryRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
   '/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
@@ -139,12 +147,13 @@ export interface FileRoutesById {
   '/_private-layout': typeof PrivateLayoutRouteWithChildren
   '/_public-layout': typeof PublicLayoutRouteWithChildren
   '/login': typeof LoginRoute
-  '/_private-layout/costume-warehouse': typeof PrivateLayoutCostumeWarehouseRoute
   '/_private-layout/costumes': typeof PrivateLayoutCostumesRoute
   '/_private-layout/customer-rental-agreement': typeof PrivateLayoutCustomerRentalAgreementRoute
   '/_private-layout/dashboard': typeof PrivateLayoutDashboardRoute
   '/_private-layout/employees': typeof PrivateLayoutEmployeesRoute
+  '/_private-layout/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
   '/_private-layout/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
+  '/_private-layout/inventory': typeof PrivateLayoutInventoryRoute
   '/_private-layout/invoices': typeof PrivateLayoutInvoicesRoute
   '/_private-layout/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
@@ -157,12 +166,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
-    | '/costume-warehouse'
     | '/costumes'
     | '/customer-rental-agreement'
     | '/dashboard'
     | '/employees'
+    | '/equipment-props'
     | '/internal-borrowing'
+    | '/inventory'
     | '/invoices'
     | '/maintenance'
     | '/rental-receipts'
@@ -172,12 +182,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
-    | '/costume-warehouse'
     | '/costumes'
     | '/customer-rental-agreement'
     | '/dashboard'
     | '/employees'
+    | '/equipment-props'
     | '/internal-borrowing'
+    | '/inventory'
     | '/invoices'
     | '/maintenance'
     | '/rental-receipts'
@@ -188,12 +199,13 @@ export interface FileRouteTypes {
     | '/_private-layout'
     | '/_public-layout'
     | '/login'
-    | '/_private-layout/costume-warehouse'
     | '/_private-layout/costumes'
     | '/_private-layout/customer-rental-agreement'
     | '/_private-layout/dashboard'
     | '/_private-layout/employees'
+    | '/_private-layout/equipment-props'
     | '/_private-layout/internal-borrowing'
+    | '/_private-layout/inventory'
     | '/_private-layout/invoices'
     | '/_private-layout/maintenance'
     | '/_private-layout/rental-receipts'
@@ -273,11 +285,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutInvoicesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
+    '/_private-layout/inventory': {
+      id: '/_private-layout/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof PrivateLayoutInventoryRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
     '/_private-layout/internal-borrowing': {
       id: '/_private-layout/internal-borrowing'
       path: '/internal-borrowing'
       fullPath: '/internal-borrowing'
       preLoaderRoute: typeof PrivateLayoutInternalBorrowingRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/equipment-props': {
+      id: '/_private-layout/equipment-props'
+      path: '/equipment-props'
+      fullPath: '/equipment-props'
+      preLoaderRoute: typeof PrivateLayoutEquipmentPropsRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
     '/_private-layout/employees': {
@@ -308,23 +334,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutCostumesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
-    '/_private-layout/costume-warehouse': {
-      id: '/_private-layout/costume-warehouse'
-      path: '/costume-warehouse'
-      fullPath: '/costume-warehouse'
-      preLoaderRoute: typeof PrivateLayoutCostumeWarehouseRouteImport
-      parentRoute: typeof PrivateLayoutRoute
-    }
   }
 }
 
 interface PrivateLayoutRouteChildren {
-  PrivateLayoutCostumeWarehouseRoute: typeof PrivateLayoutCostumeWarehouseRoute
   PrivateLayoutCostumesRoute: typeof PrivateLayoutCostumesRoute
   PrivateLayoutCustomerRentalAgreementRoute: typeof PrivateLayoutCustomerRentalAgreementRoute
   PrivateLayoutDashboardRoute: typeof PrivateLayoutDashboardRoute
   PrivateLayoutEmployeesRoute: typeof PrivateLayoutEmployeesRoute
+  PrivateLayoutEquipmentPropsRoute: typeof PrivateLayoutEquipmentPropsRoute
   PrivateLayoutInternalBorrowingRoute: typeof PrivateLayoutInternalBorrowingRoute
+  PrivateLayoutInventoryRoute: typeof PrivateLayoutInventoryRoute
   PrivateLayoutInvoicesRoute: typeof PrivateLayoutInvoicesRoute
   PrivateLayoutMaintenanceRoute: typeof PrivateLayoutMaintenanceRoute
   PrivateLayoutRentalReceiptsRoute: typeof PrivateLayoutRentalReceiptsRoute
@@ -333,13 +353,14 @@ interface PrivateLayoutRouteChildren {
 }
 
 const PrivateLayoutRouteChildren: PrivateLayoutRouteChildren = {
-  PrivateLayoutCostumeWarehouseRoute: PrivateLayoutCostumeWarehouseRoute,
   PrivateLayoutCostumesRoute: PrivateLayoutCostumesRoute,
   PrivateLayoutCustomerRentalAgreementRoute:
     PrivateLayoutCustomerRentalAgreementRoute,
   PrivateLayoutDashboardRoute: PrivateLayoutDashboardRoute,
   PrivateLayoutEmployeesRoute: PrivateLayoutEmployeesRoute,
+  PrivateLayoutEquipmentPropsRoute: PrivateLayoutEquipmentPropsRoute,
   PrivateLayoutInternalBorrowingRoute: PrivateLayoutInternalBorrowingRoute,
+  PrivateLayoutInventoryRoute: PrivateLayoutInventoryRoute,
   PrivateLayoutInvoicesRoute: PrivateLayoutInvoicesRoute,
   PrivateLayoutMaintenanceRoute: PrivateLayoutMaintenanceRoute,
   PrivateLayoutRentalReceiptsRoute: PrivateLayoutRentalReceiptsRoute,

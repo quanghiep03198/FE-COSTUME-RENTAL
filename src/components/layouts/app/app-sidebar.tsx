@@ -47,7 +47,7 @@ const AppSidebar: React.FC = () => {
       variant="inset"
       side="left"
       collapsible={isMobile ? 'offcanvas' : 'none'}
-      className="h-screen border-r bg-background"
+      className="h-screen border-r"
       suppressHydrationWarning
     >
       <SidebarHeader>
@@ -187,7 +187,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransit
         tooltip={title}
         render={
           <Link
-            to={url}
+            to={url!}
             viewTransition={viewTransition}
             activeProps={{
               className: 'text-primary hover:text-primary bg-primary/10 ',
@@ -236,7 +236,7 @@ const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({ url, title, 
         className="group-aria-disabled/menuitem:cursor-not-allowed"
         render={
           <Link
-            to={url}
+            to={url!}
             preload="intent"
             viewTransition={viewTransition}
             activeProps={{

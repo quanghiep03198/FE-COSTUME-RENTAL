@@ -226,20 +226,82 @@
       "id": 9
     }
   ],
-  "revoke_tokens": [],
-  "warehouses": [],
-  "images_gallery": [
+  "revoke_tokens": [
     {
-      "file_name": "1777023502549-672138759_3466822183478641_3521795180160107625_n.jpg",
-      "size": 63664,
-      "dest": "/images/1777023502549-672138759_3466822183478641_3521795180160107625_n.jpg",
-      "mime_type": "image/jpeg",
-      "item_type": "COSTUME",
-      "is_active": true,
-      "created_at": "2026-04-24T09:38:22.550Z",
-      "updated_at": null,
-      "id": 1
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyODU3NSwiZXhwIjoxNzc3MDI4NTg1fQ.iD_EbKDgF7H0yoM14PcBrNCA54QGsDLaR93uQs68uio"
     },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyODU4NywiZXhwIjoxNzc3MDI4NTk3fQ.AQCASjAznIFaCxHj5H2XPDz9ggCDfqNN6IMIi7gS7kM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyODg4NCwiZXhwIjoxNzc3MDI4ODk0fQ.6ufux6JOA36VWk7qqMuRI7ofp7Oq_8yqft5kOQL5uPk"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyODk1MSwiZXhwIjoxNzc3MDI4OTYxfQ.qCkn6onoL5UurE_tVLmVg8IUWz-ek31zvh6GQana4QQ"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTAzNiwiZXhwIjoxNzc3MDI5MDQ2fQ.NCibOGhIkSJAZgfgKHwtfcj4JAK35C-JMiKboGyfdLg"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTEwNSwiZXhwIjoxNzc3MDI5MTE1fQ.j1UpPjKMplMhmQjE3jHwEKTzmy7bk1CCNROIePSWR5M"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTIwMywiZXhwIjoxNzc3MDI5MjEzfQ.hlxE8C6pLnsZzSP5WwNNr0v8ucIr7oYzsVTk6tRfmA0"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTM0OCwiZXhwIjoxNzc3MDI5MzU4fQ.7JoD8UjH3IJq9ejEQn2yxO-h1PiPBR4zWAjHAJKJa7U"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTQ5MywiZXhwIjoxNzc3MDI5NTAzfQ.m0ngmIuY0SKJJHrUJfXe-P3AeSdbD499vRY48pm9sNA"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAyOTczMCwiZXhwIjoxNzc3MDI5NzQwfQ.uJ5Tc934LtBC1NKaA_3PXLBG6Jwr7OzH75kklmr6RiM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzNzg2NCwiZXhwIjoxNzc3MDM3ODc0fQ.iP1jFthhlxyp8O922blb9GdPKx18T7sN2GRmZxkCeNM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODAwNSwiZXhwIjoxNzc3MDM4MDE1fQ.36pO7ItwmPOHdhaa1WiCXvHPEBV0bEuwYTVMjyHnKgM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODI1OCwiZXhwIjoxNzc3MDM4MjY4fQ.GRdS2N4EPfaufYjw6VjVGGYPF6pC14mOq2fV0Ou2b2o"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODM0MSwiZXhwIjoxNzc3MDM4MzUxfQ.lFjV9W0iurjfayXuO1owBmFNM81wSbpioVvVNMUpAjA"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODQyNywiZXhwIjoxNzc3MDM4NDM3fQ.0K2zLFr7EvzSA5VpBE7Ds35pHb61tCjRhVhKKXk2OjA"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODUzNiwiZXhwIjoxNzc3MDM4NTQ2fQ.kCPSa4Jpr6A5u8OOdMPWiFCuSFtOEF_srvVTD8XhHmA"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzAzODg3NywiZXhwIjoxNzc3MDM4ODg3fQ.MfHQdK6oraxMJ5ZuXdnZlpFch4wnmU8H4dvIovXBpJk"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0MjQwOCwiZXhwIjoxNzc3MDQyNDE4fQ.i4j4p1Zoa7XxQqibjOnIEnxI13HNqlRz4sO0dTFBkjU"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0MjkwOCwiZXhwIjoxNzc3MDQyOTE4fQ.ZEGjdTFrfvEFLaUSIzD2BjflHzSv45fBIiiqB1XZhQk"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0MzcxMywiZXhwIjoxNzc3MDQzNzIzfQ.8MdUxUKkyQwzNkDD2G8fNristLDxO7j_-ikWIPEoeio"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0Mzg3NSwiZXhwIjoxNzc3MDQzODg1fQ.mSGlz7SZP8Xaia80FdnZtOaGpkML7RAC3FrHIg3T91g"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0NTQ1MywiZXhwIjoxNzc3MDQ1NDYzfQ.acr-KTJBPdKtu_sNjjJaNmM0Y8onIZXS8w6iv-TU9nM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0NTg2MCwiZXhwIjoxNzc3MDQ1ODcwfQ.xm6GjwlXs2k7FWpboOAfrELLOMhxUrgQ63N9Y17LHDI"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzA0NTg3MywiZXhwIjoxNzc3MDQ1ODgzfQ.-aMxXwTUm3JLPUTMYXXuohJn_dLBMuygE3Jv3lpqWEQ"
+    }
+  ],
+  "warehouses": [],
+  "images": [
     {
       "file_name": "1777023502551-ao-dai-gam-bong-nhieu-mau-nu.webp",
       "size": 36840,
@@ -248,7 +310,7 @@
       "item_type": "COSTUME",
       "is_active": true,
       "created_at": "2026-04-24T09:38:22.551Z",
-      "updated_at": null,
+      "updated_at": "2026-04-24T16:26:33.871Z",
       "id": 2
     },
     {
@@ -294,9 +356,20 @@
       "created_at": "2026-04-24T09:38:22.579Z",
       "updated_at": null,
       "id": 6
+    },
+    {
+      "file_name": "1777046950675-vn-11134207-7ras8-m0zo4auo8j6jec-1728118676279.webp",
+      "size": 306928,
+      "dest": "/images/1777046950675-vn-11134207-7ras8-m0zo4auo8j6jec-1728118676279.webp",
+      "mime_type": "image/webp",
+      "item_type": "EQUIPMENT_PROPS",
+      "is_active": true,
+      "created_at": "2026-04-24T16:09:10.676Z",
+      "updated_at": null,
+      "id": 7
     }
   ],
-  "item_categories": [
+  "categories": [
     {
       "name": "Trang phục Truyền thống",
       "slug": "trang-phuc-truyen-thong",
@@ -332,6 +405,15 @@
       "created_at": "2026-04-24T09:10:17.439Z",
       "updated_at": null,
       "id": 4
+    },
+    {
+      "name": "Hoa múa",
+      "slug": "hoa-mua",
+      "type": "EQUIPMENT_PROPS",
+      "is_active": true,
+      "created_at": "2026-04-24T15:56:15.161Z",
+      "updated_at": null,
+      "id": 5
     }
   ],
   "costume_categories": [],
@@ -341,25 +423,39 @@
       "name": "Áo Tấc xanh bạc hà",
       "category_id": 1,
       "color": "#5b958c",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["S", "M", "L", "XL"],
       "gender": "FEMALE",
-      "image_ids": [],
+      "image_id": 5,
       "rental_price_per_day": 200000,
       "description": "Áo tấc Xanh cổ truyền",
-      "tags": [
-        "ao tac"
-      ],
+      "tags": ["áo tấc"],
       "is_active": true,
-      "created_at": "2026-04-24T09:45:47.780Z",
-      "updated_at": null,
+      "created_at": "2026-04-24T16:12:39.694Z",
+      "updated_at": "2026-04-24T16:28:08.662Z",
       "id": 1
     }
   ],
-  "equipments_props": [],
+  "equipment_props": [
+    {
+      "name": "Hoa múa cầm tay Hướng dương",
+      "slug": "hoa-mua-cam-tay-huong-duong",
+      "category_id": 5,
+      "rental_price_per_day": 50000,
+      "weight_kg": 0.5,
+      "dimensions": {
+        "width_cm": 40,
+        "height_cm": 40,
+        "depth_cm": 8
+      },
+      "is_fragile": false,
+      "description": "Hoa múa cầm tay hướng dương lớn màu vàng cam – đạo cụ biểu diễn chuyên nghiệp",
+      "image_id": 7,
+      "tags": ["hoa múa"],
+      "is_active": true,
+      "created_at": "2026-04-24T16:10:07.433Z",
+      "updated_at": "2026-04-24T16:34:15.286Z",
+      "id": 1
+    }
+  ],
   "inventory": []
 }

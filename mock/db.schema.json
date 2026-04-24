@@ -5,9 +5,9 @@
     "revoke_tokens",
     "employees",
     "warehouses",
-    "item_categories",
+    "categories",
     "costumes",
-    "equipments_props",
+    "equipment_props",
     "inventory"
   ],
   "$defs": {
@@ -203,12 +203,8 @@
               "type": "string",
               "enum": ["MALE", "FEMALE", "UNISEX"]
             },
-            "image_ids": {
-              "type": "array",
-              "uniqueItems": "true",
-              "items": {
-                "type": "integer"
-              }
+            "image_id": {
+              "type": "integer"
             },
             "rental_price_per_day": {
               "type": "integer",
@@ -226,17 +222,6 @@
         }
       ]
     },
-    "EquipmentCategory": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/BaseEntity"
-        },
-        {
-          "type": "object",
-          "properties": {}
-        }
-      ]
-    },
     "EquipmentProps": {
       "allOf": [
         {
@@ -251,7 +236,7 @@
             "rental_price_per_day": { "type": "integer" },
             "weight_kg": { "type": "number" },
             "dimensions": {
-              "type": "object",
+              "type": ["object", "null"],
               "properties": {
                 "width_cm": { "type": "number" },
                 "height_cm": { "type": "number" },
@@ -260,7 +245,7 @@
             },
             "is_fragile": { "type": "boolean" },
             "description": { "type": "string" },
-            "image_ids": { "type": "array", "items": { "type": "integer" } },
+            "image_id": { "type": "integer" },
             "tags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
           }
         }
@@ -296,7 +281,7 @@
         "$ref": "#/$defs/Warehouse"
       }
     },
-    "images_gallery": {
+    "images": {
       "type": "array",
       "uniqueItems": true,
       "description": "Images gallerr, store images's metadata",
@@ -304,7 +289,7 @@
         "$ref": "#/$defs/ImageGallery"
       }
     },
-    "item_categories": {
+    "categories": {
       "type": "array",
       "uniqueItems": true,
       "description": "Costume category collection",

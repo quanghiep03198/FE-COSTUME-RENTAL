@@ -53,7 +53,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
 
     [CommonActions.UPDATE]: {
       handler: async ({ id, ...payload }) =>
-        await axiosClient.patch(`/employees/update/${id}`, {
+        await axiosClient.patch(`/employees/${id}`, {
           ...payload,
           updated_at: new Date(),
         }),
@@ -84,7 +84,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
 export const useUpdateUserStatusMutation = () => {
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: number; is_active: boolean }) => {
-      return await axiosClient.patch(`/employees/update/${id}`, { is_active })
+      return await axiosClient.patch(`/employees/${id}`, { is_active })
     },
     meta: {
       invalidates: [[GET_EMPLOYEE_QUERY_KEY]],

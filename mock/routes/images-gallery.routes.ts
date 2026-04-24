@@ -1,27 +1,43 @@
 import type { Application, Request, Response } from 'express'
+import path from 'path'
 import { getDb, queryCollection, queryRecord } from '../lib'
 import { authMiddleware } from '../middleware'
 import { deleteUploadedFile, saveUploadedFile } from '../utils/file-upload'
 
-// Extend Express Request type to include files property
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       files?: Record<string, UploadedFile | UploadedFile[]>
-//     }
-//   }
-// }
-
 export function registerImageGalleryRoutes(app: Application) {
+  // * GET /images-gallery/file/:fileName
+  app.get('/:folder/:fileName', (req: Request, res: Response) => {
+    const rawImageFolder = req.params.folder
+    const rawFileName = req.params.fileName
+    const fileName = Array.isArray(rawFileName) ? rawFileName[0] : rawFileName
+    const imageFolderName = Array.isArray(rawImageFolder) ? rawImageFolder[0] : rawImageFolder
+
+    if (!fileName || fileName.includes('..') || path.basename(fileName) !== fileName) {
+      return res.status(400).json({ message: 'Invalid file name' })
+    }
+
+    const imagePath = path.resolve(process.cwd(), 'mock', imageFolderName, fileName)
+
+    return res.sendFile(imagePath, (err) => {
+      if (!err) return
+
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        return res.status(404).json({ message: 'Image file not found' })
+      }
+
+      return res.status(500).json({ message: 'Failed to read image file' })
+    })
+  })
+
   // * GET /images-gallery
   app.get('/api/images-gallery', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('images_gallery', req.query, res)
+    const result = queryCollection('images', req.query, res)
     return res.status(200).json(result)
   })
 
   // * GET /images-gallery/:id
-  app.get('/api/images-gallery/:id', authMiddleware, (req: Request, res: Response) => {
-    const result = queryRecord('images_gallery', Number(req.params.id), req.query)
+  app.get('/api/images-gallery/:id', (req: Request, res: Response) => {
+    const result = queryRecord('images', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Image not found' })
     return res.status(200).json(result)
   })
@@ -90,7 +106,7 @@ export function registerImageGalleryRoutes(app: Application) {
           updated_at: null,
         }
 
-        const created = db.get('images_gallery').insert(newImage).write()
+        const created = db.get('images').insert(newImage).write()
         createdImages.push(created)
       }
 
@@ -110,7 +126,7 @@ export function registerImageGalleryRoutes(app: Application) {
     const db = getDb()
     const id = Number(req.params.id)
 
-    const existing = db.get('images_gallery').find({ id }).value()
+    const existing = db.get('images').find({ id }).value()
     if (!existing) {
       return res.status(404).json({ message: 'Image not found' })
     }
@@ -136,7 +152,7 @@ export function registerImageGalleryRoutes(app: Application) {
     const { id: _id, created_at, ...updateData } = req.body
 
     const updated = db
-      .get('images_gallery')
+      .get('images')
       .find({ id })
       .assign({ ...updateData, updated_at: new Date().toISOString() })
       .write()
@@ -149,7 +165,7 @@ export function registerImageGalleryRoutes(app: Application) {
     const db = getDb()
     const id = Number(req.params.id)
 
-    const existing = db.get('images_gallery').find({ id }).value()
+    const existing = db.get('images').find({ id }).value()
     if (!existing) {
       return res.status(404).json({ message: 'Image not found' })
     }
@@ -163,9 +179,9 @@ export function registerImageGalleryRoutes(app: Application) {
         console.error('Error deleting file:', error)
       }
 
-      db.get('images_gallery').remove({ id }).write()
+      db.get('images').remove({ id }).write()
     } else {
-      db.get('images_gallery').find({ id }).assign({ is_active: false, updated_at: new Date().toISOString() }).write()
+      db.get('images').find({ id }).assign({ is_active: false, updated_at: new Date().toISOString() }).write()
     }
 
     return res.status(200).json({
