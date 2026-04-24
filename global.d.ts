@@ -9,6 +9,8 @@ export declare global {
 
   type Parameter<T> = T extends (param: infer Argument, ...rest: any) => any ? Argument : never
 
+  
+  
   interface IBaseEntity {
     id: number
     is_active: boolean

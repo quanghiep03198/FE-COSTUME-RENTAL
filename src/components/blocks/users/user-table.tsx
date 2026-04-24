@@ -38,7 +38,9 @@ const UserTable: React.FC = () => {
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>{getValue()}</ItemTitle>
-                <ItemDescription>{row.original.username}</ItemDescription>
+                <ItemDescription className='before:[content:"@"] font-medium before:text-normal before:text-muted-foreground'>
+                  {row.original.username}
+                </ItemDescription>
               </ItemContent>
             </Item>
           )

@@ -1,11 +1,22 @@
 {
   "type": "object",
+  "required": [
+    "users",
+    "revoke_tokens",
+    "employees",
+    "warehouses",
+    "item_categories",
+    "costumes",
+    "equipments_props",
+    "inventory"
+  ],
   "$defs": {
     "BaseEntity": {
       "type": "object",
+      "additionalProperties": true,
       "properties": {
         "id": {
-          "type": "number"
+          "type": "integer"
         },
         "is_active": {
           "type": "boolean",
@@ -24,149 +35,295 @@
           "type": "string"
         }
       },
-      "required": ["id"]
+      "required": ["id", "is_active", "created_at"]
+    },
+    "ImageMetaData": {
+      "type": "object",
+      "properties": {
+        "file_name": { "type": "string" },
+        "size": { "type": "integer" },
+        "dest": { "type": "string", "format": "url" },
+        "mime_type": { "type": "string", "enum": ["image/png", "image/jpg", "image/jpeg", "image/webp"] }
+      },
+      "required": ["file_name", "size", "dest", "mime_type"]
+    },
+    "User": {
+      "allOf": [
+        { "$ref": "#/$defs/BaseEntity" },
+        {
+          "type": "object",
+          "properties": {
+            "username": { "type": "string" },
+            "password": { "type": "string" },
+            "employee_id": { "type": ["integer", "null"] },
+            "role": { "type": "string", "enum": ["ADMIN", "USER"] }
+          },
+          "required": ["username", "password", "role"]
+        }
+      ]
+    },
+    "RevokeToken": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "Employee": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "employee_code": {
+              "type": "string"
+            },
+            "user_id": {
+              "type": ["integer", "null"]
+            },
+            "full_name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "citizen_id_number": {
+              "type": "string",
+              "format": "number"
+            },
+            "position": {
+              "type": "string",
+              "enum": ["MANAGER", "WAREHOUSE_MANAGER", "ORDER_PROCESSOR", "TALENT", "TECHICAL_CREW", "WARDROBE"]
+            },
+            "work_status": {
+              "type": "string",
+              "enum": ["ACTIVE", "SUSPENDED", "EXITED"]
+            }
+          },
+          "required": [
+            "employee_code",
+            "user_id",
+            "full_name",
+            "email",
+            "phone",
+            "address",
+            "citizen_id_number",
+            "position",
+            "work_status"
+          ]
+        }
+      ]
+    },
+    "Warehouse": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "warehouse_code": {
+              "type": "string"
+            },
+            "warehouse_type": {
+              "type": "string",
+              "enum": ["COSTUME_WAREHOUSE", "EQUIPMENT_PROPS_WAREHOUSE"]
+            },
+            "manager_employee_id": {
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "ImageGallery": {
+      "allOf": [
+        { "$ref": "#/$defs/BaseEntity" },
+        { "$ref": "#/$defs/ImageMetaData" },
+        {
+          "type": "object",
+          "properties": {
+            "item_type": {
+              "type": "string",
+              "enum": ["COSTUME", "EQUIPMENT_PROPS"]
+            }
+          }
+        }
+      ]
+    },
+    "ItemCategory": {
+      "allOf": [
+        { "$ref": "#/$defs/BaseEntity" },
+        {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "slug": { "type": "string" },
+            "type": { "type": "string", "enum": ["COSTUME", "EQUIPMENT_PROPS"] }
+          }
+        }
+      ]
+    },
+    "Costume": {
+      "allOf": [
+        { "$ref": "#/$defs/BaseEntity" },
+        {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "category_id": {
+              "type": "integer"
+            },
+            "color": {
+              "type": "string"
+            },
+            "sizes": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] }
+            },
+            "gender": {
+              "type": "string",
+              "enum": ["MALE", "FEMALE", "UNISEX"]
+            },
+            "image_ids": {
+              "type": "array",
+              "uniqueItems": "true",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "rental_price_per_day": {
+              "type": "integer",
+              "minimum": 50000
+            },
+            "description": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    "EquipmentCategory": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseEntity"
+        },
+        {
+          "type": "object",
+          "properties": {}
+        }
+      ]
+    },
+    "EquipmentProps": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "slug": { "type": "string" },
+            "category_id": { "type": "integer" },
+            "rental_price_per_day": { "type": "integer" },
+            "weight_kg": { "type": "number" },
+            "dimensions": {
+              "type": "object",
+              "properties": {
+                "width_cm": { "type": "number" },
+                "height_cm": { "type": "number" },
+                "depth_cm": { "type": "number" }
+              }
+            },
+            "is_fragile": { "type": "boolean" },
+            "description": { "type": "string" },
+            "image_ids": { "type": "array", "items": { "type": "integer" } },
+            "tags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+          }
+        }
+      ]
     }
   },
   "properties": {
     "users": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/BaseEntity"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string"
-              },
-              "employee_id": {
-                "type": ["number", "null"]
-              },
-              "email": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "password": {
-                "type": "string"
-              },
-              "role": {
-                "type": "string",
-                "enum": ["ADMIN", "USER"]
-              }
-            }
-          }
-        ]
+        "$ref": "#/$defs/User"
       },
       "description": "Users collection"
     },
     "employees": {
       "type": "array",
+      "uniqueItems": true,
+      "description": "Employee collection",
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/BaseEntity"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "employee_code": {
-                "type": "string"
-              },
-              "userId": {
-                "type": ["number", "null"]
-              },
-              "full_name": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "address": {
-                "type": "string"
-              },
-              "dob": {
-                "type": "string"
-              },
-              "citizen_id_number": {
-                "type": "string",
-                "format": "number"
-              },
-              "position": {
-                "type": "string",
-                "enum": ["MANAGER", "WAREHOUSE_MANAGER", "ORDER_PROCESSOR", "TALENT", "TECHICAL_CREW", "WARDROBE"]
-              },
-              "hire_date": {
-                "type": "string",
-                "format": "date"
-              },
-              "work_status": {
-                "type": "string",
-                "enum": ["ACTIVE", "SUSPENDED", "EXITED"]
-              }
-            }
-          }
-        ]
-      },
-      "required": ["id", "full_name", "phone", "position", "dob", "citizen_id_number", "hire_date", "address"],
-      "description": "Employee collection"
+        "$ref": "#/$defs/Employee"
+      }
     },
     "revoke_tokens": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string"
-          }
-        }
+        "$ref": "#/$defs/RevokeToken"
       }
     },
-    "contracts": {
+    "warehouses": {
       "type": "array",
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/BaseEntity"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "code": {
-                "type": "string"
-              },
-              "employee_id": {
-                "type": "number"
-              },
-              "start_date": {
-                "type": "string",
-                "format": "date"
-              },
-              "end_date": {
-                "type": "string",
-                "format": "date"
-              },
-
-              "signed_date": {
-                "type": "string",
-                "format": "date"
-              },
-              "salary_agreement": {
-                "type": "number"
-              },
-              "file_path": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string",
-                "enum": ["ACTIVE", "EXPIRED", "TERMINATED", "RENEWED"]
-              }
-            }
-          }
-        ]
+        "$ref": "#/$defs/Warehouse"
+      }
+    },
+    "images_gallery": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Images gallerr, store images's metadata",
+      "items": {
+        "$ref": "#/$defs/ImageGallery"
+      }
+    },
+    "item_categories": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Costume category collection",
+      "items": {
+        "$ref": "#/$defs/ItemCategory"
+      }
+    },
+    "costumes": {
+      "type": "array",
+      "description": "Costume collection",
+      "items": {
+        "$ref": "#/$defs/Costume"
+      }
+    },
+    "equipment_props": {
+      "type": "array",
+      "description": "Equipment props collection",
+      "items": {
+        "$ref": "#/$defs/EquipmentProps"
       }
     }
   }
