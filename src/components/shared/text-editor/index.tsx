@@ -1,8 +1,7 @@
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
+import { cn, isServer } from '@/lib/utils'
 import { EditorContent, useEditor } from '@tiptap/react'
-import { useUpdate } from 'ahooks'
 import { uniqueId } from 'lodash-es'
 import React, { useState, type RefCallback } from 'react'
 import BubbleMenu from './components/bubble-menu'
@@ -49,7 +48,6 @@ export const Editor: React.FC<EditorProps> = ({
   onUpdate: handleUpdate,
 }) => {
   const [contextMenuType, setContextMenuType] = useState<keyof HTMLElementTagNameMap | null>(null)
-  const rerender = useUpdate()
 
   const editor = useEditor(
     {
@@ -65,7 +63,7 @@ export const Editor: React.FC<EditorProps> = ({
       },
       enableCoreExtensions: true,
       editable: !disabled,
-      immediatelyRender: true,
+      immediatelyRender: !isServer,
       onUpdate: ({ editor }) => {
         if (typeof handleUpdate === 'function') {
           handleUpdate({ value: editor.getHTML(), isEmpty: editor.isEmpty })
