@@ -2,8 +2,9 @@ import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/component
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { EditorContent, useEditor } from '@tiptap/react'
+import { useUpdate } from 'ahooks'
 import { uniqueId } from 'lodash-es'
-import React, { memo, useState, type RefCallback } from 'react'
+import React, { useState, type RefCallback } from 'react'
 import BubbleMenu from './components/bubble-menu'
 import CommonContextMenuItems from './components/context-menu/common-context-menu-items'
 import LinkContextMenuItems from './components/context-menu/link-context-menu-items'
@@ -38,91 +39,97 @@ export interface EditorProps {
  * - A React functional component rendering a rich text editor with toolbar and context menus.
  */
 
-export const Editor: React.FC<EditorProps> = memo(
-  ({ defaultValue = '', id = uniqueId(), ref, disabled, name, height = 350, onUpdate: handleUpdate }) => {
-    const [contextMenuType, setContextMenuType] = useState<keyof HTMLElementTagNameMap | null>(null)
+export const Editor: React.FC<EditorProps> = ({
+  defaultValue = '',
+  id = uniqueId(),
+  ref,
+  disabled,
+  name,
+  height = 350,
+  onUpdate: handleUpdate,
+}) => {
+  const [contextMenuType, setContextMenuType] = useState<keyof HTMLElementTagNameMap | null>(null)
+  const rerender = useUpdate()
 
-    const editor = useEditor(
-      {
-        content: defaultValue,
-        extensions: editorExtensions,
-        editorProps: {
-          attributes: {
-            class: cn(
-              'p-4 rounded-lg max-w-full max-h-full overflow-auto scrollbar-none border-none outline-none focus:outline-none focus:border-none min-h-[50vh] text-foreground bg-background',
-              'prose prose-li:p-0 prose-p:text-sm prose-strong:text-[inherit]'
-            ),
-          },
-        },
-        enableCoreExtensions: true,
-        editable: !disabled,
-        shouldRerenderOnTransaction: true,
-        immediatelyRender: true,
-        onUpdate: ({ editor }) => {
-          if (typeof handleUpdate === 'function') {
-            handleUpdate({ value: editor.getHTML(), isEmpty: editor.isEmpty })
-          }
+  const editor = useEditor(
+    {
+      content: defaultValue,
+      extensions: editorExtensions,
+      editorProps: {
+        attributes: {
+          class: cn(
+            'p-4 rounded-lg max-w-full max-h-full overflow-auto scrollbar-none border-none outline-none focus:outline-none focus:border-none min-h-[50vh] text-foreground bg-background',
+            'prose prose-li:p-0 prose-p:text-sm prose-strong:text-[inherit]'
+          ),
         },
       },
-      [defaultValue, disabled]
-    )
+      enableCoreExtensions: true,
+      editable: !disabled,
+      immediatelyRender: true,
+      onUpdate: ({ editor }) => {
+        if (typeof handleUpdate === 'function') {
+          handleUpdate({ value: editor.getHTML(), isEmpty: editor.isEmpty })
+        }
+      },
+    },
+    [defaultValue, disabled]
+  )
 
-    const handleContextMenuOpen: React.MouseEventHandler<HTMLSpanElement> = (e) => {
-      const target = e.target as typeof e.currentTarget
-      switch (true) {
-        case Boolean(target.closest('table')):
-          setContextMenuType('table')
-          break
-        case Boolean(target.closest('a')):
-          setContextMenuType('a')
-          break
-        case Boolean(target.closest('img')):
-          setContextMenuType('img')
-          break
+  const handleContextMenuOpen: React.MouseEventHandler<HTMLSpanElement> = (e) => {
+    const target = e.target as typeof e.currentTarget
+    switch (true) {
+      case Boolean(target.closest('table')):
+        setContextMenuType('table')
+        break
+      case Boolean(target.closest('a')):
+        setContextMenuType('a')
+        break
+      case Boolean(target.closest('img')):
+        setContextMenuType('img')
+        break
 
-        default:
-          setContextMenuType(null)
-      }
+      default:
+        setContextMenuType(null)
     }
-
-    return (
-      <div
-        className={cn(
-          'relative flex w-full max-w-full flex-col items-stretch divide-y divide-border overflow-clip rounded-lg border shadow-sm',
-          disabled && 'cursor-not-allowed opacity-50 [&>nav]:pointer-events-none'
-        )}
-      >
-        <EditorContextProvider editor={editor}>
-          <Toolbar />
-          <ContextMenu>
-            <ContextMenuTrigger onContextMenu={handleContextMenuOpen}>
-              <ScrollArea className="relative w-full max-w-full resize-y overflow-auto" style={{ height }}>
-                <EditorContent
-                  id={id}
-                  editor={editor}
-                  name={name}
-                  controls={true}
-                  content={defaultValue}
-                  disabled={disabled}
-                  ref={(e) => {
-                    if (!ref) return
-                    if (typeof ref === 'function') ref(e)
-                    else ref.current = e
-                  }}
-                />
-              </ScrollArea>
-            </ContextMenuTrigger>
-            <ContextMenuContent className="min-w-[320px]">
-              <CommonContextMenuItems editor={editor} />
-              {contextMenuType === 'table' && <TableContextMenuItems editor={editor} />}
-              {contextMenuType === 'a' && <LinkContextMenuItems editor={editor} />}
-            </ContextMenuContent>
-          </ContextMenu>
-        </EditorContextProvider>
-        <BubbleMenu editor={editor} />
-      </div>
-    )
   }
-)
+
+  return (
+    <div
+      className={cn(
+        'relative flex w-full max-w-full flex-col items-stretch divide-y divide-border overflow-clip rounded-lg border shadow-sm',
+        disabled && 'cursor-not-allowed opacity-50 [&>nav]:pointer-events-none'
+      )}
+    >
+      <EditorContextProvider editor={editor}>
+        <Toolbar />
+        <ContextMenu>
+          <ContextMenuTrigger onContextMenu={handleContextMenuOpen}>
+            <ScrollArea className="relative w-full max-w-full resize-y overflow-auto" style={{ height }}>
+              <EditorContent
+                id={id}
+                editor={editor}
+                name={name}
+                controls={true}
+                content={defaultValue}
+                disabled={disabled}
+                ref={(e) => {
+                  if (!ref) return
+                  if (typeof ref === 'function') ref(e)
+                  else ref.current = e
+                }}
+              />
+            </ScrollArea>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="min-w-[320px]">
+            <CommonContextMenuItems editor={editor} />
+            {contextMenuType === 'table' && <TableContextMenuItems editor={editor} />}
+            {contextMenuType === 'a' && <LinkContextMenuItems editor={editor} />}
+          </ContextMenuContent>
+        </ContextMenu>
+      </EditorContextProvider>
+      <BubbleMenu editor={editor} />
+    </div>
+  )
+}
 
 Editor.displayName = 'Editor'

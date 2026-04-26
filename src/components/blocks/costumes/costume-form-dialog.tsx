@@ -1,8 +1,16 @@
 import { GET_COSTUME_CATEGORY_QUERY_KEY, useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
 import type { ICategory } from '@/apis/category/types'
 import { COSTUME_UNIT, CostumeGender, CostumeUnit, SIZE_RUN } from '@/apis/costume/constants'
-import type { TCreateCostumeSchema, TCreateCostumeValues } from '@/apis/costume/schemas/create-costume.schema'
-import type { TUpdateCostumeSchema, TUpdateCostumeValues } from '@/apis/costume/schemas/update-costume.schema'
+import {
+  createCostumeSchema,
+  type TCreateCostumeSchema,
+  type TCreateCostumeValues,
+} from '@/apis/costume/schemas/create-costume.schema'
+import {
+  updateCostumeSchema,
+  type TUpdateCostumeSchema,
+  type TUpdateCostumeValues,
+} from '@/apis/costume/schemas/update-costume.schema'
 import type { ICostume } from '@/apis/costume/types'
 import { COLOR_PALETTE } from '@/common/constants/const'
 import { CommonActions } from '@/common/constants/enums'
@@ -20,7 +28,8 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
+// import { Textarea } from '@/components/ui/textarea'
+import { Editor } from '@/components/shared/text-editor'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
 import React, { useRef, useState } from 'react'
@@ -47,15 +56,6 @@ const CostumeFormDialog: React.FC = () => {
   const [action, setAction] = useState<TDialogAction>('none')
   const { data: categories, isLoading } = useGetCategoriesQuery(GET_COSTUME_CATEGORY_QUERY_KEY)
   const formSchemaRef = useRef<TCreateCostumeSchema | TUpdateCostumeSchema | undefined>(undefined)
-  const form = useForm({
-    defaultValues: DEFAULT_FORM_VALUES,
-    onSubmit: ({ value }) => {
-      console.log(value)
-    },
-    validators: { onSubmit: formSchemaRef.current },
-  })
-
-  console.log('categories', categories)
 
   event$.useSubscription(
     (e: { action: CommonActions.CREATE; payload: never } | { action: CommonActions.UPDATE; payload: ICostume }) => {
@@ -70,13 +70,25 @@ const CostumeFormDialog: React.FC = () => {
 
       if (e.action === CommonActions.CREATE) {
         setAction(CommonActions.CREATE)
+        formSchemaRef.current = createCostumeSchema
         form.reset()
       } else {
         setAction(CommonActions.UPDATE)
+        formSchemaRef.current = updateCostumeSchema
         form.reset(e.payload as unknown as TUpdateCostumeValues)
       }
     }
   )
+
+  const form = useForm({
+    defaultValues: DEFAULT_FORM_VALUES,
+    onSubmit: ({ value }) => {
+      console.log(value)
+    },
+    validators: { onSubmit: formSchemaRef.current },
+  })
+
+  console.log('categories', categories)
 
   const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
@@ -87,7 +99,7 @@ const CostumeFormDialog: React.FC = () => {
 
   return (
     <Dialog open={open && action !== 'none'} onOpenChange={setOpen}>
-      <DialogContent className="max-w-7xl">
+      <DialogContent className="rounded-none h-screen overflow-auto">
         <form onSubmit={handleSubmit}>
           <FieldSet>
             <FieldLegend>Thông tin trang phục</FieldLegend>
@@ -96,7 +108,7 @@ const CostumeFormDialog: React.FC = () => {
                 ? 'Điền thông tin để tạo mới trang phục'
                 : 'Cập nhật thông tin trang phục'}
             </FieldDescription>
-            <FieldGroup className="grid grid-cols-12">
+            <FieldGroup className="grid grid-cols-12 ">
               <FormField name="name">
                 {(field) => {
                   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -236,17 +248,9 @@ const CostumeFormDialog: React.FC = () => {
                   return (
                     <Field className="col-span-12">
                       <FieldLabel>Mô tả</FieldLabel>
-                      <Textarea
-                        placeholder="Mô tả"
-                        className="field-sizing-fixed"
-                        value={field.state.value}
-                        onChange={field.handleChange as any}
-                        onBlur={field.handleBlur}
-                        aria-invalid={isInvalid}
-                        rows={5}
-                      />
+
+                      <Editor onUpdate={({ value }) => field.hanleChange(value)} defaultValue={field.state.value} />
                       {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      {/* <Editor onUpdate={({ value }) => field.handleChange(value)} defaultValue={field.state.value} /> */}
                     </Field>
                   )
                 }}
@@ -254,7 +258,7 @@ const CostumeFormDialog: React.FC = () => {
             </FieldGroup>
             <FieldGroup>
               <Field orientation={'horizontal'}>
-                <Button>Xác nhận</Button>
+                <Button type="submit">Xác nhận</Button>
               </Field>
             </FieldGroup>
           </FieldSet>

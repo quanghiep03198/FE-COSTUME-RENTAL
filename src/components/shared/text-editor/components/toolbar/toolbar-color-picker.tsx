@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { useDebounceFn } from 'ahooks'
 import type { ColorLike } from 'color'
 import Color from 'color'
-import { Activity, useCallback, useEffect, useState } from 'react'
+import { Activity, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Tooltip } from '@/components/shared/tooltip'
 import { Button } from '@/components/ui/button'
@@ -37,11 +37,22 @@ const ToolbarColorPicker: React.FC<ColorPickerProps> = ({ label, icon, type }) =
   const { editor } = useEditorContext()
 
   const [colorPaletteType, setColorPaletteType] = useState<'preset' | 'custom'>('preset')
-  const [currentColor, setCurrentColor] = useState<string | undefined>(editor.getAttributes(type).color)
+  const initialColor = useMemo(() => editor.getAttributes(type).color, [type, editor])
+  const [currentColor, setCurrentColor] = useState<string | undefined>(initialColor)
 
   useEffect(() => {
-    setCurrentColor(editor.getAttributes(type).color)
-  }, [type, editor.getAttributes(type).color])
+    const updateColor = () => {
+      setCurrentColor(editor.getAttributes(type).color)
+    }
+
+    editor.on('update', updateColor)
+    editor.on('selectionUpdate', updateColor)
+
+    return () => {
+      editor.off('update', updateColor)
+      editor.off('selectionUpdate', updateColor)
+    }
+  }, [type, editor])
 
   const handleSelectColor = useCallback(
     (color: string) => {
@@ -49,33 +60,30 @@ const ToolbarColorPicker: React.FC<ColorPickerProps> = ({ label, icon, type }) =
       if (type === 'textStyle') editor.commands.setColor(color)
       if (type === 'highlight') editor.commands.setHighlight({ color })
     },
-    [type, editor.commands.setColor, editor.commands.setHighlight]
+    [type, editor]
   )
 
-  const handleConvertRgbaToHex = useCallback(
-    (value: number[]) => {
-      try {
-        const clampByte = (n: unknown) => {
-          if (typeof n !== 'number' || !Number.isFinite(n)) return 0
-          return Math.min(255, Math.max(0, Math.round(n)))
-        }
-        const clampAlpha = (a: unknown) => {
-          if (typeof a !== 'number' || !Number.isFinite(a)) return 1
-          const normalized = a > 1 ? a / 255 : a
-          return Math.min(1, Math.max(0, normalized))
-        }
-
-        const r = clampByte(value[0])
-        const g = clampByte(value[1])
-        const b = clampByte(value[2])
-        const alpha = clampAlpha(value.length >= 4 ? value[3] : 1)
-        return alpha < 1 ? Color.rgb([r, g, b]).alpha(alpha).hexa() : Color.rgb([r, g, b]).hex()
-      } catch {
-        return FALLBACK_COLOR
+  const handleConvertRgbaToHex = useCallback((value: number[]) => {
+    try {
+      const clampByte = (n: unknown) => {
+        if (typeof n !== 'number' || !Number.isFinite(n)) return 0
+        return Math.min(255, Math.max(0, Math.round(n)))
       }
-    },
-    [FALLBACK_COLOR]
-  )
+      const clampAlpha = (a: unknown) => {
+        if (typeof a !== 'number' || !Number.isFinite(a)) return 1
+        const normalized = a > 1 ? a / 255 : a
+        return Math.min(1, Math.max(0, normalized))
+      }
+
+      const r = clampByte(value[0])
+      const g = clampByte(value[1])
+      const b = clampByte(value[2])
+      const alpha = clampAlpha(value.length >= 4 ? value[3] : 1)
+      return alpha < 1 ? Color.rgb([r, g, b]).alpha(alpha).hexa() : Color.rgb([r, g, b]).hex()
+    } catch {
+      return FALLBACK_COLOR
+    }
+  }, [])
 
   const handleGetPickerValue = useCallback(() => {
     try {
@@ -85,7 +93,7 @@ const ToolbarColorPicker: React.FC<ColorPickerProps> = ({ label, icon, type }) =
     } catch {
       return FALLBACK_COLOR
     }
-  }, [currentColor, FALLBACK_COLOR])
+  }, [currentColor])
 
   const { run: handleSetCustomColor, flush } = useDebounceFn(
     (color: ColorLike) => {

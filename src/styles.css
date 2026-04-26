@@ -5,6 +5,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@plugin 'tailwind-scrollbar';
+@plugin '@tailwindcss/forms';
+
 @theme {
   --breakpoint-sm: 320px;
   --breakpoint-md: 600px;
@@ -161,7 +164,7 @@
   }
 
   * {
-    @apply border-border outline-ring/50;
+    @apply scrollbar-thin border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

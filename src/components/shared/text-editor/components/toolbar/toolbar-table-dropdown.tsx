@@ -95,12 +95,26 @@ const TableDropdownMenu: React.FC = () => {
                       )
                     }}
                   </form.Field>
-                  {/* <InputFieldControl type='number' name='rows' label={t('ns_common:editor.num_of_rows')} />
-										<InputFieldControl
-											type='number'
-											name='cols'
-											label={t('ns_common:editor.num_of_columns')}
-										/> */}
+                  <form.Field name="cols">
+                    {(field) => {
+                      const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                      return (
+                        <Field>
+                          <FieldLabel>Số cột</FieldLabel>
+                          <Input
+                            name={field.name}
+                            id={field.name}
+                            type="number"
+                            value={field.state.value}
+                            aria-invalid={isInvalid}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(+e.currentTarget.value)}
+                          />
+                        </Field>
+                      )
+                    }}
+                  </form.Field>
+
                   <Button type="submit" size="sm" className="gap-x-2">
                     <Icon name="CirclePlus" /> Tạo bảng
                   </Button>

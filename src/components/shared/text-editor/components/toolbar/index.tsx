@@ -1,9 +1,8 @@
+import { Tooltip } from '@/components/shared/tooltip'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-
-import { Tooltip } from '@/components/shared/tooltip'
 import { useEditorContext } from '../../context/editor-context'
 import { AlignmentDropdownMenu } from './toolbar-alignment-dropdown'
 import ToolbarColorPicker from './toolbar-color-picker'
@@ -197,7 +196,9 @@ const Toolbar: React.FC = () => {
             className={cn('aspect-square size-8', {
               'bg-accent text-accent-foreground': editor.isActive('taskList'),
             })}
-            onClick={() => editor.chain().focus().toggleTaskList().run()}
+            onClick={() => {
+              editor.chain().focus().toggleTaskList().run()
+            }}
           >
             <Icon name="ListTodo" size={18} />
           </Button>

@@ -92,7 +92,7 @@ export const StyleDropdownMenu: React.FC = () => {
             editor
               .chain()
               .focus()
-              .toggleHeading({ level: +value as HeadingLevel })
+              .setHeading({ level: +value as HeadingLevel })
               .run()
           }}
         >

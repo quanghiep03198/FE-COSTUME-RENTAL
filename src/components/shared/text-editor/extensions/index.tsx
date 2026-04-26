@@ -1,15 +1,10 @@
-// @ts-nocheck
-
 import { type Extension } from '@tiptap/core'
 import { Color } from '@tiptap/extension-color'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import Highlight from '@tiptap/extension-highlight'
 import { ListKit } from '@tiptap/extension-list'
 import Placeholder from '@tiptap/extension-placeholder'
-import { Table } from '@tiptap/extension-table'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
-import TableRow from '@tiptap/extension-table-row'
+import { TableKit } from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
 import { TextStyle } from '@tiptap/extension-text-style'
 import StarterKit from '@tiptap/starter-kit'
@@ -18,7 +13,7 @@ import { ImagePlaceholder } from './image-placeholder.extension'
 import { ImageExtension } from './image.extension'
 import { SearchAndReplace } from './search-and-replace.extension'
 
-export const editorExtensions: Extension[] = [
+export const editorExtensions = [
   StarterKit.configure({
     heading: {
       levels: [1, 2, 3],
@@ -85,7 +80,7 @@ export const editorExtensions: Extension[] = [
     },
   }),
   Placeholder.configure({
-    placeholder: 'hập nội dung ở đây...',
+    placeholder: 'Bắt đầu nhập nội dung ở đây...',
     showOnlyWhenEditable: true,
     emptyEditorClass:
       'before:h-0 before:pl-1 before:place-self-center before:float-left text-muted-foreground font-normal text-sm before:pointer-event-none before:content-[attr(data-placeholder)] [&:not(p)]:before:hidden',
@@ -94,36 +89,34 @@ export const editorExtensions: Extension[] = [
     types: ['heading', 'paragraph'],
   }),
   Gapcursor.configure(),
-  Table.configure({
-    resizable: true,
-    lastColumnResizable: false,
-    allowTableNodeSelection: true,
-    cellMinWidth: 80,
-    HTMLAttributes: {
-      class:
-        'm-0 w-full table-fixed overflow-hidden border rounded border-collapse [&.resize-cursor]:cursor-col-resize',
+  TableKit.configure({
+    table: {
+      resizable: true,
+      lastColumnResizable: false,
+      allowTableNodeSelection: true,
+      cellMinWidth: 80,
+      HTMLAttributes: {
+        class:
+          'm-0 w-full table-fixed overflow-hidden border rounded border-collapse [&.resize-cursor]:cursor-col-resize',
+      },
     },
-  }),
-  TableRow.configure(),
-  TableHeader.configure({
-    HTMLAttributes: {
-      class: 'border px-3 py-1 relative [&.selectedCell]:bg-secondary/50 dark:[&.selectedCell]:bg-secondary/25',
+    tableHeader: {
+      HTMLAttributes: {
+        class: 'border px-3 py-1 relative [&.selectedCell]:bg-secondary/50 dark:[&.selectedCell]:bg-secondary/25',
+      },
     },
-  }),
-  TableCell.configure({
-    HTMLAttributes: {
-      class:
-        'px-3 py-1 border [&.selectedCell]:bg-secondary/50 dark:[&.selectedCell]:bg-secondary/25 before:hidden align-top',
+    tableRow: {},
+    tableCell: {
+      HTMLAttributes: {
+        class:
+          'px-3 py-1 border [&.selectedCell]:bg-secondary/50 dark:[&.selectedCell]:bg-secondary/25 before:hidden align-top',
+      },
     },
   }),
   FontSize.configure(),
   TextStyle.configure(),
   Color.configure(),
-  Highlight.configure({
-    multicolor: true,
-  }).extend({
-    priority: 1000,
-  }),
+  Highlight.configure({ multicolor: true }).extend({ priority: 1000 }),
   SearchAndReplace.configure(),
   ImagePlaceholder.configure(),
   ImageExtension.configure({
@@ -176,4 +169,4 @@ export const editorExtensions: Extension[] = [
   // 		})
   // 	}
   // }),
-]
+] as Extension[]
