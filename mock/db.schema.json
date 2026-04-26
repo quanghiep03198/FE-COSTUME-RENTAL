@@ -37,7 +37,7 @@
       },
       "required": ["id", "is_active", "created_at"]
     },
-    "ImageMetaData": {
+    "ImageMetadata": {
       "type": "object",
       "properties": {
         "file_name": { "type": "string" },
@@ -152,13 +152,12 @@
     "ImageGallery": {
       "allOf": [
         { "$ref": "#/$defs/BaseEntity" },
-        { "$ref": "#/$defs/ImageMetaData" },
+        { "$ref": "#/$defs/ImageMetadata" },
         {
           "type": "object",
           "properties": {
-            "item_type": {
-              "type": "string",
-              "enum": ["COSTUME", "EQUIPMENT_PROPS"]
+            "category_id": {
+              "type": "integer"
             }
           }
         }
@@ -199,12 +198,19 @@
               "type": "array",
               "items": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] }
             },
+            "unit": {
+              "type": "string",
+              "enum": ["SET", "PIECE"]
+            },
             "gender": {
               "type": "string",
               "enum": ["MALE", "FEMALE", "UNISEX"]
             },
-            "image_id": {
-              "type": "integer"
+            "images": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
             },
             "rental_price_per_day": {
               "type": "integer",
@@ -219,7 +225,8 @@
               "items": { "type": "string" }
             }
           }
-        }
+        },
+        { "required": ["slug", "name", "category_id", "color", "sizes", "unit", "gender", "rental_price_per_day"] }
       ]
     },
     "EquipmentProps": {

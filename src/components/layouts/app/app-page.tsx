@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Separator } from '../../ui/separator'
-import { Typography, type TypographyProps } from '../../ui/typography'
+import { type TypographyProps } from '../../ui/typography'
 
 type PageTitleProps = React.PropsWithChildren &
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -18,19 +18,13 @@ export const PageHeader: React.FC<PageTitleProps> = ({ children, className, ref 
 )
 
 export const PageTitle: React.FC<TypographyProps> = ({ children, className }) => (
-  <Typography className={cn('col-start-1 text-left text-xl/relaxed font-semibold tracking-tight', className)}>
-    {children}
-  </Typography>
+  <div className={cn('col-start-1 text-left text-xl/relaxed font-semibold tracking-tight', className)}>{children}</div>
 )
 
 export const PageDescription: React.FC<TypographyProps> = ({ children, className }) => (
-  <Typography
-    variant="small"
-    color="muted"
-    className={cn('col-start-1 row-start-2 text-left text-sm/relaxed text-pretty', className)}
-  >
+  <div className={cn('text-muted-foreground col-start-1 row-start-2 text-left text-sm/relaxed text-pretty', className)}>
     {children}
-  </Typography>
+  </div>
 )
 
 export const PageAction: React.FC<React.ComponentProps<'div'>> = ({ children, className, ...props }) => {

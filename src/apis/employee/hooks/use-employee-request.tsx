@@ -1,6 +1,6 @@
 import { CommonActions } from '@/common/constants/enums'
 import { axiosClient } from '@/configs/axios.config'
-import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useRef } from 'react'
 import { toast } from 'sonner'
@@ -32,12 +32,11 @@ type TMutationFactory = {
     handler: (payload: TUpdateEmployeeValues & Pick<IEmployee, 'id'>) => Promise<AxiosResponse<any, any, {}>>
     message: string
   }
-  ['none']: { handler: AnonymousFunction; message?: never }
+  ['none']: { handler: MutationFunction<any, any>; message?: never }
 }
 
 export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
   const toastRef = useRef<string | number | null>(null)
-  const queryClient = useQueryClient()
 
   const mutationConfigFactory: TMutationFactory = {
     [CommonActions.CREATE]: {
@@ -59,7 +58,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
         }),
       message: 'Đã cập nhật thành công',
     },
-    ['none']: { handler: () => {} },
+    ['none']: { handler: () => Promise.resolve() },
   }
 
   const currentConfig = mutationConfigFactory[action]
@@ -68,7 +67,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
     meta: {
       invalidates: [[GET_EMPLOYEE_QUERY_KEY]],
     },
-    mutationFn: action !== 'none' ? currentConfig?.handler : () => {},
+    mutationFn: currentConfig.handler,
     onMutate: () => {
       toastRef.current = toast.loading('Đang xử lý ...')
     },

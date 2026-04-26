@@ -31,4 +31,4 @@ export const createEmployeeSchema = object({
 
 export type TCreateEmployeeSchema = typeof createEmployeeSchema
 
-export type TCreateEmployeeValues = Infer<typeof createEmployeeSchema>
+export type TCreateEmployeeValues = Infer<TCreateEmployeeSchema>

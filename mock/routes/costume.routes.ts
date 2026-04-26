@@ -6,14 +6,38 @@ import { generateUniqueSlug } from '../utils/slug-generator'
 export function registerCostumeRoutes(app: Application) {
   // * GET /costumes
   app.get('/api/costumes', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('costumes', req.query, res)
+    const db = getDb()
+    const result = queryCollection('costumes', req.query, {
+      transform: (record) => {
+        const category = db.get('categories').find({ id: record.category_id }).value()
+
+        const { category_id, ...recordWithoutCategoryId } = record
+
+        const images = queryCollection(
+          'images',
+          { 'id:in': record.images },
+          {
+            pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+          }
+        )
+
+        console.log('record', record)
+        return { ...recordWithoutCategoryId, images, category }
+      },
+    })
 
     return res.status(200).json(result)
   })
 
   // * GET /costumes/:id
   app.get('/api/costumes/:id', authMiddleware, (req: Request, res: Response) => {
-    const result = queryRecord('costumes', Number(req.params.id), req.query)
+    const result = queryRecord('costumes', Number(req.params.id), req.query, {
+      transform: (record) => {
+        const db = getDb()
+        const images = db.get('images').filter({ id: record.id, item_type: 'costumes' }).value()
+        return { ...record, images }
+      },
+    })
     if (!result) return res.status(404).json({ message: 'Costume not found' })
     return res.status(200).json(result)
   })

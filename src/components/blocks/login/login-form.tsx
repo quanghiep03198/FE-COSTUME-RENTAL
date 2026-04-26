@@ -24,10 +24,10 @@ const LoginForm = () => {
     onSubmit: async ({ value }) => {
       try {
         const { accessToken } = await axiosClient.post<any, TLoginResponse, TLoginValues>('/auth/login', value)
-        setCookieToken({ data: accessToken })
-        useAuthStore.getState().setAccessToken(accessToken)
+        await setCookieToken({ data: accessToken }) // Set cookie with server function
+        useAuthStore.getState().setAccessToken(accessToken) // Update client state
         toast.success('Đăng nhập thành công')
-        router.navigate({ to: '/statistics' })
+        router.invalidate().then(() => router.navigate({ to: '/statistics' }))
       } catch {
         toast.error('Tài khoản hoặc mật khẩu không chính xác')
       } finally {

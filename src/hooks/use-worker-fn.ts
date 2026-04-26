@@ -51,7 +51,7 @@ export function useWorkerFn<TArgs extends unknown[], TResult>(
   const execute = useCallback(
     async (...args: TArgs): Promise<TResult> => {
       setIsPending(true)
-      setIsError(true)
+      setIsError(false)
       try {
         return await new Promise((resolve, reject) => {
           if (!workerRef.current) {
@@ -71,8 +71,9 @@ export function useWorkerFn<TArgs extends unknown[], TResult>(
 
           workerRef.current.postMessage({ rawFunction, args })
         })
-      } catch {
+      } catch (error) {
         setIsError(true)
+        throw error
       } finally {
         setIsPending(false)
       }

@@ -5,4 +5,4 @@ export const updateUserSchema = createUserSchema.partial().omit({ employee_id: t
 
 export type TUpdateUserSchema = typeof updateUserSchema
 
-export type TUpdateUserValues = Infer<typeof updateUserSchema>
+export type TUpdateUserValues = Infer<TUpdateUserSchema>

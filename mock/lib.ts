@@ -1,5 +1,6 @@
-import type { Response, Router } from 'express'
+import type { Router } from 'express'
 import type { JsonServerRouter } from 'json-server'
+import { isNil } from 'lodash-es'
 
 // ============================================================
 // Query helpers
@@ -268,14 +269,35 @@ function applySort(records: any[], sort?: string, order?: string): any[] {
 }
 
 /** Paginate records, returns { data, total } and sets X-Total-Count header */
-function applyPagination(records: any[], page?: string, perPage?: string, res?: Response): any[] {
-  if (!page) return records
+function applyPagination(records: any[], page?: string, perPage?: string): Pagination<any> {
+  if (!page)
+    return {
+      hasNextPage: false,
+      hasPrevPage: false,
+      nextPage: null,
+      prevPage: null,
+      totalPages: 1,
+      totalDocs: records.length,
+      limit: records.length,
+      page: 1,
+      data: records,
+    }
   const total = records.length
   const p = Math.max(1, Number(page))
   const pp = Math.max(1, Number(perPage) || 10)
   const start = (p - 1) * pp
-  if (res) res.setHeader('X-Total-Count', total)
-  return records.slice(start, start + pp)
+
+  return {
+    hasNextPage: start + pp < total,
+    hasPrevPage: start > 0,
+    nextPage: start + pp < total ? p + 1 : null,
+    prevPage: start > 0 ? p - 1 : null,
+    totalPages: Math.ceil(total / pp),
+    totalDocs: total,
+    limit: pp,
+    page: p,
+    data: records.slice(start, start + pp),
+  }
 }
 
 /** Expand parent relations (e.g. _expand=employee → employeeId → employees) */
@@ -316,10 +338,9 @@ function applyEmbed(record: any, embedList: string[], parentCollection: string):
   return record
 }
 
-/** Strip sensitive fields from a record */
-function omitFields(record: any, fields: string[] = ['password']): any {
-  const copy = { ...record }
-  for (const f of fields) delete copy[f]
+function pickFileds(record: any, fields: string[] = Object.keys(record)): any {
+  const copy: any = {}
+  for (const f of fields) copy[f] = record[f]
   return copy
 }
 
@@ -327,8 +348,8 @@ function omitFields(record: any, fields: string[] = ['password']): any {
 function queryCollection(
   collection: string,
   query: QueryParams,
-  res: Response,
-  opts?: { omit?: string[]; transform?: (record: any) => any }
+  // res: Response,
+  opts?: { pick?: string[]; transform?: (record: any) => any }
 ) {
   const { _expand, _embed, _page, _per_page, _sort, _order, ...filters } = query
   const db = getDb()
@@ -336,18 +357,23 @@ function queryCollection(
   let records = db.get(collection).value() as any[]
   records = applyFilters(records, filters)
   records = applySort(records, _sort, _order)
-  records = applyPagination(records, _page, _per_page, res)
+  // records = applyPagination(records, _page, _per_page)
 
   const expandList = toList(_expand)
   const embedList = toList(_embed)
 
-  return records.map((record: any) => {
-    let r = omitFields(record, opts?.omit)
+  const data = records.map((record: any) => {
+    let r = record
+    r = pickFileds(r, opts?.pick)
     r = applyExpand(r, expandList)
     r = applyEmbed(r, embedList, collection)
     if (opts?.transform) r = opts.transform(r)
     return r
   })
+
+  if (isNil(_page) && isNil(_per_page)) return data
+
+  return applyPagination(data, _page, _per_page)
 }
 
 /** Full query pipeline for a single record route */
@@ -355,13 +381,13 @@ function queryRecord(
   collection: string,
   id: number,
   query: QueryParams,
-  opts?: { omit?: string[]; transform?: (record: any) => any }
+  opts?: { pick?: string[]; transform?: (record: any) => any }
 ): any | null {
   const db = getDb()
   const record = db.get(collection).find({ id }).value()
   if (!record) return null
 
-  let r = omitFields(record, opts?.omit)
+  let r = pickFileds(record, opts?.pick)
   r = applyExpand(r, toList(query._expand))
   r = applyEmbed(r, toList(query._embed), collection)
   if (opts?.transform) r = opts.transform(r)
@@ -377,8 +403,8 @@ export {
   bootstrap,
   evalOperator,
   getDb,
-  omitFields,
   parseFieldOperator,
+  pickFileds,
   queryCollection,
   queryRecord,
 }

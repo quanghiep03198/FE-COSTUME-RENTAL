@@ -2,7 +2,7 @@ import { Position, WorkStatus } from '@/apis/employee/constants'
 import { GET_EMPLOYEE_QUERY_KEY } from '@/apis/employee/hooks/use-employee-request'
 import { CommonActions } from '@/common/constants/enums'
 import { axiosClient } from '@/configs/axios.config'
-import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import type { AxiosResponse } from 'axios'
 import { useRef } from 'react'
@@ -37,7 +37,7 @@ type TMutateConfigFactory = {
     message: string
   }
   none: {
-    handler: AnonymousFunction
+    handler: MutationFunction<any, any>
     message?: string
   }
 }
@@ -60,7 +60,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
       message: 'Đã cập nhật thành công',
     },
     none: {
-      handler: () => {},
+      handler: () => Promise.resolve(),
     },
   }
 
@@ -69,7 +69,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
   const currentConfig = mutationConfigFactory[action]
 
   return useMutation({
-    mutationFn: action !== 'none' ? currentConfig?.handler : () => {},
+    mutationFn: currentConfig.handler,
     meta: {
       invalidates: [
         [GET_USERS_QUERY_KEY],

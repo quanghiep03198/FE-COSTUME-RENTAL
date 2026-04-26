@@ -22,3 +22,8 @@ export enum CommonActions {
   IMPORT = 'IMPORT',
   EXPORT = 'EXPORT',
 }
+
+export enum ItemType {
+  COSTUMES = 'COSTUME',
+  EQUIPMENT_PROPS = 'EQUIPMENT_PROPS',
+}

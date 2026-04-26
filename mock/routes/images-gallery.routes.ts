@@ -6,7 +6,7 @@ import { deleteUploadedFile, saveUploadedFile } from '../utils/file-upload'
 
 export function registerImageGalleryRoutes(app: Application) {
   // * GET /images-gallery/file/:fileName
-  app.get('/:folder/:fileName', (req: Request, res: Response) => {
+  app.get('/upload/:folder/:fileName', (req: Request, res: Response) => {
     const rawImageFolder = req.params.folder
     const rawFileName = req.params.fileName
     const fileName = Array.isArray(rawFileName) ? rawFileName[0] : rawFileName
@@ -31,7 +31,8 @@ export function registerImageGalleryRoutes(app: Application) {
 
   // * GET /images-gallery
   app.get('/api/images-gallery', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('images', req.query, res)
+    const result = queryCollection('images', req.query)
+    console.log('result', result)
     return res.status(200).json(result)
   })
 

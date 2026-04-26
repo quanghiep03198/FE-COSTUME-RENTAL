@@ -10,4 +10,4 @@ export const createUserSchema = object({
 
 export type TCreateUserSchema = typeof createUserSchema
 
-export type TCreateUserValues = Infer<typeof createUserSchema>
+export type TCreateUserValues = Infer<TCreateUserSchema>

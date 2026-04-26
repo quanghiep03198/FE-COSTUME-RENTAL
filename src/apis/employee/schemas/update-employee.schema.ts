@@ -5,4 +5,4 @@ export const updateEmployeeSchema = createEmployeeSchema.partial()
 
 export type TUpdateEmployeeSchema = typeof updateEmployeeSchema
 
-export type TUpdateEmployeeValues = Infer<typeof updateEmployeeSchema>
+export type TUpdateEmployeeValues = Infer<TUpdateEmployeeSchema>

@@ -7,7 +7,7 @@ import { authMiddleware } from '../middleware'
 export function registerEmployeeRoutes(app: Application) {
   // * GET /employees
   app.get('/api/employees', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('employees', req.query, res)
+    const result = queryCollection('employees', req.query)
     return res.status(200).json(result)
   })
 

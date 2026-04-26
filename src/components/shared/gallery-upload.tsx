@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/reui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Spinner } from '@/components/ui/spinner'
@@ -17,7 +17,7 @@ interface GalleryUploadProps {
   onFilesChange?: (files: FileWithPreview[]) => void
 }
 
-export function GallaryUpload({
+export function GalleryUpload({
   maxFiles = 10,
   maxSize = 5 * 1024 * 1024, // 5MB
   accept = 'image/*',
