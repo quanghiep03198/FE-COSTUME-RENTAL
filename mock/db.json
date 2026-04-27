@@ -319,6 +319,27 @@
     },
     {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjUzNiwiZXhwIjoxNzc3MjgyNTQ2fQ.OkB1TZcmp1ppbUzj5bvHC6wRr0bh_i6m-eZZ8m6s8Hk"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjYxNywiZXhwIjoxNzc3MjgyNjI3fQ.BZKmuEPG2FrA3qcv1Jm7zCECrU5ZJkEUKaN8FRPvnjM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjYxOCwiZXhwIjoxNzc3MjgyNjI4fQ.nNoQOTOe3srcAgdNu7TV3Id9rs-e9XHowGhWew2Tung"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjY4NCwiZXhwIjoxNzc3MjgyNjk0fQ.4IvuL3croD_lYgk_kmR-_fC8nMM2ESO4ZLWAGYemxIQ"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjcxMywiZXhwIjoxNzc3MjgyNzIzfQ.49mYvS3i_ZDrDHtNNCiJE75pHB78XviK3iIqj7XThT0"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjcyOCwiZXhwIjoxNzc3MjgyNzM4fQ.Yq07ZjBr_vZ641S5AQvB7pTQ58x36zYkd1oxNZ_BcuI"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4MjY4NSwiZXhwIjoxNzc3MjgyNjk1fQ.ngcWSOG6Gwbt4YeOUwTv9Ovcgf6bQ6rtQzcmdEE3WsQ"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzI4Mjc2MiwiZXhwIjoxNzc3MjgyNzcyfQ.Kpb8p-T8pMjtIjQ7xZx04y0m8Kd90mJ6keivO3jUy5s"
     }
   ],
   "warehouses": [],
@@ -491,6 +512,33 @@
       "created_at": "2026-04-27T08:55:20.167Z",
       "updated_at": "2026-04-27T09:02:55.089Z",
       "id": 2
+    },
+    {
+      "slug": "ao-tac-lua-do-3",
+      "name": "Áo tấc lụa đỏ",
+      "category_id": 1,
+      "color": "#fecaca",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "gender": "FEMALE",
+      "images": [
+        6
+      ],
+      "unit": "SET",
+      "rental_price_per_day": 200000,
+      "description": "<h1 class=\"font-bold !text-foreground\">Chi tiết sản phẩm</h1><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 160px;\"><colgroup><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Mẫu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Xuất xứ</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Chất liệu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><p class=\"my-1\"><br></p><h1 class=\"font-bold !text-foreground\">Bảng tư vấn Size</h1><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 320px;\"><colgroup><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Size</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Chiều cao</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Cân nặng</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Số đo</p></th></tr><tr><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><p class=\"my-1\"></p>",
+      "hashtags": [
+        "AoTacVietNam"
+      ],
+      "is_active": true,
+      "created_at": "2026-04-27T09:40:03.407Z",
+      "updated_at": null,
+      "id": 3
     }
   ],
   "equipment_props": [

@@ -104,15 +104,18 @@ const CostumeFormDialog: React.FC = () => {
       console.warn(formApi.state.errors)
       console.log({ ...value, description: editorRef.current?.getHTML() })
     },
-    onSubmit: ({ value }) =>
-      mutation.mutateAsync({
+    onSubmit: async ({ value }) => {
+      await mutation.mutateAsync({
         ...value,
         description: editorRef.current?.getHTML(),
         category_id: value.category_id.id,
         sizes: value.sizes.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => item.value),
-        uni: value.unit.value,
+        unit: value.unit.value,
         images: value.images?.map((img) => img.id),
-      }),
+      })
+      setAction('none')
+      setOpen(false)
+    },
     validators: { onSubmit: formSchemaRef.current as any },
   })
 
