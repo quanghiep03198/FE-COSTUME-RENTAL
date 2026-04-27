@@ -1,4 +1,4 @@
-import { getTokenFn, setServerTokenFn, setTokenFn } from '@/apis/auth/functions'
+import { getTokenFn, logOutFn, setTokenFn } from '@/apis/auth/functions'
 import { RequestHeaders } from '@/common/constants/enums'
 import env from '@/lib/utils'
 import { useAuthStore } from '@/stores/auth.store'
@@ -37,7 +37,7 @@ export class AxiosService {
     // * Instance request interceptor
     this.instance.interceptors.request.use(
       (config) => {
-        if (config.headers[RequestHeaders.AUTHORIZATION]) return config
+        // if (config.headers[RequestHeaders.AUTHORIZATION]) return config
         const accessToken = getTokenFn()
         if (!accessToken) return config
         config.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
@@ -74,7 +74,14 @@ export class AxiosService {
             originalRequest.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
             return this.instance(originalRequest)
           } catch (err) {
-            setTokenFn(null)
+            await axios.post(env('VITE_BASE_API_URL') + '/auth/logout', {
+              headers: {
+                [RequestHeaders.AUTHORIZATION]: originalRequest.headers[RequestHeaders.AUTHORIZATION],
+              },
+            })
+            await logOutFn()
+            useAuthStore.getState().resetCredentials()
+
             this.processQueue(err instanceof AxiosError ? err : new AxiosError('Token refresh failed'), null)
             throw err
           }
@@ -101,8 +108,7 @@ export class AxiosService {
       .then(async (response) => {
         const accessToken: string = response.data.accessToken
         if (!accessToken) throw new AxiosError('Cannot get access token')
-        useAuthStore.getState().setAccessToken(accessToken)
-        await setServerTokenFn({ data: accessToken }) // Đồng bộ token lên cookie để mock server có thể kiểm tra
+        await setTokenFn(accessToken) // Đồng bộ token lên cookie để mock server có thể kiểm tra
         return accessToken
       })
       .finally(() => {
@@ -113,7 +119,7 @@ export class AxiosService {
     return this.refreshTokenHandler
   }
 
-  private processQueue(error: AxiosError | null, accessToken: string | null) {
+  public processQueue(error: AxiosError | null, accessToken: string | null) {
     this.unauthorizedRequestHandlers.forEach((promise) => {
       if (error) {
         promise.reject(error)

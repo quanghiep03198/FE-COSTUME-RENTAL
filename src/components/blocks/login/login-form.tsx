@@ -27,7 +27,7 @@ const LoginForm = () => {
         await setCookieToken({ data: accessToken }) // Set cookie with server function
         useAuthStore.getState().setAccessToken(accessToken) // Update client state
         toast.success('Đăng nhập thành công')
-        router.invalidate().then(() => router.navigate({ to: '/statistics' }))
+        router.navigate({ to: '/statistics' })
       } catch {
         toast.error('Tài khoản hoặc mật khẩu không chính xác')
       } finally {

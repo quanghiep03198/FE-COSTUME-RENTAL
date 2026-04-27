@@ -7,8 +7,7 @@
 
 @plugin 'tailwind-scrollbar';
 @plugin '@tailwindcss/forms';
-
-@theme {
+@plugin '@tailwindcss/typography' @theme {
   --breakpoint-sm: 320px;
   --breakpoint-md: 600px;
   --breakpoint-lg: 920px;

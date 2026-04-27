@@ -55,74 +55,77 @@ const TableDropdownMenu: React.FC = () => {
               <Icon name="Table" />
             </Button>
           }
-        ></DropdownMenuTrigger>
+        />
       </Tooltip>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Tùy chọn bảng</DropdownMenuLabel>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Chèn bảng</DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent className="p-4">
-              <div className="grid gap-4">
-                <div className="space-y-2">
-                  <h4 className="text-base font-medium leading-none">Tùy chọn bảng</h4>
-                  <p className="text-sm text-muted-foreground">Chọn số số cột và hàng để tạo bảng</p>
+      <DropdownMenuContent align="end" className="w-fit">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Tùy chọn bảng</DropdownMenuLabel>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Chèn bảng</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className="p-4">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <h4 className="text-base font-medium leading-none">Tùy chọn bảng</h4>
+                    <p className="text-sm text-muted-foreground">Chọn số số cột và hàng để tạo bảng</p>
+                  </div>
+
+                  <form
+                    className="flex flex-col items-stretch gap-y-6"
+                    onSubmit={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      form.handleSubmit()
+                    }}
+                  >
+                    <form.Field name="rows">
+                      {(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (
+                          <Field>
+                            <FieldLabel>Số hàng</FieldLabel>
+                            <Input
+                              name={field.name}
+                              id={field.name}
+                              type="number"
+                              value={field.state.value}
+                              aria-invalid={isInvalid}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(+e.currentTarget.value)}
+                            />
+                          </Field>
+                        )
+                      }}
+                    </form.Field>
+                    <form.Field name="cols">
+                      {(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (
+                          <Field>
+                            <FieldLabel>Số cột</FieldLabel>
+                            <Input
+                              name={field.name}
+                              id={field.name}
+                              type="number"
+                              value={field.state.value}
+                              aria-invalid={isInvalid}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(+e.currentTarget.value)}
+                            />
+                          </Field>
+                        )
+                      }}
+                    </form.Field>
+
+                    <Button type="submit" size="sm" className="gap-x-2">
+                      <Icon name="CirclePlus" /> Tạo bảng
+                    </Button>
+                  </form>
                 </div>
-
-                <form
-                  className="flex flex-col items-stretch gap-y-6"
-                  onSubmit={(e) => {
-                    e.stopPropagation()
-                    form.handleSubmit()
-                  }}
-                >
-                  <form.Field name="rows">
-                    {(field) => {
-                      const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                      return (
-                        <Field>
-                          <FieldLabel>Số hàng</FieldLabel>
-                          <Input
-                            name={field.name}
-                            id={field.name}
-                            type="number"
-                            value={field.state.value}
-                            aria-invalid={isInvalid}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(+e.currentTarget.value)}
-                          />
-                        </Field>
-                      )
-                    }}
-                  </form.Field>
-                  <form.Field name="cols">
-                    {(field) => {
-                      const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                      return (
-                        <Field>
-                          <FieldLabel>Số cột</FieldLabel>
-                          <Input
-                            name={field.name}
-                            id={field.name}
-                            type="number"
-                            value={field.state.value}
-                            aria-invalid={isInvalid}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(+e.currentTarget.value)}
-                          />
-                        </Field>
-                      )
-                    }}
-                  </form.Field>
-
-                  <Button type="submit" size="sm" className="gap-x-2">
-                    <Icon name="CirclePlus" /> Tạo bảng
-                  </Button>
-                </form>
-              </div>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="gap-x-2" onClick={() => editor.chain().focus().addRowBefore().run()}>

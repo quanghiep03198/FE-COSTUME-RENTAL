@@ -32,7 +32,6 @@ export function registerImageGalleryRoutes(app: Application) {
   // * GET /images-gallery
   app.get('/api/images-gallery', authMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('images', req.query)
-    console.log('result', result)
     return res.status(200).json(result)
   })
 

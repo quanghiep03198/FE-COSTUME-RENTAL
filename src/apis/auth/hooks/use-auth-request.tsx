@@ -15,6 +15,7 @@ export const getAuthUserQueryOptions = () => {
   return queryOptions({
     queryKey: GET_PROFILE_QUERY_KEY,
     queryFn: async () => await axiosClient.get<unknown, IUser>('/auth/me'),
+    staleTime: 0,
   })
 }
 
@@ -44,12 +45,11 @@ export default function useAuth() {
       return toast.loading('Đang xử lý ...')
     },
     onSettled: async (_data, _error, _variable, context) => {
-      useAuthStore.getState().setAccessToken(null)
       useAuthStore.getState().resetCredentials()
       await logOut()
       queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
       queryClient.clear() // * clear cached queries
-      await router.invalidate().then(() => router.navigate({ to: '/login' }))
+      router.navigate({ to: '/login' })
       toast.success('Đăng nhập thành công', { id: context })
     },
   })

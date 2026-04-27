@@ -2,8 +2,10 @@ import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/component
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn, isServer } from '@/lib/utils'
 import { EditorContent, useEditor } from '@tiptap/react'
+import { useDeepCompareEffect } from 'ahooks'
 import { uniqueId } from 'lodash-es'
-import React, { useState, type RefCallback } from 'react'
+import React, { useImperativeHandle, useState, type RefCallback } from 'react'
+import isEqual from 'react-fast-compare'
 import BubbleMenu from './components/bubble-menu'
 import CommonContextMenuItems from './components/context-menu/common-context-menu-items'
 import LinkContextMenuItems from './components/context-menu/link-context-menu-items'
@@ -13,7 +15,7 @@ import { EditorContextProvider } from './context/editor-context'
 import { editorExtensions } from './extensions'
 
 export interface EditorProps {
-  onUpdate: (state: { value: string; isEmpty: boolean }) => unknown
+  onUpdate?: (state: { value: string; isEmpty: boolean }) => unknown
   id?: string
   ref?: React.RefObject<typeof EditorContent.prototype> | RefCallback<any>
   name?: string
@@ -45,7 +47,6 @@ export const Editor: React.FC<EditorProps> = ({
   disabled,
   name,
   height = 350,
-  onUpdate: handleUpdate,
 }) => {
   const [contextMenuType, setContextMenuType] = useState<keyof HTMLElementTagNameMap | null>(null)
 
@@ -64,14 +65,27 @@ export const Editor: React.FC<EditorProps> = ({
       enableCoreExtensions: true,
       editable: !disabled,
       immediatelyRender: !isServer,
-      onUpdate: ({ editor }) => {
-        if (typeof handleUpdate === 'function') {
-          handleUpdate({ value: editor.getHTML(), isEmpty: editor.isEmpty })
-        }
+      onTransaction: ({ transaction }) => {
+        console.debug(
+          'docChanged:',
+          transaction.docChanged,
+          'addToHistory:',
+          transaction.getMeta('addToHistory'),
+          'steps:',
+          transaction.steps.length,
+          'selectionSet:',
+          transaction.selectionSet
+        )
       },
     },
-    [defaultValue, disabled]
+    [disabled]
   )
+
+  useDeepCompareEffect(() => {
+    if (!editor || !defaultValue) return
+    if (isEqual(editor.getHTML(), defaultValue)) return // guard tránh loop
+    editor.commands.setContent(defaultValue)
+  }, [defaultValue]) // editor không cần trong dep vì stable ref
 
   const handleContextMenuOpen: React.MouseEventHandler<HTMLSpanElement> = (e) => {
     const target = e.target as typeof e.currentTarget
@@ -85,11 +99,19 @@ export const Editor: React.FC<EditorProps> = ({
       case Boolean(target.closest('img')):
         setContextMenuType('img')
         break
-
       default:
         setContextMenuType(null)
     }
   }
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getHTML: () => editor?.getHTML() ?? '',
+      isEmpty: () => editor?.isEmpty ?? true,
+    }),
+    [editor]
+  )
 
   return (
     <div
@@ -110,11 +132,11 @@ export const Editor: React.FC<EditorProps> = ({
                 controls={true}
                 content={defaultValue}
                 disabled={disabled}
-                ref={(e) => {
-                  if (!ref) return
-                  if (typeof ref === 'function') ref(e)
-                  else ref.current = e
-                }}
+                className={cn(
+                  '[&_*.tableWrapper>table]:w-full',
+                  'p-4 rounded-lg max-w-full max-h-full overflow-auto scrollbar-none border-none outline-none focus:outline-none focus:border-none min-h-[50vh] text-foreground bg-background',
+                  'prose prose-li:p-0 pr prose-p:text-sm prose-strong:text-[inherit]'
+                )}
               />
             </ScrollArea>
           </ContextMenuTrigger>

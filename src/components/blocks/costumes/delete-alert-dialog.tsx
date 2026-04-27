@@ -40,8 +40,8 @@ const DeleteAlertDialog: React.FC = () => {
           <AlertDialogCancel>Hủy</AlertDialogCancel>
           <AlertDialogAction
             disabled={isDeleting}
-            onClick={() =>
-              deleteCostume(currentCostumeIdRef.current!)
+            onClick={async () =>
+              await deleteCostume(currentCostumeIdRef.current!)
                 .then(() => {
                   setOpen(false)
                   toast.success('Xóa trang phục thành công')

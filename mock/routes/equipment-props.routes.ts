@@ -6,7 +6,7 @@ import { generateUniqueSlug } from '../utils/slug-generator'
 export function registerEquipmentPropsRoutes(app: Application) {
   // * GET /equipment-props
   app.get('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('equipment_props', req.query, res)
+    const result = queryCollection('equipment_props', req.query)
     return res.status(200).json(result)
   })
 
@@ -19,8 +19,17 @@ export function registerEquipmentPropsRoutes(app: Application) {
 
   // * POST /equipment-props
   app.post('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
-    const { name, category_id, rental_price_per_day, weight_kg, dimensions, is_fragile, description, image_id, tags } =
-      req.body
+    const {
+      name,
+      category_id,
+      rental_price_per_day,
+      weight_kg,
+      dimensions,
+      is_fragile,
+      description,
+      image_id,
+      hashtags,
+    } = req.body
 
     if (!name || !category_id || !rental_price_per_day) {
       return res.status(400).json({
@@ -41,7 +50,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
       is_fragile: is_fragile ?? false,
       description: description ?? null,
       image_id,
-      tags: Array.isArray(tags) ? tags : [],
+      hashtags: Array.isArray(hashtags) ? hashtags : [],
       is_active: true,
       created_at: new Date().toISOString(),
       updated_at: null,
@@ -68,8 +77,8 @@ export function registerEquipmentPropsRoutes(app: Application) {
       updateData.slug = generateUniqueSlug(updateData.name, 'equipment_props', db, id)
     }
 
-    if (updateData.tags && !Array.isArray(updateData.tags)) {
-      updateData.tags = [updateData.tags]
+    if (updateData.hashtags && !Array.isArray(updateData.hashtags)) {
+      updateData.hashtags = [updateData.hashtags]
     }
 
     const updated = db

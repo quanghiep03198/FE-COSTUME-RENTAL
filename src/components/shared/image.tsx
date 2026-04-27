@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Icon } from '../ui/icon'
 
 interface ImageProps extends React.ComponentProps<'img'> {
@@ -19,11 +19,26 @@ const FallbackIcon: React.FC<React.ComponentProps<'div'>> = ({ className, title,
 )
 
 const Image: React.FC<ImageProps> = ({ ref, src, alt = '', className, loading = 'lazy', ...props }) => {
-  if (!src) {
+  const localRef = useRef<HTMLImageElement>(null)
+  const resolvedRef = ref || localRef
+  const [isError, setIsError] = useState(false)
+
+  if (!src || isError) {
     return <FallbackIcon {...{ className, title: alt, ...props }} />
   }
 
-  return <img ref={ref} src={src} alt={alt} loading={loading} className={cn('object-cover', className)} {...props} />
+  return (
+    <img
+      ref={resolvedRef}
+      src={src}
+      alt={alt}
+      loading={loading}
+      className={cn('object-cover', className)}
+      onLoadedData={() => setIsError(false)}
+      onError={() => setIsError(true)}
+      {...props}
+    />
+  )
 }
 
 export default Image

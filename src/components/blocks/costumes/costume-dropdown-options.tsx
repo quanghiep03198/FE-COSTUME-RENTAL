@@ -21,7 +21,9 @@ const CostumeDropdownOptions: React.FC<CellContext<ICostume, any>> = ({ row }) =
         <DropdownMenuItem onClick={() => event$.emit({ action: CommonActions.UPDATE, payload: row })}>
           Chỉnh sửa
         </DropdownMenuItem>
-        <DropdownMenuItem>Xóa</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => event$.emit({ action: CommonActions.DELETE, payload: row.original.id })}>
+          Xóa
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

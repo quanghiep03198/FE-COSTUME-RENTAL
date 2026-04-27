@@ -44,8 +44,10 @@ const ImageDropdown: React.FC = () => {
             }
           />
         </Tooltip>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-fit">
           <DropdownMenuItem
+            role="button"
+            nativeButton={false}
             render={
               <Label
                 htmlFor="image-upload"
@@ -57,7 +59,7 @@ const ImageDropdown: React.FC = () => {
                 <Icon name="Upload" /> Chọn ảnh từ thiết bị
               </Label>
             }
-          ></DropdownMenuItem>
+          />
           <DropdownMenuItem
             className="gap-x-2"
             render={

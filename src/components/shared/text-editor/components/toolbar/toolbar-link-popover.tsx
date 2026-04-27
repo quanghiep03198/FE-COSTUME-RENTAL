@@ -12,7 +12,7 @@ import { useEditorContext } from '../../context/editor-context'
 
 const urlSchema = object({ url: string().url({ message: 'ns_common:editor.validations.invalid_url' }).optional() })
 
-type UrlSchema = Infer<typeof urlSchema>
+type UrlFormValue = Infer<typeof urlSchema>
 
 export const LinkPopover: React.FC = () => {
   const { editor } = useEditorContext()
@@ -20,11 +20,11 @@ export const LinkPopover: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm({
-    onSubmit: ({ value }) => handleInsertLink(value),
+    onSubmit: ({ value }: { value: UrlFormValue }) => handleInsertLink(value),
     validators: { onSubmit: urlSchema },
   })
 
-  const handleInsertLink = ({ url }: UrlSchema) => {
+  const handleInsertLink = ({ url }: UrlFormValue) => {
     if (!url) return
     // empty
     if (url === '') {
@@ -46,9 +46,9 @@ export const LinkPopover: React.FC = () => {
               <Icon name="Link" />
             </Button>
           }
-        ></PopoverTrigger>
+        />
       </Tooltip>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-96" align="end">
         <div className="grid gap-4">
           <div className="space-y-2">
             <Typography className="font-medium leading-none">Chèn liên kết</Typography>
@@ -58,7 +58,7 @@ export const LinkPopover: React.FC = () => {
           </div>
 
           <form
-            className="flex items-stretch gap-x-2"
+            className="flex items-end gap-x-2"
             onSubmit={(e) => {
               e.stopPropagation()
               e.preventDefault()
@@ -70,13 +70,14 @@ export const LinkPopover: React.FC = () => {
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field className="col-span-5">
-                    <FieldLabel htmlFor={field.name}>Tên trang phục</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>Liên kết</FieldLabel>
                     <Input
                       name={field.name}
                       id={field.name}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.currentTarget.value)}
-                      placeholder='Ví dụ: "Áo dài truyền thống"'
+                      placeholder="https://picsum.photos/"
+                      type="url"
                       aria-invalid={isInvalid}
                     />
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -84,9 +85,7 @@ export const LinkPopover: React.FC = () => {
                 )
               }}
             </form.Field>
-            <Button variant="default" size="sm">
-              Áp dụng
-            </Button>
+            <Button variant="default">Áp dụng</Button>
           </form>
         </div>
       </PopoverContent>

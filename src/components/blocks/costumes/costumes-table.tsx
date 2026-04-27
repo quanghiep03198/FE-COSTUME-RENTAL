@@ -87,7 +87,7 @@ const CostumeTable: React.FC = () => {
         cell: ({ getValue }) => {
           const hashtags = getValue()
           return (
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap gap-1">
               {hashtags?.map((tag) => (
                 <Badge key={tag} variant={'secondary'}>
                   <span className='before:content-["#"]'>{tag}</span>

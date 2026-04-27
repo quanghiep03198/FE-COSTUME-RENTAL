@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
+import { useEditorState } from '@tiptap/react'
 import { useEditorContext } from '../../context/editor-context'
 import { AlignmentDropdownMenu } from './toolbar-alignment-dropdown'
 import ToolbarColorPicker from './toolbar-color-picker'
@@ -15,6 +16,21 @@ import TableDropdownMenu from './toolbar-table-dropdown'
 
 const Toolbar: React.FC = () => {
   const { editor } = useEditorContext()
+
+  const editorState = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      isBold: editor.isActive('bold'),
+      isItalic: editor.isActive('italic'),
+      isBlockquote: editor.isActive('blockquote'),
+      isUnderline: editor.isActive('underline'),
+      isStrike: editor.isActive('strike'),
+      isCodeBlock: editor.isActive('codeBlock'),
+      isBulletList: editor.isActive('bulletList'),
+      isOrderedList: editor.isActive('orderedList'),
+      isTaskList: editor.isActive('taskList'),
+    }),
+  })
 
   return (
     <nav>
@@ -68,7 +84,7 @@ const Toolbar: React.FC = () => {
             variant="ghost"
             type="button"
             size="icon"
-            className={cn('aspect-square size-8', editor.isActive('bold') && 'bg-accent text-accent-foreground')}
+            className={cn('aspect-square size-8', editorState.isBold && 'bg-accent text-accent-foreground')}
             onClick={() => editor.chain().focus().toggleBold().run()}
           >
             <Icon name="Bold" />
@@ -82,7 +98,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('italic'),
+              'bg-accent text-accent-foreground': editorState.isItalic,
             })}
             onClick={() => editor.chain().focus().toggleItalic().run()}
           >
@@ -97,7 +113,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('blockquote'),
+              'bg-accent text-accent-foreground': editorState.isBlockquote,
             })}
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
           >
@@ -112,7 +128,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('underline'),
+              'bg-accent text-accent-foreground': editorState.isUnderline,
             })}
             onClick={() => editor.commands.toggleUnderline()}
           >
@@ -127,7 +143,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('underline'),
+              'bg-accent text-accent-foreground': editorState.isCodeBlock,
             })}
             onClick={() => editor.commands.toggleCodeBlock()}
           >
@@ -142,7 +158,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('strike'),
+              'bg-accent text-accent-foreground': editorState.isStrike,
             })}
             onClick={() => editor.chain().focus().toggleStrike().run()}
           >
@@ -165,7 +181,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('orderedList'),
+              'bg-accent text-accent-foreground': editorState.isOrderedList,
             })}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
           >
@@ -180,7 +196,7 @@ const Toolbar: React.FC = () => {
             size="icon"
             type="button"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('bulletList'),
+              'bg-accent text-accent-foreground': editorState.isBulletList,
             })}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
@@ -194,7 +210,7 @@ const Toolbar: React.FC = () => {
             type="button"
             size="icon"
             className={cn('aspect-square size-8', {
-              'bg-accent text-accent-foreground': editor.isActive('taskList'),
+              'bg-accent text-accent-foreground': editorState.isTaskList,
             })}
             onClick={() => {
               editor.chain().focus().toggleTaskList().run()

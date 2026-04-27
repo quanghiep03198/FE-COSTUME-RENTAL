@@ -1,6 +1,3 @@
-import { type Level as HeadingLevel } from '@tiptap/extension-heading'
-import React, { useMemo } from 'react'
-
 import { Tooltip } from '@/components/shared/tooltip'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,6 +8,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Icon, type IconProps } from '@/components/ui/icon'
+import { type Level as HeadingLevel } from '@tiptap/extension-heading'
+import { useEditorState } from '@tiptap/react'
+import React, { useMemo } from 'react'
 import { useEditorContext } from '../../context/editor-context'
 
 type Level = 0 | HeadingLevel
@@ -19,21 +19,30 @@ type BlockTypeItem = { icon: IconProps['name']; label: string; value: Level }
 export const StyleDropdownMenu: React.FC = () => {
   const { editor } = useEditorContext()
 
+  const editorState = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      isHeading1: editor.isActive('heading', { level: 1 }),
+      isHeading2: editor.isActive('heading', { level: 2 }),
+      isHeading3: editor.isActive('heading', { level: 3 }),
+    }),
+  })
+
   const getCurrentStyle = ((): BlockTypeItem => {
     switch (true) {
-      case editor.isActive('heading', { level: 1 }):
+      case editorState.isHeading1:
         return {
           label: 'Tiêu đề 1',
           value: 1,
           icon: 'Heading1',
         }
-      case editor.isActive('heading', { level: 2 }):
+      case editorState.isHeading2:
         return {
           label: 'Tiêu đề 2',
           value: 2,
           icon: 'Heading2',
         }
-      case editor.isActive('heading', { level: 3 }):
+      case editorState.isHeading3:
         return {
           label: 'Tiêu đề 3',
           value: 3,
@@ -79,9 +88,9 @@ export const StyleDropdownMenu: React.FC = () => {
               <Icon name={getCurrentStyle.icon} /> {getCurrentStyle.label}
             </Button>
           }
-        ></DropdownMenuTrigger>
+        />
       </Tooltip>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="w-fit" align="center">
         <DropdownMenuRadioGroup
           value={getCurrentStyle.value.toString()}
           onValueChange={(value) => {

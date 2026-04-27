@@ -1,15 +1,21 @@
 import { createFormData, MULTIPART_HEADER } from '@/common/helpers/form-data'
 import { axiosClient } from '@/configs/axios.config'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import type { IImage } from '../types'
 
 export const GET_IMAGES_QUERY_KEY = 'images' as const
 
-export const useGetImagesQuery = () => {
-  return useQuery({
+export const getImagesQueryOptions = () => {
+  return queryOptions({
     queryKey: [GET_IMAGES_QUERY_KEY],
-    queryFn: async () => await axiosClient.get<unknown, IImage[]>('/images-gallery'),
+    staleTime: 0,
+    queryFn: async () =>
+      await axiosClient.get<unknown, IImage[]>('/images-gallery', { params: { _expand: 'category' } }),
   })
+}
+
+export const useGetImagesQuery = () => {
+  return useQuery(getImagesQueryOptions())
 }
 
 export const useUploadImagesMutation = () => {

@@ -7,7 +7,7 @@ import type { TCreateCostumeValues } from '../schemas/create-costume.schema'
 import type { TUpdateCostumeValues } from '../schemas/update-costume.schema'
 import type { ICostume } from '../types'
 
-export const GET_COSTUMES_QUERY_KEY = ['costumes']
+export const GET_COSTUMES_QUERY_KEY = 'costumes' as const
 
 export const getCostumesQueryOptions = () => {
   return queryOptions({
@@ -38,11 +38,11 @@ type TMutationConfigFactory = {
 export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
   const mutationConfigFactory: TMutationConfigFactory = {
     [CommonActions.CREATE]: {
-      handler: async (data) => await axiosClient.post('/categories', data),
+      handler: async (data: TCreateCostumeValues) => await axiosClient.post('/costumes', data),
       message: 'Thêm mới danh mục thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...data }) => await axiosClient.patch(`/categories/${id}`, data),
+      handler: async ({ id, ...data }: TUpdateCostumeValues) => await axiosClient.patch(`/costumes/${id}`, data),
       message: 'Cập nhật danh mục thành công',
     },
     none: {
@@ -54,7 +54,7 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
 
   return useMutation({
     meta: {
-      invalidates: [GET_COSTUMES_QUERY_KEY],
+      invalidates: [[GET_COSTUMES_QUERY_KEY]],
     },
     mutationFn: currentConfig.handler,
     onSuccess: () => {
@@ -71,9 +71,9 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
 export const useDeleteCostumeMutation = () => {
   return useMutation({
     meta: {
-      invalidates: [GET_COSTUMES_QUERY_KEY],
+      invalidates: [[GET_COSTUMES_QUERY_KEY]],
     },
-    mutationFn: async (id: number) => await axiosClient.delete(`/costume/${id}`),
+    mutationFn: async (id: number) => await axiosClient.delete(`/costumes/${id}`, { params: { permanantly: true } }),
     onSuccess: () => {
       toast.success('Xóa danh mục thành công')
     },

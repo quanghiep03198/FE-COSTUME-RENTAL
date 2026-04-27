@@ -18,7 +18,7 @@ const CostumeColorPlate: React.FC<CostumeColorPlateProps> = ({ value, onValueCha
         style={{ backgroundColor: value }}
         className={buttonVariants({
           variant: 'outline',
-          className: 'aria-invalid:border-destructive w-auto!',
+          className: 'aria-invalid:border-destructive w-auto! ring-1 ring-offset-2',
           size: 'icon',
         })}
       />

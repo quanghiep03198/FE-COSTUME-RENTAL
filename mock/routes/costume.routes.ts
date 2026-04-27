@@ -21,7 +21,6 @@ export function registerCostumeRoutes(app: Application) {
           }
         )
 
-        console.log('record', record)
         return { ...recordWithoutCategoryId, images, category }
       },
     })
@@ -44,7 +43,8 @@ export function registerCostumeRoutes(app: Application) {
 
   // * POST /costumes
   app.post('/api/costumes', authMiddleware, (req: Request, res: Response) => {
-    const { name, category_id, sizes, gender, image_id, rental_price_per_day, description, tags, color } = req.body
+    const { name, category_id, sizes, gender, images, rental_price_per_day, unit, description, hashtags, color } =
+      req.body
 
     if (!name || !category_id || !sizes || !gender || !rental_price_per_day) {
       return res.status(400).json({
@@ -68,10 +68,11 @@ export function registerCostumeRoutes(app: Application) {
       color: color ?? null,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
       gender,
-      image_id,
+      images,
+      unit,
       rental_price_per_day,
       description: description ?? null,
-      tags: Array.isArray(tags) ? tags : [],
+      hashtags: Array.isArray(hashtags) ? hashtags : [],
       is_active: true,
       created_at: new Date().toISOString(),
       updated_at: null,
@@ -108,8 +109,8 @@ export function registerCostumeRoutes(app: Application) {
     if (updateData.sizes && !Array.isArray(updateData.sizes)) {
       updateData.sizes = [updateData.sizes]
     }
-    if (updateData.tags && !Array.isArray(updateData.tags)) {
-      updateData.tags = [updateData.tags]
+    if (updateData.hashtags && !Array.isArray(updateData.hashtags)) {
+      updateData.hashtags = [updateData.hashtags]
     }
 
     const updated = db

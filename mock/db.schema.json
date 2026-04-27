@@ -219,7 +219,7 @@
             "description": {
               "type": "string"
             },
-            "tags": {
+            "hashtags": {
               "type": "array",
               "uniqueItems": true,
               "items": { "type": "string" }
@@ -253,7 +253,7 @@
             "is_fragile": { "type": "boolean" },
             "description": { "type": "string" },
             "image_id": { "type": "integer" },
-            "tags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+            "hashtags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
           }
         }
       ]

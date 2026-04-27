@@ -1,8 +1,9 @@
-import useAuth from '@/apis/auth/hooks/use-auth-request'
+import { getServerTokenFn } from '@/apis/auth/functions'
 import { guestMiddleware } from '@/apis/auth/middlewares/auth.middleware'
 import Login from '@/components/blocks/login'
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useServerFn } from '@tanstack/react-start'
+import { useAsyncEffect } from 'ahooks'
 
 export const Route = createFileRoute('/login')({
   component: Page,
@@ -12,12 +13,14 @@ export const Route = createFileRoute('/login')({
 })
 
 function Page() {
-  const { isAuthenticated } = useAuth()
+  const getServerToken = useServerFn(getServerTokenFn)
+  // const { isAuthenticated } = useAuth()
   const navigate = Route.useNavigate()
 
-  useEffect(() => {
-    if (isAuthenticated) navigate({ to: '/statistics' })
-  }, [isAuthenticated])
+  useAsyncEffect(async () => {
+    const token = await getServerToken()
+    if (token) navigate({ to: '/statistics' })
+  }, [])
 
   return <Login />
 }

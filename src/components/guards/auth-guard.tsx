@@ -1,22 +1,31 @@
+import { getServerTokenFn } from '@/apis/auth/functions'
 import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
-import { useHydrated, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
+import { useServerFn } from '@tanstack/react-start'
+import { useAsyncEffect } from 'ahooks'
 import { useEffect } from 'react'
 
 const AuthGuard: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { isAuthenticated, setProfile } = useAuth()
+  const { accessToken, setProfile } = useAuth()
   const { data } = useGetAuthUserQuery()
   const router = useRouter()
-  const hyderated = useHydrated()
+  const getServerToken = useServerFn(getServerTokenFn)
+  const { setAccessToken } = useAuth()
+
+  useAsyncEffect(async () => {
+    const token = await getServerToken()
+    console.log('[auth-guard.tsx] token', token)
+    setAccessToken(token!)
+  }, [])
 
   useEffect(() => {
     if (!data) return
-    setProfile(data.user)
+    setProfile(data)
   }, [data])
 
   useEffect(() => {
-    if (!hyderated) return
-    if (!isAuthenticated) router.invalidate().finally(() => router.navigate({ to: '/login' }))
-  }, [isAuthenticated, hyderated])
+    if (!accessToken) router.invalidate().finally(() => router.navigate({ to: '/login' }))
+  }, [accessToken])
 
   return children
 }

@@ -25,6 +25,7 @@ const storeInitializer: StateCreator<IAuthStoreStates, []> = (set, get) => ({
   },
   setAccessToken: (accessToken) => {
     const state = get()
+    console.log('Set token in Zustand store')
     set({ ...state, accessToken })
   },
   resetCredentials: () => {

@@ -44,14 +44,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
       description:
         'Quản lý kho trang phục: thêm, sửa, xóa trang phục, phân loại theo loại, kích cỡ, màu sắc và tình trạng để vận hành hiệu quả.',
     },
-    {
-      title: 'Bảo trì',
-      url: '/maintenance',
-      icon: 'Wrench',
-      authorizedRoles: [UserRole.ADMIN, UserRole.USER],
-      description:
-        'Quản lý bảo trì trang phục và đạo cụ: theo dõi tình trạng, lên lịch bảo trì định kỳ và xử lý sự cố để đảm bảo chất lượng và độ bền.',
-    },
+
     {
       title: 'Mượn/trả nội bộ',
       url: '/internal-borrowing',

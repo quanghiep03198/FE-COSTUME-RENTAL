@@ -18,7 +18,6 @@ export const getCurrentUserFn = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
   .handler(({ context }) => {
     try {
-      console.log('context', context)
       return context
     } catch (error) {
       console.error(error)
@@ -52,6 +51,10 @@ export const setTokenFn = createIsomorphicFn()
     if (typeof token === 'string') setCookie('accessToken', token, cookieOptions)
     else setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
   })
+
+export const getServerTokenFn = createServerFn({ method: 'GET' }).handler(() => {
+  return getCookie('accessToken')
+})
 
 export const setServerTokenFn = createServerFn({ method: 'POST' })
   .inputValidator(z.string().nonempty())

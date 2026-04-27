@@ -96,6 +96,7 @@ export const editorExtensions = [
       allowTableNodeSelection: true,
       cellMinWidth: 80,
       HTMLAttributes: {
+        style: 'width: 100%',
         class:
           'm-0 w-full table-fixed overflow-hidden border rounded border-collapse [&.resize-cursor]:cursor-col-resize',
       },
