@@ -40,11 +40,13 @@ export const queryClient = new QueryClient({
 
 // Only persist on client side — SSR hydration is handled by TanStack Start
 if (typeof window !== 'undefined') {
+  // * Sharing states between multiple tabs
   broadcastQueryClient({
     queryClient: queryClient as unknown as Parameter<typeof broadcastQueryClient>['queryClient'],
     broadcastChannel: 'costume-rental', // Optional: defaults to 'react-query'
   })
 
+  // * Persisting cache to localstorage
   const asyncLocalStoragePersister = createAsyncStoragePersister({
     storage: window.localStorage,
     key: GlobalConfig.QUERY_CLIENT_CACHE_STORAGE_KEY,
