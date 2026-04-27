@@ -6,13 +6,36 @@ import { generateUniqueSlug } from '../utils/slug-generator'
 export function registerEquipmentPropsRoutes(app: Application) {
   // * GET /equipment-props
   app.get('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('equipment_props', req.query)
+    const result = queryCollection('equipment_props', req.query, {
+      transform: (record) => {
+        const db = getDb()
+        const category = db.get('categories').find({ id: record.category_id }).value()
+
+        const { category_id, ...recordWithoutCategoryId } = record
+
+        const images = queryCollection(
+          'images',
+          { 'id:in': record.images },
+          {
+            pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+          }
+        )
+
+        return { ...recordWithoutCategoryId, images, category }
+      },
+    })
     return res.status(200).json(result)
   })
 
   // * GET /equipment-props/:id
   app.get('/api/equipment-props/:id', authMiddleware, (req: Request, res: Response) => {
-    const result = queryRecord('equipment_props', Number(req.params.id), req.query)
+    const result = queryRecord('equipment_props', Number(req.params.id), req.query, {
+      transform: (record) => {
+        const db = getDb()
+        const images = db.get('images').filter({ id: record.id, item_type: 'EQUIPMENT_PROPS' }).value()
+        return { ...record, images }
+      },
+    })
     if (!result) return res.status(404).json({ message: 'Equipment props not found' })
     return res.status(200).json(result)
   })
@@ -27,7 +50,8 @@ export function registerEquipmentPropsRoutes(app: Application) {
       dimensions,
       is_fragile,
       description,
-      image_id,
+      images,
+      unit,
       hashtags,
     } = req.body
 
@@ -49,7 +73,8 @@ export function registerEquipmentPropsRoutes(app: Application) {
       dimensions: dimensions ?? null,
       is_fragile: is_fragile ?? false,
       description: description ?? null,
-      image_id,
+      images,
+      unit,
       hashtags: Array.isArray(hashtags) ? hashtags : [],
       is_active: true,
       created_at: new Date().toISOString(),

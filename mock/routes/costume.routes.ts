@@ -33,7 +33,7 @@ export function registerCostumeRoutes(app: Application) {
     const result = queryRecord('costumes', Number(req.params.id), req.query, {
       transform: (record) => {
         const db = getDb()
-        const images = db.get('images').filter({ id: record.id, item_type: 'costumes' }).value()
+        const images = db.get('images').filter({ id: record.id, item_type: 'COSTUME' }).value()
         return { ...record, images }
       },
     })
@@ -129,7 +129,7 @@ export function registerCostumeRoutes(app: Application) {
 
     const existing = db.get('costumes').find({ id }).value()
     if (!existing) {
-      return res.status(404).json({ message: 'Costume not found' })
+      return res.status(404).json({ message: 'Trang phục không tồn tại' })
     }
 
     if (req.query.permanantly && JSON.parse(req.query.permanantly as string)) {

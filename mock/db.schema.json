@@ -240,19 +240,14 @@
             "name": { "type": "string" },
             "slug": { "type": "string" },
             "category_id": { "type": "integer" },
-            "rental_price_per_day": { "type": "integer" },
-            "weight_kg": { "type": "number" },
-            "dimensions": {
-              "type": ["object", "null"],
-              "properties": {
-                "width_cm": { "type": "number" },
-                "height_cm": { "type": "number" },
-                "depth_cm": { "type": "number" }
+            "unit": { "type": "string" },
+            "description": { "type": "string" },
+            "images": {
+              "type": "array",
+              "items": {
+                "type": "integer"
               }
             },
-            "is_fragile": { "type": "boolean" },
-            "description": { "type": "string" },
-            "image_id": { "type": "integer" },
             "hashtags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
           }
         }

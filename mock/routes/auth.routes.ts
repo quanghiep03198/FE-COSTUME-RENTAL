@@ -6,7 +6,7 @@ import { router } from '../app'
 import { authMiddleware } from '../middleware'
 
 const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRES_IN = '10s'
+const JWT_EXPIRES_IN = '7d'
 
 const cookieOptions = {
   httpOnly: true,
