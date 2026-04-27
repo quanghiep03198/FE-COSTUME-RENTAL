@@ -9,12 +9,12 @@ import {
 import { PageEventProvider } from '@/contexts/event-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import tw from 'tailwind-styled-components'
-import CostumeFormDialog from './costume-form-dialog'
-import CostumeFormDialogTrigger from './costume-form-dialog-trigger'
-import CostumeTable from './costumes-table'
 import DeleteAlertDialog from './delete-alert-dialog'
+import CostumeFormDialog from './equipment-props-form-dialog'
+import EquipmentPropsFormDialogTrigger from './equipment-props-form-dialog-trigger'
+import EquipmentPropsTable from './equipment-props-table'
 
-const CostumePage: React.FC = () => {
+const EquipmentPropsPage: React.FC = () => {
   const { title, description } = usePageHelperText('main')
 
   return (
@@ -24,12 +24,12 @@ const CostumePage: React.FC = () => {
           <PageTitle>{title}</PageTitle>
           <PageDescription>{description}</PageDescription>
           <PageAction>
-            <CostumeFormDialogTrigger />
+            <EquipmentPropsFormDialogTrigger />
           </PageAction>
         </PageHeader>
         <PageSeparator />
         <PageContent>
-          <CostumeTable />
+          <EquipmentPropsTable />
         </PageContent>
       </PageWrapper>
       <CostumeFormDialog />
@@ -40,4 +40,4 @@ const CostumePage: React.FC = () => {
 
 const PageContent: React.FC<React.ComponentProps<'section'>> = tw.section`flex-1`
 
-export default CostumePage
+export default EquipmentPropsPage

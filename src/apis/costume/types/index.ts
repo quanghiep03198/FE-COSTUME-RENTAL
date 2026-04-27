@@ -1,6 +1,6 @@
 import type { ICategory } from '@/apis/category/types'
 import type { IImage } from '@/apis/image/types'
-import type { CostumeGender, CostumeUnit } from '../constants'
+import type { CostumeGender, CostumeSize, CostumeUnit } from '../constants'
 
 export type TCostumeSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL'
 
@@ -10,7 +10,7 @@ export interface ICostume extends IBaseEntity {
   category_id: number
   category: ICategory
   color: string
-  sizes: Array<TCostumeSize>
+  sizes: Array<CostumeSize>
   unit: CostumeUnit
   gender: CostumeGender
   images: Array<IImage>

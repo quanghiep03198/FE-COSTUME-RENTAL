@@ -1,29 +1,83 @@
 import { useGetImagesQuery } from '@/apis/image/hooks/use-image-request'
 import type { IImage } from '@/apis/image/types'
-import type { ItemType } from '@/common/constants/enums'
+import { ItemType } from '@/common/constants/enums'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { GalleryUpload } from '@/components/shared/gallery-upload'
 import Image from '@/components/shared/image'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import { groupBy } from 'lodash-es'
 import { ImageIcon } from 'lucide-react'
 import type React from 'react'
+import { useState } from 'react'
 
-type TImagesGalleryProps = { type: 'any' | ItemType; selected?: IImage[]; onSelect?: (value: IImage[]) => any }
+type TImagesGalleryProps = {
+  type: 'any' | ItemType
+  selected?: IImage[]
+  onSelect?: (value: IImage[]) => any
+} & React.ComponentProps<'div'>
 
-const ImagesGallary: React.FC<TImagesGalleryProps> = ({ selected, onSelect, type = 'any' }) => {
+export const IMAGE_SELECTION_SUBMIT_BTN_ID = 'image-select-submit-btn'
+
+const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect }) => {
   const { data: images, isLoading } = useGetImagesQuery()
+  const [selectedImages, setSelectedImages] = useState<IImage[]>(selected ?? [])
 
-  console.log(images)
+  return (
+    <>
+      <Tabs defaultValue={type}>
+        <TabsList variant="line">
+          <TabsTrigger value={ItemType.COSTUMES}>Trang Phục</TabsTrigger>
+          <TabsTrigger value={ItemType.EQUIPMENT_PROPS}>Đạo Cụ</TabsTrigger>
+        </TabsList>
+        <TabsContent value={ItemType.COSTUMES} className="py-6">
+          <ImageList
+            data={images ?? []}
+            isLoading={isLoading}
+            selected={selectedImages}
+            onSelect={setSelectedImages}
+            type={ItemType.COSTUMES}
+          />
+        </TabsContent>
+        <TabsContent value={ItemType.EQUIPMENT_PROPS} className="py-6">
+          <ImageList
+            data={images ?? []}
+            isLoading={isLoading}
+            selected={selectedImages}
+            onSelect={setSelectedImages}
+            type={ItemType.EQUIPMENT_PROPS}
+          />
+        </TabsContent>
+      </Tabs>
 
+      <button
+        id={IMAGE_SELECTION_SUBMIT_BTN_ID}
+        className="hidden"
+        onClick={() => {
+          if (typeof onSelect === 'function') onSelect(selectedImages)
+        }}
+      />
+    </>
+  )
+}
+
+type TImageListProps = {
+  data: IImage[]
+  type: ItemType
+  isLoading: boolean
+  selected: IImage[]
+  onSelect: React.Dispatch<React.SetStateAction<IImage[]>>
+}
+
+const ImageList: React.FC<TImageListProps> = ({ data, isLoading, type, selected, onSelect }) => {
   return (
     <div className="space-y-10">
       {isLoading ? (
         Array.from({ length: 12 }, (_, i) => <Skeleton key={i} className="max-w-sm aspect-square" />)
-      ) : !Array.isArray(images) || images.length === 0 ? (
+      ) : !Array.isArray(data) || data.length === 0 ? (
         <Empty>
           <EmptyMedia variant="icon">
             <ImageIcon />
@@ -43,10 +97,7 @@ const ImagesGallary: React.FC<TImagesGalleryProps> = ({ selected, onSelect, type
       ) : (
         Object.entries(
           groupBy(
-            images.filter((item) => {
-              if (type === 'any') return true
-              return item.category?.type === type
-            }),
+            data.filter((item) => item.category?.type === type),
             (img) => `${img.category_id}.${img?.category?.name}`
           )
         ).map(([category, images]) => (
@@ -63,8 +114,8 @@ const ImagesGallary: React.FC<TImagesGalleryProps> = ({ selected, onSelect, type
                     checked={Array.isArray(selected) && selected.some((img) => img.id === image.id)}
                     onCheckedChange={(checked) => {
                       if (typeof onSelect === 'function') {
-                        if (checked) onSelect([...selected!, image])
-                        else onSelect(selected!?.filter((img) => img.id !== image.id))
+                        if (checked) onSelect((prev) => [...prev!, image])
+                        else onSelect((prev) => prev!?.filter((img) => img.id !== image.id))
                       }
                     }}
                   />

@@ -39,11 +39,11 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
   const mutationConfigFactory: TMutationConfigFactory = {
     [CommonActions.CREATE]: {
       handler: async (data: TCreateCostumeValues) => await axiosClient.post('/costumes', data),
-      message: 'Thêm mới danh mục thành công',
+      message: 'Thêm mới trang phục thành công',
     },
     [CommonActions.UPDATE]: {
       handler: async ({ id, ...data }: TUpdateCostumeValues) => await axiosClient.patch(`/costumes/${id}`, data),
-      message: 'Cập nhật danh mục thành công',
+      message: 'Cập nhật trang phục thành công',
     },
     none: {
       handler: () => Promise.resolve(),
@@ -75,7 +75,7 @@ export const useDeleteCostumeMutation = () => {
     },
     mutationFn: async (id: number) => await axiosClient.delete(`/costumes/${id}`, { params: { permanantly: true } }),
     onSuccess: () => {
-      toast.success('Xóa danh mục thành công')
+      toast.success('Xóa trang phục thành công')
     },
     onError: () => {
       toast.error('Có lỗi xảy ra, vui lòng thử lại')

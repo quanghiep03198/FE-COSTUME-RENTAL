@@ -8,7 +8,6 @@ export const GET_IMAGES_QUERY_KEY = 'images' as const
 export const getImagesQueryOptions = () => {
   return queryOptions({
     queryKey: [GET_IMAGES_QUERY_KEY],
-    staleTime: 0,
     queryFn: async () =>
       await axiosClient.get<unknown, IImage[]>('/images-gallery', { params: { _expand: 'category' } }),
   })

@@ -1,27 +1,26 @@
 export const DEFAULT_COSTUME_DESCRIPTION: string = /* html */ `
-   <h1>Chi tiết sản phẩm</h1>
+   <h3>Chi tiết sản phẩm</h3>
    <table>
       <colgroup>
-         <col style='min-width: 200px'/>
-         <col style='min-width: auto'/>
+         <col style='width: 250px'/>
+         <col style='min-width: 250px'/>
       </colgroup>
       <tbody>
          <tr>
-            <th>Mẫu</th>
+            <th colwidth='250'>Mẫu</th>
             <td></td>
          </tr>
          <tr>
-            <th>Xuất xứ</th>
+            <th colwidth='250'>Xuất xứ</th>
             <td></td>
          </tr>
          <tr>
-            <th>Chất liệu</th>
+            <th colwidth='250'>Chất liệu</th>
             <td></td>
          </tr>
       </tbody>
    </table>
-   <br>
-   <h1>Bảng tư vấn Size</h1>
+   <h3>Bảng tư vấn Size</h3>
    <table>
       <thead>
          <tr>

@@ -1,6 +1,5 @@
-import { COSTUME_GENDER_LABEL_MAP, COSTUME_UNIT_LABEL_MAP } from '@/apis/costume/constants'
-import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
-import type { ICostume } from '@/apis/costume/types'
+import { useGetPropsQuery } from '@/apis/equipment-props/hooks/use-equipment-props-request'
+import type { IEquipmentProps } from '@/apis/equipment-props/types'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
@@ -9,15 +8,15 @@ import { fuzzySort } from '@/components/shared/data-grid/utils'
 import EllipsisList from '@/components/shared/ellipsis-list'
 import Image from '@/components/shared/image'
 import { Badge } from '@/components/ui/badge'
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import { Item, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { createColumnHelper } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
-import CostumeDropdownOptions from './costume-dropdown-options'
-import CostumeTableToolbar from './costume-table-toolbar'
+import EquipmentPropsDropdownOptions from './equipment-props-dropdown-options'
+import EquipmentPropsTableToolbar from './equipment-props-table-toolbar'
 const CostumeTable: React.FC = () => {
-  const { data, isLoading } = useGetCostumesQuery()
+  const { data, isLoading } = useGetPropsQuery()
 
-  const columnHelper = createColumnHelper<ICostume>()
+  const columnHelper = createColumnHelper<IEquipmentProps>()
 
   const columns = useMemo(
     () => [
@@ -30,8 +29,8 @@ const CostumeTable: React.FC = () => {
         sortingFn: fuzzySort,
         cell: ({ row }) => {
           const costumeName = row.original.name
-          const image = row.original.images[0]?.dest
-          const color = row.original.color
+          const image = row.original?.images?.[0]?.dest
+
           return (
             <Item size="sm" className="p-0 flex-nowrap!">
               <ItemMedia>
@@ -39,10 +38,6 @@ const CostumeTable: React.FC = () => {
               </ItemMedia>
               <ItemContent>
                 <ItemTitle className="line-clamp-1">{costumeName}</ItemTitle>
-                <div className="inline-flex items-center gap-x-2">
-                  <ItemDescription>Màu sắc:</ItemDescription>
-                  <div style={{ backgroundColor: color }} className="size-4 rounded-full" />
-                </div>
               </ItemContent>
             </Item>
           )
@@ -54,31 +49,16 @@ const CostumeTable: React.FC = () => {
       }),
       columnHelper.accessor('rental_price_per_day', {
         header: 'Giá thuê theo ngày',
+        enableSorting: true,
+        enableMultiSort: true,
+        enableHiding: false,
         cell: ({ getValue }) => formatCurrency(getValue()),
-      }),
-      columnHelper.accessor('gender', {
-        header: 'Giới tính',
-        size: 100,
-        cell: ({ getValue }) => {
-          const value = COSTUME_GENDER_LABEL_MAP.get(getValue())
-          return <Badge>{value}</Badge>
-        },
       }),
       columnHelper.accessor('unit', {
         header: 'Đơn vị',
         size: 100,
-        cell: ({ getValue }) => COSTUME_UNIT_LABEL_MAP.get(getValue()),
       }),
-      columnHelper.accessor('sizes', {
-        header: 'Cỡ',
-        cell: ({ getValue }) => (
-          <EllipsisList
-            data={getValue()}
-            threshhold={2}
-            template={(item) => <Badge variant="outline">{item.data}</Badge>}
-          />
-        ),
-      }),
+
       columnHelper.accessor('hashtags', {
         header: 'Hashtag',
         cell: ({ getValue }) => (
@@ -97,7 +77,8 @@ const CostumeTable: React.FC = () => {
         id: ROW_ACTIONS_COLUMN_ID,
         header: '',
         size: 60,
-        cell: CostumeDropdownOptions,
+        enableHiding: false,
+        cell: EquipmentPropsDropdownOptions,
       }),
     ],
     []
@@ -114,6 +95,7 @@ const CostumeTable: React.FC = () => {
       manualFiltering={false}
       enableColumnFilters={true}
       enableMultiSort={true}
+      isMultiSortEvent={() => true}
       containerProps={{
         style: {
           height: 'calc(var(--outlet-wrapper-height) - 8rem)',
@@ -121,7 +103,7 @@ const CostumeTable: React.FC = () => {
       }}
       toolbarProps={{
         override: true,
-        render: CostumeTableToolbar,
+        render: EquipmentPropsTableToolbar,
       }}
     />
   )

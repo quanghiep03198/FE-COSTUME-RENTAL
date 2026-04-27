@@ -1,17 +1,19 @@
-import { GET_COSTUME_CATEGORY_QUERY_KEY, useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
+import { GET_PROPS_CATEGORY_QUERY_KEY, useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
 import type { ICategory } from '@/apis/category/types'
-import { COSTUME_UNIT, CostumeGender, CostumeSize, SIZE_RUN } from '@/apis/costume/constants'
-import { useCreateOrUpdateCostumeMutation } from '@/apis/costume/hooks/use-costume-request'
-import {
-  createCostumeSchema,
-  type TCreateCostumeSchema,
-  type TCreateCostumeValues,
-} from '@/apis/costume/schemas/create-costume.schema'
-import { updateCostumeSchema, type TUpdateCostumeSchema } from '@/apis/costume/schemas/update-costume.schema'
+import { type TCreateCostumeValues } from '@/apis/costume/schemas/create-costume.schema'
 import type { ICostume } from '@/apis/costume/types'
+import { useCreateOrUpdatePropsMutation } from '@/apis/equipment-props/hooks/use-equipment-props-request'
+import {
+  createEquipmentPropsSchema,
+  type TCreateEquipmentPropsSchema,
+  type TCreateEquipmentPropsValues,
+} from '@/apis/equipment-props/schemas/create-equipment-props.schema'
+import {
+  updateEquipmentPropsSchema,
+  type TUpdateEquipmentPropsSchema,
+} from '@/apis/equipment-props/schemas/update-equipment-props.schema'
 import type { IImage } from '@/apis/image/types'
 import { DEFAULT_COSTUME_DESCRIPTION } from '@/assets/data/costume-description'
-import { COLOR_PALETTE } from '@/common/constants/const'
 import { CommonActions, ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
@@ -33,7 +35,6 @@ import {
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import {
   Field,
-  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -42,25 +43,19 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore, type Updater } from '@tanstack/react-form'
-import { sortBy } from 'lodash-es'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery'
-import CostumeColorPlate from './costume-color-plate'
 
 const DEFAULT_FORM_VALUES = {
   name: '',
-  category_id: undefined,
-  color: COLOR_PALETTE[0],
-  sizes: [] as { label: CostumeSize; value: CostumeSize; sortOrder: number }[],
+  category: undefined,
   description: undefined,
-  gender: CostumeGender.FEMALE,
   rental_price_per_day: undefined,
-  unit: undefined,
+  unit: '',
   images: [],
   hashtags: [],
 }
@@ -71,16 +66,16 @@ const CostumeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
   const [action, setAction] = useState<TDialogAction>('none')
-  const { data: categories, isLoading } = useGetCategoriesQuery(GET_COSTUME_CATEGORY_QUERY_KEY)
-  const mutation = useCreateOrUpdateCostumeMutation(action)
-  const formSchemaRef = useRef<TCreateCostumeSchema | TUpdateCostumeSchema | undefined>(undefined)
+  const { data: categories, isLoading } = useGetCategoriesQuery(GET_PROPS_CATEGORY_QUERY_KEY)
+  const mutation = useCreateOrUpdatePropsMutation(action)
+  const formSchemaRef = useRef<TCreateEquipmentPropsSchema | TUpdateEquipmentPropsSchema | undefined>(undefined)
   const editorRef = useRef<{
     getHTML: () => string
     isEmpty: () => boolean
   }>(null)
 
   const form = useForm({
-    defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateCostumeValues,
+    defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateEquipmentPropsValues,
     onSubmitInvalid: ({ value, formApi }) => {
       console.warn(formApi.state.errors)
       console.log({ ...value, description: editorRef.current?.getHTML() })
@@ -88,10 +83,8 @@ const CostumeFormDialog: React.FC = () => {
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
         ...value,
-        description: value.description || editorRef.current?.getHTML(),
+        description: editorRef.current?.getHTML(),
         category_id: value.category.id,
-        sizes: value.sizes.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => item.value),
-        unit: value.unit.value,
         images: value.images?.map((img) => img.id),
       })
       setAction('none')
@@ -111,24 +104,12 @@ const CostumeFormDialog: React.FC = () => {
       setOpen(true)
       if (e.action === CommonActions.CREATE) {
         setAction(CommonActions.CREATE)
-        formSchemaRef.current = createCostumeSchema
+        formSchemaRef.current = createEquipmentPropsSchema
         form.reset()
       } else {
         setAction(CommonActions.UPDATE)
-        formSchemaRef.current = updateCostumeSchema
-        form.reset(
-          {
-            ...e.payload,
-            sizes: e.payload.sizes.map((size) => ({
-              label: size,
-              value: size,
-              sortOrder: SIZE_RUN.find((s) => s.value === size)?.sortOrder ?? 1,
-            })),
-            description: e.payload.description,
-            unit: COSTUME_UNIT.find((unit) => unit.value === e.payload.unit)!,
-          },
-          { keepDefaultValues: true }
-        )
+        formSchemaRef.current = updateEquipmentPropsSchema
+        form.reset(e.payload as any, { keepDefaultValues: true })
         console.log(e.payload)
       }
     }
@@ -160,7 +141,7 @@ const CostumeFormDialog: React.FC = () => {
                   ? 'Điền thông tin để tạo mới trang phục'
                   : 'Cập nhật thông tin trang phục'}
               </FieldDescription>
-              <FieldGroup className="h-screen lg:max-xxl:max-h-[65vh] xxl:max-h-[75vh] overflow-auto">
+              <FieldGroup className="lg:max-xxl:max-h-[60vh] xxl:max-h-[75vh] overflow-auto">
                 <FormField
                   name="name"
                   listeners={{
@@ -241,101 +222,6 @@ const CostumeFormDialog: React.FC = () => {
                     )
                   }}
                 </FormField>
-                <FormField name="gender">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <FieldGroup className="col-span-12">
-                        <FieldLabel>Giới tính</FieldLabel>
-                        <RadioGroup
-                          defaultValue={CostumeGender.FEMALE}
-                          value={field.state.value}
-                          className="w-fit"
-                          onValueChange={field.handleChange}
-                        >
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.MALE} id={CostumeGender.MALE} />
-                            <FieldContent>
-                              <FieldLabel htmlFor="desc-r1">Nam</FieldLabel>
-                              <FieldDescription>Trang phục danh riêng cho Nam</FieldDescription>
-                            </FieldContent>
-                          </Field>
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.FEMALE} id={CostumeGender.MALE} />
-                            <FieldContent>
-                              <FieldLabel htmlFor="desc-r2">Nữ</FieldLabel>
-                              <FieldDescription>Trang phục dành riêng cho Nữ</FieldDescription>
-                            </FieldContent>
-                          </Field>
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.UNISEX} id={CostumeGender.UNISEX} />
-                            <FieldContent>
-                              <FieldLabel htmlFor="desc-r2">Unisex</FieldLabel>
-                              <FieldDescription>Trang phục dành cho cả Nam & Nữ</FieldDescription>
-                            </FieldContent>
-                          </Field>
-                        </RadioGroup>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </FieldGroup>
-                    )
-                  }}
-                </FormField>
-                <FormField name="color">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Màu sắc chủ đạo</FieldLabel>
-                        <CostumeColorPlate value={field.state.value} onValueChange={field.handleChange} />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
-                </FormField>
-                <FormField name="sizes">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-4">
-                        <FieldLabel htmlFor={field.name}>Size</FieldLabel>
-                        <Select
-                          multiple
-                          items={SIZE_RUN}
-                          value={sortBy(field.state.value, ['sortOrder']) as any}
-                          isItemEqualToValue={(itemValue, value) => itemValue.value === value.value}
-                          onValueChange={
-                            field.handleChange as (
-                              updater: Updater<
-                                Array<{
-                                  value: string
-                                  label: string
-                                  sortOrder: number
-                                }>
-                              >
-                            ) => void
-                          }
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {SIZE_RUN.map((size) => (
-                              <SelectItem key={size.value} value={size}>
-                                {size.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
-                </FormField>
                 <FormField name="rental_price_per_day">
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -363,27 +249,16 @@ const CostumeFormDialog: React.FC = () => {
                     return (
                       <Field className="col-span-3">
                         <FieldLabel htmlFor={field.name}>Đơn vị</FieldLabel>
-                        <Select
-                          items={COSTUME_UNIT}
+                        <Input
+                          name={field.name}
+                          id={field.name}
                           value={field.state.value}
-                          onValueChange={field.handleChange as any}
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {COSTUME_UNIT.map((size) => (
-                              <SelectItem key={size.value} value={size}>
-                                {size.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.currentTarget.value)}
+                          placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"'
+                          className="w-auto"
+                          aria-invalid={isInvalid}
+                        />
                         {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </Field>
                     )
@@ -488,8 +363,7 @@ const CostumeFormDialog: React.FC = () => {
           </DialogHeader>
           <div className="h-[60vh] overflow-auto">
             <ImagesGallary
-              type={ItemType.COSTUMES}
-              className=""
+              type={ItemType.EQUIPMENT_PROPS}
               onSelect={(images) => {
                 form.setFieldValue('images', images as any)
               }}

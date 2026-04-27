@@ -20,6 +20,16 @@ export const COSTUME_UNIT_LABEL_MAP = new Map<CostumeUnit, string>([
   [CostumeUnit.PIECE, 'Chiếc'],
 ])
 
+export enum CostumeSize {
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL',
+  XXL = 'XXL',
+  XXXL = 'XXXL',
+}
+
 export const SIZE_RUN = [
   { value: 'XS', label: 'XS', sortOrder: 1 },
   { value: 'S', label: 'S', sortOrder: 2 },

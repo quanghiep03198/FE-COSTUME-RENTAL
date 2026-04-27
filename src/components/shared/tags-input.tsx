@@ -19,7 +19,7 @@ const FORMATTING_REGEX = /^[^a-zA-Z0-9]*$/g
 
 export interface TagsInputProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: string[]
-  onValueChange: (value: string[]) => void
+  onValueChange: (value: string[]) => any
   placeholder?: string
   maxItems?: number
   minItems?: number
