@@ -8,6 +8,8 @@ export default async function request<T = any>(input: string | URL | Request, in
   const accessToken = getCookie('accessToken')
   const baseURL = GlobalConfig.BASE_API_URL
 
+  if (!accessToken) return await (await fetch(baseURL + input, init)).json()
+
   const response = await fetch(baseURL + input, {
     ...init,
     headers: {
