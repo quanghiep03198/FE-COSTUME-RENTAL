@@ -2,7 +2,7 @@ import generateAvatar from '@/lib/generate-avatar'
 import type { Application, Request, Response } from 'express'
 import { router } from '../app'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 
 const addAvatar = (r: any) => ({
   ...r,
@@ -12,20 +12,20 @@ const userOpts = { omit: ['password'], transform: addAvatar }
 
 export function registerUserRoutes(app: Application) {
   // * GET /users
-  app.get('/api/users', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/users', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('users', req.query, res, userOpts)
     return res.status(200).json(result)
   })
 
   // * GET /users/:id
-  app.get('/api/users/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/users/:id', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryRecord('users', Number(req.params.id), req.query, userOpts)
     if (!result) return res.status(404).json({ message: 'User not found' })
     return res.status(200).json(result)
   })
 
   // * POST /users
-  app.post('/api/users', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/users', jwtMiddleware, (req: Request, res: Response) => {
     const { username, password, employee_id, role = 'USER' } = req.body
 
     if (!username) {
@@ -68,7 +68,7 @@ export function registerUserRoutes(app: Application) {
   })
 
   // * PATCH /users/:id
-  app.patch('/api/users/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/users/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -110,7 +110,7 @@ export function registerUserRoutes(app: Application) {
   })
 
   // * DELETE /users/:id
-  app.delete('/api/users/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/users/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
     const existing = db.get('users').find({ id }).value()

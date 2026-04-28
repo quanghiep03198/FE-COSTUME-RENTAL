@@ -5,10 +5,10 @@ import { router } from './app'
 
 const JWT_SECRET = process.env.JWT_SECRET
 
-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
 
-  console.log(__filename, 'Request access token :>>', authHeader)
+  console.log(`[${req.path}. ${req.method}] Request with token`, authHeader)
 
   if (!authHeader?.startsWith('Bearer ')) {
     return res.status(403).json({ message: 'Missing or invalid authorization header' })

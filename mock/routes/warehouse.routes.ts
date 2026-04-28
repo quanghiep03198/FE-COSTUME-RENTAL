@@ -1,23 +1,23 @@
 import type { Application, Request, Response } from 'express'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 
 export function registerWarehouseRoutes(app: Application) {
   // * GET /warehouses
-  app.get('/api/warehouses', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/warehouses', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('warehouses', req.query, res)
     return res.status(200).json(result)
   })
 
   // * GET /warehouses/:id
-  app.get('/api/warehouses/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/warehouses/:id', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryRecord('warehouses', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Warehouse not found' })
     return res.status(200).json(result)
   })
 
   // * POST /warehouses
-  app.post('/api/warehouses', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/warehouses', jwtMiddleware, (req: Request, res: Response) => {
     const { name, warehouse_code, warehouse_type, manager_employee_id } = req.body
 
     if (!name || !warehouse_code || !warehouse_type) {
@@ -42,7 +42,7 @@ export function registerWarehouseRoutes(app: Application) {
   })
 
   // * PATCH /warehouses/:id
-  app.patch('/api/warehouses/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/warehouses/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -63,7 +63,7 @@ export function registerWarehouseRoutes(app: Application) {
   })
 
   // * DELETE /warehouses/:id
-  app.delete('/api/warehouses/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/warehouses/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

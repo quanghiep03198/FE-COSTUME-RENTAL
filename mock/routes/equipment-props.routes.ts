@@ -1,11 +1,11 @@
 import type { Application, Request, Response } from 'express'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
 
 export function registerEquipmentPropsRoutes(app: Application) {
   // * GET /equipment-props
-  app.get('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/equipment-props', (req: Request, res: Response) => {
     const result = queryCollection('equipment_props', req.query, {
       transform: (record) => {
         const db = getDb()
@@ -28,7 +28,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
   })
 
   // * GET /equipment-props/:id
-  app.get('/api/equipment-props/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/equipment-props/:id', (req: Request, res: Response) => {
     const result = queryRecord('equipment_props', Number(req.params.id), req.query, {
       transform: (record) => {
         const db = getDb()
@@ -41,7 +41,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
   })
 
   // * POST /equipment-props
-  app.post('/api/equipment-props', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/equipment-props', jwtMiddleware, (req: Request, res: Response) => {
     const {
       name,
       category_id,
@@ -86,7 +86,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
   })
 
   // * PATCH /equipment-props/:id
-  app.patch('/api/equipment-props/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/equipment-props/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -116,7 +116,7 @@ export function registerEquipmentPropsRoutes(app: Application) {
   })
 
   // * DELETE /equipment-props/:id
-  app.delete('/api/equipment-props/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/equipment-props/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

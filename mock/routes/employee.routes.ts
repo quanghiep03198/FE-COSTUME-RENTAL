@@ -2,24 +2,24 @@ import { WorkStatus } from '@/apis/employee/constants'
 import type { Application, Request, Response } from 'express'
 import { generateEmployeeCode } from '../helpers'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 
 export function registerEmployeeRoutes(app: Application) {
   // * GET /employees
-  app.get('/api/employees', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/employees', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('employees', req.query)
     return res.status(200).json(result)
   })
 
   // * GET /employees/:id
-  app.get('/api/employees/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/employees/:id', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryRecord('employees', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Employee not found' })
     return res.status(200).json(result)
   })
 
   // * POST /employees/create
-  app.post('/api/employees/create', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/employees', jwtMiddleware, (req: Request, res: Response) => {
     const { full_name, phone, email, address, citizen_id_number, position, work_status = WorkStatus.ACTIVE } = req.body
 
     const db = getDb()
@@ -47,7 +47,7 @@ export function registerEmployeeRoutes(app: Application) {
   })
 
   // * PATCH /employees/:id
-  app.patch('/api/employees/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/employees/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -58,6 +58,8 @@ export function registerEmployeeRoutes(app: Application) {
 
     // Prevent updating immutable fields
     const { id: _id, employee_code, created_at, ...updateData } = req.body
+
+    console.log('updateData', req.body)
 
     const updated = db
       .get('employees')
@@ -73,7 +75,7 @@ export function registerEmployeeRoutes(app: Application) {
   })
 
   // * DELETE /employees/:id
-  app.delete('/api/employees/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/employees/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

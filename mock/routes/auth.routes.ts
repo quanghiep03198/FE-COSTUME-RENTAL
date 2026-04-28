@@ -3,10 +3,10 @@ import bcrypt from 'bcryptjs'
 import type { Application, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { router } from '../app'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 
 const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRES_IN = '10s'
+const JWT_EXPIRES_IN = '1d'
 
 const cookieOptions = {
   httpOnly: true,
@@ -34,8 +34,6 @@ function getTokenFromCookieHeader(cookieHeader?: string) {
 export function registerAuthRoutes(app: Application) {
   // * POST /login
   app.post('/api/auth/login', (req: Request, res: Response) => {
-    console.log('req.body', req.body)
-
     const { username, password } = req.body
 
     if (!username || !password) {
@@ -122,7 +120,7 @@ export function registerAuthRoutes(app: Application) {
   })
 
   // * POST /logout
-  app.post('/api/auth/logout', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/auth/logout', jwtMiddleware, (req: Request, res: Response) => {
     const token = (req as any).token
     const db = router.db as any
 
@@ -173,7 +171,7 @@ export function registerAuthRoutes(app: Application) {
   })
 
   // * GET /auth/me
-  app.get('/api/auth/me', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/auth/me', jwtMiddleware, (req: Request, res: Response) => {
     const payload = (req as any).user
     const user = (router.db as any).get('users').find({ id: payload.sub }).value()
 
