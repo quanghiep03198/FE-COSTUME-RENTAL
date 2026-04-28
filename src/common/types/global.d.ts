@@ -6,8 +6,9 @@ export declare global {
   interface InternalImportMetaEnv {
     // * Application
     readonly VITE_NODE_ENV: RuntimeEnvironment
-    readonly VITE_BASE_API_URL: string
-    readonly VITE_BASE_IMAGE_URL: string
+    readonly VITE_PROXY_SERVER_URL: `${'http'| 'https'}://${string}`
+    readonly VITE_EXTERNAL_API_URL: `${'http'| 'https'}://${string}/api`
+    readonly VITE_BASE_IMAGE_URL: `${'http'| 'https'}://${string}/upload`
   }
 
   type Parameter<T> = T extends (param: infer Argument, ...rest: any) => any ? Argument : never

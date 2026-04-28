@@ -6,7 +6,7 @@ import { router } from '../app'
 import { authMiddleware } from '../middleware'
 
 const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRES_IN = '7d'
+const JWT_EXPIRES_IN = '10s'
 
 const cookieOptions = {
   httpOnly: true,
@@ -34,6 +34,8 @@ function getTokenFromCookieHeader(cookieHeader?: string) {
 export function registerAuthRoutes(app: Application) {
   // * POST /login
   app.post('/api/auth/login', (req: Request, res: Response) => {
+    console.log('req.body', req.body)
+
     const { username, password } = req.body
 
     if (!username || !password) {
@@ -47,12 +49,12 @@ export function registerAuthRoutes(app: Application) {
       .value()
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' })
+      return res.status(400).json({ message: 'Invalid username or password' })
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password)
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid username or password' })
+      return res.status(400).json({ message: 'Invalid username or password' })
     }
 
     if (!user.is_active)
@@ -133,7 +135,10 @@ export function registerAuthRoutes(app: Application) {
   // * GET /refresh
   app.get('/api/auth/refresh', (req: Request, res: Response) => {
     try {
-      const expiredAccessToken = getTokenFromCookieHeader(req.headers.cookie)
+      const authHeader = req.headers.authorization
+      if (!authHeader) return res.status(403).json({ message: 'Invalid access token' })
+
+      const expiredAccessToken = authHeader.replace('Bearer', '').trim()
 
       if (!expiredAccessToken) return res.status(403).json({ message: 'Invalid access token' })
 

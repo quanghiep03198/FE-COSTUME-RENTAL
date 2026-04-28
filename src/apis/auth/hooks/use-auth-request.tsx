@@ -1,25 +1,24 @@
-'use server'
-
-import type { IUser } from '@/apis/user/types'
-import { axiosClient } from '@/configs/axios.config'
 import { useAuthStore } from '@/stores/auth.store'
 import { queryOptions, useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { logOutFn } from '../functions'
+import { getProfileRpc } from '../rpc/get-profile.function'
+import { logOutFn } from '../rpc/logout'
 
 export const GET_PROFILE_QUERY_KEY = ['profile'] as const
 
 export const getAuthUserQueryOptions = () => {
   return queryOptions({
     queryKey: GET_PROFILE_QUERY_KEY,
-    queryFn: async () => await axiosClient.get<unknown, IUser>('/auth/me'),
+    queryFn: () => getProfileRpc(),
     staleTime: 0,
   })
 }
 
 export const useGetAuthUserQuery = () => {
+  // const getProfile = useServerFn(getProfileRpc)
+
   return useQuery(getAuthUserQueryOptions())
 }
 
@@ -33,7 +32,7 @@ export default function useAuth() {
   const logOut = useServerFn(logOutFn)
 
   const { mutateAsync: logOutAsync } = useMutation({
-    mutationFn: async () => axiosClient.post('/auth/logout'),
+    mutationFn: () => logOut(),
     onMutate: () => {
       const queryCache = queryClient.getQueryCache()
       const cancelledQueryKeys = queryCache.getAll().reduce<QueryKey>((accumulator, currentQuery) => {
@@ -57,4 +56,31 @@ export default function useAuth() {
   const isAuthenticated = !!authStore.accessToken && !!authStore.user
 
   return { ...authStore, isAuthenticated, logout: logOutAsync }
+}
+
+export const useLogOutMutation = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const logOut = useServerFn(logOutFn)
+
+  return useMutation({
+    mutationFn: () => logOut(),
+    onMutate: () => {
+      const queryCache = queryClient.getQueryCache()
+      const cancelledQueryKeys = queryCache.getAll().reduce<QueryKey>((accumulator, currentQuery) => {
+        if (currentQuery.state.status === 'pending' || currentQuery.state.status === 'error')
+          return [...accumulator, ...currentQuery.queryKey.filter((key) => !!key)]
+        else return accumulator
+      }, [])
+      queryClient.cancelQueries({ queryKey: cancelledQueryKeys, exact: false })
+      return toast.loading('Đang xử lý ...')
+    },
+    onSettled: async (_data, _error, _variable, context) => {
+      useAuthStore.getState().resetCredentials()
+      queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
+      queryClient.clear() // * clear cached queries
+      router.navigate({ to: '/login' })
+      toast.success('Đăng nhập thành công', { id: context })
+    },
+  })
 }

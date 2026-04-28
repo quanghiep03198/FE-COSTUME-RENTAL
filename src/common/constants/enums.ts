@@ -2,6 +2,7 @@ export enum RequestHeaders {
   AUTHORIZATION = 'Authorization',
   API_VERSION = 'X-Api-Version',
   CONTENT_TYPE = 'Content-Type',
+  REQUEST_USER = 'X-Request-User',
 }
 
 export enum RecordStatus {

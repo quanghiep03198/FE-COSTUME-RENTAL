@@ -1,4 +1,4 @@
-import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
+import { useGetAuthUserQuery, useLogOutMutation } from '@/apis/auth/hooks/use-auth-request'
 import type { IUser } from '@/apis/user/types'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -18,18 +18,20 @@ import { Icon } from '../../ui/icon'
 import { SidebarMenu, SidebarMenuItem, useSidebar } from '../../ui/sidebar'
 
 const AppNavUser: React.FC = () => {
-  const { logout } = useAuth()
+  const { mutateAsync: logout } = useLogOutMutation()
   const { data: user, isLoading } = useGetAuthUserQuery()
   const { isMobile } = useSidebar()
+
+  if (isLoading) return <NavUserSkeleton />
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
-            disabled={isLoading}
-            aria-disabled={isLoading}
-            className="w-full"
+            // disabled={isLoading}
+            // aria-disabled={isLoading}
+            className="w-full cursor-pointer"
             role="button"
             nativeButton={true}
           >

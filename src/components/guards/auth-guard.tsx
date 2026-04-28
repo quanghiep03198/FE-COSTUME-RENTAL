@@ -1,4 +1,4 @@
-import { getServerTokenFn } from '@/apis/auth/functions'
+import { getServerTokenFn } from '@/apis/auth/functions/auth.function'
 import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'

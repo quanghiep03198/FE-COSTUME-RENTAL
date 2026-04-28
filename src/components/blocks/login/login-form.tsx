@@ -1,31 +1,30 @@
-import { setServerTokenFn } from '@/apis/auth/functions'
-import { loginSchema, type TLoginValues } from '@/apis/auth/schemas/login.schema'
-import type { TLoginResponse } from '@/apis/auth/types'
+import { setServerTokenFn } from '@/apis/auth/functions/auth.function'
+import { loginRpc } from '@/apis/auth/rpc/login'
+import { loginSchema } from '@/apis/auth/schemas/login.schema'
 import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { axiosClient } from '@/configs/axios.config'
-import { useAuthStore } from '@/stores/auth.store'
 import { useForm } from '@tanstack/react-form'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
+
 import { LogIn } from 'lucide-react'
 import { useState, type SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 
 const LoginForm = () => {
-  const router = useRouter()
   const [isPending, setIsPending] = useState(false)
-  const setCookieToken = useServerFn(setServerTokenFn)
+  const loginFn = useServerFn(loginRpc)
+  const setToken = useServerFn(setServerTokenFn)
+  const router = useRouter()
 
   const { Field: FormField, handleSubmit } = useForm({
     defaultValues: { username: '', password: '' },
     validators: { onSubmit: loginSchema },
     onSubmit: async ({ value }) => {
       try {
-        const { accessToken } = await axiosClient.post<any, TLoginResponse, TLoginValues>('/auth/login', value)
-        await setCookieToken({ data: accessToken }) // Set cookie with server function
-        useAuthStore.getState().setAccessToken(accessToken) // Update client state
+        const { accessToken } = await loginFn({ data: value })
+        // await setToken({ data: accessToken })
         toast.success('Đăng nhập thành công')
         router.navigate({ to: '/statistics' })
       } catch {
