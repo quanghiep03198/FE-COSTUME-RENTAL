@@ -1,12 +1,14 @@
 import { Position, WorkStatus } from '@/apis/employee/constants'
 import { GET_EMPLOYEE_QUERY_KEY } from '@/apis/employee/hooks/use-employee-request'
 import { CommonActions } from '@/common/constants/enums'
+// import { axiosClient } from '@/configs/axios.config'
 import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import type { AxiosResponse } from 'axios'
 import { useRef } from 'react'
 import { toast } from 'sonner'
+import { getUsersRpc } from '../rpc'
 import type { TCreateUserValues } from '../schemas/create-user.schema'
 import type { TUpdateUserValues } from '../schemas/update-user.schema'
 import type { IUser } from '../types'
@@ -16,10 +18,7 @@ export const GET_USERS_QUERY_KEY = 'users' as const
 export const getUsersQueryOptions = () => {
   return queryOptions({
     queryKey: [GET_USERS_QUERY_KEY],
-    queryFn: async () =>
-      await axiosClient.get<void, Array<IUser>, void>('/users', {
-        params: { _expand: 'employee' },
-      }),
+    queryFn: getUsersRpc,
   })
 }
 

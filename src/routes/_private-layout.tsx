@@ -1,7 +1,6 @@
 import { getAuthUserQueryOptions } from '@/apis/auth/hooks/use-auth-request'
 import { authMiddleware } from '@/apis/auth/middlewares/auth.middleware'
 import { ErrorBoundaryFallback } from '@/components/errors/error-boundary-fallback'
-import AuthGuard from '@/components/guards/auth-guard'
 import AppNavbar from '@/components/layouts/app/app-navbar'
 import AppSidebar from '@/components/layouts/app/app-sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
@@ -11,46 +10,49 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout')({
   component: RouteComponent,
-  ssr: false,
   server: { middleware: [authMiddleware] },
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(getAuthUserQueryOptions())
+    return context.queryClient.ensureQueryData(getAuthUserQueryOptions())
   },
 })
 
 function RouteComponent() {
+  // const { data } = useGetAuthUserQuery()
+
+  // useEffect(() => {
+  //   useAuthStore.getState().setProfile(data!)
+  // }, [data])
+
   return (
-    <AuthGuard>
-      <SidebarProvider
-        style={
-          {
-            '--sidebar-width': '20rem',
-            '--sidebar-width-mobile': '20rem',
-          } as React.CSSProperties
-        }
-      >
-        <AppSidebar />
-        <LayoutWrapper data-slot="layout-wrapper">
-          <AppNavbar />
-          <OutletWrapper data-slot="outlet-wrapper">
-            <ErrorBoundary
-              fallbackRender={({ error, resetErrorBoundary }) => {
-                return (
-                  <ErrorBoundaryFallback
-                    error={error as Error}
-                    resetError={(args) => {
-                      resetErrorBoundary(args)
-                    }}
-                  />
-                )
-              }}
-            >
-              <Outlet />
-            </ErrorBoundary>
-          </OutletWrapper>
-        </LayoutWrapper>
-      </SidebarProvider>
-    </AuthGuard>
+    <SidebarProvider
+      style={
+        {
+          '--sidebar-width': '20rem',
+          '--sidebar-width-mobile': '20rem',
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar />
+      <LayoutWrapper data-slot="layout-wrapper">
+        <AppNavbar />
+        <OutletWrapper data-slot="outlet-wrapper">
+          <ErrorBoundary
+            fallbackRender={({ error, resetErrorBoundary }) => {
+              return (
+                <ErrorBoundaryFallback
+                  error={error as Error}
+                  resetError={(args) => {
+                    resetErrorBoundary(args)
+                  }}
+                />
+              )
+            }}
+          >
+            <Outlet />
+          </ErrorBoundary>
+        </OutletWrapper>
+      </LayoutWrapper>
+    </SidebarProvider>
   )
 }
 

@@ -1,9 +1,8 @@
+import { redirect } from '@tanstack/react-router'
 import { createIsomorphicFn, createServerFn } from '@tanstack/react-start'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import z from 'zod'
 import { useAuthStore } from '../../../stores/auth.store'
-import { authMiddleware } from '../middlewares/auth.middleware'
-
 type CookieSerializeOptions = Parameters<typeof setCookie>[2]
 
 export const cookieOptions: CookieSerializeOptions = {
@@ -14,17 +13,6 @@ export const cookieOptions: CookieSerializeOptions = {
   path: '/',
 }
 
-export const getCurrentUserFn = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
-  .handler(({ context }) => {
-    try {
-      return context
-    } catch (error) {
-      console.error(error)
-      return { accessToken: null, user: null }
-    }
-  })
-
 export const setCookieTokenFn = createServerFn({ method: 'POST' })
   .inputValidator(z.string().nonempty())
   .handler(async ({ data }) => {
@@ -33,8 +21,14 @@ export const setCookieTokenFn = createServerFn({ method: 'POST' })
 
 export const getTokenFn = createIsomorphicFn()
   .client(() => {
-    console.log('Get token from Zustand')
-    return useAuthStore.getState().accessToken
+    try {
+      console.log('Get token from Local storage')
+      const credentials = JSON.parse(localStorage.getItem('credentials')!)
+      return credentials?.state?.accessToken
+    } catch {
+      return null
+    }
+    // return useAuthStore.getState().accessToken
   })
   .server(() => {
     console.log('Get token from Cookie')
@@ -59,6 +53,7 @@ export const getServerTokenFn = createServerFn({ method: 'GET' }).handler(() => 
 export const setServerTokenFn = createServerFn({ method: 'POST' })
   .inputValidator(z.string().nonempty())
   .handler(async ({ data }) => {
+    console.log('setServerTokenFn(data)', data)
     setCookie('accessToken', data, cookieOptions)
   })
 
@@ -66,4 +61,5 @@ export const logOutFn = createServerFn({ method: 'POST' })
   .inputValidator(z.void())
   .handler(async () => {
     setCookie('accessToken', '', { ...cookieOptions, maxAge: 0 })
+    throw redirect({ to: '/login' })
   })

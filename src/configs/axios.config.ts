@@ -1,4 +1,5 @@
-import { getTokenFn, logOutFn, setTokenFn } from '@/apis/auth/functions'
+import { getTokenFn, setTokenFn } from '@/apis/auth/functions/auth.function'
+import { logOutFn } from '@/apis/auth/rpc/logout'
 import { RequestHeaders } from '@/common/constants/enums'
 import env from '@/lib/utils'
 import { useAuthStore } from '@/stores/auth.store'
@@ -74,7 +75,7 @@ export class AxiosService {
             originalRequest.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
             return this.instance(originalRequest)
           } catch (err) {
-            await axios.post(env('VITE_BASE_API_URL') + '/auth/logout', {
+            await axios.post(env('VITE_EXTERNAL_API_URL') + '/auth/logout', {
               headers: {
                 [RequestHeaders.AUTHORIZATION]: originalRequest.headers[RequestHeaders.AUTHORIZATION],
               },
@@ -99,7 +100,7 @@ export class AxiosService {
   private async refreshToken() {
     if (this.refreshTokenHandler) return this.refreshTokenHandler
     this.isRefreshingToken = true
-    const baseURL = env<string>('VITE_BASE_API_URL')
+    const baseURL = env<string>('VITE_EXTERNAL_API_URL')
 
     this.refreshTokenHandler = axios
       .get(`${baseURL}/auth/refresh`, {
@@ -132,4 +133,4 @@ export class AxiosService {
 }
 
 export const { instance: axiosClient } = new AxiosService(GlobalConfig.BASE_API_URL!)
-// export const { instance: axiosServer } = new AxiosService('http://localhost:5000/api')
+// export const { instance: axiosClient } = new AxiosService('http://localhost:5000/api')
