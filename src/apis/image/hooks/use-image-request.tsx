@@ -1,15 +1,13 @@
-import { createFormData, MULTIPART_HEADER } from '@/common/helpers/form-data'
-import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
-import type { IImage } from '../types'
+import { useServerFn } from '@tanstack/react-start'
+import { deleteImageRpc, getImagesRpc, updateImageRpc, uploadImagesRpc } from '../rpc'
 
 export const GET_IMAGES_QUERY_KEY = 'images' as const
 
 export const getImagesQueryOptions = () => {
   return queryOptions({
     queryKey: [GET_IMAGES_QUERY_KEY],
-    queryFn: async () =>
-      await axiosClient.get<unknown, IImage[]>('/images-gallery', { params: { _expand: 'category' } }),
+    queryFn: () => getImagesRpc(),
   })
 }
 
@@ -20,21 +18,24 @@ export const useGetImagesQuery = () => {
 export const useUploadImagesMutation = () => {
   return useMutation({
     meta: { invalidates: [[GET_IMAGES_QUERY_KEY]] },
-    mutationFn: async (files) => await axiosClient.post('/images-gallery', createFormData({ files }), MULTIPART_HEADER),
+    mutationFn: (data) => uploadImagesRpc({ data }),
   })
 }
 
 export const useUpdateImageMutation = () => {
+  const updateImageFn = useServerFn(updateImageRpc)
+
   return useMutation({
     meta: { invalidates: [[GET_IMAGES_QUERY_KEY]] },
-    mutationFn: async ({ id, file }: { id: number; file: File }) =>
-      await axiosClient.post(`/images-gallery/${id}`, createFormData({ file, _method: 'PATCH' }), MULTIPART_HEADER),
+    mutationFn: async (data: { id: number; file: File }) => updateImageFn({ data }),
   })
 }
 
 export const useDeleteImageMutation = () => {
+  const deleteImageFn = useServerFn(deleteImageRpc)
+
   return useMutation({
     meta: { invalidates: [[GET_IMAGES_QUERY_KEY]] },
-    mutationFn: async (id: number) => await axiosClient.delete(`/images-gallery/${id}`),
+    mutationFn: async (id: number) => deleteImageFn({ data: id }),
   })
 }

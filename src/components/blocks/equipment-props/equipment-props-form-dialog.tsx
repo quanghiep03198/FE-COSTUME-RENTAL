@@ -76,10 +76,6 @@ const CostumeFormDialog: React.FC = () => {
 
   const form = useForm({
     defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateEquipmentPropsValues,
-    onSubmitInvalid: ({ value, formApi }) => {
-      console.warn(formApi.state.errors)
-      console.log({ ...value, description: editorRef.current?.getHTML() })
-    },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
         ...value,
@@ -110,7 +106,6 @@ const CostumeFormDialog: React.FC = () => {
         setAction(CommonActions.UPDATE)
         formSchemaRef.current = updateEquipmentPropsSchema
         form.reset(e.payload as any, { keepDefaultValues: true })
-        console.log(e.payload)
       }
     }
   )

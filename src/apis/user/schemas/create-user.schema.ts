@@ -8,6 +8,12 @@ export const createUserSchema = object({
   employee_id: object({ id: number() }),
 })
 
+export const createUserReqSchema = createUserSchema.omit({ employee_id: true }).extend({
+  employee_id: number({ message: 'Nhân viên không được để trống' }),
+})
+
 export type TCreateUserSchema = typeof createUserSchema
 
 export type TCreateUserValues = Infer<TCreateUserSchema>
+
+export type TCreateUserReqValues = Infer<typeof createUserReqSchema>

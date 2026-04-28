@@ -4,24 +4,65 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const config = defineConfig({
-  plugins: [
-    devtools(),
-    nitro(),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
-    tailwindcss(),
-    tanstackStart(),
-    viteReact(),
-  ],
+  resolve: {
+    // This enables built-in support for path aliases defined in tsconfig.json
+    tsconfigPaths: true,
+  },
+  plugins: [devtools(), nitro(), tailwindcss(), tanstackStart(), viteReact()],
   server: {
     port: 5000,
     watch: {
       ignored: ['**/mock/**'],
+    },
+  },
+  preview: {
+    port: 7000,
+  },
+  build: {
+    rolldownOptions: {
+      output: {
+        advancedChunks: {
+          groups: [
+            { name: '@tanstack/react-query', test: /@tanstack\/react-query/ },
+            { name: '@tanstack/react-router', test: /@tanstack\/react-router/ },
+            { name: '@tanstack/react-table', test: /@tanstack\/react-table/ },
+            { name: '@tanstack/react-virtual', test: /@tanstack\/react-virtual/ },
+            { name: '@tanstack/react-form', test: /@tanstack\/react-form/ },
+            { name: '@tiptap/core', test: /@tiptap\/core/ },
+            { name: '@tiptap/extension-color', test: /@tiptap\/extension-color/ },
+            { name: '@tiptap/extension-file-handler', test: /@tiptap\/extension-file-handler/ },
+            { name: '@tiptap/extension-gapcursor', test: /@tiptap\/extension-gapcursor/ },
+            { name: '@tiptap/extension-heading', test: /@tiptap\/extension-heading/ },
+            { name: '@tiptap/extension-highlight', test: /@tiptap\/extension-highlight/ },
+            { name: '@tiptap/extension-image', test: /@tiptap\/extension-image/ },
+            { name: '@tiptap/extension-link', test: /@tiptap\/extension-link/ },
+            { name: '@tiptap/extension-placeholder', test: /@tiptap\/extension-placeholder/ },
+            { name: '@tiptap/extension-table', test: /@tiptap\/extension-table/ },
+            { name: '@tiptap/extension-table-cell', test: /@tiptap\/extension-table-cell/ },
+            { name: '@tiptap/extension-table-header', test: /@tiptap\/extension-table-header/ },
+            { name: '@tiptap/extension-table-row', test: /@tiptap\/extension-table-row/ },
+            { name: '@tiptap/extension-text-align', test: /@tiptap\/extension-text-align/ },
+            { name: '@tiptap/extension-text-style', test: /@tiptap\/extension-text-style/ },
+            { name: '@tiptap/extension-underline', test: /@tiptap\/extension-underline/ },
+            { name: '@tiptap/pm', test: /@tiptap\/pm/ },
+            { name: '@tiptap/react', test: /@tiptap\/react/ },
+            { name: '@tiptap/starter-kit', test: /@tiptap\/starter-kit/ },
+            { name: 'ahooks', test: /ahooks/ },
+            { name: 'react-resizable-panels', test: /react-resizable-panels/ },
+            { name: 'recharts', test: /recharts/ },
+            { name: 'qs', test: /qs/ },
+            { name: 'lz-string', test: /lz-string/ },
+            { name: 'lodash-es', test: /lodash-es/ },
+            { name: 'sonner', test: /sonner/ },
+            { name: 'zod', test: /zod/ },
+            { name: 'zustand', test: /zustand/ },
+            { name: 'tailwind-merge', test: /tailwind-merge/ },
+            { name: 'tailwind-styled-components', test: /tailwind-styled-components/ },
+          ],
+        },
+      },
     },
   },
 })

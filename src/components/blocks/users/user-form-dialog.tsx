@@ -72,7 +72,7 @@ const UserFormDialog: React.FC = () => {
       'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,
       'is_active:eq': true,
       'work_status:ne': WorkStatus.EXITED,
-      'user_id:eq': 'null',
+      'user_id:eq': null,
     })
   )
   const mutation = useCreateOrUpdateUserMutataion(action)

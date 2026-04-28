@@ -1,5 +1,5 @@
+import { HttpStatusCode } from '@/common/constants/http-code'
 import { useRouter } from '@tanstack/react-router'
-import { HttpStatusCode } from 'axios'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Icon } from '../ui/icon'
@@ -18,11 +18,11 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const router = useRouter()
 
   return (
-    <div className="grid h-[var(--outlet-wrapper-height,100vh)] place-items-center px-6 py-24 sm:py-32 xl:px-8">
+    <div className="grid h-(--outlet-wrapper-height,100vh) place-items-center px-6 py-24 sm:py-32 xl:px-8">
       <div>
         <div className="flex items-center gap-x-4">
           <Typography color="destructive" className="font-semibold">
-            {HttpStatusCode.InternalServerError}
+            {HttpStatusCode.INTERNAL_SERVER_ERROR}
           </Typography>
           <Separator orientation="vertical" className="h-5 w-0.5" />
           <Typography variant="h4">Đã có lỗi xảy ra</Typography>

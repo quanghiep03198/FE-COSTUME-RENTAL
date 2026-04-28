@@ -11,15 +11,17 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 
   if (!accessToken) throw redirect({ to: '/login' })
 
-  const user = await request<IUser>('/auth/me')
-
-  return next({ context: { accessToken, user } })
+  try {
+    const user = await request<IUser>({ url: '/auth/me' })
+    return await next({ context: { accessToken, user } })
+  } catch {
+    throw redirect({ to: '/login' })
+  }
 })
 
 export const guestMiddleware = createMiddleware({ type: 'request' }).server(async ({ next }) => {
   const accessToken = getCookie('accessToken')
 
-  console.log('accessToken', accessToken)
   if (accessToken) throw redirect({ to: '/statistics' })
 
   return next({ context: { accessToken } })

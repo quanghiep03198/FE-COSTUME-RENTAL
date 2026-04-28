@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import tw from '@/lib/tw'
 import React, { Fragment, useId, useState } from 'react'
-import tw from 'tailwind-styled-components'
 
 import { Tooltip } from '@/components/shared/tooltip'
 import { Icon } from '@/components/ui/icon'

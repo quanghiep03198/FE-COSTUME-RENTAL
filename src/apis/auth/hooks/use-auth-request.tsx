@@ -3,8 +3,7 @@ import { queryOptions, useMutation, useQuery, useQueryClient, type QueryKey } fr
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { getProfileRpc } from '../rpc/get-profile.function'
-import { logOutFn } from '../rpc/logout'
+import { getProfileRpc, logOutFn } from '../rpc'
 
 export const GET_PROFILE_QUERY_KEY = ['profile'] as const
 
@@ -17,8 +16,6 @@ export const getAuthUserQueryOptions = () => {
 }
 
 export const useGetAuthUserQuery = () => {
-  // const getProfile = useServerFn(getProfileRpc)
-
   return useQuery(getAuthUserQueryOptions())
 }
 
@@ -26,10 +23,10 @@ export const useGetAuthUserQuery = () => {
  * @summary Custom hook that provides authentication-related functionality.
  */
 export default function useAuth() {
-  const authStore = useAuthStore()
   const queryClient = useQueryClient()
   const router = useRouter()
   const logOut = useServerFn(logOutFn)
+  const { data: user } = useGetAuthUserQuery()
 
   const { mutateAsync: logOutAsync } = useMutation({
     mutationFn: () => logOut(),
@@ -53,9 +50,9 @@ export default function useAuth() {
     },
   })
 
-  const isAuthenticated = !!authStore.accessToken && !!authStore.user
+  const isAuthenticated = !!user
 
-  return { ...authStore, isAuthenticated, logout: logOutAsync }
+  return { user, isAuthenticated, logout: logOutAsync }
 }
 
 export const useLogOutMutation = () => {

@@ -69,6 +69,7 @@ const EmployeeActionDropdown: React.FC<CellContext<IEmployee, any>> = ({ row }) 
               <DropdownMenuRadioGroup
                 value={row.original.work_status}
                 onValueChange={async (value) => {
+                  console.log('Selected work status:', value)
                   await updateUserStatusAsync({
                     id: row.original.id,
                     work_status: value,

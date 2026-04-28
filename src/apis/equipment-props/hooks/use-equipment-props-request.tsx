@@ -1,19 +1,19 @@
 import { CommonActions } from '@/common/constants/enums'
-import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
-import type { AxiosResponse } from 'axios'
+import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import type { TCreateEquipmentPropsValues } from '../schemas/create-equipment-props.schema'
-import type { TUpdateEquipmentPropsValues } from '../schemas/update-equipment-props.schema'
+import { createEquipmentPropsRpc, deleteEquipmentPropsRpc, getEquipmentPropsRpc, updateEquipmentPropsRpc } from '../rpc'
+import type { TCreateEquipmentPropsReqValues } from '../schemas/create-equipment-props.schema'
+import type { TUpdateEquipmentPropsReqValues } from '../schemas/update-equipment-props.schema'
 import type { IEquipmentProps } from '../types'
 
-export const GET_PROPS_QUERY_KEY = 'equipmentprops' as const
+export const GET_PROPS_QUERY_KEY = 'equipment_props' as const
 
 export const getPropsQueryOptions = () => {
   return queryOptions({
     queryKey: [GET_PROPS_QUERY_KEY],
-    queryFn: async () =>
-      await axiosClient.get<unknown, IEquipmentProps[]>('/equipment-props', { params: { _expand: 'category,image' } }),
+    queryFn: () => getEquipmentPropsRpc(),
+    staleTime: 0,
   })
 }
 
@@ -23,11 +23,11 @@ export const useGetPropsQuery = () => {
 
 type TMutationConfigFactory = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateEquipmentPropsValues) => Promise<AxiosResponse<IEquipmentProps>>
+    handler: (data: TCreateEquipmentPropsReqValues) => Promise<IEquipmentProps>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateEquipmentPropsValues) => Promise<AxiosResponse<IEquipmentProps>>
+    handler: (data: TUpdateEquipmentPropsReqValues) => Promise<IEquipmentProps>
     message: string
   }
   none: {
@@ -37,14 +37,19 @@ type TMutationConfigFactory = {
 }
 
 export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
+  const createEquipmentPropsFn = useServerFn(createEquipmentPropsRpc)
+  const updateEquipmentPropsFn = useServerFn(updateEquipmentPropsRpc)
+
   const mutationConfigFactory: TMutationConfigFactory = {
     [CommonActions.CREATE]: {
-      handler: async (data: TCreateEquipmentPropsValues) => await axiosClient.post('/equipment-props', data),
+      handler: (data: TCreateEquipmentPropsReqValues) => createEquipmentPropsFn({ data }),
       message: 'Thêm mới đạo cụ thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...data }: TUpdateEquipmentPropsValues) =>
-        await axiosClient.patch(`/equipment-props/${id}`, data),
+      handler: async (data: TUpdateEquipmentPropsReqValues) => {
+        console.log('data', data)
+        return await updateEquipmentPropsFn({ data })
+      },
       message: 'Cập nhật đạo cụ thành công',
     },
     none: {
@@ -71,12 +76,13 @@ export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | Co
 }
 
 export const useDeletePropsMutation = () => {
+  const deleteEquipmentPropsFn = useServerFn(deleteEquipmentPropsRpc)
+
   return useMutation({
     meta: {
       invalidates: [[GET_PROPS_QUERY_KEY]],
     },
-    mutationFn: async (id: number) =>
-      await axiosClient.delete(`/equipment-props/${id}`, { params: { permanantly: true } }),
+    mutationFn: async (id: number) => deleteEquipmentPropsFn({ data: id }),
     onSuccess: () => {
       toast.success('Xóa trang phục thành công')
     },

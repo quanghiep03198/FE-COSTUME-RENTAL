@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig, Method } from 'axios'
 
-export const MULTIPART_HEADER: Pick<AxiosRequestConfig, 'headers'> = {
-  headers: { 'Content-Type': 'multipart/form-data' },
+
+export const MULTIPART_HEADER: {headers: RequestHeaders} = {
+  headers: { 'content-type': 'multipart/form-data' },
 }
 
-export function createFormData(payload: Record<string, unknown> & { _method?: Method }): FormData {
+export function createFormData(payload: Record<string, unknown> & { _method?: RequestMethod }): FormData {
   const formData = new FormData()
   const jsonFields: Record<string, unknown> = {}
 

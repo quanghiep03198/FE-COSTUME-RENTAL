@@ -1,4 +1,5 @@
-import type { AxiosRequestConfig } from "axios"
+import { type IncomingHttpHeaders } from 'http'
+import type { HttpStatusCode } from '../constants/http-code'
 
 export declare global {
   type RuntimeEnvironment = 'production' | 'development' | 'test'
@@ -6,9 +7,9 @@ export declare global {
   interface InternalImportMetaEnv {
     // * Application
     readonly VITE_NODE_ENV: RuntimeEnvironment
-    readonly VITE_PROXY_SERVER_URL: `${'http'| 'https'}://${string}`
-    readonly VITE_EXTERNAL_API_URL: `${'http'| 'https'}://${string}/api`
-    readonly VITE_BASE_IMAGE_URL: `${'http'| 'https'}://${string}/upload`
+    readonly VITE_PROXY_SERVER_URL: `${'http' | 'https'}://${string}`
+    readonly VITE_EXTERNAL_API_URL: `${'http' | 'https'}://${string}/api`
+    readonly VITE_BASE_IMAGE_URL: `${'http' | 'https'}://${string}/upload`
   }
 
   type Parameter<T> = T extends (param: infer Argument, ...rest: any) => any ? Argument : never
@@ -23,7 +24,7 @@ export declare global {
     remark: string
   }
 
-  interface Pagination<T = any>{
+  interface Pagination<T = any> {
     hasNextPage: boolean
     hasPrevPage: boolean
     nextPage: number | null
@@ -44,6 +45,8 @@ export declare global {
     timestamp: Date
   }
 
+  type Nullable<T> = T & (null | undefined)
+
   type AnonymousFunction = (...args: any[]) => any
 
   type RequestQueryKey =
@@ -55,7 +58,15 @@ export declare global {
     | '_sort'
     | '_where'
 
-  interface RequestQuery extends AxiosRequestConfig['params']{
+  type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS'
+
+  interface RequestQuery {
     [key: RequestQueryKey]: string | number | boolean
+  }
+
+  type RequestHeaders = {
+    // copy every declared property from http.IncomingHttpHeaders
+    // but remove index signatures
+    [K in keyof IncomingHttpHeaders as string extends K ? never : number extends K ? never : K]: IncomingHttpHeaders[K]
   }
 }

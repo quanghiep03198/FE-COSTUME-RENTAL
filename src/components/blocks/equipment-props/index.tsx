@@ -8,7 +8,7 @@ import {
 } from '@/components/layouts/app/app-page'
 import { PageEventProvider } from '@/contexts/event-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
-import tw from 'tailwind-styled-components'
+import tw from '@/lib/tw'
 import DeleteAlertDialog from './delete-alert-dialog'
 import CostumeFormDialog from './equipment-props-form-dialog'
 import EquipmentPropsFormDialogTrigger from './equipment-props-form-dialog-trigger'

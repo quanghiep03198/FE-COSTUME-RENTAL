@@ -35,7 +35,7 @@ export type TableFooterProps = {
 } & React.PropsWithChildren
 
 // #region Pagination prop types
-type PaginationBaseProps = {
+export type PaginationBaseProps = {
   enableInputPageSize?: boolean
   prefetch?: (params: Record<string, any>) => void
 } & Partial<Omit<Pagination<any>, 'data'>>

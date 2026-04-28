@@ -1,16 +1,14 @@
 import { Position, WorkStatus } from '@/apis/employee/constants'
 import { GET_EMPLOYEE_QUERY_KEY } from '@/apis/employee/hooks/use-employee-request'
 import { CommonActions } from '@/common/constants/enums'
-// import { axiosClient } from '@/configs/axios.config'
-import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
-import type { AxiosResponse } from 'axios'
+import { useServerFn } from '@tanstack/react-start'
 import { useRef } from 'react'
 import { toast } from 'sonner'
-import { getUsersRpc } from '../rpc'
-import type { TCreateUserValues } from '../schemas/create-user.schema'
-import type { TUpdateUserValues } from '../schemas/update-user.schema'
+import { createUserRpc, deleteUserRpc, getUsersRpc, updateUserRpc } from '../rpc'
+import type { TCreateUserReqValues } from '../schemas/create-user.schema'
+import type { TUpdateUserReqValues } from '../schemas/update-user.schema'
 import type { IUser } from '../types'
 
 export const GET_USERS_QUERY_KEY = 'users' as const
@@ -28,11 +26,11 @@ export const useGetUsersQuery = () => {
 
 type TMutateConfigFactory = {
   [CommonActions.CREATE]: {
-    handler: (payload: TCreateUserValues) => Promise<AxiosResponse<any, any, {}>>
+    handler: (payload: TCreateUserReqValues) => Promise<IUser>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: ({ id, ...payload }: TUpdateUserValues & Pick<IUser, 'id'>) => Promise<AxiosResponse<any, any, {}>>
+    handler: ({ id, ...payload }: TUpdateUserReqValues) => Promise<IUser>
     message: string
   }
   none: {
@@ -42,20 +40,16 @@ type TMutateConfigFactory = {
 }
 
 export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
+  const createUserFn = useServerFn(createUserRpc)
+  const updateUserFn = useServerFn(updateUserRpc)
+
   const mutationConfigFactory: TMutateConfigFactory = {
     [CommonActions.CREATE]: {
-      handler: async (payload: TCreateUserValues) =>
-        await axiosClient.post('/users', {
-          ...payload,
-          is_active: true,
-          created_at: new Date(),
-          updated_at: null,
-        }),
+      handler: (data: TCreateUserReqValues) => createUserFn({ data }),
       message: 'Thêm mới người dùng thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...payload }: TUpdateUserValues & Pick<IUser, 'id'>) =>
-        await axiosClient.patch(`/users/${id}`, payload),
+      handler: (data: TUpdateUserReqValues) => updateUserFn({ data }),
       message: 'Đã cập nhật thành công',
     },
     none: {
@@ -98,12 +92,10 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
 }
 
 export const useDeleteUserMutation = () => {
-  // const accessToken = getTokenFn()
+  const deleteUserFn = useServerFn(deleteUserRpc)
 
   return useMutation({
-    mutationFn: async (id: number) => {
-      return await axiosClient.delete(`/users/${id}`)
-    },
+    mutationFn: (id: number) => deleteUserFn({ data: id }),
     meta: {
       invalidates: [
         [GET_USERS_QUERY_KEY],
