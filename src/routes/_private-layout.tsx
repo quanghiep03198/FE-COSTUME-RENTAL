@@ -1,10 +1,10 @@
 import { getAuthUserQueryOptions } from '@/apis/auth/hooks/use-auth-request'
-import { authMiddleware } from '@/apis/auth/middlewares/auth.middleware'
 import { ErrorBoundaryFallback } from '@/components/errors/error-boundary-fallback'
 import AppNavbar from '@/components/layouts/app/app-navbar'
 import AppSidebar from '@/components/layouts/app/app-sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import tw from '@/lib/tw'
+import { authMiddleware } from '@/middlewares/auth.middleware'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -14,15 +14,12 @@ export const Route = createFileRoute('/_private-layout')({
   loader: async ({ context }) => {
     return context.queryClient.ensureQueryData(getAuthUserQueryOptions())
   },
+  errorComponent: ({ error, reset }) => {
+    return <ErrorBoundaryFallback error={error as Error} resetError={reset} />
+  },
 })
 
 function RouteComponent() {
-  // const { data } = useGetAuthUserQuery()
-
-  // useEffect(() => {
-  //   useAuthStore.getState().setProfile(data!)
-  // }, [data])
-
   return (
     <SidebarProvider
       style={

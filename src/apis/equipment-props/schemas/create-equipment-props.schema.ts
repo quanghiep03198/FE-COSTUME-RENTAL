@@ -38,6 +38,12 @@ export const createEquipmentPropsSchema = z.object({
   hashtags: z.array(z.string()).nonempty(),
 })
 
+export const createEquipmentPropsReqSchema = createEquipmentPropsSchema
+  .omit({ images: true })
+  .extend({ images: z.array(z.number()) })
+
 export type TCreateEquipmentPropsSchema = typeof createEquipmentPropsSchema
 
 export type TCreateEquipmentPropsValues = z.infer<TCreateEquipmentPropsSchema>
+
+export type TCreateEquipmentPropsReqValues = z.infer<typeof createEquipmentPropsReqSchema>

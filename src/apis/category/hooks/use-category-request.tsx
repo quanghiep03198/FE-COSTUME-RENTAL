@@ -1,5 +1,4 @@
 import { CommonActions, ItemType } from '@/common/constants/enums'
-import { axiosClient } from '@/configs/axios.config'
 import {
   queryOptions,
   useMutation,
@@ -7,8 +6,9 @@ import {
   type MutationFunction,
   type MutationKey,
 } from '@tanstack/react-query'
-import type { AxiosResponse } from 'axios'
+import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
+import { createCategoryRpc, deleteCategoryRpc, getCategoriesRpc, updateCategoryRpc } from '../rpc'
 import type { TCreateCategoryValues } from '../schemas/create-category.schema'
 import type { TUpdateCategoryValues } from '../schemas/update-category.schema'
 import type { ICategory } from '../types'
@@ -26,7 +26,7 @@ export const GET_PROPS_CATEGORY_QUERY_KEY: RequestQuery = {
 export const getCategoriesQueryOptions = (params: RequestQuery) => {
   return queryOptions({
     queryKey: [GET_CATEGORIES_QUERY_KEY, params],
-    queryFn: async () => await axiosClient.get<unknown, ICategory[]>('/categories', { params }),
+    queryFn: () => getCategoriesRpc(params),
   })
 }
 
@@ -36,11 +36,11 @@ export const useGetCategoriesQuery = (params: RequestQuery) => {
 
 type TMutationConfigFactory = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateCategoryValues) => Promise<AxiosResponse<ICategory>>
+    handler: (data: TCreateCategoryValues) => Promise<ICategory>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateCategoryValues) => Promise<AxiosResponse<ICategory>>
+    handler: (data: TUpdateCategoryValues) => Promise<ICategory>
     message: string
   }
   none: {
@@ -53,13 +53,16 @@ export const useCreateOrUpdateCategoryMutation = (
   action: CommonActions.CREATE | CommonActions.UPDATE | 'none',
   mutationKey: MutationKey
 ) => {
+  const createCategoryFn = useServerFn(createCategoryRpc)
+  const updateCategoryFn = useServerFn(updateCategoryRpc)
+
   const mutationConfigFactory: TMutationConfigFactory = {
     [CommonActions.CREATE]: {
-      handler: async (data) => await axiosClient.post('/categories', data),
+      handler: (data) => createCategoryFn({ data }),
       message: 'Thêm mới danh mục thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...data }) => await axiosClient.patch(`/categories/${id}`, data),
+      handler: (data) => updateCategoryFn({ data }),
       message: 'Cập nhật danh mục thành công',
     },
     none: {
@@ -86,11 +89,13 @@ export const useCreateOrUpdateCategoryMutation = (
 }
 
 export const useDeleteCategoryMutation = (mutationKey: MutationKey) => {
+  const deleteCategoryFn = useServerFn(deleteCategoryRpc)
+
   return useMutation({
     meta: {
       invalidates: [GET_CATEGORIES_QUERY_KEY, mutationKey],
     },
-    mutationFn: async (id: number) => await axiosClient.delete(`/categories/${id}`),
+    mutationFn: (id: number) => deleteCategoryFn({ data: id }),
     onSuccess: () => {
       toast.success('Xóa danh mục thành công')
     },

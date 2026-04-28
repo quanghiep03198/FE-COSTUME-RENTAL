@@ -1,9 +1,11 @@
+import { deleteUserRpc } from '@/apis/user/rpc'
 import { CommonActions } from '@/common/constants/enums'
-import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useServerFn } from '@tanstack/react-start'
+import type { AxiosRequestConfig } from 'axios'
 import { useRef } from 'react'
 import { toast } from 'sonner'
+import { createEmployeeRpc, getEmployeeRpc, updateEmployeeRpc } from '../rpc'
 import type { TCreateEmployeeValues } from '../schemas/create-employee.schema'
 import type { TUpdateEmployeeValues } from '../schemas/update-employee.schema'
 import type { IEmployee } from '../types'
@@ -15,7 +17,7 @@ export const getEmployeeQueryOptions = (params?: AxiosRequestConfig['params']) =
   if (params) queryKey.push(params)
   return queryOptions({
     queryKey,
-    queryFn: async () => await axiosClient.get<unknown, IEmployee[]>('/employees', { params }),
+    queryFn: () => getEmployeeRpc({ data: params }),
   })
 }
 
@@ -25,11 +27,11 @@ export const useGetEmployeesQuery = (params?: AxiosRequestConfig['params']) => {
 
 type TMutationFactory = {
   [CommonActions.CREATE]: {
-    handler: (payload: TCreateEmployeeValues) => Promise<AxiosResponse<any, any, {}>>
+    handler: (payload: TCreateEmployeeValues) => Promise<IEmployee>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (payload: TUpdateEmployeeValues & Pick<IEmployee, 'id'>) => Promise<AxiosResponse<any, any, {}>>
+    handler: (payload: TUpdateEmployeeValues) => Promise<IEmployee>
     message: string
   }
   ['none']: { handler: MutationFunction<any, any>; message?: never }
@@ -37,25 +39,17 @@ type TMutationFactory = {
 
 export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
   const toastRef = useRef<string | number | null>(null)
+  const createEmployeeFn = useServerFn(createEmployeeRpc)
+  const updateEmployeeFn = useServerFn(updateEmployeeRpc)
 
   const mutationConfigFactory: TMutationFactory = {
     [CommonActions.CREATE]: {
-      handler: async (payload: TCreateEmployeeValues) =>
-        await axiosClient.post('/employees/create', {
-          ...payload,
-          is_active: true,
-          created_at: new Date(),
-          updated_at: null,
-        }),
+      handler: (data: TCreateEmployeeValues) => createEmployeeFn({ data }),
       message: 'Thêm mới nhân viên thành công',
     },
 
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...payload }) =>
-        await axiosClient.patch(`/employees/${id}`, {
-          ...payload,
-          updated_at: new Date(),
-        }),
+      handler: (data) => updateEmployeeFn({ data }),
       message: 'Đã cập nhật thành công',
     },
     ['none']: { handler: () => Promise.resolve() },
@@ -80,21 +74,12 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
   })
 }
 
-export const useUpdateUserStatusMutation = () => {
-  return useMutation({
-    mutationFn: async ({ id, is_active }: { id: number; is_active: boolean }) => {
-      return await axiosClient.patch(`/employees/${id}`, { is_active })
-    },
-    meta: {
-      invalidates: [[GET_EMPLOYEE_QUERY_KEY]],
-    },
-  })
-}
-
 export const useDeleteUserMutation = () => {
+  const deleteUserFn = useServerFn(deleteUserRpc)
+
   return useMutation({
     mutationFn: async (id: number) => {
-      return await axiosClient.delete(`/employees/${id}`)
+      return await deleteUserFn({ data: id })
     },
     meta: {
       invalidates: [[GET_EMPLOYEE_QUERY_KEY]],

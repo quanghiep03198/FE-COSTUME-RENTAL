@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios'
+import { HttpStatusCode } from '@/common/constants/http-code'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
@@ -10,7 +10,7 @@ export const NotFoundPage: React.FC = () => {
       <div>
         <div className="flex items-center gap-x-4">
           <Typography color="destructive" className="font-semibold">
-            {HttpStatusCode.NotFound}
+            {HttpStatusCode.NOT_FOUND}
           </Typography>
           <Separator orientation="vertical" className="h-5 w-0.5" />
           <Typography variant="h4">Không tìm thấy trang bạn yêu cầu</Typography>

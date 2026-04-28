@@ -81,10 +81,6 @@ const CostumeFormDialog: React.FC = () => {
 
   const form = useForm({
     defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateCostumeValues,
-    onSubmitInvalid: ({ value, formApi }) => {
-      console.warn(formApi.state.errors)
-      console.log({ ...value, description: editorRef.current?.getHTML() })
-    },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
         ...value,

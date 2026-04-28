@@ -133,8 +133,8 @@ export const DataGrid: React.FC<DataTableProps> = ({
       columnOrder,
       pagination: manualPagination
         ? {
-            pageIndex: paginationProps.page - 1,
-            pageSize: paginationProps.limit,
+            pageIndex: paginationProps?.page! - 1,
+            pageSize: paginationProps?.limit!,
           }
         : pagination,
     },
@@ -268,7 +268,7 @@ export const DataGrid: React.FC<DataTableProps> = ({
 
   return (
     <TableContextProvider value={store.current}>
-      <DataTableWrapper data-border={border}>
+      <DataTableWrapper data-border={border} suppressHydrationWarning>
         <TableToolbar {...({ ...toolbarProps, table } as unknown as ToolbarProps)} />
         <DataTable
           columns={columns.filter((col) => !col.meta?.hidden)}

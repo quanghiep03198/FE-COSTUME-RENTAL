@@ -1,10 +1,10 @@
 import { CommonActions } from '@/common/constants/enums'
-import { axiosClient } from '@/configs/axios.config'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
-import type { AxiosResponse } from 'axios'
+import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import type { TCreateCostumeValues } from '../schemas/create-costume.schema'
-import type { TUpdateCostumeValues } from '../schemas/update-costume.schema'
+import { createCostumeRpc, deleteCostumeRpc, getCostumesRpc, updateCostumeRpc } from '../rpc'
+import type { TCreateCostumeReqValues } from '../schemas/create-costume.schema'
+import type { TUpdateCostumeReqValues } from '../schemas/update-costume.schema'
 import type { ICostume } from '../types'
 
 export const GET_COSTUMES_QUERY_KEY = 'costumes' as const
@@ -12,7 +12,7 @@ export const GET_COSTUMES_QUERY_KEY = 'costumes' as const
 export const getCostumesQueryOptions = () => {
   return queryOptions({
     queryKey: [GET_COSTUMES_QUERY_KEY],
-    queryFn: async () => await axiosClient.get<unknown, ICostume[]>('/costumes'),
+    queryFn: () => getCostumesRpc(),
   })
 }
 
@@ -22,11 +22,11 @@ export const useGetCostumesQuery = () => {
 
 type TMutationConfigFactory = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateCostumeValues) => Promise<AxiosResponse<ICostume>>
+    handler: (data: TCreateCostumeReqValues) => Promise<ICostume>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateCostumeValues) => Promise<AxiosResponse<ICostume>>
+    handler: (data: TUpdateCostumeReqValues) => Promise<ICostume>
     message: string
   }
   none: {
@@ -36,13 +36,16 @@ type TMutationConfigFactory = {
 }
 
 export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | CommonActions.UPDATE | 'none') => {
+  const createCostumeFn = useServerFn(createCostumeRpc)
+  const updateCostumeFn = useServerFn(updateCostumeRpc)
+
   const mutationConfigFactory: TMutationConfigFactory = {
     [CommonActions.CREATE]: {
-      handler: async (data: TCreateCostumeValues) => await axiosClient.post('/costumes', data),
+      handler: (data: TCreateCostumeReqValues) => createCostumeFn({ data }),
       message: 'Thêm mới trang phục thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async ({ id, ...data }: TUpdateCostumeValues) => await axiosClient.patch(`/costumes/${id}`, data),
+      handler: async (data: TUpdateCostumeReqValues) => updateCostumeFn({ data }),
       message: 'Cập nhật trang phục thành công',
     },
     none: {
@@ -69,11 +72,13 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
 }
 
 export const useDeleteCostumeMutation = () => {
+  const deleteCostumeFn = useServerFn(deleteCostumeRpc)
+
   return useMutation({
     meta: {
       invalidates: [[GET_COSTUMES_QUERY_KEY]],
     },
-    mutationFn: async (id: number) => await axiosClient.delete(`/costumes/${id}`, { params: { permanantly: true } }),
+    mutationFn: (id: number) => deleteCostumeFn({ data: id }),
     onSuccess: () => {
       toast.success('Xóa trang phục thành công')
     },

@@ -2,7 +2,7 @@ import z from 'zod'
 import type { ICategory } from '../types'
 import { createCategorySchema } from './create-category.schema'
 
-export const updateCategorySchema = createCategorySchema.partial()
+export const updateCategorySchema = createCategorySchema.partial().extend({ id: z.number() })
 
 export type TUpdateCategorySchema = typeof updateCategorySchema
 

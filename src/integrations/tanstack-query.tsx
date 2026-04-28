@@ -3,11 +3,10 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { broadcastQueryClient } from '@tanstack/query-broadcast-client-experimental'
 import { matchQuery, MutationCache, QueryClient, type QueryKey } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
-import type { AxiosError } from 'axios'
 
 declare module '@tanstack/react-query' {
   interface Register {
-    defaultError: AxiosError
+    defaultError: Error
     mutationMeta: {
       invalidates?: Array<QueryKey>
     }

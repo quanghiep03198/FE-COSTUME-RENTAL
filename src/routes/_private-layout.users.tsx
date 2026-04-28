@@ -10,9 +10,9 @@ export const Route = createFileRoute('/_private-layout/users')({
   head: () => ({
     meta: [{ name: 'description', content: 'Quản lý truy cập' }, { title: 'Quản lý truy cập' }],
   }),
-  beforeLoad: async ({ context }) => {
+  loader: async ({ context }) => {
     await Promise.all([
-      context.queryClient.prefetchQuery(getUsersQueryOptions()),
+      context.queryClient.ensureQueryData(getUsersQueryOptions()),
       context.queryClient.ensureQueryData(
         getEmployeeQueryOptions({
           'position:in': `${Position.MANAGER},${Position.ORDER_PROCESSOR},${Position.WAREHOUSE_MANAGER}`,

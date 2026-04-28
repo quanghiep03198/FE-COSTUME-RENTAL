@@ -1,7 +1,7 @@
+import tw from '@/lib/tw'
 import { cn } from '@/lib/utils'
 
 import { useCallback, useState } from 'react'
-import tw from 'tailwind-styled-components'
 import { Badge } from '../ui/badge'
 import { Icon } from '../ui/icon'
 import { Input } from '../ui/input'

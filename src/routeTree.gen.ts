@@ -16,10 +16,10 @@ import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.i
 import { Route as PrivateLayoutUsersRouteImport } from './routes/_private-layout.users'
 import { Route as PrivateLayoutStatisticsRouteImport } from './routes/_private-layout.statistics'
 import { Route as PrivateLayoutRentalReceiptsRouteImport } from './routes/_private-layout.rental-receipts'
-import { Route as PrivateLayoutMaintenanceRouteImport } from './routes/_private-layout.maintenance'
 import { Route as PrivateLayoutInvoicesRouteImport } from './routes/_private-layout.invoices'
 import { Route as PrivateLayoutInventoryRouteImport } from './routes/_private-layout.inventory'
 import { Route as PrivateLayoutInternalBorrowingRouteImport } from './routes/_private-layout.internal-borrowing'
+import { Route as PrivateLayoutImagesGalleryRouteImport } from './routes/_private-layout.images-gallery'
 import { Route as PrivateLayoutEquipmentPropsRouteImport } from './routes/_private-layout.equipment-props'
 import { Route as PrivateLayoutEmployeesRouteImport } from './routes/_private-layout.employees'
 import { Route as PrivateLayoutDashboardRouteImport } from './routes/_private-layout.dashboard'
@@ -60,12 +60,6 @@ const PrivateLayoutRentalReceiptsRoute =
     path: '/rental-receipts',
     getParentRoute: () => PrivateLayoutRoute,
   } as any)
-const PrivateLayoutMaintenanceRoute =
-  PrivateLayoutMaintenanceRouteImport.update({
-    id: '/maintenance',
-    path: '/maintenance',
-    getParentRoute: () => PrivateLayoutRoute,
-  } as any)
 const PrivateLayoutInvoicesRoute = PrivateLayoutInvoicesRouteImport.update({
   id: '/invoices',
   path: '/invoices',
@@ -80,6 +74,12 @@ const PrivateLayoutInternalBorrowingRoute =
   PrivateLayoutInternalBorrowingRouteImport.update({
     id: '/internal-borrowing',
     path: '/internal-borrowing',
+    getParentRoute: () => PrivateLayoutRoute,
+  } as any)
+const PrivateLayoutImagesGalleryRoute =
+  PrivateLayoutImagesGalleryRouteImport.update({
+    id: '/images-gallery',
+    path: '/images-gallery',
     getParentRoute: () => PrivateLayoutRoute,
   } as any)
 const PrivateLayoutEquipmentPropsRoute =
@@ -118,10 +118,10 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof PrivateLayoutDashboardRoute
   '/employees': typeof PrivateLayoutEmployeesRoute
   '/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
+  '/images-gallery': typeof PrivateLayoutImagesGalleryRoute
   '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
   '/inventory': typeof PrivateLayoutInventoryRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
-  '/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
@@ -134,10 +134,10 @@ export interface FileRoutesByTo {
   '/dashboard': typeof PrivateLayoutDashboardRoute
   '/employees': typeof PrivateLayoutEmployeesRoute
   '/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
+  '/images-gallery': typeof PrivateLayoutImagesGalleryRoute
   '/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
   '/inventory': typeof PrivateLayoutInventoryRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
-  '/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
@@ -152,10 +152,10 @@ export interface FileRoutesById {
   '/_private-layout/dashboard': typeof PrivateLayoutDashboardRoute
   '/_private-layout/employees': typeof PrivateLayoutEmployeesRoute
   '/_private-layout/equipment-props': typeof PrivateLayoutEquipmentPropsRoute
+  '/_private-layout/images-gallery': typeof PrivateLayoutImagesGalleryRoute
   '/_private-layout/internal-borrowing': typeof PrivateLayoutInternalBorrowingRoute
   '/_private-layout/inventory': typeof PrivateLayoutInventoryRoute
   '/_private-layout/invoices': typeof PrivateLayoutInvoicesRoute
-  '/_private-layout/maintenance': typeof PrivateLayoutMaintenanceRoute
   '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
@@ -171,10 +171,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/employees'
     | '/equipment-props'
+    | '/images-gallery'
     | '/internal-borrowing'
     | '/inventory'
     | '/invoices'
-    | '/maintenance'
     | '/rental-receipts'
     | '/statistics'
     | '/users'
@@ -187,10 +187,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/employees'
     | '/equipment-props'
+    | '/images-gallery'
     | '/internal-borrowing'
     | '/inventory'
     | '/invoices'
-    | '/maintenance'
     | '/rental-receipts'
     | '/statistics'
     | '/users'
@@ -204,10 +204,10 @@ export interface FileRouteTypes {
     | '/_private-layout/dashboard'
     | '/_private-layout/employees'
     | '/_private-layout/equipment-props'
+    | '/_private-layout/images-gallery'
     | '/_private-layout/internal-borrowing'
     | '/_private-layout/inventory'
     | '/_private-layout/invoices'
-    | '/_private-layout/maintenance'
     | '/_private-layout/rental-receipts'
     | '/_private-layout/statistics'
     | '/_private-layout/users'
@@ -271,13 +271,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutRentalReceiptsRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
-    '/_private-layout/maintenance': {
-      id: '/_private-layout/maintenance'
-      path: '/maintenance'
-      fullPath: '/maintenance'
-      preLoaderRoute: typeof PrivateLayoutMaintenanceRouteImport
-      parentRoute: typeof PrivateLayoutRoute
-    }
     '/_private-layout/invoices': {
       id: '/_private-layout/invoices'
       path: '/invoices'
@@ -297,6 +290,13 @@ declare module '@tanstack/react-router' {
       path: '/internal-borrowing'
       fullPath: '/internal-borrowing'
       preLoaderRoute: typeof PrivateLayoutInternalBorrowingRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/images-gallery': {
+      id: '/_private-layout/images-gallery'
+      path: '/images-gallery'
+      fullPath: '/images-gallery'
+      preLoaderRoute: typeof PrivateLayoutImagesGalleryRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
     '/_private-layout/equipment-props': {
@@ -343,10 +343,10 @@ interface PrivateLayoutRouteChildren {
   PrivateLayoutDashboardRoute: typeof PrivateLayoutDashboardRoute
   PrivateLayoutEmployeesRoute: typeof PrivateLayoutEmployeesRoute
   PrivateLayoutEquipmentPropsRoute: typeof PrivateLayoutEquipmentPropsRoute
+  PrivateLayoutImagesGalleryRoute: typeof PrivateLayoutImagesGalleryRoute
   PrivateLayoutInternalBorrowingRoute: typeof PrivateLayoutInternalBorrowingRoute
   PrivateLayoutInventoryRoute: typeof PrivateLayoutInventoryRoute
   PrivateLayoutInvoicesRoute: typeof PrivateLayoutInvoicesRoute
-  PrivateLayoutMaintenanceRoute: typeof PrivateLayoutMaintenanceRoute
   PrivateLayoutRentalReceiptsRoute: typeof PrivateLayoutRentalReceiptsRoute
   PrivateLayoutStatisticsRoute: typeof PrivateLayoutStatisticsRoute
   PrivateLayoutUsersRoute: typeof PrivateLayoutUsersRoute
@@ -359,10 +359,10 @@ const PrivateLayoutRouteChildren: PrivateLayoutRouteChildren = {
   PrivateLayoutDashboardRoute: PrivateLayoutDashboardRoute,
   PrivateLayoutEmployeesRoute: PrivateLayoutEmployeesRoute,
   PrivateLayoutEquipmentPropsRoute: PrivateLayoutEquipmentPropsRoute,
+  PrivateLayoutImagesGalleryRoute: PrivateLayoutImagesGalleryRoute,
   PrivateLayoutInternalBorrowingRoute: PrivateLayoutInternalBorrowingRoute,
   PrivateLayoutInventoryRoute: PrivateLayoutInventoryRoute,
   PrivateLayoutInvoicesRoute: PrivateLayoutInvoicesRoute,
-  PrivateLayoutMaintenanceRoute: PrivateLayoutMaintenanceRoute,
   PrivateLayoutRentalReceiptsRoute: PrivateLayoutRentalReceiptsRoute,
   PrivateLayoutStatisticsRoute: PrivateLayoutStatisticsRoute,
   PrivateLayoutUsersRoute: PrivateLayoutUsersRoute,

@@ -7,10 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator'
 import { Typography } from '@/components/ui/typography'
 import { type PaginationState, type Table } from '@tanstack/react-table'
-import { type AxiosRequestConfig } from 'axios'
 import React, { memo, useEffect } from 'react'
 import isEqual from 'react-fast-compare'
-import { type PaginationBaseProps } from '../types'
+import type { PaginationBaseProps } from '../types'
 
 export type DataTablePaginationProps = {
   table: Table<any>
@@ -33,10 +32,14 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 
   const canNextPage = manualPagination ? controlledPaginationProps?.hasNextPage : table.getCanNextPage()
   const canPreviousPage = manualPagination ? controlledPaginationProps?.hasPrevPage : table.getCanPreviousPage()
-  const pageCount = manualPagination ? controlledPaginationProps?.totalPages : table.getPageCount()
-  const pageSize = manualPagination ? controlledPaginationProps?.limit : table.getState().pagination.pageSize
-  const pageIndex = manualPagination ? controlledPaginationProps?.page : table.getState().pagination.pageIndex + 1
-  const rowCount = manualPagination ? controlledPaginationProps.totalDocs : table.getRowCount()
+  const pageCount = (manualPagination ? controlledPaginationProps?.totalPages : table.getPageCount()) as number
+  const pageSize = (
+    manualPagination ? controlledPaginationProps?.limit : table.getState().pagination.pageSize
+  ) as number
+  const pageIndex = (
+    manualPagination ? controlledPaginationProps?.page : table.getState().pagination.pageIndex + 1
+  ) as number
+  const rowCount = (manualPagination ? controlledPaginationProps.totalDocs : table.getRowCount()) as number
 
   const pageIndexContext = String(pageIndex ?? 1) + '/' + String(pageCount ?? 1)
 
@@ -65,7 +68,7 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
     else previousPage()
   }
 
-  const handlePrefetch = (params: AxiosRequestConfig['params'] & Pick<Pagination<any>, 'page' | 'limit'>) => {
+  const handlePrefetch = (params: { [key in string]: any } & Pick<Pagination<any>, 'page' | 'limit'>) => {
     if (!manualPagination || typeof prefetch !== 'function' || !canNextPage) return
     prefetch(params)
   }
