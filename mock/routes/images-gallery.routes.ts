@@ -1,7 +1,7 @@
 import type { Application, Request, Response } from 'express'
 import path from 'path'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 import { deleteUploadedFile, saveUploadedFile } from '../utils/file-upload'
 
 export function registerImageGalleryRoutes(app: Application) {
@@ -30,7 +30,7 @@ export function registerImageGalleryRoutes(app: Application) {
   })
 
   // * GET /images-gallery
-  app.get('/api/images-gallery', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/images-gallery', (req: Request, res: Response) => {
     const result = queryCollection('images', req.query)
     return res.status(200).json(result)
   })
@@ -43,7 +43,7 @@ export function registerImageGalleryRoutes(app: Application) {
   })
 
   // * POST /images-gallery/upload
-  app.post('/api/images-gallery/upload', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/images-gallery/upload', jwtMiddleware, (req: Request, res: Response) => {
     const { item_type } = req.body as { item_type?: string }
 
     if (!item_type) {
@@ -122,7 +122,7 @@ export function registerImageGalleryRoutes(app: Application) {
   })
 
   // * PATCH /images-gallery/:id
-  app.patch('/api/images-gallery/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/images-gallery/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -161,7 +161,7 @@ export function registerImageGalleryRoutes(app: Application) {
   })
 
   // * DELETE /images-gallery/:id
-  app.delete('/api/images-gallery/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/images-gallery/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

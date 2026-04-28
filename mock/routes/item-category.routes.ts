@@ -1,24 +1,24 @@
 import type { Application, Request, Response } from 'express'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
 
 export function registerItemCategoryRoutes(app: Application) {
   // * GET /categories
-  app.get('/api/categories', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryCollection('categories', req.query, res)
     return res.status(200).json(result)
   })
 
   // * GET /categories/:id
-  app.get('/api/categories/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/categories/:id', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryRecord('categories', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Item category not found' })
     return res.status(200).json(result)
   })
 
   // * POST /categories
-  app.post('/api/categories', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
     const { name, type } = req.body
 
     if (!name || !type) {
@@ -44,7 +44,7 @@ export function registerItemCategoryRoutes(app: Application) {
   })
 
   // * PATCH /categories/:id
-  app.patch('/api/categories/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/categories/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -70,7 +70,7 @@ export function registerItemCategoryRoutes(app: Application) {
   })
 
   // * DELETE /categories/:id
-  app.delete('/api/categories/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/categories/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

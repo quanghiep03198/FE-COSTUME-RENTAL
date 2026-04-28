@@ -1,11 +1,11 @@
 import type { Application, Request, Response } from 'express'
 import { getDb, queryCollection, queryRecord } from '../lib'
-import { authMiddleware } from '../middleware'
+import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
 
 export function registerCostumeRoutes(app: Application) {
   // * GET /costumes
-  app.get('/api/costumes', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/costumes', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const result = queryCollection('costumes', req.query, {
       transform: (record) => {
@@ -29,7 +29,7 @@ export function registerCostumeRoutes(app: Application) {
   })
 
   // * GET /costumes/:id
-  app.get('/api/costumes/:id', authMiddleware, (req: Request, res: Response) => {
+  app.get('/api/costumes/:id', jwtMiddleware, (req: Request, res: Response) => {
     const result = queryRecord('costumes', Number(req.params.id), req.query, {
       transform: (record) => {
         const db = getDb()
@@ -42,7 +42,7 @@ export function registerCostumeRoutes(app: Application) {
   })
 
   // * POST /costumes
-  app.post('/api/costumes', authMiddleware, (req: Request, res: Response) => {
+  app.post('/api/costumes', jwtMiddleware, (req: Request, res: Response) => {
     const { name, category_id, sizes, gender, images, rental_price_per_day, unit, description, hashtags, color } =
       req.body
 
@@ -83,7 +83,7 @@ export function registerCostumeRoutes(app: Application) {
   })
 
   // * PATCH /costumes/:id
-  app.patch('/api/costumes/:id', authMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/costumes/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 
@@ -123,7 +123,7 @@ export function registerCostumeRoutes(app: Application) {
   })
 
   // * DELETE /costumes/:id
-  app.delete('/api/costumes/:id', authMiddleware, (req: Request, res: Response) => {
+  app.delete('/api/costumes/:id', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const id = Number(req.params.id)
 

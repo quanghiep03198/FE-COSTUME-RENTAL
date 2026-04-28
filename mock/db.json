@@ -207,7 +207,7 @@
       "is_active": true,
       "position": "ORDER_PROCESSOR",
       "created_at": "2026-04-23T17:07:23.275Z",
-      "updated_at": null,
+      "updated_at": "2026-04-28T15:54:39.681Z",
       "id": 8
     },
     {
@@ -216,13 +216,13 @@
       "phone": "0942899559",
       "email": "ducthanhnguyen245@gmail.com",
       "address": "Số 1/22 Trần Nguyên Hãn, Hải Phòng",
-      "work_status": "ACTIVE",
+      "work_status": "SUSPENDED",
       "citizen_id_number": "031999345909",
       "user_id": null,
       "is_active": true,
       "position": "ORDER_PROCESSOR",
       "created_at": "2026-04-24T03:55:29.056Z",
-      "updated_at": null,
+      "updated_at": "2026-04-28T16:13:03.793Z",
       "id": 9
     }
   ],
@@ -370,6 +370,63 @@
     },
     {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM2ODM4NCwiZXhwIjoxNzc3MzY4Mzk0fQ.hz02u5IONVpHt7ia8TeNkk1K3L_397bSTuMP6xVGM6k"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3MzkzNiwiZXhwIjoxNzc3MzczOTQ2fQ.X1MeMhqhz5dadG5O1bwcvcTiZDYPXyOD2qKbb9mznXo"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3MzkzNiwiZXhwIjoxNzc3MzczOTQ2fQ.X1MeMhqhz5dadG5O1bwcvcTiZDYPXyOD2qKbb9mznXo"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDE2OSwiZXhwIjoxNzc3Mzc0MTc5fQ.kDTH98998pg__iVFys8L4RxZQIznUibSwecV_4cWBQM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDM0MywiZXhwIjoxNzc3Mzc0MzUzfQ.3_fLWOhpfzOmvHA2ydavvn1BCdsRCTpfyRQYDBO-vP0"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDM1OSwiZXhwIjoxNzc3Mzc0MzY5fQ.xlO-bSimzNhoO0gVkyo3GpBUMbpUEniRF8-XXZgyq3k"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDM4MCwiZXhwIjoxNzc3Mzc0MzkwfQ.4Tr8kjdvdPT5QrJgpisanoXEsq1AuKTYwPd7YSQJmlc"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDQxMiwiZXhwIjoxNzc3Mzc0NDIyfQ.kT3jS1q-1u4FX1jKGLiFxXem1-WTVjhMY_Yyc92Ohfs"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDQ3MywiZXhwIjoxNzc3Mzc0NDgzfQ.Vwe6xItgNGrDj8snjT7RydF9zHn0JqtXvajiFhNfymE"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDU3MiwiZXhwIjoxNzc3Mzc0NTgyfQ.qUqVRY5cS4HX2KWipz0VEOfDOL4D0ZAzrC8sgRKwN14"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDU5OCwiZXhwIjoxNzc3Mzc0NjA4fQ.6oNFI67bUdFtjh0k1O_wAkZ6kQD2z71iTEsKYPSmxnc"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDYxMCwiZXhwIjoxNzc3Mzc0NjIwfQ.opGM4Nh3iHQ6TXfDTl8YmaXpGZt1CeVjiriWeMgXrpA"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDYzOSwiZXhwIjoxNzc3Mzc0NjQ5fQ.0783yLaXmOxhWPZrvTq-_ZRcOjx72PExqzvwcFR0aVQ"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDY2NiwiZXhwIjoxNzc3Mzc0Njc2fQ.A6rGEyesoEbrOSDZ_2dIZOdYOHvnsvfRpLGt9XKTnbk"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NDY4MCwiZXhwIjoxNzc3Mzc0NjkwfQ.T7tU1inajmBe3GNE8zsd8TPc9y6HTDM0NEwQwJ7LIJ4"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM3NTE2NSwiZXhwIjoxNzc3NDYxNTY1fQ.L99tp86DioA6_O2DJTYC9TJ-04E5N5fHG8zPs93d3Zo"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM4ODQ3NiwiZXhwIjoxNzc3NDc0ODc2fQ.1mfQUcro70zWrhDWnXeT5bJso7YeTEtkKpG-zoFy3zM"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM4OTU4NywiZXhwIjoxNzc3NDc1OTg3fQ.n779Qbsn9kzmAthwbcOzrGNud81vXFxYcXNf2L8i7U0"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM5MzgwMiwiZXhwIjoxNzc3NDgwMjAyfQ.AoJxp4qOmXG03GQYb2lC5eFApjepyywfxHRfS1c3sbo"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzM5Njk1OSwiZXhwIjoxNzc3NDgzMzU5fQ.aKNBMz_5qotJCnIzCIQSqKHA8NbtR-qwR3iFy50GOZA"
     }
   ],
   "warehouses": [],
@@ -586,42 +643,14 @@
       ],
       "is_active": true,
       "created_at": "2026-04-27T11:35:10.896Z",
-      "updated_at": "2026-04-27T11:37:50.756Z",
+      "updated_at": "2026-04-28T15:27:58.289Z",
       "id": 4
-    },
-    {
-      "slug": "ao-lua",
-      "name": "Áo Lụa",
-      "category_id": 4,
-      "color": "#fde047",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
-      "gender": "FEMALE",
-      "images": [
-        3
-      ],
-      "unit": "SET",
-      "rental_price_per_day": 300000,
-      "description": "<h3 class=\"font-bold !text-foreground\">Chi tiết sản phẩm</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 330px;\"><colgroup><col style=\"width: 250px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Mẫu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Xuất xứ</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Chất liệu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><h3 class=\"font-bold !text-foreground\">Bảng tư vấn Size</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 320px;\"><colgroup><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Size</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Chiều cao</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Cân nặng</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Số đo</p></th></tr><tr><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><p class=\"my-1\"></p>",
-      "hashtags": [
-        "AoCoTruyen",
-        "AoLuaVietNam"
-      ],
-      "is_active": true,
-      "created_at": "2026-04-27T14:48:29.825Z",
-      "updated_at": null,
-      "id": 5
     }
   ],
   "equipment_props": [
     {
-      "name": "Hoa múa cầm tay Hướng dương",
-      "slug": "hoa-mua-cam-tay-huong-duong",
+      "name": "Hoa Múa Cầm Tay Hướng Dương 2",
+      "slug": "hoa-mua-cam-tay-huong-duong-2",
       "category_id": 5,
       "rental_price_per_day": 70000,
       "description": "<p class=\"my-1\"><span style=\"color: rgb(220, 38, 38);\">Hoa múa cầm tay hướng dương lớn màu vàng cam – đạo cụ biểu diễn chuyên nghiệp</span></p>",
@@ -634,56 +663,12 @@
       "unit": "Cặp",
       "is_active": true,
       "created_at": "2026-04-24T16:10:07.433Z",
-      "updated_at": "2026-04-27T15:44:29.845Z",
+      "updated_at": "2026-04-28T15:14:01.781Z",
       "id": 1,
       "category": {
-        "name": "Hoa múa",
-        "slug": "hoa-mua",
-        "type": "EQUIPMENT_PROPS",
-        "is_active": true,
-        "created_at": "2026-04-24T15:56:15.161Z",
-        "updated_at": null,
-        "id": 5
+        "id": 5,
+        "name": "Hoa múa"
       }
-    },
-    {
-      "name": "Hoa múa cầm tay Hướng dương 2",
-      "slug": "hoa-mua-cam-tay-huong-duong-2",
-      "category_id": 5,
-      "rental_price_per_day": 50000,
-      "description": "Hoa múa cầm tay hướng dương lớn màu vàng cam – đạo cụ biểu diễn chuyên nghiệp",
-      "images": [
-        7
-      ],
-      "hashtags": [
-        "hoa múa"
-      ],
-      "unit": "Cặp",
-      "is_active": true,
-      "created_at": "2026-04-25T18:17:47.154Z",
-      "updated_at": null,
-      "id": 2
-    },
-    {
-      "name": "Hoa Sen Múa",
-      "slug": "hoa-sen-mua",
-      "category_id": 5,
-      "rental_price_per_day": 50000,
-      "weight_kg": null,
-      "dimensions": null,
-      "is_fragile": false,
-      "description": "<p class=\"my-1\"><strong class=\"font-bold\">ahihhihi</strong></p>",
-      "images": [
-        7
-      ],
-      "unit": "Cặp",
-      "hashtags": [
-        "HoaMua"
-      ],
-      "is_active": true,
-      "created_at": "2026-04-27T15:42:46.987Z",
-      "updated_at": null,
-      "id": 3
     }
   ],
   "inventory": []
