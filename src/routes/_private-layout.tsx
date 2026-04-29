@@ -12,7 +12,8 @@ export const Route = createFileRoute('/_private-layout')({
   component: RouteComponent,
   server: { middleware: [authMiddleware] },
   loader: async ({ context }) => {
-    return context.queryClient.ensureQueryData(getAuthUserQueryOptions())
+    const user = await context.queryClient.ensureQueryData(getAuthUserQueryOptions())
+    return { user }
   },
   errorComponent: ({ error, reset }) => {
     return <ErrorBoundaryFallback error={error as Error} resetError={reset} />
@@ -20,6 +21,8 @@ export const Route = createFileRoute('/_private-layout')({
 })
 
 function RouteComponent() {
+  const { user } = Route.useLoaderData()
+
   return (
     <SidebarProvider
       style={
@@ -29,7 +32,7 @@ function RouteComponent() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar />
+      <AppSidebar user={user} />
       <LayoutWrapper data-slot="layout-wrapper">
         <AppNavbar />
         <OutletWrapper data-slot="outlet-wrapper">

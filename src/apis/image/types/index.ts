@@ -1,6 +1,6 @@
 import type { ICategory } from '@/apis/category/types'
 
-export type TMimeType = `image/${'jpeg' | 'jpg' | 'png' | 'webp'}`
+export type TMimeType = `image/${'jpeg' | 'jpg' | 'png' | 'webp' | 'avif'}`
 
 export type TImageMetadata = {
   file_name: string

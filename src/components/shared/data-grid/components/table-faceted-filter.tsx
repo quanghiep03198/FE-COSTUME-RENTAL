@@ -63,7 +63,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
         }
       />
 
-      <PopoverContent className="w-72 p-0" align="start">
+      <PopoverContent className="w-fit p-0" align="start">
         <Command autoFocus={false}>
           <CommandInput placeholder={title} />
           <CommandList>

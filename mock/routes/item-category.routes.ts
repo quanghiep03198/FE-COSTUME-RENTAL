@@ -6,7 +6,7 @@ import { generateUniqueSlug } from '../utils/slug-generator'
 export function registerItemCategoryRoutes(app: Application) {
   // * GET /categories
   app.get('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('categories', req.query, res)
+    const result = queryCollection('categories', req.query)
     return res.status(200).json(result)
   })
 

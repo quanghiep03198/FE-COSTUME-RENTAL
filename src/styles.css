@@ -58,8 +58,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --table-head: var(--table-head);
-  --table-head-foreground: var(--table-head-foreground);
+  --color-table-head: var(--table-head);
+  --color-table-head-foreground: var(--table-head-foreground);
   --success: var(--success);
   --success-foreground: var(--success-foreground);
   --warning: var(--warning);
@@ -103,8 +103,8 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --table-head: oklch(0.92 0 0);
-  --table-head-foreground: oklch(0.27 0 0);
+  --table-head: oklch(0.97 0 0);
+  --table-head-foreground: oklch(0.269 0 0);
 
   --success: oklch(0.72 0.19 150);
   --success-foreground: oklch(0.205 0 0);
@@ -144,6 +144,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --table-head: oklch(0.269 0 0);
+  --table-head-foreground: oklch(0.87 0 0);
 
   --success: oklch(0.8 0.18 152);
   --success-foreground: oklch(0.205 0 0);

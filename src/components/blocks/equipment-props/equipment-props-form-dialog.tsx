@@ -48,7 +48,7 @@ import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore, type Updater } from '@tanstack/react-form'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
-import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery'
+import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
 
 const DEFAULT_FORM_VALUES = {
   name: '',

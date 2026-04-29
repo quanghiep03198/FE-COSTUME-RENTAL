@@ -49,7 +49,7 @@ import { useForm, useStore, type Updater } from '@tanstack/react-form'
 import { sortBy } from 'lodash-es'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
-import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery'
+import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
 import CostumeColorPlate from './costume-color-plate'
 
 const DEFAULT_FORM_VALUES = {

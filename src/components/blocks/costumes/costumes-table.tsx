@@ -50,7 +50,11 @@ const CostumeTable: React.FC = () => {
       }),
 
       columnHelper.accessor('category.name', {
+        id: 'category.name',
         header: 'Danh mục',
+        enableColumnFilter: true,
+        enableGlobalFilter: true,
+        filterFn: 'fuzzy',
       }),
       columnHelper.accessor('rental_price_per_day', {
         header: 'Giá thuê theo ngày',
@@ -115,9 +119,8 @@ const CostumeTable: React.FC = () => {
       enableColumnFilters={true}
       enableMultiSort={true}
       containerProps={{
-        style: {
-          height: 'calc(var(--outlet-wrapper-height) - 8rem)',
-        },
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-5rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-9rem)]',
       }}
       toolbarProps={{
         override: true,

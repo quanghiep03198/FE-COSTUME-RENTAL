@@ -1,3 +1,4 @@
+import { ItemType } from '@/common/constants/enums'
 import {
   PageAction,
   PageDescription,
@@ -9,6 +10,7 @@ import {
 import { PageEventProvider } from '@/contexts/event-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import tw from '@/lib/tw'
+import CategorySheet from '../categories/category-sheet'
 import CostumeFormDialog from './costume-form-dialog'
 import CostumeFormDialogTrigger from './costume-form-dialog-trigger'
 import CostumeTable from './costumes-table'
@@ -24,6 +26,7 @@ const CostumePage: React.FC = () => {
           <PageTitle>{title}</PageTitle>
           <PageDescription>{description}</PageDescription>
           <PageAction>
+            <CategorySheet type={ItemType.COSTUMES} />
             <CostumeFormDialogTrigger />
           </PageAction>
         </PageHeader>

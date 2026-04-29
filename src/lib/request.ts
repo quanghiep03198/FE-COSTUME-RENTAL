@@ -1,7 +1,6 @@
 import { cookieOptions } from '@/apis/auth/configs/cookie.config'
-import { RequestHeaders } from '@/common/constants/enums'
 import { GlobalConfig } from '@/configs/global.config'
-import { type Nullable } from '@tanstack/react-form'
+
 import { redirect } from '@tanstack/react-router'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import { stringify } from 'qs'
@@ -45,9 +44,9 @@ export default async function request<R = any, D = any>({
         method,
         body: config?.data ? JSON.stringify(config.data) : undefined,
         headers: {
-          ...(headers as unknown as HeadersInit),
-          [RequestHeaders.CONTENT_TYPE]: 'application/json',
-          [RequestHeaders.AUTHORIZATION]: `Bearer ${accessToken}`,
+          ...headers,
+          ['content-type']: 'application/json',
+          ['authorization']: `Bearer ${accessToken}`,
         },
       },
     ]
@@ -59,9 +58,9 @@ export default async function request<R = any, D = any>({
     if (response.status === 401) {
       const res = await fetch(baseURL + '/auth/refresh', {
         headers: {
-          ...(headers as unknown as HeadersInit),
-          [RequestHeaders.CONTENT_TYPE]: 'application/json',
-          [RequestHeaders.AUTHORIZATION]: `Bearer ${accessToken}`,
+          ...headers,
+          'content-type': 'application/json',
+          authorization: `Bearer ${accessToken}`,
         },
       })
 
@@ -73,7 +72,7 @@ export default async function request<R = any, D = any>({
         setCookie('accessToken', refreshToken, cookieOptions)
         const response = await fetch(requestConfig[0], {
           ...requestConfig[1],
-          headers: { ...requestConfig[1]!.headers, [RequestHeaders.AUTHORIZATION]: `Bearer ${refreshToken}` },
+          headers: { ...requestConfig[1]!.headers, authorization: `Bearer ${refreshToken}` },
         })
         const data: Awaited<R> = await response.json()
 
@@ -89,3 +88,5 @@ export default async function request<R = any, D = any>({
     return null
   }
 }
+
+export type RequestResponse<D> = Promise<Nullable<D>>

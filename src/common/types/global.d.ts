@@ -45,7 +45,7 @@ export declare global {
     timestamp: Date
   }
 
-  type Nullable<T> = T & (null | undefined)
+  type Nullable<T> = T | null | undefined
 
   type AnonymousFunction = (...args: any[]) => any
 
@@ -57,16 +57,29 @@ export declare global {
     | '_page'
     | '_sort'
     | '_where'
+    | 'permanantly'
 
   type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS'
 
   interface RequestQuery {
-    [key: RequestQueryKey]: string | number | boolean
+    [key: RequestQueryKey | string]: string | number | boolean
+
   }
 
   type RequestHeaders = {
     // copy every declared property from http.IncomingHttpHeaders
     // but remove index signatures
     [K in keyof IncomingHttpHeaders as string extends K ? never : number extends K ? never : K]: IncomingHttpHeaders[K]
+    [`x-${string}`]: string | undefined | undefined;
   }
+
+  /**
+   * @override
+   * @param input 
+   * @param init 
+   */
+  function fetch(
+    input: RequestInfo | URL,
+    init?: Omit<RequestInit, 'headers'> & { headers: RequestHeaders }
+  ): Promise<Response>
 }

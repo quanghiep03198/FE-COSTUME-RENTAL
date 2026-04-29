@@ -12,7 +12,7 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
   if (!accessToken) throw redirect({ to: '/login' })
 
   try {
-    const user = await request<IUser>({ url: '/auth/me' })
+    const user = await request<Nullable<IUser>>({ url: '/auth/me' })
     return await next({ context: { accessToken, user } })
   } catch {
     throw redirect({ to: '/login' })

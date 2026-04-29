@@ -1,7 +1,8 @@
-import { useGetAuthUserQuery, useLogOutMutation } from '@/apis/auth/hooks/use-auth-request'
+import { useLogOutMutation } from '@/apis/auth/hooks/use-auth-request'
 import type { IUser } from '@/apis/user/types'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isNil } from 'lodash-es'
 import { ChevronsUpDown } from 'lucide-react'
 import type React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
@@ -17,12 +18,12 @@ import {
 import { Icon } from '../../ui/icon'
 import { SidebarMenu, SidebarMenuItem, useSidebar } from '../../ui/sidebar'
 
-const AppNavUser: React.FC = () => {
+const AppNavUser: React.FC<{ user: Nullable<IUser> }> = ({ user }) => {
   const { mutateAsync: logout } = useLogOutMutation()
-  const { data: user, isLoading } = useGetAuthUserQuery()
+  // const { data: user, isLoading } = useGetAuthUserQuery()
   const { isMobile } = useSidebar()
 
-  if (isLoading) return <NavUserSkeleton />
+  if (isNil(user)) return <NavUserSkeleton />
 
   return (
     <SidebarMenu>
@@ -35,7 +36,7 @@ const AppNavUser: React.FC = () => {
             role="button"
             nativeButton={true}
           >
-            {isLoading ? <NavUserSkeleton /> : <NavUserItem user={user} />}
+            <NavUserItem user={user} />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"

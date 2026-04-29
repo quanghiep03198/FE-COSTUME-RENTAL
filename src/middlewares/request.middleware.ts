@@ -1,5 +1,4 @@
 import type { IUser } from '@/apis/user/types'
-import { RequestHeaders } from '@/common/constants/enums'
 import request, { type RequestConfig } from '@/lib/request'
 import { createMiddleware } from '@tanstack/react-start'
 
@@ -11,19 +10,14 @@ export const requestMiddleware = createMiddleware().server(async ({ next, contex
     context: {
       ...contextWithAuth,
       request: async <R = any, D = any>(config: RequestConfig<D>) => {
-        // if (config.url.toString().includes('equipment-props') && config.method === 'POST')
-        console.log('[requestMiddleware] request header ', {
-          ...config.headers,
-          ...(!!contextWithAuth?.accessToken && {
-            [RequestHeaders.AUTHORIZATION]: `Bearer ${contextWithAuth.accessToken}`,
-          }),
-        })
+        config.headers ??= {}
+
         return await request<R>({
           ...config,
           headers: {
-            ...config.headers,
+            ...config.headers!,
             ...(!!contextWithAuth?.accessToken && {
-              [RequestHeaders.AUTHORIZATION]: `Bearer ${contextWithAuth.accessToken}`,
+              authorization: `Bearer ${contextWithAuth.accessToken}`,
             }),
           },
         })

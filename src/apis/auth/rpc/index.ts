@@ -36,5 +36,4 @@ export const getProfileRpc = createServerFn({ method: 'GET' })
   .middleware([authMiddleware, requestMiddleware])
   .handler(({ context }) => {
     return context.user
-    // return context.request({ url: '/auth/me' })
   })

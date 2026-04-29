@@ -37,6 +37,13 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
         'Quản lý đạo cụ: thêm, sửa, xóa đạo cụ, phân loại theo loại, kích cỡ, màu sắc và tình trạng để vận hành hiệu quả.',
     },
     {
+      title: 'Quản lý thư viện ảnh',
+      url: '/images-gallery',
+      icon: 'Images',
+      authorizedRoles: [UserRole.ADMIN, UserRole.USER],
+      description: 'Quản lý thư viện ảnh sử dụng trên hệ thống',
+    },
+    {
       title: 'Kiểm kê kho',
       url: '/inventory',
       icon: 'Warehouse',

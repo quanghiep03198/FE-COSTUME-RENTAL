@@ -1,5 +1,6 @@
 import { UserRole } from '@/apis/auth/constants'
 import useAuth, { useGetAuthUserQuery } from '@/apis/auth/hooks/use-auth-request'
+import type { IUser } from '@/apis/user/types'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import {
   Sidebar,
@@ -33,8 +34,7 @@ type NavLinkProps = Pick<TNavigationConfig, 'url' | 'title' | 'icon' | 'authoriz
   viewTransition?: boolean
 }
 
-const AppSidebar: React.FC = () => {
-  const { data: user } = useGetAuthUserQuery()
+const AppSidebar: React.FC<{ user: Nullable<IUser> }> = ({ user }) => {
   const isMobile = useMediaQuery('(min-width: 320px) and (max-width: 1200px)')
   const { setOpen } = useSidebar()
 
@@ -146,7 +146,7 @@ const AppSidebar: React.FC = () => {
         )}
       </SidebarContent>
       <SidebarFooter>
-        <AppNavUser />
+        <AppNavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -22,6 +22,12 @@
           "type": "boolean",
           "default": true
         },
+        "created_by": {
+          "type": "integer"
+        },
+        "updated_by": {
+          "type": "integer"
+        },
         "created_at": {
           "type": "string",
           "format": "date-time",

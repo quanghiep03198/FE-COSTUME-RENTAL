@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { useForm } from '@tanstack/react-form'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
-import { setServerTokenFn } from '../../../../.tanstack/deprecated/functions/auth.function'
 
 import { LogIn } from 'lucide-react'
 import { useState, type SubmitEventHandler } from 'react'
@@ -15,7 +14,6 @@ import { toast } from 'sonner'
 const LoginForm = () => {
   const [isPending, setIsPending] = useState(false)
   const loginFn = useServerFn(loginRpc)
-  const setToken = useServerFn(setServerTokenFn)
   const router = useRouter()
 
   const { Field: FormField, handleSubmit } = useForm({
@@ -23,8 +21,7 @@ const LoginForm = () => {
     validators: { onSubmit: loginSchema },
     onSubmit: async ({ value }) => {
       try {
-        const { accessToken } = await loginFn({ data: value })
-        // await setToken({ data: accessToken })
+        await loginFn({ data: value })
         toast.success('Đăng nhập thành công')
         router.navigate({ to: '/statistics' })
       } catch {

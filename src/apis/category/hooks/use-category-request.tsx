@@ -4,43 +4,48 @@ import {
   useMutation,
   useSuspenseQuery,
   type MutationFunction,
-  type MutationKey,
+  type QueryKey,
 } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
+import { isNil } from 'lodash-es'
 import { toast } from 'sonner'
 import { createCategoryRpc, deleteCategoryRpc, getCategoriesRpc, updateCategoryRpc } from '../rpc'
 import type { TCreateCategoryValues } from '../schemas/create-category.schema'
+import type { TDeleteCategoryReqValues } from '../schemas/delete-category.schema'
+import type { TGetCategoryQueryValue } from '../schemas/get-category-type.schema'
 import type { TUpdateCategoryValues } from '../schemas/update-category.schema'
 import type { ICategory } from '../types'
 
-export const GET_CATEGORIES_QUERY_KEY = ['categories']
+export const GET_CATEGORIES_QUERY_KEY = 'categories'
 
-export const GET_COSTUME_CATEGORY_QUERY_KEY: RequestQuery = {
+export const GET_COSTUME_CATEGORY_QUERY_KEY: TGetCategoryQueryValue = {
   'type:eq': ItemType.COSTUMES,
+  _embed: 'costumes',
 }
 
-export const GET_PROPS_CATEGORY_QUERY_KEY: RequestQuery = {
+export const GET_PROPS_CATEGORY_QUERY_KEY: TGetCategoryQueryValue = {
   'type:eq': ItemType.EQUIPMENT_PROPS,
+  _embed: 'equipment_props',
 }
 
-export const getCategoriesQueryOptions = (params: RequestQuery) => {
+export const getCategoriesQueryOptions = (params?: TGetCategoryQueryValue) => {
   return queryOptions({
     queryKey: [GET_CATEGORIES_QUERY_KEY, params],
-    queryFn: () => getCategoriesRpc(params),
+    queryFn: () => getCategoriesRpc({ data: params }),
   })
 }
 
-export const useGetCategoriesQuery = (params: RequestQuery) => {
+export const useGetCategoriesQuery = (params?: TGetCategoryQueryValue) => {
   return useSuspenseQuery(getCategoriesQueryOptions(params))
 }
 
 type TMutationConfigFactory = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateCategoryValues) => Promise<ICategory>
+    handler: (data: TCreateCategoryValues) => Promise<Nullable<ICategory>>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateCategoryValues) => Promise<ICategory>
+    handler: (data: TUpdateCategoryValues) => Promise<Nullable<ICategory>>
     message: string
   }
   none: {
@@ -51,7 +56,7 @@ type TMutationConfigFactory = {
 
 export const useCreateOrUpdateCategoryMutation = (
   action: CommonActions.CREATE | CommonActions.UPDATE | 'none',
-  mutationKey: MutationKey
+  mutationKey: TGetCategoryQueryValue
 ) => {
   const createCategoryFn = useServerFn(createCategoryRpc)
   const updateCategoryFn = useServerFn(updateCategoryRpc)
@@ -72,10 +77,10 @@ export const useCreateOrUpdateCategoryMutation = (
 
   const currentConfig = mutationConfigFactory[action]
 
+  const invalidates = isNil(mutationKey) ? [[GET_CATEGORIES_QUERY_KEY]] : [[GET_CATEGORIES_QUERY_KEY, mutationKey]]
+
   return useMutation({
-    meta: {
-      invalidates: [GET_CATEGORIES_QUERY_KEY, mutationKey],
-    },
+    meta: { invalidates },
     mutationFn: currentConfig.handler,
     onSuccess: () => {
       if (currentConfig.message) {
@@ -88,14 +93,12 @@ export const useCreateOrUpdateCategoryMutation = (
   })
 }
 
-export const useDeleteCategoryMutation = (mutationKey: MutationKey) => {
+export const useDeleteCategoryMutation = (mutationKey: Array<QueryKey>) => {
   const deleteCategoryFn = useServerFn(deleteCategoryRpc)
 
   return useMutation({
-    meta: {
-      invalidates: [GET_CATEGORIES_QUERY_KEY, mutationKey],
-    },
-    mutationFn: (id: number) => deleteCategoryFn({ data: id }),
+    meta: { invalidates: mutationKey },
+    mutationFn: (data: TDeleteCategoryReqValues) => deleteCategoryFn({ data }),
     onSuccess: () => {
       toast.success('Xóa danh mục thành công')
     },
