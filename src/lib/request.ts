@@ -1,7 +1,9 @@
 import { cookieOptions } from '@/apis/auth/configs/cookie.config'
+import { HttpStatusCode } from '@/common/constants/http-code'
 import { GlobalConfig } from '@/configs/global.config'
 import { redirect } from '@tanstack/react-router'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
+import { isNil } from 'lodash-es'
 import { stringify } from 'qs'
 
 export type RequestConfig<D = any> = {
@@ -19,6 +21,7 @@ export default async function request<R = any, D = any>({
   params,
   headers = {},
   method = 'GET',
+  data,
   withAuth = false,
   ...config
 }: RequestConfig<D>) {
@@ -28,9 +31,11 @@ export default async function request<R = any, D = any>({
 
     headers.authorization ??= `Bearer ${accessToken}`
 
+    if (!(data instanceof FormData)) headers['content-type'] = 'application/json'
+
     url = url.toString().startsWith('/') ? url : `/${url}`
 
-    console.log({ body: config.data instanceof FormData ? config.data : JSON.stringify(config.data) })
+    const body = isNil(data) ? undefined : data instanceof FormData ? data : JSON.stringify(data)
 
     const requestConfig: Parameters<typeof fetch> = [
       baseURL +
@@ -44,15 +49,13 @@ export default async function request<R = any, D = any>({
         ...config,
         headers,
         method,
-        ...(config.data && { body: config.data instanceof FormData ? config.data : JSON.stringify(config.data) }),
+        body,
       },
     ]
 
-    // if (!accessToken) return await (await fetch(...requestConfig)).json()
-
     const response = await fetch(...requestConfig)
 
-    if (response.status === 401) {
+    if (response.status === HttpStatusCode.UNAUTHORIZED) {
       const res = await fetch(baseURL + '/auth/refresh', {
         headers: {
           ...headers,
