@@ -24,7 +24,6 @@ export const updateEmployeeRpc = createServerFn({ method: 'POST' })
   .middleware([authMiddleware, requestMiddleware])
   .inputValidator(updateEmployeeSchema)
   .handler(async ({ context, data: { id, ...update } }) => {
-    console.log('update', update)
     return await context.request({ url: `/employees/${id}`, method: 'PATCH', data: update })
   })
 
