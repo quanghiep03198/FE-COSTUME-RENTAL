@@ -18,8 +18,6 @@ export const uploadImagesRpc = createServerFn({ method: 'POST' })
         url: '/images-gallery/upload',
         method: 'POST',
         data,
-        // KHÔNG set content-type thủ công — axios tự set kèm boundary khi data là FormData
-        // Nếu set tay sẽ mất boundary → server không parse được multipart body
       })
       .catch((error) => console.error(error))
   })

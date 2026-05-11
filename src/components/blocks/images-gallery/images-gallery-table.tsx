@@ -1,6 +1,7 @@
 import useAuth from '@/apis/auth/hooks/use-auth-request'
 import { useGetImagesQuery } from '@/apis/image/hooks/use-image-request'
 import type { IImage } from '@/apis/image/types'
+import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
@@ -9,6 +10,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { filesize } from 'filesize'
 import { useMemo } from 'react'
 import ImageActionsDropdown from './image-action-dropdown'
+import ImageDialog from './image-dialog'
 
 const ImageGalleryTable: React.FC = () => {
   const { data, isLoading } = useGetImagesQuery()
@@ -23,6 +25,22 @@ const ImageGalleryTable: React.FC = () => {
         enableSorting: true,
         enableColumnFilter: true,
         enableGlobalFilter: true,
+        cell: ({ row }) => (
+          <Item size="xs" className="p-0 flex-nowrap">
+            <ItemMedia variant={'icon'}>
+              <img
+                src={getImageUrl(row.original.dest)}
+                className="size-14 rounded-lg object-cover object-center"
+                loading="lazy"
+              />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle className="hover:underline">
+                <ImageDialog {...row.original} />
+              </ItemTitle>
+            </ItemContent>
+          </Item>
+        ),
       }),
       columnHelper.accessor('mime_type', {
         header: 'Định dạng',
