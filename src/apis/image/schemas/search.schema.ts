@@ -1,13 +1,10 @@
 import z from 'zod'
-import { ImageMimeType } from '../constants'
 
-export const searchImagesSchema = z
-  .object({
-    'mime_type:eq': z.nativeEnum(ImageMimeType).nullish(),
-    created_by: z.number().nullish(),
-    'created_at:lte': z.coerce.date().nullish(),
-    'category_id:eq': z.number().nullish(),
-  })
-  .nullish()
+export const searchImagesSchema = z.object({
+  view: z.enum(['grid', 'list']).default('list'),
+  mime_type: z.string().nullish(),
+  from: z.string().nullish(),
+  to: z.string().nullish(),
+})
 
 export type TSearchImagesValues = z.infer<typeof searchImagesSchema>

@@ -25,6 +25,7 @@ import { Route as PrivateLayoutEmployeesRouteImport } from './routes/_private-la
 import { Route as PrivateLayoutDashboardRouteImport } from './routes/_private-layout.dashboard'
 import { Route as PrivateLayoutCustomerRentalAgreementRouteImport } from './routes/_private-layout.customer-rental-agreement'
 import { Route as PrivateLayoutCostumesRouteImport } from './routes/_private-layout.costumes'
+import { Route as ApiImagesGalleryUploadRouteImport } from './routes/api/images-gallery.upload'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -109,6 +110,11 @@ const PrivateLayoutCostumesRoute = PrivateLayoutCostumesRouteImport.update({
   path: '/costumes',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
+const ApiImagesGalleryUploadRoute = ApiImagesGalleryUploadRouteImport.update({
+  id: '/api/images-gallery/upload',
+  path: '/api/images-gallery/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicLayoutIndexRoute
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/api/images-gallery/upload': typeof ApiImagesGalleryUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/api/images-gallery/upload': typeof ApiImagesGalleryUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
   '/_public-layout/': typeof PublicLayoutIndexRoute
+  '/api/images-gallery/upload': typeof ApiImagesGalleryUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/api/images-gallery/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/api/images-gallery/upload'
   id:
     | '__root__'
     | '/_private-layout'
@@ -212,12 +223,14 @@ export interface FileRouteTypes {
     | '/_private-layout/statistics'
     | '/_private-layout/users'
     | '/_public-layout/'
+    | '/api/images-gallery/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   PrivateLayoutRoute: typeof PrivateLayoutRouteWithChildren
   PublicLayoutRoute: typeof PublicLayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ApiImagesGalleryUploadRoute: typeof ApiImagesGalleryUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -334,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutCostumesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
+    '/api/images-gallery/upload': {
+      id: '/api/images-gallery/upload'
+      path: '/api/images-gallery/upload'
+      fullPath: '/api/images-gallery/upload'
+      preLoaderRoute: typeof ApiImagesGalleryUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -388,6 +408,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivateLayoutRoute: PrivateLayoutRouteWithChildren,
   PublicLayoutRoute: PublicLayoutRouteWithChildren,
   LoginRoute: LoginRoute,
+  ApiImagesGalleryUploadRoute: ApiImagesGalleryUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

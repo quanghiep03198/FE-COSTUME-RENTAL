@@ -16,21 +16,6 @@ const cookieOptions = {
   path: '/',
 }
 
-function getTokenFromCookieHeader(cookieHeader?: string) {
-  if (!cookieHeader) return null
-
-  const cookies = cookieHeader.split(';')
-  for (const cookie of cookies) {
-    const [rawName, ...rawValue] = cookie.trim().split('=')
-    if (rawName !== 'accessToken') continue
-
-    const token = rawValue.join('=')
-    return token ? decodeURIComponent(token) : null
-  }
-
-  return null
-}
-
 export function registerAuthRoutes(app: Application) {
   // * POST /login
   app.post('/api/auth/login', (req: Request, res: Response) => {
@@ -60,7 +45,7 @@ export function registerAuthRoutes(app: Application) {
         message: 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.',
       })
 
-    const accessToken = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET!, {
+    const accessToken = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET!, {
       expiresIn: JWT_EXPIRES_IN,
     })
 
@@ -146,7 +131,7 @@ export function registerAuthRoutes(app: Application) {
       const payload = JSON.parse(atob(tokenPart))
 
       const db = router.db as any
-      const user = db.get('users').find({ id: payload?.sub }).value()
+      const user = db.get('users').find({ id: payload?.id }).value()
 
       if (!user) {
         return res.status(403).json({ message: 'User not found' })
@@ -173,7 +158,7 @@ export function registerAuthRoutes(app: Application) {
   // * GET /auth/me
   app.get('/api/auth/me', jwtMiddleware, (req: Request, res: Response) => {
     const payload = (req as any).user
-    const user = (router.db as any).get('users').find({ id: payload.sub }).value()
+    const user = (router.db as any).get('users').find({ id: payload.id }).value()
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })

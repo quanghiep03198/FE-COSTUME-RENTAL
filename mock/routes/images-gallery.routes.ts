@@ -31,7 +31,12 @@ export function registerImageGalleryRoutes(app: Application) {
 
   // * GET /images-gallery
   app.get('/api/images-gallery', (req: Request, res: Response) => {
-    const result = queryCollection('images', req.query)
+    const result = queryCollection('images', req.query, {
+      transform: (record) => {
+        const user = queryRecord('users', record.created_by, { _expand: 'employee' })
+        return { ...record, created_by: user }
+      },
+    })
     return res.status(200).json(result)
   })
 
@@ -44,30 +49,28 @@ export function registerImageGalleryRoutes(app: Application) {
 
   // * POST /images-gallery/upload
   app.post('/api/images-gallery/upload', jwtMiddleware, (req: Request, res: Response) => {
-    const { item_type } = req.body as { item_type?: string }
+    // createFormData() ở frontend wrap text fields vào req.body.data (JSON string)
+    console.log(req.user)
 
-    if (!item_type) {
-      return res.status(400).json({
-        message: 'item_type is required',
-      })
-    }
+    const parsedData = req.body?.data ? (JSON.parse(req.body.data) as Record<string, string>) : req.body
+    const { category_id } = parsedData as { category_id?: string }
 
-    const validItemTypes = ['COSTUME', 'EQUIPMENT_PROPS']
-    if (!validItemTypes.includes(item_type)) {
+    if (!category_id) {
       return res.status(400).json({
-        message: 'item_type must be one of: COSTUME, EQUIPMENT_PROPS',
+        message: 'category_id is required',
       })
     }
 
     // Check if file is uploaded
-    if (!req.files || !req.files.file) {
+    if (!req.files || (!req.files.files && !req.files.file)) {
       return res.status(400).json({
         message: 'No file uploaded',
       })
     }
 
-    // Handle both single file and multiple files
-    const uploadedFiles = Array.isArray(req.files.file) ? req.files.file : [req.files.file]
+    // Handle both single file and multiple files — field name: 'files' (từ createFormData) hoặc 'file'
+    const rawFiles = req.files.files ?? req.files.file
+    const uploadedFiles = Array.isArray(rawFiles) ? rawFiles : [rawFiles]
 
     const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
     const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
@@ -100,7 +103,8 @@ export function registerImageGalleryRoutes(app: Application) {
           size: uploadedFile.size,
           dest: path,
           mime_type: uploadedFile.mimetype,
-          item_type,
+          category_id,
+          created_by: req?.user?.id,
           is_active: true,
           created_at: new Date().toISOString(),
           updated_at: null,
@@ -140,11 +144,11 @@ export function registerImageGalleryRoutes(app: Application) {
       }
     }
 
-    if (req.body.item_type) {
+    if (req.body.category_id) {
       const validItemTypes = ['COSTUME', 'EQUIPMENT_PROPS']
-      if (!validItemTypes.includes(req.body.item_type)) {
+      if (!validItemTypes.includes(req.body.category_id)) {
         return res.status(400).json({
-          message: 'item_type must be one of: COSTUME, EQUIPMENT_PROPS',
+          message: 'category_id must be one of: COSTUME, EQUIPMENT_PROPS',
         })
       }
     }

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { CircleAlertIcon, ImageIcon, UploadIcon, XIcon, ZoomInIcon } from 'lucide-react'
 import { useState } from 'react'
 
-interface GalleryUploadProps {
+export interface GalleryUploadProps {
   maxFiles?: number
   maxSize?: number
   accept?: string
@@ -60,6 +60,7 @@ export function GalleryUpload({
     <div className={cn('w-full max-w-4xl', className)}>
       {/* Upload Area */}
       <div
+        data-slot="upload-area"
         className={cn(
           'relative rounded-lg border border-dashed p-8 text-center transition-colors',
           isDragging ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-muted-foreground/50'

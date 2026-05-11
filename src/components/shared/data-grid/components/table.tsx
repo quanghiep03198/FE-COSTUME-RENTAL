@@ -65,10 +65,11 @@ const DataTable: React.FC<TableProps> = (props) => {
   }, [table.getState().columnPinning])
 
   return (
-    <Wrapper style={{ ...computedColumnSizes, ...tableStyles }}>
+    <Wrapper data-slot="wrapper" style={{ ...computedColumnSizes, ...tableStyles }}>
       {caption && <TableHeadCaption id={captionId} aria-description={caption} />}
       <ScrollArea
         ref={containerRef}
+        data-slot="scroll-area"
         style={{
           scrollbarGutter: 'stable',
           overflowAnchor: 'none',

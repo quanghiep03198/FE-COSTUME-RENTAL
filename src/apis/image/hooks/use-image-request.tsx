@@ -1,6 +1,9 @@
+import { createFormData } from '@/common/helpers/form-data'
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { deleteImageRpc, getImagesRpc, updateImageRpc, uploadImagesRpc } from '../rpc'
+import type { TUpdateImageValues } from '../schemas/update-image.schema'
+import type { TUploadImagesValues } from '../schemas/upload-images.schema'
 
 export const GET_IMAGES_QUERY_KEY = 'images' as const
 
@@ -16,9 +19,17 @@ export const useGetImagesQuery = () => {
 }
 
 export const useUploadImagesMutation = () => {
+  const uploadImageFn = useServerFn(uploadImagesRpc)
+
   return useMutation({
     meta: { invalidates: [[GET_IMAGES_QUERY_KEY]] },
-    mutationFn: (data) => uploadImagesRpc({ data }),
+    mutationFn: (data: TUploadImagesValues) =>
+      uploadImageFn({
+        data: createFormData({
+          category_id: data.category.value,
+          files: data.files,
+        }),
+      }),
   })
 }
 
@@ -27,7 +38,7 @@ export const useUpdateImageMutation = () => {
 
   return useMutation({
     meta: { invalidates: [[GET_IMAGES_QUERY_KEY]] },
-    mutationFn: async (data: { id: number; file: File }) => updateImageFn({ data }),
+    mutationFn: async (data: TUpdateImageValues) => updateImageFn({ data }),
   })
 }
 

@@ -16,7 +16,7 @@ export type DataTablePaginationProps = {
   manualPagination?: boolean
   enableInputPageSize?: boolean
   controlledPaginationProps: Partial<Omit<Pagination<any>, 'data'>>
-  onPaginationChange: React.Dispatch<React.SetStateAction<PaginationState>>
+  onPaginationChange?: React.Dispatch<React.SetStateAction<PaginationState>>
   [key: string]: any
 } & PaginationBaseProps
 

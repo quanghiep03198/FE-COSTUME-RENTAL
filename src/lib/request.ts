@@ -1,6 +1,5 @@
 import { cookieOptions } from '@/apis/auth/configs/cookie.config'
 import { GlobalConfig } from '@/configs/global.config'
-
 import { redirect } from '@tanstack/react-router'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import { stringify } from 'qs'
@@ -18,7 +17,7 @@ export type RequestConfig<D = any> = {
 export default async function request<R = any, D = any>({
   url,
   params,
-  headers,
+  headers = {},
   method = 'GET',
   withAuth = false,
   ...config
@@ -27,9 +26,11 @@ export default async function request<R = any, D = any>({
     const accessToken = getCookie('accessToken')
     const baseURL = GlobalConfig.BASE_API_URL
 
-    console.log('headers.Authorization', headers)
+    headers.authorization ??= `Bearer ${accessToken}`
 
     url = url.toString().startsWith('/') ? url : `/${url}`
+
+    console.log({ body: config.data instanceof FormData ? config.data : JSON.stringify(config.data) })
 
     const requestConfig: Parameters<typeof fetch> = [
       baseURL +
@@ -41,13 +42,9 @@ export default async function request<R = any, D = any>({
         }),
       {
         ...config,
+        headers,
         method,
-        body: config?.data ? JSON.stringify(config.data) : undefined,
-        headers: {
-          ...headers,
-          ['content-type']: 'application/json',
-          ['authorization']: `Bearer ${accessToken}`,
-        },
+        ...(config.data && { body: config.data instanceof FormData ? config.data : JSON.stringify(config.data) }),
       },
     ]
 
