@@ -7,7 +7,6 @@ import {
   type QueryKey,
 } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
-import { isNil } from 'lodash-es'
 import { toast } from 'sonner'
 import { createCategoryRpc, deleteCategoryRpc, getCategoriesRpc, updateCategoryRpc } from '../rpc'
 import type { TCreateCategoryValues } from '../schemas/create-category.schema'
@@ -77,7 +76,7 @@ export const useCreateOrUpdateCategoryMutation = (
 
   const currentConfig = mutationConfigFactory[action]
 
-  const invalidates = isNil(mutationKey) ? [[GET_CATEGORIES_QUERY_KEY]] : [[GET_CATEGORIES_QUERY_KEY, mutationKey]]
+  const invalidates = [[GET_CATEGORIES_QUERY_KEY], [GET_CATEGORIES_QUERY_KEY, mutationKey]]
 
   return useMutation({
     meta: { invalidates },
