@@ -20,6 +20,8 @@ const UploadImageDialog: React.FC = () => {
   const handleUpload = async (data: TUploadImagesValues) => {
     try {
       await uploadAsync(data)
+      setOpen(false)
+      form.reset()
       toast.success('Tải lên hình ảnh thành công', { id: 'upload-images' })
     } catch (e) {
       console.error('Error uploading images:', e)
@@ -62,7 +64,7 @@ const UploadImageDialog: React.FC = () => {
           <FieldSet>
             <FieldLegend>Tải lên hình ảnh</FieldLegend>
             <FieldDescription>Chọn hình ảnh để tải lên cho danh mục</FieldDescription>
-            <FieldGroup>
+            <FieldGroup className="max-h-[70vh] overflow-auto">
               <form.Field name="category">
                 {(field) => <SelectFieldControl field={field} items={categoryOptions} placeholder="Chọn danh mục" />}
               </form.Field>
