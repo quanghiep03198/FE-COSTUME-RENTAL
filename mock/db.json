@@ -436,6 +436,9 @@
     },
     {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3ODQ2NDMyNiwiZXhwIjoxNzc4NTUwNzI2fQ.T0MXn2vT1P4dFNz2Y5gcuCFJ11UDJwDt6zDAxKphEOE"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJxdWFuZ2hpZXAwMzEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzg1MDM2NzUsImV4cCI6MTc3ODU5MDA3NX0.EDNWH-yitHa2H6TM1S3EkPb_rmVg2OdXeHklcHO4gZs"
     }
   ],
   "warehouses": [],
@@ -512,6 +515,90 @@
       "updated_at": null,
       "category_id": 5,
       "id": 7
+    },
+    {
+      "file_name": "1778510140956-1-8.webp",
+      "size": 65950,
+      "dest": "/images/1778510140956-1-8.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T14:35:40.957Z",
+      "updated_at": null,
+      "id": 8
+    },
+    {
+      "file_name": "1778510140958-2-8.webp",
+      "size": 77488,
+      "dest": "/images/1778510140958-2-8.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T14:35:40.959Z",
+      "updated_at": null,
+      "id": 9
+    },
+    {
+      "file_name": "1778510140971-3-8.webp",
+      "size": 73736,
+      "dest": "/images/1778510140971-3-8.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T14:35:40.971Z",
+      "updated_at": null,
+      "id": 10
+    },
+    {
+      "file_name": "1778510140981-5-8-600x901.webp",
+      "size": 52522,
+      "dest": "/images/1778510140981-5-8-600x901.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T14:35:40.982Z",
+      "updated_at": null,
+      "id": 11
+    },
+    {
+      "file_name": "1778513299684-il_794xN.webp",
+      "size": 54916,
+      "dest": "/images/1778513299684-il_794xN.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T15:28:19.685Z",
+      "updated_at": null,
+      "id": 12
+    },
+    {
+      "file_name": "1778513299686-il_794xN.webp",
+      "size": 53468,
+      "dest": "/images/1778513299686-il_794xN.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T15:28:19.687Z",
+      "updated_at": null,
+      "id": 13
+    },
+    {
+      "file_name": "1778513299700-il_794xN.webp",
+      "size": 53056,
+      "dest": "/images/1778513299700-il_794xN.webp",
+      "mime_type": "image/webp",
+      "category_id": 7,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-11T15:28:19.701Z",
+      "updated_at": null,
+      "id": 14
     }
   ],
   "categories": [
@@ -568,6 +655,15 @@
       "created_at": "2026-04-29T07:32:18.171Z",
       "updated_at": "2026-04-29T08:09:12.986Z",
       "id": 6
+    },
+    {
+      "name": "Áo Dài",
+      "slug": "ao-dai",
+      "type": "COSTUME",
+      "is_active": true,
+      "created_at": "2026-05-11T14:31:13.369Z",
+      "updated_at": null,
+      "id": 7
     }
   ],
   "costumes": [
@@ -669,6 +765,36 @@
       "created_at": "2026-04-27T11:35:10.896Z",
       "updated_at": "2026-04-28T15:27:58.289Z",
       "id": 4
+    },
+    {
+      "slug": "ao-dai-cach-tan",
+      "name": "Áo Dài Cách Tân",
+      "category_id": 7,
+      "color": "#b91c1c",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "gender": "FEMALE",
+      "images": [
+        12,
+        13,
+        14
+      ],
+      "unit": "SET",
+      "rental_price_per_day": 300000,
+      "description": "<h3 class=\"font-bold !text-foreground\">Chi tiết sản phẩm</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 330px;\"><colgroup><col style=\"width: 250px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Mẫu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Xuất xứ</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Chất liệu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><h3 class=\"font-bold !text-foreground\">Bảng tư vấn Size</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 320px;\"><colgroup><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Size</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Chiều cao</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Cân nặng</p></th><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Số đo</p></th></tr><tr><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\"></p></td></tr></tbody></table><p class=\"my-1\"></p>",
+      "hashtags": [
+        "aodaicachtan"
+      ],
+      "is_active": true,
+      "created_at": "2026-05-11T16:14:50.961Z",
+      "updated_at": "2026-05-11T16:15:46.981Z",
+      "id": 5
     }
   ],
   "equipment_props": [

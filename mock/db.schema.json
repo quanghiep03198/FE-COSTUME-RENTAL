@@ -14,6 +14,7 @@
     "BaseEntity": {
       "type": "object",
       "additionalProperties": true,
+      "_comment": "BaseEntity định nghĩa các trường chung cho tất cả các thực thể, giúp giảm thiểu sự lặp lại trong schema",
       "properties": {
         "id": {
           "type": "integer"
@@ -44,6 +45,7 @@
       "required": ["id", "is_active", "created_at"]
     },
     "ImageMetadata": {
+      "_comment": "ImageMetadata định nghĩa các trường metadata cơ bản cho hình ảnh, giúp chuẩn hóa cách lưu trữ thông tin về hình ảnh trong hệ thống",
       "type": "object",
       "properties": {
         "file_name": { "type": "string" },
@@ -54,6 +56,7 @@
       "required": ["file_name", "size", "dest", "mime_type"]
     },
     "User": {
+      "_comment": "User định nghĩa các trường thông tin cơ bản cho người dùng, bao gồm thông tin đăng nhập và vai trò, giúp quản lý quyền truy cập trong hệ thống",
       "allOf": [
         { "$ref": "#/$defs/BaseEntity" },
         {

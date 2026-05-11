@@ -59,8 +59,6 @@ export function registerEmployeeRoutes(app: Application) {
     // Prevent updating immutable fields
     const { id: _id, employee_code, created_at, ...updateData } = req.body
 
-    console.log('updateData', req.body)
-
     const updated = db
       .get('employees')
       .find({ id })
