@@ -47,7 +47,6 @@ export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | Co
     },
     [CommonActions.UPDATE]: {
       handler: async (data: TUpdateEquipmentPropsReqValues) => {
-        console.log('data', data)
         return await updateEquipmentPropsFn({ data })
       },
       message: 'Cập nhật đạo cụ thành công',
