@@ -26,13 +26,11 @@ export const updateEquipmentPropsRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
   .inputValidator(updateEquipmentPropsReqSchema)
   .handler(async ({ context, data: { id, ...update } }) => {
-    return await context
-      .request({
-        url: `/equipment-props/${id}`,
-        method: 'PATCH',
-        data: update,
-      })
-      .catch((e) => console.log('updateEquipmentPropsRpc', e))
+    return await context.request({
+      url: `/equipment-props/${id}`,
+      method: 'PATCH',
+      data: update,
+    })
   })
 
 export const deleteEquipmentPropsRpc = createServerFn({ method: 'POST' })
