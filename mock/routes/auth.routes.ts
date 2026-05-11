@@ -147,8 +147,6 @@ export function registerAuthRoutes(app: Application) {
 
       res.cookie('accessToken', accessToken, cookieOptions)
 
-      console.log(__filename, 'Refresh token :>>', accessToken)
-
       return res.status(200).json({ accessToken })
     } catch (error) {
       return res.status(403).json(error)
@@ -157,7 +155,8 @@ export function registerAuthRoutes(app: Application) {
 
   // * GET /auth/me
   app.get('/api/auth/me', jwtMiddleware, (req: Request, res: Response) => {
-    const payload = (req as any).user
+    const payload = req.user!
+
     const user = (router.db as any).get('users').find({ id: payload.id }).value()
 
     if (!user) {

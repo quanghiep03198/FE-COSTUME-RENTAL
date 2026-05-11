@@ -19,12 +19,9 @@ export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
     const payload = jwt.verify(accessToken, JWT_SECRET!) as jwt.JwtPayload
 
-    console.log('payload', payload)
-
     const db = router.db as any
     const isRevoked = db.get('revoke_tokens').find({ access_token: accessToken }).value()
     if (isRevoked) {
-      console.log('Is token revoked ?')
       return res.status(403).json({ message: 'Token has been revoked' })
     }
 
