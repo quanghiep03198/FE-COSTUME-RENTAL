@@ -125,7 +125,6 @@ const CostumeFormDialog: React.FC = () => {
           },
           { keepDefaultValues: true }
         )
-        console.log(e.payload)
       }
     }
   )
@@ -280,10 +279,14 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Màu sắc chủ đạo</FieldLabel>
-                        <CostumeColorPlate value={field.state.value} onValueChange={field.handleChange} />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      <Field>
+                        <FieldLabel htmlFor={field.name} className="w-fit inline-block">
+                          Màu sắc chủ đạo
+                        </FieldLabel>
+                        <FieldContent>
+                          <CostumeColorPlate value={field.state.value} onValueChange={field.handleChange} />
+                          {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                        </FieldContent>
                       </Field>
                     )
                   }}
