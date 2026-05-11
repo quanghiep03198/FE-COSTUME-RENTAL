@@ -10,7 +10,6 @@ export const getCategoriesRpc = createServerFn({ method: 'GET' })
   .middleware([requestMiddleware])
   .inputValidator(getCategoryQuerySchema)
   .handler(async ({ context, data }) => {
-    console.log('getCategoriesRpc params data', data)
     return await context.request<ICategory[]>({ url: '/categories', params: data })
   })
 

@@ -1,7 +1,7 @@
-import { createFormData } from '@/common/helpers/form-data'
 import { requestMiddleware } from '@/middlewares/request.middleware'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
+import { updateImageSchema } from '../schemas/update-image.schema'
 
 export const getImagesRpc = createServerFn({ method: 'GET' })
   .middleware([requestMiddleware])
@@ -11,23 +11,28 @@ export const getImagesRpc = createServerFn({ method: 'GET' })
 
 export const uploadImagesRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
-  .inputValidator(z.any())
+  .inputValidator(z.instanceof(FormData))
   .handler(async ({ context, data }) => {
-    return await context.request({
-      url: '/images-gallery',
-      method: 'POST',
-      data: createFormData(data as any),
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    return await context
+      .request({
+        url: '/images-gallery/upload',
+        method: 'POST',
+        data,
+        // KHÔNG set content-type thủ công — axios tự set kèm boundary khi data là FormData
+        // Nếu set tay sẽ mất boundary → server không parse được multipart body
+      })
+      .catch((error) => console.error(error))
   })
 
 export const updateImageRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
-  .inputValidator(z.object({ id: z.number(), file: z.instanceof(File) }))
+  .inputValidator(updateImageSchema)
   .handler(async ({ context, data: { id, ...update } }) => {
-    return await context.request({ url: `/images-gallery/${id}`, method: 'PATCH', data: update })
+    return await context.request({
+      url: `/images-gallery/${id}`,
+      method: 'PATCH',
+      data: { ...update, ...(update.category && { category_id: update.category.value }) },
+    })
   })
 
 export const deleteImageRpc = createServerFn({ method: 'POST' })

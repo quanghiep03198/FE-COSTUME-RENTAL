@@ -380,7 +380,7 @@ function queryCollection(
 function queryRecord(
   collection: string,
   id: number,
-  query: QueryParams,
+  query: QueryParams = {},
   opts?: { pick?: string[]; transform?: (record: any) => any }
 ): any | null {
   const db = getDb()
