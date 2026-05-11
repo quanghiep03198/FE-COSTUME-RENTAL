@@ -21,8 +21,6 @@ export const Route = createFileRoute('/_private-layout')({
 })
 
 function RouteComponent() {
-  const { user } = Route.useLoaderData()
-
   return (
     <SidebarProvider
       style={
@@ -32,7 +30,7 @@ function RouteComponent() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar user={user} />
+      <AppSidebar />
       <LayoutWrapper data-slot="layout-wrapper">
         <AppNavbar />
         <OutletWrapper data-slot="outlet-wrapper">
