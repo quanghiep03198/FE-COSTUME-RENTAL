@@ -37,5 +37,5 @@ export const deleteImageRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
   .inputValidator(z.number())
   .handler(async ({ context, data }) => {
-    return await context.request({ url: `/images-gallery/${data}`, method: 'DELETE' })
+    return await context.request({ url: `/images-gallery/${data}`, method: 'DELETE', params: { permanantly: true } })
   })

@@ -456,18 +456,6 @@
       "id": 2
     },
     {
-      "file_name": "1777023502552-ao-nhat-binh-nu-mau-vang-600x600.webp",
-      "size": 30112,
-      "dest": "/images/1777023502552-ao-nhat-binh-nu-mau-vang-600x600.webp",
-      "mime_type": "image/webp",
-      "category_id": 1,
-      "is_active": true,
-      "created_by": 1,
-      "created_at": "2026-04-24T09:38:22.553Z",
-      "updated_at": null,
-      "id": 3
-    },
-    {
       "file_name": "1777023502553-ao-tac-cho-nu-mau-cam.webp",
       "size": 49296,
       "dest": "/images/1777023502553-ao-tac-cho-nu-mau-cam.webp",
@@ -480,27 +468,27 @@
       "id": 4
     },
     {
-      "file_name": "1777023502567-AO-TAC-MAU-XANH-MINT-BAC-HA-600x600.webp",
+      "file_name": "AO-TAC-MAU-XANH-MINT-BAC-HA-600x600.webp",
       "size": 19734,
-      "dest": "/images/1777023502567-AO-TAC-MAU-XANH-MINT-BAC-HA-600x600.webp",
+      "dest": "/images/AO-TAC-MAU-XANH-MINT-BAC-HA-600x600.webp",
       "mime_type": "image/webp",
       "category_id": 1,
       "is_active": true,
       "created_by": 1,
       "created_at": "2026-04-24T09:38:22.567Z",
-      "updated_at": null,
+      "updated_at": "2026-05-12T03:21:17.673Z",
       "id": 5
     },
     {
-      "file_name": "1777023502578-AO-TAC-NU-MAU-HONG-600x600.webp",
+      "file_name": "AO-TAC-NU-MAU-HONG.webp",
       "size": 18522,
-      "dest": "/images/1777023502578-AO-TAC-NU-MAU-HONG-600x600.webp",
+      "dest": "/images/AO-TAC-NU-MAU-HONG.webp",
       "mime_type": "image/webp",
       "category_id": 1,
       "is_active": true,
       "created_by": 1,
       "created_at": "2026-04-24T09:38:22.579Z",
-      "updated_at": null,
+      "updated_at": "2026-05-12T03:21:46.850Z",
       "id": 6
     },
     {
@@ -517,15 +505,15 @@
       "id": 7
     },
     {
-      "file_name": "1778510140956-1-8.webp",
+      "file_name": "ao-dai-cach-tan-tim-1.webp",
       "size": 65950,
-      "dest": "/images/1778510140956-1-8.webp",
+      "dest": "/images/ao-dai-cach-tan-tim-1.webp",
       "mime_type": "image/webp",
       "category_id": 7,
       "created_by": 1,
       "is_active": true,
       "created_at": "2026-05-11T14:35:40.957Z",
-      "updated_at": null,
+      "updated_at": "2026-05-12T03:22:32.020Z",
       "id": 8
     },
     {

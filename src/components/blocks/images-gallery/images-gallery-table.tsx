@@ -6,15 +6,56 @@ import { DataGrid } from '@/components/shared/data-grid'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import generateAvatar from '@/lib/generate-avatar'
-import { createColumnHelper } from '@tanstack/react-table'
+import { useSearch } from '@tanstack/react-router'
+import { createColumnHelper, type ColumnFiltersState } from '@tanstack/react-table'
 import { filesize } from 'filesize'
+import { pick } from 'lodash-es'
 import { useMemo } from 'react'
+import type { DateRange } from 'react-day-picker'
 import ImageActionsDropdown from './image-action-dropdown'
 import ImageDialog from './image-dialog'
+
+/**
+ * Build column filters for gallery table based on search params.
+ * Only includes filters when values are provided.
+ */
+const buildColumnFilters = (
+  mimeType: Nullable<string>,
+  fromDate: Nullable<string>,
+  toDate: Nullable<string>
+): ColumnFiltersState => {
+  const filters: ColumnFiltersState = []
+
+  // Add mime_type filter only if provided
+  if (mimeType) {
+    filters.push({ id: 'mime_type', value: mimeType })
+  }
+
+  // Add date range filter only if start date is provided
+  if (fromDate) {
+    const startDate = new Date(fromDate)
+    startDate.setHours(0, 0, 0, 0)
+
+    const endDate = new Date(toDate ?? fromDate)
+    endDate.setHours(23, 59, 59, 999)
+
+    filters.push({
+      id: 'created_at',
+      value: { from: startDate, to: endDate } as DateRange,
+    })
+  }
+
+  return filters
+}
 
 const ImageGalleryTable: React.FC = () => {
   const { data, isLoading } = useGetImagesQuery()
   const { user } = useAuth()
+  const search = useSearch({
+    from: '/_private-layout/images-gallery',
+    select: (state) => pick(state, ['from', 'to', 'mime_type']),
+    structuralSharing: false,
+  })
 
   const columnHelper = createColumnHelper<IImage>()
 
@@ -43,6 +84,7 @@ const ImageGalleryTable: React.FC = () => {
         ),
       }),
       columnHelper.accessor('mime_type', {
+        id: 'mime_type',
         header: 'Định dạng',
         enableColumnFilter: true,
         enableSorting: true,
@@ -62,11 +104,11 @@ const ImageGalleryTable: React.FC = () => {
       }),
       columnHelper.accessor('created_by', {
         header: 'Tải lên bởi',
+        size: 200,
         enableColumnFilter: true,
         enableSorting: true,
         enableGlobalFilter: true,
-        size: 200,
-        sortingFn: 'alphanumericCaseSensitive',
+        filterFn: 'inDateRange',
         cell: ({ getValue }) => {
           const owner = getValue()
           if (!owner) return 'Chưa xác định'
@@ -96,7 +138,7 @@ const ImageGalleryTable: React.FC = () => {
         sortingFn: 'datetime',
         filterFn: 'inDateRange',
         cell: (info: any) =>
-          new Date(info.getValue()).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }),
+          new Date(info.getValue()).toLocaleString('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }),
       }),
       columnHelper.display({
         id: 'actions',
@@ -117,7 +159,10 @@ const ImageGalleryTable: React.FC = () => {
       columns={columns}
       data={data}
       loading={isLoading}
+      // manualFiltering={true}
+      columnFilters={buildColumnFilters(search.mime_type, search.from, search.to)}
       toolbarProps={{ override: true, render: () => null }}
+      virtualizerOptions={{ estimateSize: 75 }}
       containerProps={{
         className: 'border-none h-[calc(100vh-14rem)]',
       }}

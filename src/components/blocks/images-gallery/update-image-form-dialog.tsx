@@ -29,7 +29,10 @@ const UpdateImageFormDialog: React.FC = () => {
     validators: { onSubmit: updateImageSchema as any },
   })
 
-  usePubSubSubscription('image:update', (data) => form.reset(data, { keepDefaultValues: true }))
+  usePubSubSubscription('image:update', (data) => {
+    console.log(data)
+    form.reset(data, { keepDefaultValues: true })
+  })
 
   const currentImageId = useStore(form.store, (state) => state.values.id)
 
