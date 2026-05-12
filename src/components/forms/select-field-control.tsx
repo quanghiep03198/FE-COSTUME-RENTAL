@@ -4,7 +4,7 @@ import React from 'react'
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
-type InputFieldControlProps<T = string> = Pick<React.ComponentProps<typeof Field>, 'orientation'> &
+type SelectFieldControlProps<T = string> = Pick<React.ComponentProps<typeof Field>, 'orientation'> &
   Omit<React.ComponentProps<typeof Select>, 'items'> & {
     items: Array<{ value: T; label: string }>
     field: AnyFieldApi
@@ -27,7 +27,7 @@ function SelectFieldControl<T>({
   placeholder,
   classNames,
   renderValue,
-}: InputFieldControlProps<T>) {
+}: SelectFieldControlProps<T>) {
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
   return (
