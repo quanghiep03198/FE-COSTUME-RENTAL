@@ -24,7 +24,7 @@ export const useGetUsersQuery = () => {
   return useSuspenseQuery(getUsersQueryOptions())
 }
 
-type TMutateConfigFactory = {
+type TMutationEventMap = {
   [CommonActions.CREATE]: {
     handler: (payload: TCreateUserReqValues) => Promise<IUser>
     message: string
@@ -43,7 +43,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
   const createUserFn = useServerFn(createUserRpc)
   const updateUserFn = useServerFn(updateUserRpc)
 
-  const mutationConfigFactory: TMutateConfigFactory = {
+  const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
       handler: (data: TCreateUserReqValues) => createUserFn({ data }),
       message: 'Thêm mới người dùng thành công',
@@ -59,7 +59,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
 
   const toastRef = useRef<string | number | null>(null)
   const router = useRouter()
-  const currentConfig = mutationConfigFactory[action]
+  const currentConfig = mutationEventMap[action]
 
   return useMutation({
     mutationFn: currentConfig.handler,

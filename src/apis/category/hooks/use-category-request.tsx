@@ -38,7 +38,7 @@ export const useGetCategoriesQuery = (params?: TGetCategoryQueryValue) => {
   return useSuspenseQuery(getCategoriesQueryOptions(params))
 }
 
-type TMutationConfigFactory = {
+type TMutationEventMap = {
   [CommonActions.CREATE]: {
     handler: (data: TCreateCategoryValues) => Promise<Nullable<ICategory>>
     message: string
@@ -60,7 +60,7 @@ export const useCreateOrUpdateCategoryMutation = (
   const createCategoryFn = useServerFn(createCategoryRpc)
   const updateCategoryFn = useServerFn(updateCategoryRpc)
 
-  const mutationConfigFactory: TMutationConfigFactory = {
+  const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
       handler: (data) => createCategoryFn({ data }),
       message: 'Thêm mới danh mục thành công',
@@ -74,7 +74,7 @@ export const useCreateOrUpdateCategoryMutation = (
     },
   }
 
-  const currentConfig = mutationConfigFactory[action]
+  const currentConfig = mutationEventMap[action]
 
   const invalidates = [[GET_CATEGORIES_QUERY_KEY], [GET_CATEGORIES_QUERY_KEY, mutationKey]]
 

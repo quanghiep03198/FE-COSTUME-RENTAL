@@ -25,7 +25,7 @@ export const useGetEmployeesQuery = (params?: AxiosRequestConfig['params']) => {
   return useSuspenseQuery(getEmployeeQueryOptions(params))
 }
 
-type TMutationFactory = {
+type TMutationEventMap = {
   [CommonActions.CREATE]: {
     handler: (payload: TCreateEmployeeValues) => Promise<IEmployee>
     message: string
@@ -42,7 +42,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
   const createEmployeeFn = useServerFn(createEmployeeRpc)
   const updateEmployeeFn = useServerFn(updateEmployeeRpc)
 
-  const mutationConfigFactory: TMutationFactory = {
+  const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
       handler: (data: TCreateEmployeeValues) => createEmployeeFn({ data }),
       message: 'Thêm mới nhân viên thành công',
@@ -55,7 +55,7 @@ export const useCreateOrUpdateEmployeeMutataion = (action: CommonActions.CREATE 
     ['none']: { handler: () => Promise.resolve() },
   }
 
-  const currentConfig = mutationConfigFactory[action]
+  const currentConfig = mutationEventMap[action]
 
   return useMutation({
     meta: {

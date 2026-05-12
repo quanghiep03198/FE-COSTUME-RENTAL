@@ -21,7 +21,7 @@ export const useGetPropsQuery = () => {
   return useSuspenseQuery(getPropsQueryOptions())
 }
 
-type TMutationConfigFactory = {
+type TMutationEventMap = {
   [CommonActions.CREATE]: {
     handler: (data: TCreateEquipmentPropsReqValues) => Promise<IEquipmentProps>
     message: string
@@ -40,7 +40,7 @@ export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | Co
   const createEquipmentPropsFn = useServerFn(createEquipmentPropsRpc)
   const updateEquipmentPropsFn = useServerFn(updateEquipmentPropsRpc)
 
-  const mutationConfigFactory: TMutationConfigFactory = {
+  const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
       handler: (data: TCreateEquipmentPropsReqValues) => createEquipmentPropsFn({ data }),
       message: 'Thêm mới đạo cụ thành công',
@@ -56,7 +56,7 @@ export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | Co
     },
   }
 
-  const currentConfig = mutationConfigFactory[action]
+  const currentConfig = mutationEventMap[action]
 
   return useMutation({
     meta: {
