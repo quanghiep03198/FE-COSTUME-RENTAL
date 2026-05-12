@@ -20,7 +20,7 @@ export const useGetCostumesQuery = () => {
   return useSuspenseQuery(getCostumesQueryOptions())
 }
 
-type TMutationConfigFactory = {
+type TMutationEventMap = {
   [CommonActions.CREATE]: {
     handler: (data: TCreateCostumeReqValues) => Promise<ICostume>
     message: string
@@ -39,7 +39,7 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
   const createCostumeFn = useServerFn(createCostumeRpc)
   const updateCostumeFn = useServerFn(updateCostumeRpc)
 
-  const mutationConfigFactory: TMutationConfigFactory = {
+  const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
       handler: (data: TCreateCostumeReqValues) => createCostumeFn({ data }),
       message: 'Thêm mới trang phục thành công',
@@ -53,7 +53,7 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
     },
   }
 
-  const currentConfig = mutationConfigFactory[action]
+  const currentConfig = mutationEventMap[action]
 
   return useMutation({
     meta: {
