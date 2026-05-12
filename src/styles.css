@@ -168,7 +168,7 @@
   }
 
   * {
-    @apply scrollbar-thin border-border outline-ring/50;
+    @apply scrollbar-thin border-border outline-ring/50 scrollbar-thumb-muted-foreground/50 scrollbar-track-muted/50 [&::-webkit-scrollbar-thumb]:rounded-full;
   }
   body {
     @apply bg-background text-foreground;
