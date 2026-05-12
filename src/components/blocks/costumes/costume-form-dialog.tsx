@@ -420,11 +420,11 @@ const CostumeFormDialog: React.FC = () => {
                               Thêm hình ảnh
                             </label>
                             {field.state.value.map((image) => (
-                              <div className="relative size-40">
+                              <div className="relative size-40 overflow-hidden rounded-lg">
                                 <Button
                                   variant="secondary"
                                   size="icon-xs"
-                                  className="absolute top-2 right-2"
+                                  className="absolute top-2 right-2 z-20"
                                   onClick={() => {
                                     const afterDelete = field.state.value!.filter(
                                       (img) => img.id !== image.id
@@ -438,7 +438,7 @@ const CostumeFormDialog: React.FC = () => {
                                   key={image.id}
                                   src={getImageUrl(image.dest)}
                                   alt={image.file_name}
-                                  className="w-full object-cover rounded-lg "
+                                  className="max-w-full aspect-square object-cover rounded-lg hover:scale-105 transition-transform duration-150 ease-out"
                                 />
                               </div>
                             ))}
