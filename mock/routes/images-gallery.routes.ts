@@ -51,7 +51,6 @@ export function registerImageGalleryRoutes(app: Application) {
   // * POST /images-gallery/upload
   app.post('/api/images-gallery/upload', jwtMiddleware, (req: Request, res: Response) => {
     // createFormData() ở frontend wrap text fields vào req.body.data (JSON string)
-    console.log(req.user)
 
     const parsedData = req.body?.data ? (JSON.parse(req.body.data) as Record<string, string>) : req.body
     const { category_id } = parsedData as { category_id?: string }

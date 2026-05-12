@@ -19,8 +19,6 @@ export function registerItemCategoryRoutes(app: Application) {
 
   // * POST /categories
   app.post('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
-    console.log('req.body', req.body)
-
     const { name, type } = req.body
 
     if (!name || !type) {
