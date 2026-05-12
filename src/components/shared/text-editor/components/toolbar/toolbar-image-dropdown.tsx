@@ -35,15 +35,20 @@ const ImageDropdown: React.FC = () => {
   return (
     <Fragment>
       <DropdownMenu>
-        <Tooltip message="Chèn ảnh">
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost" size="icon" className="aspect-square h-8 w-8">
-                <Icon name="ImagePlus" />
-              </Button>
-            }
-          />
-        </Tooltip>
+        <Tooltip
+          message="Chèn ảnh"
+          triggerProps={{
+            render: (
+              <DropdownMenuTrigger
+                render={
+                  <Button variant="ghost" size="icon" className="aspect-square h-8 w-8">
+                    <Icon name="ImagePlus" />
+                  </Button>
+                }
+              />
+            ),
+          }}
+        />
         <DropdownMenuContent align="end" className="w-fit">
           <DropdownMenuItem
             role="button"

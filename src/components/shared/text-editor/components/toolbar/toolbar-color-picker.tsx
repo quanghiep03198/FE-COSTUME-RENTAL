@@ -105,22 +105,33 @@ const ToolbarColorPicker: React.FC<ColorPickerProps> = ({ label, icon, type }) =
   return (
     <div className="relative">
       <Popover modal>
-        <Tooltip message={label}>
-          <PopoverTrigger
-            render={
-              <Button variant="ghost" className="aspect-square h-8 w-8 flex-col gap-x-1.5" size="icon" type="button">
-                <Icon name={icon} />
-                <div
-                  className={cn('mt-0.5 h-1.5 w-4/5 self-center rounded-l-full rounded-r-full border-[0.5px]', {
-                    'bg-foreground!': !currentColor && type === 'textStyle',
-                    'bg-transparent': !currentColor && type === 'highlight',
-                  })}
-                  style={{ backgroundColor: currentColor }}
-                />
-              </Button>
-            }
-          />
-        </Tooltip>
+        <Tooltip
+          message={label}
+          triggerProps={{
+            render: (
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    className="aspect-square h-8 w-8 flex-col gap-x-1.5"
+                    size="icon"
+                    type="button"
+                  >
+                    <Icon name={icon} />
+                    <div
+                      className={cn('mt-0.5 h-1.5 w-4/5 self-center rounded-l-full rounded-r-full border-[0.5px]', {
+                        'bg-foreground!': !currentColor && type === 'textStyle',
+                        'bg-transparent': !currentColor && type === 'highlight',
+                      })}
+                      style={{ backgroundColor: currentColor }}
+                    />
+                  </Button>
+                }
+              />
+            ),
+          }}
+        />
+
         <PopoverContent align="end" className="h-auto p-0">
           <Activity mode={colorPaletteType === 'preset' ? 'visible' : 'hidden'}>
             <div className="grid grid-cols-10 gap-2 p-2 transition-allow-discrete animate-in fade-in-0 slide-in-from-right-2">
