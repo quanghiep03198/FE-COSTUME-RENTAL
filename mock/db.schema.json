@@ -144,14 +144,11 @@
             "name": {
               "type": "string"
             },
-            "warehouse_code": {
-              "type": "string"
-            },
-            "warehouse_type": {
+            "type": {
               "type": "string",
-              "enum": ["COSTUME_WAREHOUSE", "EQUIPMENT_PROPS_WAREHOUSE"]
+              "enum": ["COSTUME", "EQUIPMENT_PROPS"]
             },
-            "manager_employee_id": {
+            "managed_by": {
               "type": "number"
             }
           }

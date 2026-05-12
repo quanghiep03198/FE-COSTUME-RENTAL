@@ -5,7 +5,7 @@ import { jwtMiddleware } from '../middleware'
 export function registerWarehouseRoutes(app: Application) {
   // * GET /warehouses
   app.get('/api/warehouses', jwtMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('warehouses', req.query, res)
+    const result = queryCollection('warehouses', req.query)
     return res.status(200).json(result)
   })
 
