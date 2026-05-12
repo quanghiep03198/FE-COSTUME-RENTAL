@@ -13,6 +13,7 @@ import React from 'react'
 import { toast } from 'sonner'
 
 import type { IImage } from '@/apis/image/types'
+import { getImageUrl } from '@/common/helpers/get-image-url'
 import { usePubSub } from '.'
 
 const ImageActionsDropdown: React.FC<CellContext<IImage, any>> = ({ row }) => {
@@ -20,17 +21,25 @@ const ImageActionsDropdown: React.FC<CellContext<IImage, any>> = ({ row }) => {
 
   const handleDownload = async () => {
     try {
-      const params = new URLSearchParams({
-        imgDest: row.original.dest,
-        name: row.original.file_name,
-      })
-      const url = `/api/images/download?${params.toString()}`
-      const a = document.createElement('a')
-      a.href = url
-      a.download = row.original.file_name
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
+      const imageUrl = getImageUrl(row.original.dest)
+
+      // Fetch file từ URL
+      const response = await fetch(imageUrl)
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+
+      // Convert response thành blob
+      const blob = await response.blob()
+
+      // Tạo URL từ blob và download
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = row.original.file_name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+
       toast.success('Download file successfully')
     } catch (error) {
       console.error('Download failed', error)

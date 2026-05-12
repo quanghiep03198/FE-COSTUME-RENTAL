@@ -1,5 +1,6 @@
 import type { Application, Request, Response } from 'express'
-import path from 'path'
+import { renameSync } from 'fs'
+import path, { join, resolve } from 'path'
 import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 import { deleteUploadedFile, saveUploadedFile } from '../utils/file-upload'
@@ -155,10 +156,16 @@ export function registerImageGalleryRoutes(app: Application) {
 
     const { id: _id, created_at, ...updateData } = req.body
 
+    if (updateData.file_name)
+      renameSync(
+        resolve(join(__dirname, `../images/${existing.file_name}`)),
+        resolve(join(__dirname, `../images/${updateData.file_name}`))
+      )
+
     const updated = db
       .get('images')
       .find({ id })
-      .assign({ ...updateData, updated_at: new Date().toISOString() })
+      .assign({ ...updateData, dest: `/images/${updateData.file_name}`, updated_at: new Date().toISOString() })
       .write()
 
     return res.status(200).json(updated)

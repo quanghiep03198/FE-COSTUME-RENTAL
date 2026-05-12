@@ -9,9 +9,11 @@ import {
 } from '@/components/layouts/app/app-page'
 import { createPubSubContext } from '@/contexts/pubsub-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
+import ImageDeletionAlert from './image-deletion-alert'
 import ImageUploadDialogTrigger from './image-upload-dialog-trigger'
 import ImageGalleryTable from './images-gallery-table'
 import ImageGalleryToolbar from './images-gallery-toolbar'
+import UpdateImageFormDialog from './update-image-form-dialog'
 import UploadImageDialog from './upload-image-dialog'
 
 type GlobalPubSubEventMap = {
@@ -39,7 +41,9 @@ const ImagesGalleryPage: React.FC = () => {
         <PageSeparator />
         <ImageGalleryToolbar />
         <ImageGalleryTable />
+        <UpdateImageFormDialog />
         <UploadImageDialog />
+        <ImageDeletionAlert />
       </PageWrapper>
     </PubSubProvider>
   )

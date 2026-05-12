@@ -15,6 +15,7 @@ const ImageGalleryToolbar: React.FC = () => {
   const search = useSearch({
     from: '/_private-layout/images-gallery',
     select: (state) => ({ mime_type: state.mime_type, from: state.from, to: state.to }),
+    structuralSharing: false,
   })
   const navigate = useNavigate({ from: '/images-gallery' })
 
@@ -56,6 +57,7 @@ const imageFormatOptions: Array<{ label: string; value: ImageMimeType }> = [
 
 const MimeTypeSelect: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
+  // const { table } = useTableContext('table')
 
   const mimeType = useSearch({
     from: '/_private-layout/images-gallery',
@@ -68,8 +70,10 @@ const MimeTypeSelect: React.FC = () => {
       open={open}
       onOpenChange={setOpen}
       items={imageFormatOptions}
+      // value={table?.getState()?.columnFilters?.find((f) => f.id === 'mime_type')?.value}
       value={mimeType ?? ''}
       onValueChange={(value) =>
+        // table.setColumnFilters((prev) => [...prev.filter((f) => f.id !== 'mime_type'), { id: 'mime_type', value }])
         navigate({
           search: (old) => ({ ...old, mime_type: value as ImageMimeType }),
         })
