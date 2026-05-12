@@ -72,8 +72,8 @@ type GlobalFilterProps =
       onGlobalFilterChange: React.Dispatch<React.SetStateAction<GlobalFilterTableState['globalFilter']>>
     }
   | {
-      manualFiltering?: true | false
-      enableGlobalFilter?: false
+      manualFiltering?: false
+      // enableGlobalFilter?: false
       globalFilter?: GlobalFilterTableState['globalFilter']
       onGlobalFilterChange?: React.Dispatch<React.SetStateAction<GlobalFilterTableState['globalFilter']>>
     }

@@ -23,7 +23,7 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
   renderSubComponent,
 }) => {
   const { table } = useTableContext('table')
-  const { rows } = table.getRowModel()
+  const { rows } = table.options.manualFiltering ? table.getRowModel() : table.getFilteredRowModel()
   const overscan = useMemo(() => (table.getIsSomeRowsExpanded() ? 20 : 10), [table.getState().expanded])
   const scrollToFn = useScrollToFn(containerRef)
   const estimateSize = useCallback(() => estimatedRowHeight, [estimatedRowHeight])
