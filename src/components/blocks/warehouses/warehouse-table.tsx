@@ -10,6 +10,7 @@ import { Typography } from '@/components/ui/typography'
 import generateAvatar from '@/lib/generate-avatar'
 import { createColumnHelper } from '@tanstack/react-table'
 import React, { useMemo, useRef } from 'react'
+import WarehouseTableToolbar from './warehouse-table-toolbar'
 
 const WarehouseTable: React.FC = () => {
   const { data, isLoading } = useGetWarehouseQuery()
@@ -109,14 +110,17 @@ const WarehouseTable: React.FC = () => {
     ],
     []
   )
+
+  console.log('data', data)
+
   return (
     <DataGrid
       data={data}
       columns={columns}
       loading={isLoading}
-      toolbarProps={{ override: true, render: () => null }}
+      toolbarProps={{ override: true, render: WarehouseTableToolbar }}
       containerProps={{
-        className: 'h-[calc(100vh-14rem)]',
+        className: 'h-[calc(100vh-12rem)]',
       }}
     />
   )

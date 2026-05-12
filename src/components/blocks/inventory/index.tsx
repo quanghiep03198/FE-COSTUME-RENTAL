@@ -35,10 +35,10 @@ const InventoryPage: React.FC = () => {
   const navigate = useNavigate({ from: '/inventory' })
 
   return (
-    <Tabs value={tabValue}>
-      <TabsList>
+    <Tabs value={tabValue} className="gap-6">
+      <TabsList variant="line">
         {tabs.map((tab) => (
-          <TabsTrigger value={tab.value} onClick={() => navigate({ search: { tab: tab.value } })}>
+          <TabsTrigger key={tab.value} value={tab.value} onClick={() => navigate({ search: { tab: tab.value } })}>
             {tab.label}
           </TabsTrigger>
         ))}
