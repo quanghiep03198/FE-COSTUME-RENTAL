@@ -104,8 +104,6 @@ export const DataGrid: React.FC<DataTableProps> = ({
 
   const event$ = useEventEmitter<Record<string, unknown>>()
 
-  console.log('columnFilters', columnFilters)
-
   // Sync external columnFilters prop vào internal _columnFilters state
   // Để table có thể apply filter client-side
   useEffect(() => {

@@ -17,7 +17,6 @@ export const createCategoryRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
   .inputValidator(createCategorySchema)
   .handler(async ({ context, data }) => {
-    console.log('createCategoryRpc | data', data)
     return await context.request<ICategory>({ url: '/categories', method: 'POST', data })
   })
 

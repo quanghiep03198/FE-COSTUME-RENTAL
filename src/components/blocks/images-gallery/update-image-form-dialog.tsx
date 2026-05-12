@@ -30,7 +30,6 @@ const UpdateImageFormDialog: React.FC = () => {
   })
 
   usePubSubSubscription('image:update', (data) => {
-    console.log(data)
     form.reset(data, { keepDefaultValues: true })
   })
 

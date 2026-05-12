@@ -65,18 +65,6 @@ export const Editor: React.FC<EditorProps> = ({
       enableCoreExtensions: true,
       editable: !disabled,
       immediatelyRender: !isServer,
-      onTransaction: ({ transaction }) => {
-        console.debug(
-          'docChanged:',
-          transaction.docChanged,
-          'addToHistory:',
-          transaction.getMeta('addToHistory'),
-          'steps:',
-          transaction.steps.length,
-          'selectionSet:',
-          transaction.selectionSet
-        )
-      },
     },
     [disabled]
   )
