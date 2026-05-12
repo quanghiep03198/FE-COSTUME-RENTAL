@@ -1,0 +1,125 @@
+import { useGetWarehouseQuery } from '@/apis/warehouse/hooks/use-warehouse-request'
+import type { IWarehouse } from '@/apis/warehouse/types'
+import { ItemType } from '@/common/constants/enums'
+import { DataGrid } from '@/components/shared/data-grid'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Icon, type IconProps } from '@/components/ui/icon'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import { Typography } from '@/components/ui/typography'
+import generateAvatar from '@/lib/generate-avatar'
+import { createColumnHelper } from '@tanstack/react-table'
+import React, { useMemo, useRef } from 'react'
+
+const WarehouseTable: React.FC = () => {
+  const { data, isLoading } = useGetWarehouseQuery()
+
+  const columnHelper = createColumnHelper<IWarehouse>()
+
+  const warehouseTypeRef = useRef<Map<ItemType, string>>(
+    new Map<ItemType, string>([
+      [ItemType.COSTUMES, 'Kho trang phục'],
+      [ItemType.EQUIPMENT_PROPS, 'Kho đạo cụ'],
+    ])
+  )
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('name', {
+        header: 'Tên kho',
+        enableSorting: true,
+        enableColumnFilter: true,
+        enableGlobalFilter: true,
+      }),
+      columnHelper.accessor('type', {
+        header: 'Loại kho',
+        enableSorting: false,
+        enableColumnFilter: true,
+        filterFn: 'equalsString',
+        cell: ({ getValue }) => {
+          const value = getValue()
+          return warehouseTypeRef.current.get(value)
+        },
+      }),
+      columnHelper.accessor('managed_by.id', {
+        header: 'Người quản lý',
+        enableColumnFilter: true,
+        filterFn: 'equals',
+        cell: ({ row }) => {
+          const employee = row.original.managed_by
+
+          if (!employee)
+            return (
+              <Typography variant="small" color="muted">
+                Chưa xác định
+              </Typography>
+            )
+
+          return (
+            <Item className="p-0" size="xs">
+              <ItemMedia>
+                <Avatar>
+                  <AvatarImage src={generateAvatar({ name: employee?.full_name })} />
+                  <AvatarFallback>{employee?.full_name?.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{employee.full_name}</ItemTitle>
+                <ItemDescription>{employee.email}</ItemDescription>
+              </ItemContent>
+            </Item>
+          )
+        },
+      }),
+      columnHelper.accessor('is_active', {
+        id: 'is_active',
+        header: 'Trạng thái',
+        enableHiding: true,
+        cell: ({ getValue }) => {
+          const value = getValue()
+
+          const badgeHelper: {
+            icon: IconProps['name']
+            text: string
+            color: `var(--${'success' | 'muted-foreground'})`
+          } = value
+            ? {
+                icon: 'CircleCheckBig',
+                text: 'Đang hoạt động',
+                color: 'var(--success)',
+              }
+            : {
+                icon: 'Lock',
+                text: 'Tạm khóa',
+                color: 'var(--muted-foreground)',
+              }
+
+          return (
+            <Badge variant="outline" className="justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap">
+              <Icon aria-current={value} name={badgeHelper?.icon as IconProps['name']} stroke={badgeHelper?.color} />
+              {badgeHelper?.text}
+            </Badge>
+          )
+        },
+        enableSorting: true,
+        enableColumnFilter: true,
+        enableGlobalFilter: true,
+        enableResizing: true,
+      }),
+    ],
+    []
+  )
+  return (
+    <DataGrid
+      data={data}
+      columns={columns}
+      loading={isLoading}
+      toolbarProps={{ override: true, render: () => null }}
+      containerProps={{
+        className: 'h-[calc(100vh-14rem)]',
+      }}
+    />
+  )
+}
+
+export default WarehouseTable
