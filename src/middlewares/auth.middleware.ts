@@ -5,8 +5,6 @@ import { createMiddleware } from '@tanstack/react-start'
 import { getCookie } from '@tanstack/react-start/server'
 
 export const authMiddleware = createMiddleware().server(async ({ next }) => {
-  console.debug('Start checking token from Auth middleware')
-
   const accessToken = getCookie('accessToken')
 
   if (!accessToken) throw redirect({ to: '/login' })
