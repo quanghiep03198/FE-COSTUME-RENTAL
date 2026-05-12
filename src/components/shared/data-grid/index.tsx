@@ -104,6 +104,16 @@ export const DataGrid: React.FC<DataTableProps> = ({
 
   const event$ = useEventEmitter<Record<string, unknown>>()
 
+  console.log('columnFilters', columnFilters)
+
+  // Sync external columnFilters prop vào internal _columnFilters state
+  // Để table có thể apply filter client-side
+  useEffect(() => {
+    if (!manualFiltering && columnFilters !== undefined) {
+      setColumnFilters(columnFilters)
+    }
+  }, [columnFilters, manualFiltering])
+
   // * Table declaration
   const table = useReactTable({
     data: _data,
@@ -172,7 +182,9 @@ export const DataGrid: React.FC<DataTableProps> = ({
     getPaginationRowModel: getPaginationRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    // Khi manualFiltering=true, data đã được filter từ server → không filter thêm lần nữa
+    // Nếu filter client-side trên data server-side sẽ cho kết quả sai
+    ...(manualFiltering ? {} : { getFilteredRowModel: getFilteredRowModel() }),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),

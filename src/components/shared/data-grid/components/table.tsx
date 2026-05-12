@@ -24,7 +24,7 @@ const DataTable: React.FC<TableProps> = (props) => {
   const captionId = useId()
 
   const {
-    containerProps = { className: cn('h-[350px] xxl:h-[500px]') },
+    containerProps = { className: cn('h-87.5 xxl:h-125') },
     footerProps = { hidden: true, slot: null },
     caption,
     loading,
