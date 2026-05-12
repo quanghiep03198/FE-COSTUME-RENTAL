@@ -7,6 +7,10 @@ export function GlobalFilterInput<T extends IBaseEntity>({ table }: { table: Tab
   const [value, setValue] = useState<string>(table.getState().globalFilter)
 
   useEffect(() => {
+    setValue(table.getState().globalFilter)
+  }, [table.getState().globalFilter])
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       table.setGlobalFilter(String(value))
     }, 200)
