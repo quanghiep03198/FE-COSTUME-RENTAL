@@ -112,14 +112,19 @@ const CostumeFormDialog: React.FC = () => {
       } else {
         setAction(CommonActions.UPDATE)
         formSchemaRef.current = updateCostumeSchema
+
+        const mappedSizes = e.payload.sizes.map((size) => {
+          return {
+            label: size,
+            value: size,
+            sortOrder: SIZE_RUN.findIndex((size) => size.value === String(size)) + 1,
+          }
+        }) as TCreateCostumeValues['sizes']
+
         form.reset(
           {
-            ...e.payload,
-            sizes: e.payload.sizes.map((size) => ({
-              label: size,
-              value: size,
-              sortOrder: SIZE_RUN.find((s) => s.value === size)?.sortOrder ?? 1,
-            })),
+            ...(e.payload as unknown as TCreateCostumeValues),
+            sizes: mappedSizes,
             description: e.payload.description,
             unit: COSTUME_UNIT.find((unit) => unit.value === e.payload.unit)!,
           },
@@ -155,7 +160,7 @@ const CostumeFormDialog: React.FC = () => {
                   ? 'Điền thông tin để tạo mới trang phục'
                   : 'Cập nhật thông tin trang phục'}
               </FieldDescription>
-              <FieldGroup className="h-screen lg:max-xxl:max-h-[65vh] xxl:max-h-[75vh] overflow-auto">
+              <FieldGroup className="h-screen grid grid-cols-6 lg:max-xxl:max-h-[65vh] xxl:max-h-[75vh] overflow-auto">
                 <FormField
                   name="name"
                   listeners={{
@@ -166,7 +171,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
+                      <Field className="col-span-2">
                         <FieldLabel htmlFor={field.name}>Tên trang phục</FieldLabel>
                         <Input
                           name={field.name}
@@ -187,7 +192,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
+                      <Field className="col-span-2">
                         <FieldLabel htmlFor={field.name}>Bộ sưu tập</FieldLabel>
                         <Select
                           items={categories as any[]}
@@ -223,7 +228,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-4">
+                      <Field className="col-span-2">
                         <FieldLabel htmlFor={field.name}>Hashtags</FieldLabel>
                         <TagsInput
                           value={field.state.value}
@@ -240,7 +245,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <FieldGroup className="col-span-12">
+                      <FieldGroup className="col-span-6">
                         <FieldLabel>Giới tính</FieldLabel>
                         <RadioGroup
                           defaultValue={CostumeGender.FEMALE}
@@ -279,7 +284,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
+                      <Field className="col-span-3">
                         <FieldLabel htmlFor={field.name} className="w-fit inline-block">
                           Màu sắc chủ đạo
                         </FieldLabel>
@@ -295,7 +300,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-4">
+                      <Field className="col-span-3">
                         <FieldLabel htmlFor={field.name}>Size</FieldLabel>
                         <Select
                           multiple
@@ -391,7 +396,7 @@ const CostumeFormDialog: React.FC = () => {
                 <FormField name="images">
                   {(field) => {
                     return (
-                      <Field className="col-span-12">
+                      <Field className="col-span-6">
                         <FieldLabel htmlFor={field.name}>Hình ảnh</FieldLabel>
                         {!Array.isArray(field.state.value) || !field.state.value.length ? (
                           <Empty className="border">
@@ -448,7 +453,7 @@ const CostumeFormDialog: React.FC = () => {
                     )
                   }}
                 </FormField>
-                <Field className="col-span-12">
+                <Field className="col-span-6">
                   <FieldLabel>Mô tả</FieldLabel>
                   <Editor
                     ref={editorRef}
