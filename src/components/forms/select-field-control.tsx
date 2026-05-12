@@ -33,7 +33,7 @@ function SelectFieldControl<T>({
   return (
     <Field className={cn(classNames?.field)} orientation={orientation}>
       {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
-      <Select items={items} onValueChange={field.handleChange}>
+      <Select items={items} value={field.state.value} onValueChange={field.handleChange}>
         <SelectTrigger>
           <SelectValue render={renderValue} placeholder={placeholder} />
         </SelectTrigger>
