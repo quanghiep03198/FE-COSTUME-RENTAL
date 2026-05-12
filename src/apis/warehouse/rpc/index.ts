@@ -1,0 +1,59 @@
+import { authMiddleware } from '@/middlewares/auth.middleware'
+import { requestMiddleware } from '@/middlewares/request.middleware'
+import { createServerFn } from '@tanstack/react-start'
+import { isNil, omitBy } from 'lodash-es'
+import { z } from 'zod'
+import { createWarehouseSchema } from '../schemas/create-warehouse.schema'
+import { updateWarehouseSchema } from '../schemas/update-warehouse.schema'
+
+export const getWarehousesRpc = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware, requestMiddleware])
+  .handler(async ({ context }) => {
+    return await context.request({ url: '/warehouses' })
+  })
+
+export const createWarehouseRpc = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware, requestMiddleware])
+  .inputValidator(createWarehouseSchema)
+  .handler(async ({ context, data }) => {
+    return await context.request({
+      url: '/warehouse',
+      method: 'POST',
+      data: {
+        name: data.name,
+        type: data.type.value,
+        managed_by: data.managed_by.id,
+      },
+    })
+  })
+
+export const updateWarehouseRpc = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware, requestMiddleware])
+  .inputValidator(updateWarehouseSchema)
+  .handler(async ({ context, data: { id, ...update } }) => {
+    return await context.request({
+      url: `/warehouses/${id}`,
+      method: 'PATCH',
+      data: omitBy(
+        {
+          name: update?.name,
+          type: update?.type?.value,
+          managed_by: update?.managed_by?.id,
+        },
+        isNil
+      ),
+    })
+  })
+
+export const deleteWarehouseRpc = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware, requestMiddleware])
+  .inputValidator(z.number())
+  .handler(async ({ context, data: id }) => {
+    return await context.request({
+      url: `/warehouses/${id}`,
+      method: 'DELETE',
+      params: {
+        permanantly: true,
+      },
+    })
+  })
