@@ -98,15 +98,20 @@ export const AlignmentDropdownMenu: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <Tooltip message="Canh lề">
-        <DropdownMenuTrigger
-          render={
-            <Button variant="ghost" size="icon" className="aspect-square h-8 w-8" type="button">
-              <Icon name={alignmentState?.icon} />
-            </Button>
-          }
-        />
-      </Tooltip>
+      <Tooltip
+        message="Canh lề"
+        triggerProps={{
+          render: (
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon" className="aspect-square h-8 w-8" type="button">
+                  <Icon name={alignmentState?.icon} />
+                </Button>
+              }
+            />
+          ),
+        }}
+      />
       <DropdownMenuContent>
         <DropdownMenuRadioGroup
           className="flex list-none flex-row! gap-x-2"

@@ -48,15 +48,20 @@ const TableDropdownMenu: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <Tooltip message="Chèn bảng">
-        <DropdownMenuTrigger
-          render={
-            <Button size="icon" className="h-8 w-8" variant="ghost" type="button">
-              <Icon name="Table" />
-            </Button>
-          }
-        />
-      </Tooltip>
+      <Tooltip
+        message="Chèn bảng"
+        triggerProps={{
+          render: (
+            <DropdownMenuTrigger
+              render={
+                <Button size="icon" className="h-8 w-8" variant="ghost" type="button">
+                  <Icon name="Table" />
+                </Button>
+              }
+            />
+          ),
+        }}
+      />
       <DropdownMenuContent align="end" className="w-fit">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Tùy chọn bảng</DropdownMenuLabel>

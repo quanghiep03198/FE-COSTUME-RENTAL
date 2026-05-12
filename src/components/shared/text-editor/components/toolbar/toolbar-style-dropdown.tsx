@@ -81,15 +81,20 @@ export const StyleDropdownMenu: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <Tooltip message="Thay đổi kiểu định dạng">
-        <DropdownMenuTrigger
-          render={
-            <Button type="button" variant="secondary" size="sm" className="h-8 min-w-32 gap-x-2">
-              <Icon name={getCurrentStyle.icon} /> {getCurrentStyle.label}
-            </Button>
-          }
-        />
-      </Tooltip>
+      <Tooltip
+        message="Thay đổi kiểu định dạng"
+        triggerProps={{
+          render: (
+            <DropdownMenuTrigger
+              render={
+                <Button type="button" variant="secondary" size="sm" className="h-8 min-w-32 gap-x-2">
+                  <Icon name={getCurrentStyle.icon} /> {getCurrentStyle.label}
+                </Button>
+              }
+            />
+          ),
+        }}
+      ></Tooltip>
       <DropdownMenuContent className="w-fit" align="center">
         <DropdownMenuRadioGroup
           value={getCurrentStyle.value.toString()}

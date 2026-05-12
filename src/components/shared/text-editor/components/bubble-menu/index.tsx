@@ -110,28 +110,38 @@ const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
           </PopoverContent>
         </Popover>
 
-        <Tooltip message="Copy">
-          <Button
-            type="button"
-            className="aspect-square h-8 w-8"
-            variant="ghost"
-            size="icon"
-            onClick={handleCopyLinkToClipboard}
-          >
-            <Icon name="Copy" />
-          </Button>
-        </Tooltip>
-        <Tooltip message="Unlink">
-          <Button
-            type="button"
-            className="aspect-square h-8 w-8"
-            variant="ghost"
-            size="icon"
-            onClick={() => editor.commands.unsetLink()}
-          >
-            <Icon name="Unlink" />
-          </Button>
-        </Tooltip>
+        <Tooltip
+          message="Copy"
+          triggerProps={{
+            render: (
+              <Button
+                type="button"
+                className="aspect-square h-8 w-8"
+                variant="ghost"
+                size="icon"
+                onClick={handleCopyLinkToClipboard}
+              >
+                <Icon name="Copy" />
+              </Button>
+            ),
+          }}
+        />
+        <Tooltip
+          message="Unlink"
+          triggerProps={{
+            render: (
+              <Button
+                type="button"
+                className="aspect-square h-8 w-8"
+                variant="ghost"
+                size="icon"
+                onClick={() => editor.commands.unsetLink()}
+              >
+                <Icon name="Unlink" />
+              </Button>
+            ),
+          }}
+        />
       </div>
     </TiptapBubbleMenu>
   )

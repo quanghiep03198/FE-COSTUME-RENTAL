@@ -39,15 +39,20 @@ export const LinkPopover: React.FC = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Tooltip message="Đường dẫn">
-        <PopoverTrigger
-          render={
-            <Button variant="ghost" size="icon" className="aspect-square h-8 w-8">
-              <Icon name="Link" />
-            </Button>
-          }
-        />
-      </Tooltip>
+      <Tooltip
+        message="Đường dẫn"
+        triggerProps={{
+          render: (
+            <PopoverTrigger
+              render={
+                <Button variant="ghost" size="icon" className="aspect-square h-8 w-8">
+                  <Icon name="Link" />
+                </Button>
+              }
+            />
+          ),
+        }}
+      />
       <PopoverContent className="w-96" align="end">
         <div className="grid gap-4">
           <div className="space-y-2">
