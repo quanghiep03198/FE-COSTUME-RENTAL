@@ -80,9 +80,11 @@ const UpdateImageFormDialog: React.FC = () => {
               <form.Field name="category">
                 {(field) => (
                   <SelectFieldControl
-                    items={categoryOptions}
                     field={field}
                     label="Danh mục"
+                    items={categoryOptions}
+                    labelField="label"
+                    valueField="value"
                     placeholder="Chọn danh mục"
                     description="Vui lòng chọn danh mục cho hình ảnh của bạn."
                   />

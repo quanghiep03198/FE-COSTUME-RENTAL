@@ -8,7 +8,10 @@ export const createCostumeSchema = z.object({
     .string({ message: 'Tên danh mục không được để trống' })
     .nonempty({ message: 'Tên danh mục không được để trống' }),
   category: z.object({ id: z.number(), name: z.string() }, { message: 'Vui lòng chọn danh mục trang phục' }),
-  color: z.string({ message: 'Màu sắc không được để trống' }).nonempty({ message: 'Màu sắc không được để trống' }),
+  color: z.object(
+    { hex: z.string(), code: z.string(), intensity: z.number() },
+    { message: 'Màu sắc không được để trống' }
+  ),
   sizes: z
     .array(
       z.object({

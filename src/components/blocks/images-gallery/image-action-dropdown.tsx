@@ -53,7 +53,7 @@ const ImageActionsDropdown: React.FC<CellContext<IImage, any>> = ({ row }) => {
         <EllipsisVerticalIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="left" align="start">
-        <DropdownMenuItem onClick={handleDownload}>Download</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleDownload}>Tải xuống hình ảnh</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() =>
@@ -67,9 +67,9 @@ const ImageActionsDropdown: React.FC<CellContext<IImage, any>> = ({ row }) => {
             })
           }
         >
-          Update
+          Cập nhật
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => publish('image:delete', row.original.id)}>Delete</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => publish('image:delete', row.original.id)}>Xóa</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

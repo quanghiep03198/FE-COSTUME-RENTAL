@@ -2,6 +2,7 @@ import { useGetWarehouseQuery } from '@/apis/warehouse/hooks/use-warehouse-reque
 import type { IWarehouse } from '@/apis/warehouse/types'
 import { ItemType } from '@/common/constants/enums'
 import { DataGrid } from '@/components/shared/data-grid'
+import { ROW_ACTIONS_COLUMN_ID } from '@/components/shared/data-grid/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Icon, type IconProps } from '@/components/ui/icon'
@@ -10,6 +11,7 @@ import { Typography } from '@/components/ui/typography'
 import generateAvatar from '@/lib/generate-avatar'
 import { createColumnHelper } from '@tanstack/react-table'
 import React, { useMemo, useRef } from 'react'
+import WarehouseActionsDropdown from './warehouse-actions-dropdown'
 import WarehouseTableToolbar from './warehouse-table-toolbar'
 
 const WarehouseTable: React.FC = () => {
@@ -36,7 +38,7 @@ const WarehouseTable: React.FC = () => {
         header: 'Loại kho',
         enableSorting: false,
         enableColumnFilter: true,
-        filterFn: 'equalsString',
+        filterFn: 'arrIncludesSome',
         cell: ({ getValue }) => {
           const value = getValue()
           return warehouseTypeRef.current.get(value)
@@ -71,6 +73,14 @@ const WarehouseTable: React.FC = () => {
             </Item>
           )
         },
+      }),
+      columnHelper.accessor('created_at', {
+        header: 'Ngày tạo lên',
+        enableColumnFilter: true,
+        enableSorting: true,
+        sortingFn: 'datetime',
+        cell: (info: any) =>
+          new Date(info.getValue()).toLocaleString('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }),
       }),
       columnHelper.accessor('is_active', {
         id: 'is_active',
@@ -107,6 +117,16 @@ const WarehouseTable: React.FC = () => {
         enableGlobalFilter: true,
         enableResizing: true,
       }),
+      columnHelper.display({
+        id: ROW_ACTIONS_COLUMN_ID,
+        header: 'Thao tác',
+        cell: WarehouseActionsDropdown,
+        enableColumnFilter: false,
+        enableSorting: false,
+        enableGlobalFilter: false,
+        enableResizing: false,
+        size: 100,
+      }),
     ],
     []
   )
@@ -118,6 +138,7 @@ const WarehouseTable: React.FC = () => {
       data={data}
       columns={columns}
       loading={isLoading}
+      virtualizerOptions={{ estimateSize: 60 }}
       toolbarProps={{ override: true, render: WarehouseTableToolbar }}
       containerProps={{
         className: 'h-[calc(100vh-12rem)]',

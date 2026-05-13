@@ -84,9 +84,6 @@ export default async function request<R = any, D = any>({
 
     return result as R
   } catch (error) {
-    console.error('Request error:', error)
-    return null
+    throw error
   }
 }
-
-export type RequestResponse<D> = Promise<Nullable<D>>

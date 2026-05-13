@@ -7,7 +7,7 @@ import { Separator } from '../ui/separator'
 import { Typography } from '../ui/typography'
 
 interface ErrorBoundaryFallbackProps {
-  error: Error
+  error: unknown
   resetError?: (...args: any[]) => void
 }
 
@@ -47,7 +47,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
             </DialogHeader>
             <div className="overflow-y-auto scrollbar-none! max-h-96 prose">
               <Typography color="muted" className="font-medium">
-                {error?.stack}
+                {(error as Error)?.stack}
               </Typography>
             </div>
           </DialogContent>
