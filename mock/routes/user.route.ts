@@ -13,7 +13,7 @@ const userOpts = { omit: ['password'], transform: addAvatar }
 export function registerUserRoutes(app: Application) {
   // * GET /users
   app.get('/api/users', jwtMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('users', req.query, res, userOpts)
+    const result = queryCollection('users', req.query, userOpts)
     return res.status(200).json(result)
   })
 

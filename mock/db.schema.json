@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "_comment": "Còn thiếu bảng  rentals, rental_items, maintenances, maintenance_items, returns, return_items, invoices, invoice_items, borrowings, borrowing_items để quản lý quá trình thuê, trả, bảo trì trang phục và đạo cụ",
   "required": [
     "users",
     "revoke_tokens",
@@ -7,10 +8,12 @@
     "warehouses",
     "categories",
     "costumes",
+    "images",
     "equipment_props",
+    "inventory_item_conditions",
     "inventory"
   ],
-  "$defs": {
+  "definitions": {
     "BaseEntity": {
       "type": "object",
       "additionalProperties": true,
@@ -58,7 +61,7 @@
     "User": {
       "_comment": "User định nghĩa các trường thông tin cơ bản cho người dùng, bao gồm thông tin đăng nhập và vai trò, giúp quản lý quyền truy cập trong hệ thống",
       "allOf": [
-        { "$ref": "#/$defs/BaseEntity" },
+        { "$ref": "#/definitions/BaseEntity" },
         {
           "type": "object",
           "properties": {
@@ -82,7 +85,7 @@
     "Employee": {
       "allOf": [
         {
-          "$ref": "#/$defs/BaseEntity"
+          "$ref": "#/definitions/BaseEntity"
         },
         {
           "type": "object",
@@ -136,7 +139,7 @@
     "Warehouse": {
       "allOf": [
         {
-          "$ref": "#/$defs/BaseEntity"
+          "$ref": "#/definitions/BaseEntity"
         },
         {
           "type": "object",
@@ -157,8 +160,8 @@
     },
     "ImageGallery": {
       "allOf": [
-        { "$ref": "#/$defs/BaseEntity" },
-        { "$ref": "#/$defs/ImageMetadata" },
+        { "$ref": "#/definitions/BaseEntity" },
+        { "$ref": "#/definitions/ImageMetadata" },
         {
           "type": "object",
           "properties": {
@@ -171,7 +174,7 @@
     },
     "ItemCategory": {
       "allOf": [
-        { "$ref": "#/$defs/BaseEntity" },
+        { "$ref": "#/definitions/BaseEntity" },
         {
           "type": "object",
           "properties": {
@@ -184,10 +187,14 @@
     },
     "Costume": {
       "allOf": [
-        { "$ref": "#/$defs/BaseEntity" },
+        { "$ref": "#/definitions/BaseEntity" },
         {
           "type": "object",
           "properties": {
+            "sku": {
+              "type": "string",
+              "_comment": "Mã định danh duy nhất cho mỗi trang phục, giúp quản lý và tra cứu dễ dàng trong hệ thống"
+            },
             "slug": {
               "type": "string"
             },
@@ -207,7 +214,7 @@
             },
             "sizes": {
               "type": "array",
-              "items": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] }
+              "items": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "2XL", "3XL"] }
             },
             "unit": {
               "type": "string",
@@ -243,7 +250,7 @@
     "EquipmentProps": {
       "allOf": [
         {
-          "$ref": "#/$defs/BaseEntity"
+          "$ref": "#/definitions/BaseEntity"
         },
         {
           "type": "object",
@@ -264,9 +271,9 @@
         }
       ]
     },
-    "InventoryItemCondition": {
+    "InventoryCondition": {
       "allOf": [
-        { "$ref": "#/$defs/BaseEntity" },
+        { "$ref": "#/definitions/BaseEntity" },
         {
           "type": "object",
           "properties": {
@@ -280,24 +287,34 @@
         }
       ]
     },
-    "CostumeInventory": {
+    "Inventory": {
       "allOf": [
         {
-          "$ref": "#/$defs/BaseEntity"
+          "$ref": "#/definitions/BaseEntity"
         },
         {
           "type": "object",
           "properties": {
-            "sku": { "type": "string", "_comment": "" },
-            "costume_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
-            "warehouse_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
-            "inventory_item_condition_id": {
-              "type": "integer",
-              "_comment": "Khóa ngoại tham chiếu tới bảng 'inventory_item_condition'"
+            "sku": {
+              "type": "string",
+              "_comment": "Mã định danh duy nhất cho mỗi sản phẩm trong kho, giúp quản lý và tra cứu dễ dàng"
             },
-            "status": { "type": "string", "enum": [""] },
-            "size": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] },
-            "accquired_date": { "type": "string", "format": "datetime", "description": "Ngày nhập kho" }
+            "item_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
+            "item_type": { "type": "string", "enum": ["COSTUME", "EQUIPMENT_PROPS"] },
+            "warehouse_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
+            "inventory_condition_id": {
+              "type": "integer",
+              "$comment": "Khóa ngoại tham chiếu tới bảng 'inventory_conditions'"
+            },
+            "size": {
+              "type": ["string", "null"],
+              "enum": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+              "_comment": "Kích thước của sản phẩm, áp dụng cho trang phục, có thể null đối với đạo cụ"
+            },
+            "total_qty": { "type": "integer", "minimum": 0, "default": 0 },
+            "available_qty": { "type": "integer", "minimum": 0, "default": 0 },
+            "rented_qty": { "type": "integer", "minimum": 0, "default": 0 },
+            "maintenance_qty": { "type": "integer", "minimum": 0, "default": 0 }
           }
         }
       ]
@@ -308,7 +325,7 @@
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "$ref": "#/$defs/User"
+        "$ref": "#/definitions/User"
       },
       "description": "Danh sách người dùng"
     },
@@ -317,20 +334,20 @@
       "uniqueItems": true,
       "description": "Danh sách nhân viên",
       "items": {
-        "$ref": "#/$defs/Employee"
+        "$ref": "#/definitions/Employee"
       }
     },
     "revoke_tokens": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/RevokeToken"
+        "$ref": "#/definitions/RevokeToken"
       }
     },
     "warehouses": {
       "type": "array",
       "description": "Danh sách kho",
       "items": {
-        "$ref": "#/$defs/Warehouse"
+        "$ref": "#/definitions/Warehouse"
       }
     },
     "images": {
@@ -338,7 +355,7 @@
       "uniqueItems": true,
       "description": "Danh sách ảnh gồm thông tin metadata ảnh",
       "items": {
-        "$ref": "#/$defs/ImageGallery"
+        "$ref": "#/definitions/ImageGallery"
       }
     },
     "categories": {
@@ -346,28 +363,35 @@
       "uniqueItems": true,
       "description": "Danh sách danh mục",
       "items": {
-        "$ref": "#/$defs/ItemCategory"
+        "$ref": "#/definitions/ItemCategory"
       }
     },
     "costumes": {
       "type": "array",
       "description": "Danh sách trang phục",
       "items": {
-        "$ref": "#/$defs/Costume"
+        "$ref": "#/definitions/Costume"
       }
     },
     "equipment_props": {
       "type": "array",
       "description": "Danh sách các đạo cụ",
       "items": {
-        "$ref": "#/$defs/EquipmentProps"
+        "$ref": "#/definitions/EquipmentProps"
       }
     },
-    "inventory_item_conditions": {
+    "inventory_conditions": {
       "type": "array",
       "description": "Danh sách các tình trạng của sản phẩm trong kho",
       "items": {
-        "$ref": "#/$defs/InventoryItemCondition"
+        "$ref": "#/definitions/InventoryCondition"
+      }
+    },
+    "inventory": {
+      "type": "array",
+      "description": "Danh sách tồn kho, quản lý số lượng và tình trạng của từng sản phẩm trong kho",
+      "items": {
+        "$ref": "#/definitions/Inventory"
       }
     }
   }
