@@ -3,7 +3,7 @@ import type { IImage } from '@/apis/image/types'
 import type { TColorPateItem } from '@/common/constants/const'
 import type { CostumeGender, CostumeSize, CostumeUnit } from '../constants'
 
-export type TCostumeSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL'
+export type TCostumeSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | '2XL' | '3XL'
 
 export interface ICostume extends IBaseEntity {
   name: string

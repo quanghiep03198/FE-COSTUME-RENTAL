@@ -21,13 +21,13 @@ export const COSTUME_UNIT_LABEL_MAP = new Map<CostumeUnit, string>([
 ])
 
 export enum CostumeSize {
-  XS = 'XS',
-  S = 'S',
-  M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
-  XXXL = 'XXXL',
+  'XS' = 'XS',
+  'S' = 'S',
+  'M' = 'M',
+  'L' = 'L',
+  'XL' = 'XL',
+  '2XL' = '2XL',
+  '3XL' = '3XL',
 }
 
 export const SIZE_RUN = [
@@ -36,8 +36,8 @@ export const SIZE_RUN = [
   { value: 'M', label: 'M' },
   { value: 'L', label: 'L' },
   { value: 'XL', label: 'XL' },
-  { value: 'XXL', label: 'XXL' },
-  { value: 'XXXL', label: 'XXXL' },
+  { value: '2XL', label: '2XL' },
+  { value: '3XL', label: '3XL' },
 ].map((size, index) => {
   return { ...size, sortOrder: index + 1 }
 })
