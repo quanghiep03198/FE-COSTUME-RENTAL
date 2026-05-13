@@ -1,12 +1,12 @@
 import type { Application } from 'express'
 import { registerAuthRoutes } from './auth.routes'
-import { registerCostumeRoutes } from './costume.routes'
-import { registerEmployeeRoutes } from './employee.routes'
-import { registerEquipmentPropsRoutes } from './equipment-props.routes'
-import { registerImageGalleryRoutes } from './images-gallery.routes'
-import { registerItemCategoryRoutes } from './item-category.routes'
-import { registerUserRoutes } from './user.routes'
-import { registerWarehouseRoutes } from './warehouse.routes'
+import { registerCostumeRoutes } from './costume.route'
+import { registerEmployeeRoutes } from './employee.route'
+import { registerEquipmentPropsRoutes } from './equipment-props.route'
+import { registerImageGalleryRoutes } from './images-gallery.route'
+import { registerItemCategoryRoutes } from './item-category.route'
+import { registerUserRoutes } from './user.route'
+import { registerWarehouseRoutes } from './warehouse.route'
 
 export function registerAllRoutes(app: Application) {
   registerAuthRoutes(app)

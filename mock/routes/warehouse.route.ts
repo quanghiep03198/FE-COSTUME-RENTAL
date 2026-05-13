@@ -60,8 +60,6 @@ export function registerWarehouseRoutes(app: Application) {
 
     const { id: _id, created_at, ...updateData } = req.body
 
-    console.log('updateData', updateData)
-
     const updated = db
       .get('warehouses')
       .find({ id })
