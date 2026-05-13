@@ -131,8 +131,6 @@ const WarehouseTable: React.FC = () => {
     []
   )
 
-  console.log('data', data)
-
   return (
     <DataGrid
       data={data}
