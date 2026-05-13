@@ -1,12 +1,13 @@
 import type { TUpdateWarehouseValues } from '@/apis/warehouse/schemas/update-warehouse.schema'
 import { createPubSubContext } from '@/contexts/pubsub-context'
 import type React from 'react'
+import WarehouseDeletionAlert from './warehouse-deletion-alert'
 import WarehouseFormDialog from './warehouse-form-dialog'
 import WarehouseTable from './warehouse-table'
 
 export type TWarehousePubSubEventMap = {
   'warehouse:create': null
-  'warehouse:update': TUpdateWarehouseValues
+  'warehouse:update': Required<TUpdateWarehouseValues>
   'warehouse:delete': number
 }
 
@@ -18,6 +19,7 @@ const WarehouseTabContent: React.FC = () => {
     <PubSubProvider>
       <WarehouseTable />
       <WarehouseFormDialog />
+      <WarehouseDeletionAlert />
     </PubSubProvider>
   )
 }

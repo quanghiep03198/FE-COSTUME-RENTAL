@@ -1,8 +1,11 @@
+import { ErrorBoundaryFallback } from '@/components/errors/error-boundary-fallback'
+import { NotFoundPage } from '@/components/errors/not-found'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import type { QueryClient } from '@tanstack/react-query'
+import { QueryErrorResetBoundary, type QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Toaster } from 'sonner'
 import appCss from '../styles.css?url'
 
@@ -31,12 +34,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       },
     ],
   }),
-  notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
-      <p>The requested page could not be found.</p>
-    </main>
-  ),
+  notFoundComponent: NotFoundPage,
   shellComponent: RootDocument,
 })
 
@@ -47,8 +45,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
-        <Toaster />
+        <QueryErrorResetBoundary>
+          {({ reset }) => (
+            <ErrorBoundary
+              onReset={reset}
+              fallbackRender={({ error, resetErrorBoundary }) => (
+                <ErrorBoundaryFallback error={error} resetError={resetErrorBoundary} />
+              )}
+            >
+              {children}
+              <Toaster />
+            </ErrorBoundary>
+          )}
+        </QueryErrorResetBoundary>
         <TanStackDevtools
           config={{
             position: 'bottom-right',

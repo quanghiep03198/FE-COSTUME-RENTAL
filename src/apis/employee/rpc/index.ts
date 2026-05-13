@@ -5,12 +5,13 @@ import { number } from 'zod'
 import { createEmployeeSchema } from '../schemas/create-employee.schema'
 import { getEmployeeNonUserSchema } from '../schemas/get-employee-non-user.schema'
 import { updateEmployeeSchema } from '../schemas/update-employee.schema'
+import type { IEmployee } from '../types'
 
 export const getEmployeeRpc = createServerFn({ method: 'GET' })
   .middleware([authMiddleware, requestMiddleware])
   .inputValidator(getEmployeeNonUserSchema)
   .handler(async ({ context, data }) => {
-    return await context.request({ url: '/employees', params: data })
+    return await context.request<IEmployee[]>({ url: '/employees', ...(data && { params: data as RequestQuery }) })
   })
 
 export const createEmployeeRpc = createServerFn({ method: 'POST' })

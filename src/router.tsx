@@ -20,9 +20,7 @@ export function getRouter() {
     routeTree,
     context: { queryClient: queryClient },
     scrollRestoration: true,
-    defaultPreload: 'viewport',
-    defaultStaleTime: 5000,
-    defaultPreloadStaleTime: 0,
+    defaultPreload: 'intent',
     defaultErrorComponent: ErrorBoundaryFallback,
     defaultNotFoundComponent: NotFoundPage,
     Wrap: ({ children }: React.PropsWithChildren) => {

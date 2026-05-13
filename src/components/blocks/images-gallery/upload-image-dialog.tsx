@@ -66,7 +66,15 @@ const UploadImageDialog: React.FC = () => {
             <FieldDescription>Chọn hình ảnh để tải lên cho danh mục</FieldDescription>
             <FieldGroup className="max-h-[70vh] overflow-auto">
               <form.Field name="category">
-                {(field) => <SelectFieldControl field={field} items={categoryOptions} placeholder="Chọn danh mục" />}
+                {(field) => (
+                  <SelectFieldControl
+                    field={field}
+                    items={categoryOptions}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Chọn danh mục"
+                  />
+                )}
               </form.Field>
               <form.Field name="files">
                 {(field) => {

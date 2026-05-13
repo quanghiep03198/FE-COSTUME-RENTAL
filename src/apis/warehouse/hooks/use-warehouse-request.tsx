@@ -1,8 +1,8 @@
 import { CommonActions } from '@/common/constants/enums'
-import { queryOptions, useMutation, useQuery, type MutationFunction } from '@tanstack/react-query'
+import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { createWarehouseRpc, getWarehousesRpc, updateWarehouseRpc } from '../rpc'
+import { createWarehouseRpc, deleteWarehouseRpc, getWarehousesRpc, updateWarehouseRpc } from '../rpc'
 import type { TCreateWarehouseValues } from '../schemas/create-warehouse.schema'
 import type { TUpdateWarehouseValues } from '../schemas/update-warehouse.schema'
 import type { IWarehouse } from '../types'
@@ -17,7 +17,7 @@ export const getWarehousesQueryOptions = () => {
 }
 
 export const useGetWarehouseQuery = () => {
-  return useQuery(getWarehousesQueryOptions())
+  return useSuspenseQuery(getWarehousesQueryOptions())
 }
 
 type TMutationEventMap = {
@@ -61,5 +61,15 @@ export const useCreateOrUpdateWarehouseMutation = (action: CommonActions.CREATE 
     onError: (error) => {
       toast.error(error.message)
     },
+  })
+}
+
+export const useDeleteWarehouseMutation = () => {
+  const deleteWarehouseFn = useServerFn(deleteWarehouseRpc)
+
+  return useMutation({
+    meta: { invalidates: [[GET_WAREHOUSES_QUERY_KEY]] },
+    mutationFn: ({ id, permanantly }: { id: number; permanantly: boolean }) =>
+      deleteWarehouseFn({ data: { id, permanantly } }),
   })
 }

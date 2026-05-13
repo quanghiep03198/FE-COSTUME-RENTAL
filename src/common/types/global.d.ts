@@ -63,7 +63,6 @@ export declare global {
 
   interface RequestQuery {
     [key: RequestQueryKey | string]: string | number | boolean
-
   }
 
   type RequestHeaders = {

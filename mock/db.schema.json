@@ -198,7 +198,12 @@
               "type": "integer"
             },
             "color": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "hex": { "type": "string" },
+                "code": { "type": "string" },
+                "intensity": { "type": "integer" }
+              }
             },
             "sizes": {
               "type": "array",
@@ -258,6 +263,44 @@
           }
         }
       ]
+    },
+    "InventoryItemCondition": {
+      "allOf": [
+        { "$ref": "#/$defs/BaseEntity" },
+        {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "enum": ["A", "B", "C"] },
+            "label": { "type": "string" },
+            "discount_rate": { "type": "number", "maxium": 0.5, "minimum": 0 },
+            "rentable": { "type": "boolean", "default": true },
+            "disposable": { "type": "boolean", "default": false },
+            "badge_color": { "type": "string", "_comment": "Sử dụng mã hex để đánh dấu" }
+          }
+        }
+      ]
+    },
+    "CostumeInventory": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/BaseEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "sku": { "type": "string", "_comment": "" },
+            "costume_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
+            "warehouse_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
+            "inventory_item_condition_id": {
+              "type": "integer",
+              "_comment": "Khóa ngoại tham chiếu tới bảng 'inventory_item_condition'"
+            },
+            "status": { "type": "string", "enum": [""] },
+            "size": { "type": "string", "enum": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] },
+            "accquired_date": { "type": "string", "format": "datetime", "description": "Ngày nhập kho" }
+          }
+        }
+      ]
     }
   },
   "properties": {
@@ -267,12 +310,12 @@
       "items": {
         "$ref": "#/$defs/User"
       },
-      "description": "Users collection"
+      "description": "Danh sách người dùng"
     },
     "employees": {
       "type": "array",
       "uniqueItems": true,
-      "description": "Employee collection",
+      "description": "Danh sách nhân viên",
       "items": {
         "$ref": "#/$defs/Employee"
       }
@@ -285,6 +328,7 @@
     },
     "warehouses": {
       "type": "array",
+      "description": "Danh sách kho",
       "items": {
         "$ref": "#/$defs/Warehouse"
       }
@@ -292,7 +336,7 @@
     "images": {
       "type": "array",
       "uniqueItems": true,
-      "description": "Images gallerr, store images's metadata",
+      "description": "Danh sách ảnh gồm thông tin metadata ảnh",
       "items": {
         "$ref": "#/$defs/ImageGallery"
       }
@@ -300,23 +344,30 @@
     "categories": {
       "type": "array",
       "uniqueItems": true,
-      "description": "Costume category collection",
+      "description": "Danh sách danh mục",
       "items": {
         "$ref": "#/$defs/ItemCategory"
       }
     },
     "costumes": {
       "type": "array",
-      "description": "Costume collection",
+      "description": "Danh sách trang phục",
       "items": {
         "$ref": "#/$defs/Costume"
       }
     },
     "equipment_props": {
       "type": "array",
-      "description": "Equipment props collection",
+      "description": "Danh sách các đạo cụ",
       "items": {
         "$ref": "#/$defs/EquipmentProps"
+      }
+    },
+    "inventory_item_conditions": {
+      "type": "array",
+      "description": "Danh sách các tình trạng của sản phẩm trong kho",
+      "items": {
+        "$ref": "#/$defs/InventoryItemCondition"
       }
     }
   }

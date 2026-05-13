@@ -17,7 +17,7 @@ export const createWarehouseRpc = createServerFn({ method: 'POST' })
   .inputValidator(createWarehouseSchema)
   .handler(async ({ context, data }) => {
     return await context.request({
-      url: '/warehouse',
+      url: '/warehouses',
       method: 'POST',
       data: {
         name: data.name,
@@ -39,6 +39,7 @@ export const updateWarehouseRpc = createServerFn({ method: 'POST' })
           name: update?.name,
           type: update?.type?.value,
           managed_by: update?.managed_by?.id,
+          is_active: update?.is_active,
         },
         isNil
       ),
@@ -47,13 +48,11 @@ export const updateWarehouseRpc = createServerFn({ method: 'POST' })
 
 export const deleteWarehouseRpc = createServerFn({ method: 'POST' })
   .middleware([authMiddleware, requestMiddleware])
-  .inputValidator(z.number())
-  .handler(async ({ context, data: id }) => {
+  .inputValidator(z.object({ id: z.number(), permanantly: z.boolean() }))
+  .handler(async ({ context, data: { id, permanantly } }) => {
     return await context.request({
       url: `/warehouses/${id}`,
       method: 'DELETE',
-      params: {
-        permanantly: true,
-      },
+      params: { permanantly },
     })
   })

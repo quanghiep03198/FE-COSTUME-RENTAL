@@ -1,4 +1,4 @@
-import { useDeleteImageMutation } from '@/apis/image/hooks/use-image-request'
+import { useDeleteWarehouseMutation } from '@/apis/warehouse/hooks/use-warehouse-request'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,22 +13,22 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { usePubSubSubscription } from '.'
 
-const ImageDeletionAlert: React.FC = () => {
+const WarehouseDeletionAlert: React.FC = () => {
   const [deletingId, setDeletingId] = useState<number | null>(null)
-  const { mutateAsync: deleteAsync, isPending: isDeleting } = useDeleteImageMutation()
+  const { mutateAsync: deleteAsync, isPending: isDeleting } = useDeleteWarehouseMutation()
 
-  usePubSubSubscription('image:delete', (imageId) => {
-    setDeletingId(imageId)
+  usePubSubSubscription('warehouse:delete', (warehouseId) => {
+    setDeletingId(warehouseId)
   })
 
   const handleDeleteImage = async () => {
     try {
       if (!deletingId) return
-      await deleteAsync(deletingId!)
-      toast.success('Xóa ảnh thành công')
+      await deleteAsync({ id: deletingId!, permanantly: true })
+      toast.success('Đã xóa kho khỏi hệ thống')
       setDeletingId(null)
-    } catch (error) {
-      toast.error('Đã có lỗi xảy ra')
+    } catch {
+      toast.error('Xóa thất bại')
     }
   }
 
@@ -59,4 +59,4 @@ const ImageDeletionAlert: React.FC = () => {
   )
 }
 
-export default ImageDeletionAlert
+export default WarehouseDeletionAlert

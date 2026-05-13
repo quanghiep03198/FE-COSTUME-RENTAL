@@ -41,7 +41,7 @@ const CostumeTable: React.FC = () => {
                 <ItemTitle className="line-clamp-1">{costumeName}</ItemTitle>
                 <div className="inline-flex items-center gap-x-2">
                   <ItemDescription>Màu sắc:</ItemDescription>
-                  <div style={{ backgroundColor: color }} className="size-4 rounded-full" />
+                  <div style={{ backgroundColor: color.hex }} className="size-4 rounded-full" />
                 </div>
               </ItemContent>
             </Item>
