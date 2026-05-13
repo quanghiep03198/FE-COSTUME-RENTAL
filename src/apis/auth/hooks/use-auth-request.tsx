@@ -1,4 +1,3 @@
-import { useAuthStore } from '@/stores/auth.store'
 import { queryOptions, useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
@@ -41,7 +40,6 @@ export default function useAuth() {
       return toast.loading('Đang xử lý ...')
     },
     onSettled: async (_data, _error, _variable, context) => {
-      useAuthStore.getState().resetCredentials()
       await logOut()
       queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
       queryClient.clear() // * clear cached queries
@@ -73,7 +71,6 @@ export const useLogOutMutation = () => {
       return toast.loading('Đang xử lý ...')
     },
     onSettled: async (_data, _error, _variable, context) => {
-      useAuthStore.getState().resetCredentials()
       queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
       queryClient.clear() // * clear cached queries
       router.navigate({ to: '/login' })
