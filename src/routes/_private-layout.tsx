@@ -6,6 +6,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import tw from '@/lib/tw'
 import { authMiddleware } from '@/middlewares/auth.middleware'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout')({
@@ -22,35 +23,37 @@ export const Route = createFileRoute('/_private-layout')({
 
 function RouteComponent() {
   return (
-    <SidebarProvider
-      style={
-        {
-          '--sidebar-width': '20rem',
-          '--sidebar-width-mobile': '20rem',
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar />
-      <LayoutWrapper data-slot="layout-wrapper">
-        <AppNavbar />
-        <OutletWrapper data-slot="outlet-wrapper">
-          <ErrorBoundary
-            fallbackRender={({ error, resetErrorBoundary }) => {
-              return (
-                <ErrorBoundaryFallback
-                  error={error as Error}
-                  resetError={(args) => {
-                    resetErrorBoundary(args)
-                  }}
-                />
-              )
-            }}
-          >
-            <Outlet />
-          </ErrorBoundary>
-        </OutletWrapper>
-      </LayoutWrapper>
-    </SidebarProvider>
+    <Suspense fallback={<div className="h-screen w-full grid place-content-center text-center">Đang tải ...</div>}>
+      <SidebarProvider
+        style={
+          {
+            '--sidebar-width': '20rem',
+            '--sidebar-width-mobile': '20rem',
+          } as React.CSSProperties
+        }
+      >
+        <AppSidebar />
+        <LayoutWrapper data-slot="layout-wrapper">
+          <AppNavbar />
+          <OutletWrapper data-slot="outlet-wrapper">
+            <ErrorBoundary
+              fallbackRender={({ error, resetErrorBoundary }) => {
+                return (
+                  <ErrorBoundaryFallback
+                    error={error as Error}
+                    resetError={(args) => {
+                      resetErrorBoundary(args)
+                    }}
+                  />
+                )
+              }}
+            >
+              <Outlet />
+            </ErrorBoundary>
+          </OutletWrapper>
+        </LayoutWrapper>
+      </SidebarProvider>
+    </Suspense>
   )
 }
 
