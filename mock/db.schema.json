@@ -1,6 +1,6 @@
 {
   "type": "object",
-  "_comment": "Còn thiếu bảng  rentals, rental_items, maintenances, maintenance_items, returns, return_items, invoices, invoice_items, borrowings, borrowing_items để quản lý quá trình thuê, trả, bảo trì trang phục và đạo cụ",
+  "_comment": "Còn thiếu bảng  rentals, rental_items, borrowings, borrowing_items, maintenances, maintenance_items, returns, return_items, invoices, invoice_items,  để quản lý quá trình thuê, trả, bảo trì trang phục và đạo cụ",
   "required": [
     "users",
     "revoke_tokens",
@@ -278,10 +278,16 @@
           "type": "object",
           "properties": {
             "code": { "type": "string", "enum": ["A", "B", "C"] },
-            "label": { "type": "string" },
+            "label": {
+              "type": "string",
+              "_comment": "Mô tả chi tiết về tình trạng của sản phẩm, giúp nhân viên kho hiểu rõ hơn về tình trạng thực tế của sản phẩm"
+            },
             "discount_rate": { "type": "number", "maxium": 0.5, "minimum": 0 },
-            "rentable": { "type": "boolean", "default": true },
-            "disposable": { "type": "boolean", "default": false },
+            "rentable": {
+              "type": "boolean",
+              "default": true,
+              "_comment": "Nếu code = 'C' thì rentable luôn là false, không cho phép thuê sản phẩm trong tình trạng này"
+            },
             "badge_color": { "type": "string", "_comment": "Sử dụng mã hex để đánh dấu" }
           }
         }
@@ -297,24 +303,25 @@
           "properties": {
             "sku": {
               "type": "string",
-              "_comment": "Mã định danh duy nhất cho mỗi sản phẩm trong kho, giúp quản lý và tra cứu dễ dàng"
+              "_comment": "Mã định danh duy nhất cho mỗi sản phẩm tồn kho, giúp quản lý và tra cứu dễ dàng trong hệ thống"
             },
             "item_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
             "item_type": { "type": "string", "enum": ["COSTUME", "EQUIPMENT_PROPS"] },
-            "warehouse_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
             "inventory_condition_id": {
               "type": "integer",
               "$comment": "Khóa ngoại tham chiếu tới bảng 'inventory_conditions'"
+            },
+            "warehouse_id": { "type": "integer", "_comment": "Khóa ngoại tham chiếu tới bảng 'warehouses'" },
+            "status": {
+              "type": "string",
+              "enum": ["AVAILABLE", "RENTED", "MAINTENANCE", "DISPOSED"],
+              "_comment": "Trạng thái của sản phẩm trong kho, giúp quản lý quá trình thuê và bảo trì"
             },
             "size": {
               "type": ["string", "null"],
               "enum": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
               "_comment": "Kích thước của sản phẩm, áp dụng cho trang phục, có thể null đối với đạo cụ"
-            },
-            "total_qty": { "type": "integer", "minimum": 0, "default": 0 },
-            "available_qty": { "type": "integer", "minimum": 0, "default": 0 },
-            "rented_qty": { "type": "integer", "minimum": 0, "default": 0 },
-            "maintenance_qty": { "type": "integer", "minimum": 0, "default": 0 }
+            }
           }
         }
       ]
@@ -390,6 +397,7 @@
     "inventory": {
       "type": "array",
       "description": "Danh sách tồn kho, quản lý số lượng và tình trạng của từng sản phẩm trong kho",
+      "uniqueItems": true,
       "items": {
         "$ref": "#/definitions/Inventory"
       }
