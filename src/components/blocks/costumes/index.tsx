@@ -11,6 +11,7 @@ import { PageEventProvider } from '@/contexts/event-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import tw from '@/lib/tw'
 import CategorySheet from '../categories/category-sheet'
+import CostumeDetailDialog from './costume-detail-dialog'
 import CostumeFormDialog from './costume-form-dialog'
 import CostumeFormDialogTrigger from './costume-form-dialog-trigger'
 import CostumeTable from './costumes-table'
@@ -37,6 +38,7 @@ const CostumePage: React.FC = () => {
       </PageWrapper>
       <CostumeFormDialog />
       <DeleteAlertDialog />
+      <CostumeDetailDialog />
     </PageEventProvider>
   )
 }
