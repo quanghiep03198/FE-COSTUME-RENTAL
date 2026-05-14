@@ -1,0 +1,52 @@
+$kind: http-request
+name: Login
+method: POST
+url: "{{baseUrl}}/api/auth/login"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \r
+
+      pm.test('Login status is 200', function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \    pm.expect(jsonData).to.have.property('accessToken');\r
+
+      \    pm.expect(jsonData).to.have.property('user');\r
+
+      });\r
+
+      \r
+
+      if (pm.response.code === 200 && jsonData) {\r
+
+      \    const token = jsonData.accessToken;\r
+
+      \    const user = jsonData.user || {};\r
+
+      \r
+
+      \    if (token) pm.environment.set('token', token);\r
+
+      }\r
+
+      \r
+
+      pm.test('Response time is less than 2000ms', function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(2000);\r
+
+      });"
+    language: text/javascript
+order: 1000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "username": "quanghiep031",
+      "password": "123123"
+    }

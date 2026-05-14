@@ -1,0 +1,12 @@
+$kind: collection
+name: Costume Rental API
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
+variables:
+  - key: baseUrl
+    value: 'http://localhost:8000'
+  - key: token
+    value: ''

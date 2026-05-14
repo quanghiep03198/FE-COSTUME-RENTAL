@@ -1,0 +1,23 @@
+$kind: http-request
+name: Create Costume
+method: POST
+url: '{{baseUrl}}/api/costumes'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "category_id": null,
+      "sizes": [],
+      "gender": "",
+      "images": [],
+      "rental_price_per_day": 50000,
+      "unit": "",
+      "description": null,
+      "hashtags": [],
+      "color": null
+    }

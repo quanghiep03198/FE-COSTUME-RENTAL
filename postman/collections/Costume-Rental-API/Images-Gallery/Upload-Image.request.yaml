@@ -1,0 +1,14 @@
+$kind: http-request
+name: Upload Image
+method: POST
+url: '{{baseUrl}}/api/images-gallery/upload'
+order: 3000
+body:
+  type: formdata
+  content:
+    - key: data
+      type: text
+      value: '{"category_id":""}'
+    - key: files
+      type: file
+      src: ''

@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Category
+method: DELETE
+url: '{{baseUrl}}/api/categories/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: ''
+queryParams:
+  - key: permanantly
+    value: 'false'

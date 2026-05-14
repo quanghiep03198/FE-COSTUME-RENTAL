@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Equipment Prop
+method: GET
+url: '{{baseUrl}}/api/equipment-props/:id'
+order: 2000
+pathVariables:
+  - key: id
+    value: ''

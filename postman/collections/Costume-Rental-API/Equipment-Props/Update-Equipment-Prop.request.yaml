@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Equipment Prop
+method: PATCH
+url: '{{baseUrl}}/api/equipment-props/:id'
+order: 4000
+pathVariables:
+  - key: id
+    value: ''
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "rental_price_per_day": 50000,
+      "is_active": true
+    }

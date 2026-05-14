@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get User
+method: GET
+url: '{{baseUrl}}/api/users/:id'
+order: 2000
+pathVariables:
+  - key: id
+    value: ''

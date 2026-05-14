@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update Image
+method: PATCH
+url: '{{baseUrl}}/api/images-gallery/:id'
+order: 4000
+pathVariables:
+  - key: id
+    value: ''
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "file_name": "",
+      "category_id": ""
+    }

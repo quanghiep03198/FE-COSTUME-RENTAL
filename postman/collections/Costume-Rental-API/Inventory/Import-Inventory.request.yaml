@@ -1,0 +1,18 @@
+$kind: http-request
+name: Import Inventory
+method: POST
+url: "{{baseUrl}}/api/inventory/import"
+order: 3000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "item_id": 5,
+      "item_type": "COSTUME",
+      "inventory_condition_id": 1,
+      "warehouse_id": 1,
+      "size": "2XL",
+      "quantity": 2
+    }
