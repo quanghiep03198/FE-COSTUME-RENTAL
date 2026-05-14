@@ -12,6 +12,7 @@ import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import tw from '@/lib/tw'
 import CategorySheet from '../categories/category-sheet'
 import DeleteAlertDialog from './delete-alert-dialog'
+import EquipmentPropsDetailDialog from './equipment-props-detail-dialog'
 import CostumeFormDialog from './equipment-props-form-dialog'
 import EquipmentPropsFormDialogTrigger from './equipment-props-form-dialog-trigger'
 import EquipmentPropsTable from './equipment-props-table'
@@ -37,6 +38,7 @@ const EquipmentPropsPage: React.FC = () => {
       </PageWrapper>
       <CostumeFormDialog />
       <DeleteAlertDialog />
+      <EquipmentPropsDetailDialog />
     </PageEventProvider>
   )
 }
