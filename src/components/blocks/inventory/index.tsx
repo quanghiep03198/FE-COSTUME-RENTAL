@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import type { JSX } from 'react'
 import WarehouseTabContent from '../warehouses'
+import CostumeInventoryTabContent from './costume'
 
 const tabs: Array<{
   value: 'all-warehouses' | 'costume-warehouse' | 'props-warehouse'
@@ -16,7 +17,7 @@ const tabs: Array<{
   {
     value: 'costume-warehouse' as const,
     label: 'Kho trang phục',
-    content: <>Kho trang phục</>,
+    content: <CostumeInventoryTabContent />,
   },
   {
     value: 'props-warehouse',

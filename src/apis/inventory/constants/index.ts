@@ -1,0 +1,6 @@
+export enum InventoryItemStatus {
+  AVAILABLE = 'AVAILABLE',
+  RENTED = 'RENTED',
+  MAINTENANCE = 'MAINTENANCE',
+  DISPOSED = 'DISPOSED',
+}
