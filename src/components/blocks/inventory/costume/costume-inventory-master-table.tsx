@@ -8,11 +8,13 @@ import { fuzzySort } from '@/components/shared/data-grid/utils'
 import Image from '@/components/shared/image'
 import { Badge } from '@/components/ui/badge'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import { useHydrated } from '@tanstack/react-router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
 
 const CostumeInventoryMasterTable: React.FC = () => {
   const { data, isLoading } = useGetCostumeInventoryQuery()
+  const hyderated = useHydrated()
 
   const columnHelper = createColumnHelper<ICostumeInventory>()
 
@@ -103,7 +105,15 @@ const CostumeInventoryMasterTable: React.FC = () => {
     []
   )
 
-  return <DataGrid columns={columns} data={data ?? []} loading={isLoading} />
+  return (
+    <DataGrid
+      columns={columns}
+      data={data ?? []}
+      loading={isLoading}
+      virtualizerOptions={{ estimateSize: 75 }}
+      containerProps={{ className: 'h-[calc(100vh-12rem)]' }}
+    />
+  )
 }
 
 export default CostumeInventoryMasterTable
