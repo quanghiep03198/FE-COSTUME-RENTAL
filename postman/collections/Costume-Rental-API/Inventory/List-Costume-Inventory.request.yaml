@@ -1,9 +1,11 @@
 $kind: http-request
 name: List Costume Inventory
 method: GET
-url: "{{baseUrl}}/api/inventory/costumes?_expand=warehouse"
+url: "{{baseUrl}}/api/inventory/costumes"
 queryParams:
-  _expand: warehouse
+  - key: _expand
+    value: inventory_condition
+    disabled: true
 order: 1000
 params:
   - key: item_id

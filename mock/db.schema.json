@@ -10,7 +10,7 @@
     "costumes",
     "images",
     "equipment_props",
-    "inventory_item_conditions",
+    "inventory_conditions",
     "inventory"
   ],
   "definitions": {

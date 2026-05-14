@@ -701,7 +701,7 @@
       "slug": "hoa-mua-cam-tay-huong-duong-2",
       "category_id": 5,
       "rental_price_per_day": 70000,
-      "description": "<p class=\"my-1\"><span style=\"color: rgb(220, 38, 38);\">Hoa múa cầm tay hướng dương lớn màu vàng cam – đạo cụ biểu diễn chuyên nghiệp</span></p>",
+      "description": "<h3 class=\"font-bold !text-foreground\">Chi tiết sản phẩm</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 277px;\"><colgroup><col style=\"width: 197px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"197\"><p class=\"my-1\">Mẫu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Hoa múa Hướng dương đeo tay</p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"197\"><p class=\"my-1\">Xuất xứ</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Việt Nam</p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"197\"><p class=\"my-1\">Chất liệu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Vải, Nhựa tổng hợp</p></td></tr></tbody></table><h3 class=\"font-bold !text-foreground\">Thông tin sản phẩm</h3><ul class=\"list-disc text-foreground\"><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Chất liệu cao cấp:</strong> Hoa được làm từ vải lụa, voan hoặc giấy nhún chuyên dụng, giúp cánh hoa mềm mại nhưng vẫn giữ được form dáng khi thực hiện các động tác quay, vẩy.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Thiết kế thông minh:</strong> Phần tay cầm chắc chắn, nhẹ, được bọc băng keo hoặc vải lụa giúp vũ công cầm nắm dễ dàng, không gây mỏi khi biểu diễn thời gian dài.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Màu sắc rực rỡ:</strong> Được phối màu tinh tế với hiệu ứng chuyển sắc (ombre) hoặc đính kim sa, giúp bắt sáng cực tốt dưới ánh đèn sân khấu.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Kích thước đa dạng:</strong> Có đủ kích cỡ từ hoa cầm tay nhỏ gọn đến các loại hoa đại có đường kính lớn phục vụ cho các tổ hợp múa tạo hình.</p></li></ul><p class=\"my-1\"></p>",
       "images": [
         7
       ],
@@ -711,7 +711,7 @@
       "unit": "Cặp",
       "is_active": true,
       "created_at": "2026-04-24T16:10:07.433Z",
-      "updated_at": "2026-04-28T15:14:01.781Z",
+      "updated_at": "2026-05-14T15:46:46.980Z",
       "id": 1,
       "category": {
         "id": 5,
@@ -719,11 +719,12 @@
       }
     }
   ],
-  "inventory_item_conditions": [
+  "inventory_conditions": [
     {
       "id": 1,
       "created_at": "2026-04-19T00:00:00.000Z",
       "code": "A",
+      "label": "Tốt",
       "badge_color": "#22c55e",
       "discount_rate": 0,
       "rentable": true,
@@ -734,6 +735,7 @@
       "id": 2,
       "created_at": "2026-04-19T00:00:00.000Z",
       "code": "B",
+      "label": "Trung bình",
       "badge_color": "#eab308",
       "discount_rate": 0,
       "rentable": true,
@@ -744,6 +746,7 @@
       "id": 3,
       "created_at": "2026-04-19T00:00:00.000Z",
       "code": "C",
+      "label": "Kém",
       "badge_color": "#ef4444",
       "discount_rate": 0,
       "rentable": false,
