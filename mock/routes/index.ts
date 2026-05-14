@@ -4,6 +4,7 @@ import { registerCostumeRoutes } from './costume.route'
 import { registerEmployeeRoutes } from './employee.route'
 import { registerEquipmentPropsRoutes } from './equipment-props.route'
 import { registerImageGalleryRoutes } from './images-gallery.route'
+import { registerInventoryRoutes } from './inventory.route'
 import { registerItemCategoryRoutes } from './item-category.route'
 import { registerUserRoutes } from './user.route'
 import { registerWarehouseRoutes } from './warehouse.route'
@@ -17,4 +18,5 @@ export function registerAllRoutes(app: Application) {
   registerCostumeRoutes(app)
   registerEquipmentPropsRoutes(app)
   registerImageGalleryRoutes(app)
+  registerInventoryRoutes(app)
 }
