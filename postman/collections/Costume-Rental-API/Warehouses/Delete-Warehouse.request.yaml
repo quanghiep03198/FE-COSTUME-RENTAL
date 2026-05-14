@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Warehouse
+method: DELETE
+url: '{{baseUrl}}/api/warehouses/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: ''
+queryParams:
+  - key: permanantly
+    value: 'false'

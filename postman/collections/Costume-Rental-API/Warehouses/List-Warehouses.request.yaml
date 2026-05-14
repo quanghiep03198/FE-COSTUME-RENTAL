@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Warehouses
+method: GET
+url: '{{baseUrl}}/api/warehouses'
+order: 1000

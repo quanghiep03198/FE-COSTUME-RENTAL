@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Image
+method: GET
+url: '{{baseUrl}}/api/images-gallery/:id'
+order: 2000
+pathVariables:
+  - key: id
+    value: ''

@@ -1,0 +1,8 @@
+$kind: http-request
+name: Refresh Token
+method: GET
+url: '{{baseUrl}}/api/auth/refresh'
+order: 4000
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'

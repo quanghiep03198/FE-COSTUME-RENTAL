@@ -1,0 +1,6 @@
+$kind: http-request
+name: List Images
+method: GET
+url: "{{baseUrl}}/api/images-gallery"
+examples: .resources/List-Images.resources/examples
+order: 1000

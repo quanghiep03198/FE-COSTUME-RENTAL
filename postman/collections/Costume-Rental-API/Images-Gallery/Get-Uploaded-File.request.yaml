@@ -1,0 +1,12 @@
+$kind: http-request
+name: Get Uploaded File
+method: GET
+url: '{{baseUrl}}/upload/:folder/:fileName'
+order: 6000
+auth:
+  type: noauth
+pathVariables:
+  - key: folder
+    value: ''
+  - key: fileName
+    value: ''

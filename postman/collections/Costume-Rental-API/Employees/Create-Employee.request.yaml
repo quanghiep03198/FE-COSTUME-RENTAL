@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Employee
+method: POST
+url: '{{baseUrl}}/api/employees'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "full_name": "",
+      "phone": "",
+      "email": "",
+      "address": "",
+      "citizen_id_number": "",
+      "position": "",
+      "work_status": "ACTIVE"
+    }

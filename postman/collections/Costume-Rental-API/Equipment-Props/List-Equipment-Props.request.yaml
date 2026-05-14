@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Equipment Props
+method: GET
+url: '{{baseUrl}}/api/equipment-props'
+order: 1000

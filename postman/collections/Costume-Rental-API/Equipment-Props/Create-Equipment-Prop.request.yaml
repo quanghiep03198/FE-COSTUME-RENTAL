@@ -1,0 +1,23 @@
+$kind: http-request
+name: Create Equipment Prop
+method: POST
+url: '{{baseUrl}}/api/equipment-props'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "category_id": null,
+      "rental_price_per_day": 50000,
+      "weight_kg": null,
+      "dimensions": null,
+      "is_fragile": false,
+      "description": null,
+      "images": [],
+      "unit": "",
+      "hashtags": []
+    }

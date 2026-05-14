@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Image
+method: DELETE
+url: '{{baseUrl}}/api/images-gallery/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: ''
+queryParams:
+  - key: permanantly
+    value: 'false'

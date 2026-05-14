@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Costume
+method: DELETE
+url: '{{baseUrl}}/api/costumes/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: ''
+queryParams:
+  - key: permanantly
+    value: 'false'

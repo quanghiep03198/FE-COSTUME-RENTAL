@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Employee
+method: PATCH
+url: '{{baseUrl}}/api/employees/:id'
+order: 4000
+pathVariables:
+  - key: id
+    value: ''
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "full_name": "",
+      "phone": "",
+      "work_status": "ACTIVE"
+    }

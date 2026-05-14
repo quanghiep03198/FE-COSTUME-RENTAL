@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Warehouse
+method: PATCH
+url: '{{baseUrl}}/api/warehouses/:id'
+order: 4000
+pathVariables:
+  - key: id
+    value: ''
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "type": "",
+      "managed_by": null
+    }

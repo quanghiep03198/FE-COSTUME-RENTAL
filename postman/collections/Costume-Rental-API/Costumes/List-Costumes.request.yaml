@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Costumes
+method: GET
+url: '{{baseUrl}}/api/costumes'
+order: 1000

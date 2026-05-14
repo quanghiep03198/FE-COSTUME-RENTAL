@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Equipment Prop
+method: DELETE
+url: '{{baseUrl}}/api/equipment-props/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: ''
+queryParams:
+  - key: permanantly
+    value: 'false'
