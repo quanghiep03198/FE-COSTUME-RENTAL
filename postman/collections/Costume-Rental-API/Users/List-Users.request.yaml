@@ -1,5 +1,7 @@
 $kind: http-request
 name: List Users
 method: GET
-url: '{{baseUrl}}/api/users'
+url: "{{baseUrl}}/api/users?_expand=employee"
+queryParams:
+  _expand: employee
 order: 1000
