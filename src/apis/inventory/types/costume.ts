@@ -12,6 +12,16 @@ export interface ICostumeInventoryItem extends IBaseEntity {
   warehouse: Pick<IWarehouse, 'id' | 'name'>
 }
 
+export interface ICostumeInventoryEntity extends IBaseEntity {
+  sku: string
+  item_id: number
+  item_type: ItemType
+  inventory_condition: IInventoryCondition
+  warehouse_id: number
+  status: InventoryItemStatus
+  size: CostumeSize
+}
+
 export interface ICostumeInventory extends Pick<
   ICostume,
   'id' | 'sizes' | 'name' | 'slug' | 'color' | 'gender' | 'category' | 'images' | 'unit'

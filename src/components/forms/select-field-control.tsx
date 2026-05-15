@@ -15,9 +15,11 @@ import {
   SelectValue,
 } from '../ui/select'
 
-type SelectFieldControlProps<T> = Pick<React.ComponentProps<typeof Field>, 'orientation'> & {
-  items: SelectRootProps<T>['items']
+export type SelectFieldControlProps<T> = Pick<React.ComponentProps<typeof Field>, 'orientation'> & {
   field: AnyFieldApi
+  items: SelectRootProps<T>['items']
+  disabled?: boolean
+  multiple?: boolean
   label?: string
   classNames?: Partial<{
     field: string
@@ -31,8 +33,9 @@ type SelectFieldControlProps<T> = Pick<React.ComponentProps<typeof Field>, 'orie
   renderItem?: (item: T) => React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
 }
 
-function SelectFieldControl<T = Record<string, unknown>>({
+function SelectFieldControl<T>({
   items,
+  multiple = false,
   field,
   label,
   description,
@@ -41,6 +44,7 @@ function SelectFieldControl<T = Record<string, unknown>>({
   labelField,
   valueField,
   classNames,
+  disabled,
   renderValue,
   renderItem,
 }: SelectFieldControlProps<T>) {
@@ -53,8 +57,11 @@ function SelectFieldControl<T = Record<string, unknown>>({
         items={items}
         itemToStringLabel={(item) => item[labelField]}
         itemToStringValue={(item) => item[valueField]}
+        isItemEqualToValue={(itemValue, value) => itemValue[valueField] === value[valueField]}
+        disabled={disabled}
         value={field.state.value}
         onValueChange={field.handleChange}
+        multiple={multiple}
       >
         <SelectTrigger>
           <SelectValue render={renderValue} placeholder={placeholder} />

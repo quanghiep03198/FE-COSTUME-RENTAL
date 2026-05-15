@@ -1,5 +1,5 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge, badgeVariants } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -20,6 +20,7 @@ import { Fragment } from 'react'
 export interface IDataTableFacetedFilterProps<TData = any, TValue = any> {
   column?: Column<TData, TValue>
   title?: string
+  icon?: IconProps['name']
   options: {
     label: string
     value: TValue
@@ -28,16 +29,28 @@ export interface IDataTableFacetedFilterProps<TData = any, TValue = any> {
   }[]
 }
 
-export function DataTableFacetedFilter({ column, title, options }: IDataTableFacetedFilterProps) {
+export function DataTableFacetedFilter({
+  column,
+  title,
+  options,
+  icon = 'CircleFadingPlus',
+}: IDataTableFacetedFilterProps) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue?.() as string[])
 
   return (
     <Popover>
       <PopoverTrigger
+        role="button"
+        nativeButton={false}
         render={
-          <Button variant="outline" className="bg-background border-dashed">
-            <Icon name="CircleFadingPlus" />
+          <div
+            className={buttonVariants({
+              variant: 'outline',
+              className: 'border-border! border-dashed aria-expanded:border-primary!',
+            })}
+          >
+            <Icon name={icon} />
             {title}
             {selectedValues?.size > 0 && (
               <div className="inline-flex items-center gap-x-2">
@@ -51,15 +64,21 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
                     options
                       .filter((option) => selectedValues.has(option.value))
                       .map((option) => (
-                        <Badge variant="secondary" key={option.value} className="rounded-sm px-1.5 font-normal">
+                        <span
+                          key={option.value}
+                          className={badgeVariants({
+                            variant: 'secondary',
+                            className: 'rounded-sm px-1.5 font-normal',
+                          })}
+                        >
                           {option.label}
-                        </Badge>
+                        </span>
                       ))
                   )}
                 </div>
               </div>
             )}
-          </Button>
+          </div>
         }
       />
 

@@ -23,7 +23,7 @@ type ComboboxFieldControlProps<T = Record<string, unknown>> = {
   labelField: keyof T
   valueField: keyof T
   items: ComboboxRootProps<T>['items']
-  renderItem: (item: T) => React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+  renderItem?: (item: T) => React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
 }
 
 export function ComboboxFieldControl<T>({

@@ -3,6 +3,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import type { JSX } from 'react'
 import WarehouseTabContent from '../warehouses'
 import CostumeInventoryTabContent from './costume'
+import PropsInventoryTabContent from './equipment-props'
 
 const tabs: Array<{
   value: 'all-warehouses' | 'costume-warehouse' | 'props-warehouse'
@@ -15,14 +16,14 @@ const tabs: Array<{
     content: <WarehouseTabContent />,
   },
   {
-    value: 'costume-warehouse' as const,
+    value: 'costume-warehouse',
     label: 'Kho trang phục',
     content: <CostumeInventoryTabContent />,
   },
   {
     value: 'props-warehouse',
     label: 'Kho đạo cụ',
-    content: <>Kho đạo cụ</>,
+    content: <PropsInventoryTabContent />,
   },
 ]
 

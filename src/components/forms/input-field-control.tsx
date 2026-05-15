@@ -5,20 +5,20 @@ import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field'
 import { Icon } from '../ui/icon'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../ui/input-group'
 
-type InputFieldControlProps = Pick<React.ComponentProps<typeof Field>, 'orientation'> & {
-  field: AnyFieldApi
-  label?: string
-  classNames?: Partial<{
-    field: string
-    input: string
-  }>
-  description?: string
-  placeholder?: React.InputHTMLAttributes<HTMLInputElement>['placeholder']
-  type?: Extract<
-    React.HTMLInputTypeAttribute,
-    'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'time'
-  >
-}
+type InputFieldControlProps = Pick<React.ComponentProps<typeof Field>, 'orientation'> &
+  Omit<React.ComponentProps<'input'>, 'type' | 'className'> & {
+    field: AnyFieldApi
+    label?: string
+    classNames?: Partial<{
+      field: string
+      input: string
+    }>
+    description?: string
+    type?: Extract<
+      React.HTMLInputTypeAttribute,
+      'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'time'
+    >
+  }
 
 const InputFieldControl: React.FC<InputFieldControlProps> = ({
   field,
@@ -26,8 +26,8 @@ const InputFieldControl: React.FC<InputFieldControlProps> = ({
   description,
   type = 'text',
   orientation,
-  placeholder,
   classNames,
+  ...props
 }) => {
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
   const [inputType, setInputType] = useState<InputFieldControlProps['type']>(type)
@@ -37,13 +37,16 @@ const InputFieldControl: React.FC<InputFieldControlProps> = ({
       {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
       <InputGroup>
         <InputGroupInput
+          {...props}
           type={inputType}
           id={field.name}
           aria-invalid={isInvalid}
           value={field.state.value}
-          placeholder={placeholder}
           onBlur={field.handleBlur}
-          onChange={(e) => field.handleChange(e.target.value)}
+          onChange={(e) => {
+            if (inputType === 'number') field.handleChange(+e.target.value)
+            else field.handleChange(e.target.value)
+          }}
           className={cn('autofill:bg-input/50!', classNames?.input)}
         />
         {type === 'password' && (

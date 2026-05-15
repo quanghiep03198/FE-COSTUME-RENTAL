@@ -1,28 +1,24 @@
-import { COSTUME_GENDER_LABEL_MAP, COSTUME_UNIT_LABEL_MAP } from '@/apis/costume/constants'
-import { useGetCostumeInventoryQuery } from '@/apis/inventory/hooks/use-inventory-request'
-import type { ICostumeInventory } from '@/apis/inventory/types/costume'
+import { useGetPropsInventoryQuery } from '@/apis/inventory/hooks/use-inventory-request'
+import type { IEquipmentPropsInventory } from '@/apis/inventory/types/equipment-props'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
 import { ROW_EXPANSION_COLUMN_ID } from '@/components/shared/data-grid/constants'
-import type { RenderSubComponentProps } from '@/components/shared/data-grid/types'
 import { fuzzySort } from '@/components/shared/data-grid/utils'
 import Image from '@/components/shared/image'
 import { Tooltip } from '@/components/shared/tooltip'
 import { Badge } from '@/components/ui/badge'
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
-import { useHydrated } from '@tanstack/react-router'
+import { Item, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { createColumnHelper } from '@tanstack/react-table'
 import { ChevronDownIcon, ChevronRightIcon, ListCollapseIcon } from 'lucide-react'
-import React, { useCallback, useMemo } from 'react'
-import CostumeInventoryDetailTable from './costume-inventory-detail-table'
-import CostumeInventoryTableToolbar from './costume-inventory-table-toolbar'
+import React, { useMemo } from 'react'
 
-const CostumeInventoryMasterTable: React.FC = () => {
-  const { data, isLoading } = useGetCostumeInventoryQuery()
-  const hyderated = useHydrated()
+import PropsInventoryTableToolbar from './props-inventory-table-toolbar'
 
-  const columnHelper = createColumnHelper<ICostumeInventory>()
+const PropsInventoryMasterTable: React.FC = () => {
+  const { data, isLoading } = useGetPropsInventoryQuery()
+
+  const columnHelper = createColumnHelper<IEquipmentPropsInventory>()
 
   const columns = useMemo(
     () => [
@@ -59,7 +55,7 @@ const CostumeInventoryMasterTable: React.FC = () => {
         ),
       }),
       columnHelper.accessor('name', {
-        header: 'Trang phục',
+        header: 'Đạo cụ',
         minSize: 250,
         enableSorting: true,
         enableMultiSort: true,
@@ -67,8 +63,8 @@ const CostumeInventoryMasterTable: React.FC = () => {
         sortingFn: fuzzySort,
         cell: ({ row }) => {
           const costumeName = row.original.name
-          const image = row.original.images[0]?.dest
-          const color = row.original.color
+          const image = row.original.images?.[0]?.dest
+
           return (
             <Item size="sm" className="p-0 flex-nowrap">
               <ItemMedia>
@@ -76,10 +72,6 @@ const CostumeInventoryMasterTable: React.FC = () => {
               </ItemMedia>
               <ItemContent>
                 <ItemTitle className="line-clamp-1">{costumeName}</ItemTitle>
-                <div className="inline-flex items-center gap-x-2">
-                  <ItemDescription>Màu sắc:</ItemDescription>
-                  <div style={{ backgroundColor: color.hex }} className="size-4 rounded-full" />
-                </div>
               </ItemContent>
             </Item>
           )
@@ -118,14 +110,6 @@ const CostumeInventoryMasterTable: React.FC = () => {
         filterFn: 'arrIncludesSome',
         cell: ({ row }) => row.original.category.name,
       }),
-      columnHelper.accessor('gender', {
-        header: 'Giới tính',
-        size: 100,
-        cell: ({ getValue }) => {
-          const value = COSTUME_GENDER_LABEL_MAP.get(getValue())
-          return <Badge>{value}</Badge>
-        },
-      }),
       columnHelper.accessor('original_rental_price_per_day', {
         header: 'Giá thuê gốc',
         enableSorting: true,
@@ -142,34 +126,14 @@ const CostumeInventoryMasterTable: React.FC = () => {
         size: 200,
         cell: ({ getValue }) => formatCurrency(getValue()) + ' / ngày',
       }),
-      columnHelper.display({
-        id: 'total_qty',
-        header: 'Tổng số lượng',
-        cell: ({ row }) => {
-          const items = row.original.details
-          const totalQty = items.length
-          return totalQty
-        },
-      }),
+
       columnHelper.accessor('unit', {
         header: 'Đơn vị',
         size: 100,
-        cell: ({ getValue }) => COSTUME_UNIT_LABEL_MAP.get(getValue()),
       }),
     ],
     []
   )
-
-  const renderSubComponent = useCallback(({ row }: RenderSubComponentProps<ICostumeInventory>) => {
-    return (
-      <CostumeInventoryDetailTable
-        data={row.original.sizes.map((size) => ({
-          size: size,
-          qty: row.original.details.filter((item) => item.size === size).length,
-        }))}
-      />
-    )
-  }, [])
 
   return (
     <DataGrid
@@ -181,11 +145,10 @@ const CostumeInventoryMasterTable: React.FC = () => {
       containerProps={{ className: 'h-[calc(100vh-12rem)] [&_table]:table-fixed' }}
       toolbarProps={{
         override: true,
-        render: CostumeInventoryTableToolbar,
+        render: PropsInventoryTableToolbar,
       }}
-      renderSubComponent={renderSubComponent}
     />
   )
 }
 
-export default CostumeInventoryMasterTable
+export default PropsInventoryMasterTable

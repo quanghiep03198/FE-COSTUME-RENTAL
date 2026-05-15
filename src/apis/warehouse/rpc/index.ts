@@ -5,11 +5,12 @@ import { isNil, omitBy } from 'lodash-es'
 import { z } from 'zod'
 import { createWarehouseSchema } from '../schemas/create-warehouse.schema'
 import { updateWarehouseSchema } from '../schemas/update-warehouse.schema'
+import type { IWarehouse } from '../types'
 
 export const getWarehousesRpc = createServerFn({ method: 'GET' })
   .middleware([authMiddleware, requestMiddleware])
   .handler(async ({ context }) => {
-    return await context.request({ url: '/warehouses' })
+    return await context.request<IWarehouse[]>({ url: '/warehouses' })
   })
 
 export const createWarehouseRpc = createServerFn({ method: 'POST' })
