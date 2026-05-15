@@ -1,9 +1,10 @@
 import { authMiddleware } from '@/middlewares/auth.middleware'
 import { requestMiddleware } from '@/middlewares/request.middleware'
 import { createServerFn } from '@tanstack/react-start'
+import { omit } from 'lodash-es'
 import { number } from 'zod'
-import { updateEquipmentPropsReqSchema } from '../schemas/update-equipment-props.schema'
-import { createEquipmentPropsReqSchema } from './../schemas/create-equipment-props.schema'
+import { updateEquipmentPropsSchema } from '../schemas/update-equipment-props.schema'
+import { createEquipmentPropsSchema } from './../schemas/create-equipment-props.schema'
 
 export const getEquipmentPropsRpc = createServerFn({ method: 'GET' })
   .middleware([authMiddleware, requestMiddleware])
@@ -12,19 +13,26 @@ export const getEquipmentPropsRpc = createServerFn({ method: 'GET' })
   })
 
 export const createEquipmentPropsRpc = createServerFn({ method: 'POST' })
-  .inputValidator(createEquipmentPropsReqSchema)
+  .inputValidator(createEquipmentPropsSchema)
   .middleware([authMiddleware, requestMiddleware])
   .handler(async ({ data, context }) => {
     return await context.request({
       url: '/equipment-props',
       method: 'POST',
-      data: data,
+      data: omit(
+        {
+          ...data,
+          category_id: data.category.id,
+          images: data.images.map((img) => img.id),
+        },
+        ['category']
+      ),
     })
   })
 
 export const updateEquipmentPropsRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
-  .inputValidator(updateEquipmentPropsReqSchema)
+  .inputValidator(updateEquipmentPropsSchema)
   .handler(async ({ context, data: { id, ...update } }) => {
     return await context.request({
       url: `/equipment-props/${id}`,

@@ -42,18 +42,9 @@ export function registerEquipmentPropsRoutes(app: Application) {
 
   // * POST /equipment-props
   app.post('/api/equipment-props', jwtMiddleware, (req: Request, res: Response) => {
-    const {
-      name,
-      category_id,
-      rental_price_per_day,
-      weight_kg,
-      dimensions,
-      is_fragile,
-      description,
-      images,
-      unit,
-      hashtags,
-    } = req.body
+    const { name, category_id, rental_price_per_day, description, images, unit, hashtags } = req.body
+
+    console.log({ name, category_id, rental_price_per_day })
 
     if (!name || !category_id || !rental_price_per_day) {
       return res.status(400).json({
@@ -69,9 +60,6 @@ export function registerEquipmentPropsRoutes(app: Application) {
       slug: generatedSlug,
       category_id,
       rental_price_per_day,
-      weight_kg: weight_kg ?? null,
-      dimensions: dimensions ?? null,
-      is_fragile: is_fragile ?? false,
       description: description ?? null,
       images,
       unit,

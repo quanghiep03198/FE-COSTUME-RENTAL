@@ -226,20 +226,15 @@ export function registerInventoryRoutes(app: Application) {
 
       if (!groupedMap.has(groupKey)) {
         groupedMap.set(groupKey, {
-          item_id: record.item_id,
-          item_type: record.item_type,
-          inventory_condition_id: record.inventory_condition_id,
-          condition,
-          master: {
-            id: item.id,
-            slug: item.slug,
-            name: item.name,
-            category_id: item.category_id,
-            unit: item.unit,
-            images: item.images,
-            rental_price_per_day: rentalPricePerDay,
-            display_rental_price_per_day: displayRentalPrice,
-          },
+          id: item.id,
+          slug: item.slug,
+          name: item.name,
+          inventory_condition: condition,
+          category: queryRecord('categories', item.category_id) ?? null,
+          unit: item.unit,
+          images: queryCollection('images', { 'id:in': item.images }, { pick: ['dest'] }),
+          original_rental_price_per_day: rentalPricePerDay,
+          current_rental_price_per_day: displayRentalPrice,
           details: [],
         })
       }

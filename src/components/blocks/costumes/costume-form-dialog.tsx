@@ -1,5 +1,4 @@
 import { GET_COSTUME_CATEGORY_QUERY_KEY, useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
-import type { ICategory } from '@/apis/category/types'
 import { COSTUME_UNIT, CostumeGender, CostumeSize, SIZE_RUN } from '@/apis/costume/constants'
 import { useCreateOrUpdateCostumeMutation } from '@/apis/costume/hooks/use-costume-request'
 import {
@@ -196,11 +195,9 @@ const CostumeFormDialog: React.FC = () => {
                         <FieldLabel htmlFor={field.name}>Bộ sưu tập</FieldLabel>
                         <Select
                           items={categories as any[]}
-                          itemToStringLabel={(item: ICategory) => item.name}
-                          itemToStringValue={(item: ICategory) => item.id.toString()}
-                          isItemEqualToValue={(itemValue, value) => itemValue.id === value.id}
+                          labelField="name"
+                          valueField="id"
                           value={field.state.value as any}
-                          onValueChange={field.handleChange as any}
                         >
                           <SelectTrigger
                             disabled={isLoading}

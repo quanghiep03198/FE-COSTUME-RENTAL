@@ -18,6 +18,8 @@ import { CommonActions, ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { standardizeName } from '@/common/helpers/standardize-name'
+import InputFieldControl from '@/components/forms/input-field-control'
+import SelectFieldControl, { type SelectFieldControlProps } from '@/components/forms/select-field-control'
 import Image from '@/components/shared/image'
 import { TagsInput } from '@/components/shared/tags-input'
 import { Editor } from '@/components/shared/text-editor'
@@ -42,8 +44,6 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore, type Updater } from '@tanstack/react-form'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
@@ -66,7 +66,7 @@ const CostumeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
   const [action, setAction] = useState<TDialogAction>('none')
-  const { data: categories, isLoading } = useGetCategoriesQuery(GET_PROPS_CATEGORY_QUERY_KEY)
+  const { data: categories } = useGetCategoriesQuery(GET_PROPS_CATEGORY_QUERY_KEY)
   const mutation = useCreateOrUpdatePropsMutation(action)
   const formSchemaRef = useRef<TCreateEquipmentPropsSchema | TUpdateEquipmentPropsSchema | undefined>(undefined)
   const editorRef = useRef<{
@@ -77,11 +77,13 @@ const CostumeFormDialog: React.FC = () => {
   const form = useForm({
     defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateEquipmentPropsValues,
     onSubmit: async ({ value }) => {
+      console.log('value.category', value.category)
+
       await mutation.mutateAsync({
         ...value,
         description: editorRef.current?.getHTML(),
-        category_id: value.category.id,
-        images: value.images?.map((img) => img.id),
+        // category: value.category.id,
+        // images: value.images?.map((img) => img.id),
       })
       setAction('none')
       setOpen(false)
@@ -145,58 +147,28 @@ const CostumeFormDialog: React.FC = () => {
                   }}
                 >
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
-                        <FieldLabel htmlFor={field.name}>Tên trang phục</FieldLabel>
-                        <Input
-                          name={field.name}
-                          id={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.currentTarget.value)}
-                          placeholder='Ví dụ: "Áo dài truyền thống"'
-                          className="w-auto"
-                          aria-invalid={isInvalid}
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Tên trang phục"
+                        placeholder='Ví dụ: "Áo dài truyền thống"'
+                      />
                     )
+
+                    //
                   }}
                 </FormField>
                 <FormField name="category">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
-                        <FieldLabel htmlFor={field.name}>Bộ sưu tập</FieldLabel>
-                        <Select
-                          items={categories as any[]}
-                          itemToStringLabel={(item: ICategory) => item.name}
-                          itemToStringValue={(item: ICategory) => item.id.toString()}
-                          isItemEqualToValue={(itemValue, value) => itemValue.id === value.id}
-                          value={field.state.value as any}
-                          onValueChange={field.handleChange as any}
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn bộ sưu tập" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.isArray(categories) &&
-                              categories.map((cate) => (
-                                <SelectItem key={cate.id} value={cate}>
-                                  {cate.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <SelectFieldControl
+                        field={field}
+                        label="Bộ sưu tập"
+                        placeholder="Chọn một danh mục"
+                        items={categories as unknown as SelectFieldControlProps<ICategory>['items']}
+                        labelField="name"
+                        valueField="id"
+                      />
                     )
                   }}
                 </FormField>
@@ -219,44 +191,19 @@ const CostumeFormDialog: React.FC = () => {
                 </FormField>
                 <FormField name="rental_price_per_day">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name}>Giá thuê theo ngày (VNĐ)</FieldLabel>
-                        <Input
-                          name={field.name}
-                          id={field.name}
-                          onBlur={field.handleBlur}
-                          type="number"
-                          value={field.state.value}
-                          onChange={(e) => field.handleChange(+e.target.value)}
-                          placeholder={formatCurrency(100_000)}
-                          aria-invalid={isInvalid}
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Giá thuê theo ngày (VNĐ)"
+                        type="number"
+                        placeholder={formatCurrency(100_000)}
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="unit">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name}>Đơn vị</FieldLabel>
-                        <Input
-                          name={field.name}
-                          id={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.currentTarget.value)}
-                          placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"'
-                          className="w-auto"
-                          aria-invalid={isInvalid}
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
+                    return <InputFieldControl field={field} label="Đơn vị" placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"' />
                   }}
                 </FormField>
                 <FormField name="images">
@@ -353,7 +300,7 @@ const CostumeFormDialog: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Danh mục hình ảnh</DialogTitle>
             <DialogDescription>
-              Hãy chọn các hình ảnh liên quan áp dụng cho trang phục hoặc tải lên nếu muốn
+              Hãy chọn các hình ảnh liên quan áp dụng cho đạo cụ hoặc tải lên nếu muốn
             </DialogDescription>
           </DialogHeader>
           <div className="h-[60vh] overflow-auto">
