@@ -235,6 +235,12 @@
     },
     {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJxdWFuZ2hpZXAwMzEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzg2NDYwMjAsImV4cCI6MTc3ODczMjQyMH0.NNQJaOaNmkMQnS2plZ6NFmKJhTB5qTVkbBr_SLnWgjs"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJxdWFuZ2hpZXAwMzEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzg2OTA4NzIsImV4cCI6MTc3ODc3NzI3Mn0.q8CHQf3ZTzWsHjzzcVJbjlA_aNh-WBJ0Vl6f8b3KoFU"
+    },
+    {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3ODg1OTUxNCwiZXhwIjoxNzc4OTQ1OTE0fQ.2JEfKayk-52afehr_L9ViYoQ5HBifHAaONavv6vDIr0"
     }
   ],
   "warehouses": [
@@ -413,6 +419,18 @@
       "created_at": "2026-05-13T02:27:10.220Z",
       "updated_at": null,
       "id": 15
+    },
+    {
+      "file_name": "1778857716162-Screenshot_2026-05-15_220657.png",
+      "size": 118863,
+      "dest": "/images/1778857716162-Screenshot_2026-05-15_220657.png",
+      "mime_type": "image/png",
+      "category_id": 8,
+      "created_by": 1,
+      "is_active": true,
+      "created_at": "2026-05-15T15:08:36.163Z",
+      "updated_at": null,
+      "id": 16
     }
   ],
   "categories": [
@@ -478,6 +496,15 @@
       "created_at": "2026-05-11T14:31:13.369Z",
       "updated_at": null,
       "id": 7
+    },
+    {
+      "name": "Quạt múa",
+      "slug": "quat-mua",
+      "type": "EQUIPMENT_PROPS",
+      "is_active": true,
+      "created_at": "2026-05-15T15:08:21.943Z",
+      "updated_at": null,
+      "id": 8
     }
   ],
   "costumes": [
@@ -716,6 +743,25 @@
         "id": 5,
         "name": "Hoa múa"
       }
+    },
+    {
+      "name": "Quạt Lụa Đỏ",
+      "slug": "quat-lua-do",
+      "category_id": 8,
+      "rental_price_per_day": 100002,
+      "description": "<h3 class=\"font-bold !text-foreground\">Chi tiết sản phẩm</h3><table class=\"m-0 w-full table-fixed overflow-hidden border rounded border-collapse [&amp;.resize-cursor]:cursor-col-resize\" style=\"width: 100%; min-width: 330px;\"><colgroup><col style=\"width: 250px;\"><col style=\"min-width: 80px;\"></colgroup><tbody><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Mẫu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Quạt xương cá</p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Màu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Đỏ</p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Xuất xứ</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Việt Nam</p></td></tr><tr><th class=\"border px-3 py-1 relative [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25\" colspan=\"1\" rowspan=\"1\" colwidth=\"250\"><p class=\"my-1\">Chất liệu</p></th><td class=\"px-3 py-1 border [&amp;.selectedCell]:bg-secondary/50 dark:[&amp;.selectedCell]:bg-secondary/25 before:hidden align-top\" colspan=\"1\" rowspan=\"1\"><p class=\"my-1\">Tre, Lụa</p></td></tr></tbody></table><h3 class=\"font-bold !text-foreground\"><strong class=\"font-bold\">Đặc điểm nổi bật của đạo cụ</strong></h3><ul class=\"list-disc text-foreground\"><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Chất liệu cao cấp:</strong> Hoa được làm từ vải lụa, voan hoặc giấy nhún chuyên dụng, giúp cánh hoa mềm mại nhưng vẫn giữ được form dáng khi thực hiện các động tác quay, vẩy.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Thiết kế thông minh:</strong> Phần tay cầm chắc chắn, nhẹ, được bọc băng keo hoặc vải lụa giúp vũ công cầm nắm dễ dàng, không gây mỏi khi biểu diễn thời gian dài.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Màu sắc rực rỡ:</strong> Được phối màu tinh tế với hiệu ứng chuyển sắc (ombre) hoặc đính kim sa, giúp bắt sáng cực tốt dưới ánh đèn sân khấu.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Kích thước đa dạng:</strong> Có đủ kích cỡ từ hoa cầm tay nhỏ gọn đến các loại hoa đại có đường kính lớn phục vụ cho các tổ hợp múa tạo hình.</p></li></ul><h3 class=\"font-bold !text-foreground\"><strong class=\"font-bold\">Tại sao nên chọn thuê hoa múa tại Diamond Studio?</strong></h3><ul class=\"list-disc text-foreground\"><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Sản phẩm luôn mới:</strong> Đạo cụ được bảo quản kỹ lưỡng, đảm bảo độ sạch sẽ và mới đến 95-100%.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Giá thuê cạnh tranh:</strong> Chính sách giá ưu đãi cho học sinh, sinh viên và các đoàn đội thuê số lượng lớn.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Tư vấn tận tình:</strong> Hỗ trợ chọn loại hoa phù hợp nhất với trang phục biểu diễn và nội dung bài múa.</p></li><li class=\"text-foreground m-0\"><p class=\"my-1\"><strong class=\"font-bold\">Thủ tục nhanh gọn:</strong> Nhận đồ ngay trong ngày, hỗ trợ ship nhanh khu vực nội thành.</p></li></ul><p class=\"my-1\"></p>",
+      "images": [
+        16
+      ],
+      "unit": "Chiếc",
+      "hashtags": [
+        "quatMua",
+        "quatLua"
+      ],
+      "is_active": true,
+      "created_at": "2026-05-15T15:31:05.232Z",
+      "updated_at": null,
+      "id": 2
     }
   ],
   "inventory_conditions": [
@@ -1429,6 +1475,136 @@
       "created_at": "2026-05-15T09:29:09.830Z",
       "updated_at": null,
       "id": 52
+    },
+    {
+      "sku": "DC,QLD,QLD-0001",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.639Z",
+      "updated_at": null,
+      "id": 53
+    },
+    {
+      "sku": "DC,QLD,QLD-0002",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.640Z",
+      "updated_at": null,
+      "id": 54
+    },
+    {
+      "sku": "DC,QLD,QLD-0003",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.641Z",
+      "updated_at": null,
+      "id": 55
+    },
+    {
+      "sku": "DC,QLD,QLD-0004",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.649Z",
+      "updated_at": null,
+      "id": 56
+    },
+    {
+      "sku": "DC,QLD,QLD-0005",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.657Z",
+      "updated_at": null,
+      "id": 57
+    },
+    {
+      "sku": "DC,QLD,QLD-0006",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.664Z",
+      "updated_at": null,
+      "id": 58
+    },
+    {
+      "sku": "DC,QLD,QLD-0007",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.671Z",
+      "updated_at": null,
+      "id": 59
+    },
+    {
+      "sku": "DC,QLD,QLD-0008",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.680Z",
+      "updated_at": null,
+      "id": 60
+    },
+    {
+      "sku": "DC,QLD,QLD-0009",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.687Z",
+      "updated_at": null,
+      "id": 61
+    },
+    {
+      "sku": "DC,QLD,QLD-0010",
+      "item_id": 2,
+      "item_type": "EQUIPMENT_PROPS",
+      "inventory_condition_id": 1,
+      "warehouse_id": 2,
+      "status": "AVAILABLE",
+      "size": null,
+      "is_active": true,
+      "created_at": "2026-05-15T15:37:16.694Z",
+      "updated_at": null,
+      "id": 62
     }
   ]
 }

@@ -3,8 +3,8 @@ import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } fr
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
 import { createEquipmentPropsRpc, deleteEquipmentPropsRpc, getEquipmentPropsRpc, updateEquipmentPropsRpc } from '../rpc'
-import type { TCreateEquipmentPropsReqValues } from '../schemas/create-equipment-props.schema'
-import type { TUpdateEquipmentPropsReqValues } from '../schemas/update-equipment-props.schema'
+import type { TCreateEquipmentPropsValues } from '../schemas/create-equipment-props.schema'
+import type { TUpdateEquipmentPropsValues } from '../schemas/update-equipment-props.schema'
 import type { IEquipmentProps } from '../types'
 
 export const GET_PROPS_QUERY_KEY = 'equipment_props' as const
@@ -23,11 +23,11 @@ export const useGetPropsQuery = () => {
 
 type TMutationEventMap = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateEquipmentPropsReqValues) => Promise<IEquipmentProps>
+    handler: (data: TCreateEquipmentPropsValues) => Promise<IEquipmentProps>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateEquipmentPropsReqValues) => Promise<IEquipmentProps>
+    handler: (data: TUpdateEquipmentPropsValues) => Promise<IEquipmentProps>
     message: string
   }
   none: {
@@ -42,11 +42,11 @@ export const useCreateOrUpdatePropsMutation = (action: CommonActions.CREATE | Co
 
   const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
-      handler: (data: TCreateEquipmentPropsReqValues) => createEquipmentPropsFn({ data }),
+      handler: (data: TCreateEquipmentPropsValues) => createEquipmentPropsFn({ data }),
       message: 'Thêm mới đạo cụ thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async (data: TUpdateEquipmentPropsReqValues) => {
+      handler: async (data: TUpdateEquipmentPropsValues) => {
         return await updateEquipmentPropsFn({ data })
       },
       message: 'Cập nhật đạo cụ thành công',

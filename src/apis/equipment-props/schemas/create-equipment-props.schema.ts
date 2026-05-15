@@ -40,7 +40,7 @@ export const createEquipmentPropsSchema = z.object({
 
 export const createEquipmentPropsReqSchema = createEquipmentPropsSchema
   .omit({ images: true })
-  .extend({ images: z.array(z.number()) })
+  .extend({ images: z.array(z.number()), category_id: z.number() })
 
 export type TCreateEquipmentPropsSchema = typeof createEquipmentPropsSchema
 
