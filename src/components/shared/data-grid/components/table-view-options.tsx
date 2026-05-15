@@ -30,7 +30,7 @@ export const TableViewOptions: React.FC = () => {
             </DropdownMenuTrigger>
           ),
         }}
-      ></Tooltip>
+      />
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>Hiển thị cột</DropdownMenuLabel>
         <DropdownMenuSeparator />

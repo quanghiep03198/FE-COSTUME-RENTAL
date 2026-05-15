@@ -1,7 +1,7 @@
 import type { ICostume } from '@/apis/costume/types'
 import type { IWarehouse } from '@/apis/warehouse/types'
 import type { Application, Request, Response } from 'express'
-import { getDb, queryCollection } from '../lib'
+import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 
 const COSTUME_SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL']
@@ -402,8 +402,13 @@ export function registerInventoryRoutes(app: Application) {
     })
   })
 
+  app.get('/api/inventory/conditions', (req: Request, res: Response) => {
+    const conditions = queryCollection('inventory_conditions', {})
+    return res.status(200).json(conditions)
+  })
+
   // * PATCH /inventory/:sku/condition
-  app.patch('/api/inventory/:sku/condition', jwtMiddleware, (req: Request, res: Response) => {
+  app.patch('/api/inventory/condition/:sku', jwtMiddleware, (req: Request, res: Response) => {
     const db = getDb()
     const sku = String(req.params.sku)
     const conditionId = Number(req.body.inventory_condition_id)
@@ -412,12 +417,12 @@ export function registerInventoryRoutes(app: Application) {
       return res.status(400).json({ message: 'inventory_condition_id is required' })
     }
 
-    const condition = db.get('inventory_conditions').find({ id: conditionId }).value()
+    const condition = queryRecord('inventory_conditions', conditionId)
     if (!condition) {
       return res.status(404).json({ message: 'inventory condition not found' })
     }
 
-    const existing = db.get('inventory').find({ sku }).value()
+    const existing = queryCollection('inventory', { 'sku:eq': sku })
     if (!existing) {
       return res.status(404).json({ message: 'inventory item not found' })
     }
@@ -431,9 +436,11 @@ export function registerInventoryRoutes(app: Application) {
       })
       .write()
 
+    delete updated.inventory_condition_id
+
     return res.status(200).json({
       ...updated,
-      condition,
+      inventory_condition: condition,
     })
   })
 }

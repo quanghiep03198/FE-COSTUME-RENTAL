@@ -1,4 +1,8 @@
-import { getCostumeInventoryQueryOptions } from '@/apis/inventory/hooks/use-costume-inventory-request'
+import {
+  getCostumeInventoryQueryOptions,
+  getInventoryConditionQueryOptions,
+  getPropsInventoryQueryOptions,
+} from '@/apis/inventory/hooks/use-inventory-request'
 import { inventoryPageSearchSchema } from '@/apis/inventory/schemas/search.schema'
 import { getWarehousesQueryOptions } from '@/apis/warehouse/hooks/use-warehouse-request'
 import InventoryPage from '@/components/blocks/inventory'
@@ -12,6 +16,8 @@ export const Route = createFileRoute('/_private-layout/inventory')({
     return await Promise.all([
       context.queryClient.ensureQueryData(getWarehousesQueryOptions()),
       context.queryClient.ensureQueryData(getCostumeInventoryQueryOptions()),
+      context.queryClient.ensureQueryData(getPropsInventoryQueryOptions()),
+      context.queryClient.ensureQueryData(getInventoryConditionQueryOptions()),
       // TODO: add prefetch costume & props inventory here
     ])
   },

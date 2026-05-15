@@ -1,5 +1,7 @@
 $kind: http-request
 name: List Categories
 method: GET
-url: '{{baseUrl}}/api/categories'
+url: "{{baseUrl}}/api/categories?_embed=costumes"
+queryParams:
+  _embed: costumes
 order: 1000

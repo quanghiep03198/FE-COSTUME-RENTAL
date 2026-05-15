@@ -91,7 +91,7 @@ type SortingProps =
       onSortingChange?: React.Dispatch<React.SetStateAction<SortingState>>
     }
 
-type RenderSubComponentProps<TData = any> = {
+export type RenderSubComponentProps<TData = any> = {
   row: Row<TData>
   table: Table<TData>
 }

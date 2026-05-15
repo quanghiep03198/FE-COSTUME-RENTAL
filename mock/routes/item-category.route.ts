@@ -6,7 +6,41 @@ import { generateUniqueSlug } from '../utils/slug-generator'
 export function registerItemCategoryRoutes(app: Application) {
   // * GET /categories
   app.get('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
-    const result = queryCollection('categories', req.query)
+    const result = queryCollection('categories', req.query, {
+      transform: (record) => {
+        const embedFields = (req.query._embed as string)?.split(',') || []
+        if (embedFields.includes('costumes')) {
+          record.costumes = queryCollection(
+            'costumes',
+            { 'category_id:eq': record.id },
+            {
+              transform: (costume) => {
+                costume.images = queryCollection('images', { 'id:in': costume.images.join(',') }, { pick: ['dest'] })
+                return costume
+              },
+              pick: ['id', 'name', 'rental_price_per_day', 'images', 'sizes'],
+            }
+          )
+        }
+
+        if (embedFields.includes('equipment_props')) {
+          record.equipment_props = queryCollection(
+            'equipment_props',
+            { 'category_id:eq': record.id },
+            {
+              transform: (props) => {
+                console.log(props)
+                props.images = queryCollection('images', { 'id:in': props?.images?.join(',') }, { pick: ['dest'] })
+                return props
+              },
+              pick: ['id', 'name', 'rental_price_per_day', 'images'],
+            }
+          )
+        }
+
+        return record
+      },
+    })
     return res.status(200).json(result)
   })
 
