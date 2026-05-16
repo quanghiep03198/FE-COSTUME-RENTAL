@@ -1,5 +1,4 @@
 import { GET_COSTUME_CATEGORY_QUERY_KEY, useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
-import type { ICategory } from '@/apis/category/types'
 import { COSTUME_UNIT, CostumeGender, CostumeSize, SIZE_RUN } from '@/apis/costume/constants'
 import { useCreateOrUpdateCostumeMutation } from '@/apis/costume/hooks/use-costume-request'
 import {
@@ -16,8 +15,10 @@ import { CommonActions, ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { standardizeName } from '@/common/helpers/standardize-name'
+import InputFieldControl from '@/components/forms/input-field-control'
+import SelectFieldControl from '@/components/forms/select-field-control'
+import { TagsInputFieldControl } from '@/components/forms/tags-input-field-control'
 import Image from '@/components/shared/image'
-import { TagsInput } from '@/components/shared/tags-input'
 import { Editor } from '@/components/shared/text-editor'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -41,12 +42,9 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
-import { useForm, useStore, type Updater } from '@tanstack/react-form'
-import { sortBy } from 'lodash-es'
+import { useForm, useStore } from '@tanstack/react-form'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
@@ -169,75 +167,40 @@ const CostumeFormDialog: React.FC = () => {
                   }}
                 >
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Tên trang phục</FieldLabel>
-                        <Input
-                          name={field.name}
-                          id={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.currentTarget.value)}
-                          placeholder='Ví dụ: "Áo dài truyền thống"'
-                          className="w-auto"
-                          aria-invalid={isInvalid}
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Tên trang phục"
+                        placeholder='Ví dụ: "Áo dài truyền thống"'
+                        classNames={{ field: 'col-span-2' }}
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="category">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Bộ sưu tập</FieldLabel>
-                        <Select
-                          items={categories as any[]}
-                          itemToStringLabel={(item: ICategory) => item.name}
-                          itemToStringValue={(item: ICategory) => item.id.toString()}
-                          isItemEqualToValue={(itemValue, value) => itemValue.id === value.id}
-                          value={field.state.value as any}
-                          onValueChange={field.handleChange as any}
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn bộ sưu tập" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.isArray(categories) &&
-                              categories.map((cate) => (
-                                <SelectItem key={cate.id} value={cate}>
-                                  {cate.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <SelectFieldControl
+                        field={field}
+                        items={categories}
+                        label="Bộ sưu tập"
+                        labelField="name"
+                        valueField="id"
+                        placeholder="Chọn bộ sưu tập"
+                        classNames={{ field: 'col-span-2' }}
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="hashtags">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Hashtags</FieldLabel>
-                        <TagsInput
-                          value={field.state.value}
-                          onValueChange={field.handleChange as (updater: Updater<string[]>) => void}
-                          onBlur={field.handleBlur}
-                          placeholder="#aoDaiVietNam"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <TagsInputFieldControl
+                        field={field}
+                        label="Hashtags"
+                        placeholder="#aoDaiVietNam"
+                        classNames={{ field: 'col-span-2' }}
+                      />
                     )
                   }}
                 </FormField>
@@ -297,99 +260,44 @@ const CostumeFormDialog: React.FC = () => {
                   }}
                 </FormField>
                 <FormField name="sizes">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name}>Size</FieldLabel>
-                        <Select
-                          multiple
-                          items={SIZE_RUN}
-                          value={sortBy(field.state.value, ['sortOrder']) as any}
-                          isItemEqualToValue={(itemValue, value) => itemValue.value === value.value}
-                          onValueChange={
-                            field.handleChange as (
-                              updater: Updater<
-                                Array<{
-                                  value: string
-                                  label: string
-                                  sortOrder: number
-                                }>
-                              >
-                            ) => void
-                          }
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {SIZE_RUN.map((size) => (
-                              <SelectItem key={size.value} value={size}>
-                                {size.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => (
+                    <SelectFieldControl
+                      field={field}
+                      items={SIZE_RUN}
+                      label="Size"
+                      labelField="label"
+                      valueField="value"
+                      multiple
+                      classNames={{ field: 'col-span-3' }}
+                      placeholder="Chọn size"
+                    />
+                  )}
                 </FormField>
                 <FormField name="rental_price_per_day">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name}>Giá thuê theo ngày (VNĐ)</FieldLabel>
-                        <Input
-                          name={field.name}
-                          id={field.name}
-                          onBlur={field.handleBlur}
-                          type="number"
-                          value={field.state.value}
-                          onChange={(e) => field.handleChange(+e.target.value)}
-                          placeholder={formatCurrency(100_000)}
-                          aria-invalid={isInvalid}
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Giá thuê theo ngày (VNĐ)"
+                        type="number"
+                        placeholder={formatCurrency(100_000)}
+                        classNames={{ field: 'col-span-3' }}
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="unit">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name}>Đơn vị</FieldLabel>
-                        <Select
-                          items={COSTUME_UNIT}
-                          value={field.state.value}
-                          onValueChange={field.handleChange as any}
-                        >
-                          <SelectTrigger
-                            disabled={isLoading}
-                            className="w-full"
-                            id={field.name}
-                            aria-invalid={isInvalid}
-                          >
-                            <SelectValue placeholder="Chọn size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {COSTUME_UNIT.map((size) => (
-                              <SelectItem key={size.value} value={size}>
-                                {size.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <SelectFieldControl
+                        field={field}
+                        items={COSTUME_UNIT}
+                        label="Đơn vị"
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Chọn đơn vị"
+                        classNames={{ field: 'col-span-3' }}
+                      />
                     )
                   }}
                 </FormField>
