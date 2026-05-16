@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Categories
+description: |-
+  Lay danh sach tat ca danh muc san pham trong he thong. Ho tro loc theo loai danh muc va nhung san pham lien ket.
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | _embed | string | Nhung du lieu lien ket (vi du: costumes) |
+  | type:eq | enum | Loc theo loai: COSTUME hoac EQUIPMENT_PROPS |
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong ItemCategory.
 method: GET
-url: "{{baseUrl}}/api/categories?_embed=costumes&type:eq=EQUIPMENT_PROPS"
+url: '{{baseUrl}}/categories?_embed=costumes&type:eq=EQUIPMENT_PROPS'
 queryParams:
   _embed: costumes
   type:eq: EQUIPMENT_PROPS

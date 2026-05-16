@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Costume
+description: |-
+  Lay thong tin chi tiet cua mot trang phuc theo ID, bao gom hinh anh, cac bien the kich co, mau sac va gia thue.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua trang phuc can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong Costume day du thong tin.
+  - 404 Not Found: Khong tim thay trang phuc.
 method: GET
-url: '{{baseUrl}}/api/costumes/:id'
+url: '{{baseUrl}}/costumes/:id'
 order: 2000
 pathVariables:
   - key: id

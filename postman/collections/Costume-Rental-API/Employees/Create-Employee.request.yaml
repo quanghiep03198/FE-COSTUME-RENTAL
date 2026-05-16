@@ -1,7 +1,24 @@
-$kind: http-request
+﻿$kind: http-request
 name: Create Employee
+description: |-
+  Tao moi ho so nhan vien trong he thong. Yeu cau quyen ADMIN. Ma nhan vien (employee_code) se duoc tu dong sinh.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | full_name | string | Ho va ten day du cua nhan vien |
+  | phone | string | So dien thoai lien he |
+  | email | string | Dia chi email lien he |
+  | address | string | Dia chi thuong tru |
+  | citizen_id_number | string | So can cuoc cong dan / CMND |
+  | position | enum | Vi tri: MANAGER, WAREHOUSE_MANAGER, ORDER_PROCESSOR, TALENT, TECHICAL_CREW, WARDROBE |
+  | work_status | enum | Trang thai: ACTIVE, SUSPENDED, EXITED (mac dinh: ACTIVE) |
+
+  **Response:**
+  - 201 Created: Ho so nhan vien moi duoc tao thanh cong.
+  - 400 Bad Request: Du lieu khong hop le.
 method: POST
-url: '{{baseUrl}}/api/employees'
+url: '{{baseUrl}}/employees'
 order: 3000
 headers:
   - key: Content-Type

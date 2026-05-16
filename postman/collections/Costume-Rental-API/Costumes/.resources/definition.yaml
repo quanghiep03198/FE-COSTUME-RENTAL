@@ -1,0 +1,41 @@
+﻿$kind: collection
+name: Costumes
+description: |-
+  ## Quản lý Trang phục
+
+  Nhóm các API quản lý danh mục trang phục cho thuê trong hệ thống. Trang phục là sản phẩm cốt lõi của hệ thống, bao gồm đầy đủ thông tin về kích cỡ, màu sắc, giá thuê và hình ảnh minh họa.
+
+  ### Entity liên quan
+  - **Costume**: Trang phục với các trường `id`, `sku`, `slug`, `name`, `category_id`, `color` (hex/code/intensity), `sizes` (XS/S/M/L/XL/2XL/3XL), `unit` (SET/PIECE), `gender` (MALE/FEMALE/UNISEX), `images[]`, `rental_price_per_day` (tối thiểu 50.000 VNĐ), `description`, `hashtags[]`.
+  - **ItemCategory**: Danh mục trang phục liên kết qua `category_id`.
+
+  ### Endpoints
+  - **GET /api/costumes** – Lấy danh sách trang phục, hỗ trợ lọc theo danh mục, giới tính, kích cỡ và từ khóa tìm kiếm.
+  - **GET /api/costumes/:id** – Lấy thông tin chi tiết của một trang phục theo `id`, bao gồm hình ảnh và các biến thể kích cỡ.
+  - **POST /api/costumes** – Tạo mới trang phục với đầy đủ thông tin sản phẩm (yêu cầu quyền ADMIN).
+  - **PUT /api/costumes/:id** – Cập nhật thông tin trang phục theo `id` (yêu cầu quyền ADMIN).
+  - **DELETE /api/costumes/:id** – Xóa trang phục theo `id` (yêu cầu quyền ADMIN).
+
+  ## Schema: Costume
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `sku` | string | Ma dinh danh duy nhat cua trang phuc trong he thong |
+  | `slug` | string | Slug URL than thien, tu dong sinh tu `name` |
+  | `name` | string | Ten trang phuc |
+  | `category_id` | integer | Lien ket voi danh muc (ItemCategory) |
+  | `color` | object | Mau sac: `hex` (ma hex), `code` (ten mau), `intensity` (do dam nhat) |
+  | `sizes` | array<enum> | Cac kich co co san: `XS`, `S`, `M`, `L`, `XL`, `2XL`, `3XL` |
+  | `unit` | enum | Don vi tinh: `SET` (bo) hoac `PIECE` (cai) |
+  | `gender` | enum | Gioi tinh phu hop: `MALE`, `FEMALE`, `UNISEX` |
+  | `images` | array<integer> | Danh sach ID anh lien ket (ImageGallery) |
+  | `rental_price_per_day` | integer | Gia thue theo ngay (toi thieu 50.000 VND) |
+  | `description` | string | Mo ta chi tiet trang phuc |
+  | `hashtags` | array<string> | Danh sach hashtag phan loai, khong trung lap |
+  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
+  | `created_at` | datetime | Thoi diem tao |
+  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
+  | `created_by` | integer | ID nguoi tao |
+  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
+  | `remark` | string | Ghi chu them |

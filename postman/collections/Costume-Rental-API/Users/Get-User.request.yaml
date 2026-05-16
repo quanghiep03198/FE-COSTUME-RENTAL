@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get User
+description: |-
+  Lay thong tin chi tiet cua mot nguoi dung theo ID, bao gom thong tin lien ket nhan vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nguoi dung can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong User day du thong tin.
+  - 404 Not Found: Khong tim thay nguoi dung.
 method: GET
-url: '{{baseUrl}}/api/users/:id'
+url: '{{baseUrl}}/users/:id'
 order: 2000
 pathVariables:
   - key: id

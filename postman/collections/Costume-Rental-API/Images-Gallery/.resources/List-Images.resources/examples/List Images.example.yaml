@@ -1,16 +1,16 @@
 $kind: http-example
 request:
-  url: "{{baseUrl}}/api/images-gallery"
+  url: '{{baseUrl}}/images-gallery'
   method: GET
 response:
   statusCode: 200
   statusText: OK
   headers:
     vary: Origin, Accept-Encoding
-    access-control-allow-credentials: "true"
+    access-control-allow-credentials: 'true'
     cache-control: no-cache
     pragma: no-cache
-    expires: "-1"
+    expires: '-1'
     content-type: application/json; charset=utf-8
     etag: W/"3848-vv6AKNLAQXc6fgpQJGf8F16CJPY"
     content-encoding: br

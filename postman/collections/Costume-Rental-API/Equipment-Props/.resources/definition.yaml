@@ -1,0 +1,36 @@
+﻿$kind: collection
+name: Equipment-Props
+description: |-
+  ## Quản lý Đạo cụ & Thiết bị
+
+  Nhóm các API quản lý đạo cụ và thiết bị hỗ trợ trong hệ thống cho thuê. Đây là nhóm sản phẩm bổ sung bên cạnh trang phục, bao gồm các vật dụng, phụ kiện và thiết bị phục vụ cho các buổi biểu diễn, chụp ảnh hoặc sự kiện.
+
+  ### Entity liên quan
+  - **EquipmentProps**: Đạo cụ/thiết bị với các trường `id`, `name`, `slug`, `category_id`, `unit`, `description`, `images[]`, `hashtags[]`. Khác với trang phục, đạo cụ không có trường kích cỡ.
+  - **ItemCategory**: Danh mục đạo cụ liên kết qua `category_id` (type = EQUIPMENT_PROPS).
+
+  ### Endpoints
+  - **GET /api/equipment-props** – Lấy danh sách đạo cụ/thiết bị, hỗ trợ lọc theo danh mục và từ khóa tìm kiếm.
+  - **GET /api/equipment-props/:id** – Lấy thông tin chi tiết của một đạo cụ/thiết bị theo `id`, bao gồm hình ảnh và mô tả.
+  - **POST /api/equipment-props** – Tạo mới đạo cụ/thiết bị với đầy đủ thông tin sản phẩm (yêu cầu quyền ADMIN).
+  - **PUT /api/equipment-props/:id** – Cập nhật thông tin đạo cụ/thiết bị theo `id` (yêu cầu quyền ADMIN).
+  - **DELETE /api/equipment-props/:id** – Xóa đạo cụ/thiết bị theo `id` (yêu cầu quyền ADMIN).
+
+  ## Schema: EquipmentProps
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `name` | string | Ten dao cu/thiet bi |
+  | `slug` | string | Slug URL than thien, tu dong sinh tu `name` |
+  | `category_id` | integer | Lien ket voi danh muc (ItemCategory, type = EQUIPMENT_PROPS) |
+  | `unit` | string | Don vi tinh (vi du: cai, bo, chiec) |
+  | `description` | string | Mo ta chi tiet dao cu/thiet bi |
+  | `images` | array<integer> | Danh sach ID anh lien ket (ImageGallery) |
+  | `hashtags` | array<string> | Danh sach hashtag phan loai, khong trung lap |
+  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
+  | `created_at` | datetime | Thoi diem tao |
+  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
+  | `created_by` | integer | ID nguoi tao |
+  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
+  | `remark` | string | Ghi chu them |

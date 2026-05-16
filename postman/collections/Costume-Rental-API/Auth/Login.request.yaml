@@ -1,7 +1,19 @@
-$kind: http-request
+﻿$kind: http-request
 name: Login
+description: |-
+  Dang nhap vao he thong bang ten dang nhap va mat khau. Khi thanh cong, server tra ve accessToken (JWT) va thong tin nguoi dung. Access token se duoc luu vao bien moi truong token tu dong qua script.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | username | string | Ten dang nhap cua tai khoan |
+  | password | string | Mat khau cua tai khoan |
+
+  **Response:**
+  - 200 OK: { accessToken, user } - dang nhap thanh cong, token duoc luu vao moi truong.
+  - 401 Unauthorized: Sai ten dang nhap hoac mat khau.
 method: POST
-url: "{{baseUrl}}/api/auth/login"
+url: '{{baseUrl}}/auth/login'
 scripts:
   - type: afterResponse
     code: "const jsonData = pm.response.json();\r

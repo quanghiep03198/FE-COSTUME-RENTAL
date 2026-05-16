@@ -1,7 +1,25 @@
-$kind: http-request
+﻿$kind: http-request
 name: Update User
+description: |-
+  Cap nhat thong tin cua mot nguoi dung theo ID. Yeu cau quyen ADMIN. Co the thay doi ten dang nhap, vai tro va trang thai hoat dong.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nguoi dung can cap nhat |
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | username | string | Ten dang nhap moi |
+  | role | enum | Vai tro moi: ADMIN hoac USER |
+  | is_active | boolean | Trang thai kich hoat tai khoan |
+
+  **Response:**
+  - 200 OK: Tai khoan nguoi dung sau khi cap nhat.
+  - 404 Not Found: Khong tim thay nguoi dung.
 method: PATCH
-url: '{{baseUrl}}/api/users/:id'
+url: '{{baseUrl}}/users/:id'
 order: 4000
 pathVariables:
   - key: id

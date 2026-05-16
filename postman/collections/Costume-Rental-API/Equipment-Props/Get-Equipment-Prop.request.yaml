@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Equipment Prop
+description: |-
+  Lay thong tin chi tiet cua mot dao cu/thiet bi theo ID, bao gom hinh anh, mo ta va thong tin danh muc.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua dao cu/thiet bi can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong EquipmentProps day du thong tin.
+  - 404 Not Found: Khong tim thay dao cu/thiet bi.
 method: GET
-url: '{{baseUrl}}/api/equipment-props/:id'
+url: '{{baseUrl}}/equipment-props/:id'
 order: 2000
 pathVariables:
   - key: id

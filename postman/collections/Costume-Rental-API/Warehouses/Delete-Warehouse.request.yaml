@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Warehouse
+description: |-
+  Xoa mot kho hang theo ID. Yeu cau quyen ADMIN va kho phai khong con ton kho. Ho tro xoa mem hoac xoa vinh vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua kho can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay kho.
 method: DELETE
-url: '{{baseUrl}}/api/warehouses/:id'
+url: '{{baseUrl}}/warehouses/:id'
 order: 5000
 pathVariables:
   - key: id

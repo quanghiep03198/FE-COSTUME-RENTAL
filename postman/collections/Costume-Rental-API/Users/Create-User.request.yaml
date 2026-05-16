@@ -1,7 +1,21 @@
-$kind: http-request
+﻿$kind: http-request
 name: Create User
+description: |-
+  Tao moi tai khoan nguoi dung trong he thong. Yeu cau quyen ADMIN. Co the lien ket voi ho so nhan vien qua employee_id.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | username | string | Ten dang nhap, phai duy nhat trong he thong |
+  | password | string | Mat khau (se duoc hash truoc khi luu) |
+  | employee_id | integer / null | ID nhan vien lien ket (tuy chon) |
+  | role | enum | Vai tro: ADMIN hoac USER (mac dinh: USER) |
+
+  **Response:**
+  - 201 Created: Tai khoan nguoi dung moi duoc tao thanh cong.
+  - 400 Bad Request: Du lieu khong hop le hoac username da ton tai.
 method: POST
-url: '{{baseUrl}}/api/users'
+url: '{{baseUrl}}/users'
 order: 3000
 headers:
   - key: Content-Type

@@ -1,7 +1,24 @@
-$kind: http-request
+﻿$kind: http-request
 name: Update Image
+description: |-
+  Cap nhat metadata cua mot hinh anh theo ID. Co the thay doi ten file va danh muc lien ket.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua hinh anh can cap nhat |
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | file_name | string | Ten file moi |
+  | category_id | integer | ID danh muc lien ket moi |
+
+  **Response:**
+  - 200 OK: Doi tuong ImageGallery sau khi cap nhat.
+  - 404 Not Found: Khong tim thay hinh anh.
 method: PATCH
-url: '{{baseUrl}}/api/images-gallery/:id'
+url: '{{baseUrl}}/images-gallery/:id'
 order: 4000
 pathVariables:
   - key: id

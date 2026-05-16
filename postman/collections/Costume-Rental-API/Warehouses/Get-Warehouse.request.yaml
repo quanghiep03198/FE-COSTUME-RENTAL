@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Warehouse
+description: |-
+  Lay thong tin chi tiet cua mot kho hang theo ID, bao gom thong tin nguoi quan ly va thong ke ton kho.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua kho can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong Warehouse day du thong tin.
+  - 404 Not Found: Khong tim thay kho.
 method: GET
-url: '{{baseUrl}}/api/warehouses/:id'
+url: '{{baseUrl}}/warehouses/:id'
 order: 2000
 pathVariables:
   - key: id

@@ -1,7 +1,21 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Props Inventory
+description: |-
+  Lay danh sach ton kho dao cu/thiet bi. Ho tro loc theo nhieu tieu chi.
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | item_id | integer | Loc theo ID dao cu/thiet bi |
+  | inventory_condition_id | integer | Loc theo ID tinh trang san pham |
+  | warehouse_id | integer | Loc theo ID kho |
+  | status | enum | Loc theo trang thai: AVAILABLE, RENTED, MAINTENANCE, DISPOSED |
+  | keyword | string | Tim kiem theo tu khoa (ten, SKU) |
+
+  **Response:**
+  - 200 OK: Mang cac ban ghi Inventory cua dao cu/thiet bi.
 method: GET
-url: '{{baseUrl}}/api/inventory/props'
+url: '{{baseUrl}}/inventory/props'
 order: 2000
 params:
   - key: item_id

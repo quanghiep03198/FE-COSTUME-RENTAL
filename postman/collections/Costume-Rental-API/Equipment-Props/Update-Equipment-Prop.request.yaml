@@ -1,7 +1,25 @@
-$kind: http-request
+﻿$kind: http-request
 name: Update Equipment Prop
+description: |-
+  Cap nhat thong tin cua mot dao cu/thiet bi theo ID. Yeu cau quyen ADMIN.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua dao cu/thiet bi can cap nhat |
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | name | string | Ten moi cua dao cu/thiet bi |
+  | rental_price_per_day | integer | Gia thue moi (toi thieu 50.000 VND) |
+  | is_active | boolean | Trang thai kich hoat |
+
+  **Response:**
+  - 200 OK: Dao cu/thiet bi sau khi cap nhat.
+  - 404 Not Found: Khong tim thay dao cu/thiet bi.
 method: PATCH
-url: '{{baseUrl}}/api/equipment-props/:id'
+url: '{{baseUrl}}/equipment-props/:id'
 order: 4000
 pathVariables:
   - key: id

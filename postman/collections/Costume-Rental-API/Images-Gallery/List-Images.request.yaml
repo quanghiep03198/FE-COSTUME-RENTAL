@@ -1,6 +1,11 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Images
+description: |-
+  Lay danh sach tat ca hinh anh trong thu vien. Ho tro loc theo category_id va mime_type.
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong ImageGallery.
 method: GET
-url: "{{baseUrl}}/api/images-gallery"
+url: '{{baseUrl}}/images-gallery'
 examples: .resources/List-Images.resources/examples
 order: 1000

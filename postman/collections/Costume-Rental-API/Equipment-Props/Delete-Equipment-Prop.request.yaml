@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Equipment Prop
+description: |-
+  Xoa mot dao cu/thiet bi theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua dao cu/thiet bi can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay dao cu/thiet bi.
 method: DELETE
-url: '{{baseUrl}}/api/equipment-props/:id'
+url: '{{baseUrl}}/equipment-props/:id'
 order: 5000
 pathVariables:
   - key: id

@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Import Inventory
+description: |-
+  Nhap kho: them mot hoac nhieu san pham vao kho voi thong tin day du. Moi ban ghi nhap kho se tao mot SKU ton kho moi.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | item_id | integer | ID san pham (Costume hoac EquipmentProps) |
+  | item_type | enum | Loai san pham: COSTUME hoac EQUIPMENT_PROPS |
+  | inventory_condition_id | integer | ID tinh trang san pham (InventoryCondition) |
+  | warehouse_id | integer | ID kho luu tru (Warehouse) |
+  | size | enum | Kich co (chi ap dung cho trang phuc): XS, S, M, L, XL, 2XL, 3XL |
+  | quantity | integer | So luong can nhap kho |
+
+  **Response:**
+  - 201 Created: Danh sach ban ghi Inventory moi duoc tao.
+  - 400 Bad Request: Du lieu khong hop le.
 method: POST
-url: "{{baseUrl}}/api/inventory/import"
+url: '{{baseUrl}}/inventory/import'
 order: 3000
 headers:
   Content-Type: application/json

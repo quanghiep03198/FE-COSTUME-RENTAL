@@ -1,5 +1,10 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Employees
+description: |-
+  Lay danh sach tat ca nhan vien trong he thong. Ho tro loc theo vi tri cong viec, trang thai lam viec va tim kiem theo ten.
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong Employee.
 method: GET
-url: '{{baseUrl}}/api/employees'
+url: '{{baseUrl}}/employees'
 order: 1000

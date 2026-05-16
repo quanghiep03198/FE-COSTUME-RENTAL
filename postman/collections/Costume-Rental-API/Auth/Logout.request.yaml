@@ -1,5 +1,11 @@
-$kind: http-request
+﻿$kind: http-request
 name: Logout
+description: |-
+  Dang xuat khoi he thong. Endpoint nay huy phien lam viec hien tai va vo hieu hoa refresh token dang hoat dong. Yeu cau gui kem access token hop le trong header Authorization.
+
+  **Response:**
+  - 200 OK: Dang xuat thanh cong.
+  - 401 Unauthorized: Token khong hop le hoac da het han.
 method: POST
-url: '{{baseUrl}}/api/auth/logout'
+url: '{{baseUrl}}/auth/logout'
 order: 3000

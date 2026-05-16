@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Employee
+description: |-
+  Xoa ho so nhan vien theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nhan vien can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay nhan vien.
 method: DELETE
-url: '{{baseUrl}}/api/employees/:id'
+url: '{{baseUrl}}/employees/:id'
 order: 5000
 pathVariables:
   - key: id

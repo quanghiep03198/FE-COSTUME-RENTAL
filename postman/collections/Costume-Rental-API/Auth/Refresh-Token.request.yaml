@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Refresh Token
+description: |-
+  Lam moi access token bang cach su dung refresh token con hieu luc. Gui kem access token cu trong header Authorization: Bearer {{token}}. Server se tra ve access token moi neu refresh token hop le.
+
+  **Headers:**
+  | Header | Mo ta |
+  |--------|-------|
+  | Authorization | Bearer {{token}} - access token hien tai |
+
+  **Response:**
+  - 200 OK: { accessToken } - token moi duoc cap.
+  - 401 Unauthorized: Refresh token khong hop le hoac da het han.
 method: GET
-url: '{{baseUrl}}/api/auth/refresh'
+url: '{{baseUrl}}/auth/refresh'
 order: 4000
 headers:
   - key: Authorization

@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Image
+description: |-
+  Xoa mot hinh anh khoi thu vien theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien kem file tren server.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua hinh anh can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien kem file, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay hinh anh.
 method: DELETE
-url: '{{baseUrl}}/api/images-gallery/:id'
+url: '{{baseUrl}}/images-gallery/:id'
 order: 5000
 pathVariables:
   - key: id

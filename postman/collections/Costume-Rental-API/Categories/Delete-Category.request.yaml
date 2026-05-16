@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Category
+description: |-
+  Xoa mot danh muc san pham theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem (soft delete) hoac xoa vinh vien tuy theo tham so permanantly.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua danh muc can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay danh muc.
 method: DELETE
-url: '{{baseUrl}}/api/categories/:id'
+url: '{{baseUrl}}/categories/:id'
 order: 5000
 pathVariables:
   - key: id

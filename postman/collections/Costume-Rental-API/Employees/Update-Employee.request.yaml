@@ -1,7 +1,25 @@
-$kind: http-request
+﻿$kind: http-request
 name: Update Employee
+description: |-
+  Cap nhat thong tin cua mot nhan vien theo ID. Yeu cau quyen ADMIN.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nhan vien can cap nhat |
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | full_name | string | Ho va ten moi |
+  | phone | string | So dien thoai moi |
+  | work_status | enum | Trang thai lam viec moi: ACTIVE, SUSPENDED, EXITED |
+
+  **Response:**
+  - 200 OK: Ho so nhan vien sau khi cap nhat.
+  - 404 Not Found: Khong tim thay nhan vien.
 method: PATCH
-url: '{{baseUrl}}/api/employees/:id'
+url: '{{baseUrl}}/employees/:id'
 order: 4000
 pathVariables:
   - key: id

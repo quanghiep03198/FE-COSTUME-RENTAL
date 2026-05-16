@@ -1,7 +1,22 @@
-$kind: http-request
+﻿$kind: http-request
 name: Register
+description: |-
+  Dang ky tai khoan nguoi dung moi trong he thong. Endpoint nay tao mot User moi voi vai tro mac dinh la USER.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | username | string | Ten dang nhap, phai duy nhat trong he thong |
+  | email | string | Dia chi email cua nguoi dung |
+  | password | string | Mat khau (se duoc hash truoc khi luu) |
+  | display_name | string | Ten hien thi cua nguoi dung |
+  | role | enum | Vai tro: ADMIN hoac USER (mac dinh: USER) |
+
+  **Response:**
+  - 201 Created: Tai khoan duoc tao thanh cong, tra ve thong tin user moi.
+  - 400 Bad Request: Du lieu khong hop le hoac username da ton tai.
 method: POST
-url: '{{baseUrl}}/api/register'
+url: '{{baseUrl}}/register'
 order: 2000
 headers:
   - key: Content-Type

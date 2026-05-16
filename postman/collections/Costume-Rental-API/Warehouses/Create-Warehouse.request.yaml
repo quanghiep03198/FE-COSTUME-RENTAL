@@ -1,7 +1,20 @@
-$kind: http-request
+﻿$kind: http-request
 name: Create Warehouse
+description: |-
+  Tao moi mot kho hang trong he thong. Yeu cau quyen ADMIN. Kho duoc phan loai theo loai san pham luu tru va giao cho mot quan ly kho phu trach.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | name | string | Ten kho |
+  | type | enum | Loai kho: COSTUME (kho trang phuc) hoac EQUIPMENT_PROPS (kho dao cu) |
+  | managed_by | integer | ID nhan vien quan ly kho (vi tri WAREHOUSE_MANAGER) |
+
+  **Response:**
+  - 201 Created: Kho moi duoc tao thanh cong.
+  - 400 Bad Request: Du lieu khong hop le.
 method: POST
-url: '{{baseUrl}}/api/warehouses'
+url: '{{baseUrl}}/warehouses'
 order: 3000
 headers:
   - key: Content-Type

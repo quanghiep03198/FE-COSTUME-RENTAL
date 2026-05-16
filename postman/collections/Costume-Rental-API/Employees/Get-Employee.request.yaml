@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Employee
+description: |-
+  Lay thong tin chi tiet cua mot nhan vien theo ID, bao gom thong tin lien he, vi tri cong viec va lien ket tai khoan.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nhan vien can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong Employee day du thong tin.
+  - 404 Not Found: Khong tim thay nhan vien.
 method: GET
-url: '{{baseUrl}}/api/employees/:id'
+url: '{{baseUrl}}/employees/:id'
 order: 2000
 pathVariables:
   - key: id

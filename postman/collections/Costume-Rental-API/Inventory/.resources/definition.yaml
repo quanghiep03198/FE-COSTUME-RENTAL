@@ -1,2 +1,47 @@
-$kind: collection
+﻿$kind: collection
 name: Inventory
+description: |-
+  ## Quản lý Tồn kho
+
+  Nhóm các API quản lý tồn kho sản phẩm trong hệ thống cho thuê trang phục. Tồn kho theo dõi từng đơn vị sản phẩm cụ thể (trang phục hoặc đạo cụ) trong kho, bao gồm trạng thái hiện tại, tình trạng chất lượng và vị trí lưu trữ.
+
+  ### Entity liên quan
+  - **Inventory**: Bản ghi tồn kho với các trường `id`, `sku`, `item_id`, `item_type` (COSTUME/EQUIPMENT_PROPS), `inventory_condition_id`, `warehouse_id`, `status` (AVAILABLE/RENTED/MAINTENANCE/DISPOSED), `size` (XS–3XL, null đối với đạo cụ).
+  - **InventoryCondition**: Tình trạng sản phẩm với `code` (A/B/C), `label`, `discount_rate`, `rentable`, `badge_color`. Xác định mức chiết khấu và khả năng cho thuê.
+  - **Warehouse**: Kho lưu trữ liên kết qua `warehouse_id`.
+
+  ### Endpoints
+  - **GET /api/inventory/costumes** – Lấy danh sách tồn kho trang phục, hỗ trợ lọc theo `warehouse_id`, `status`, `size` và `condition`.
+  - **GET /api/inventory/props** – Lấy danh sách tồn kho đạo cụ/thiết bị, hỗ trợ lọc theo `warehouse_id` và `status`.
+  - **POST /api/inventory/import** – Nhập kho: thêm một hoặc nhiều sản phẩm vào kho với thông tin `item_id`, `item_type`, `warehouse_id`, `condition` và `size` (nếu là trang phục).
+  - **PATCH /api/inventory/:id/condition** – Cập nhật tình trạng chất lượng (`inventory_condition_id`) của một sản phẩm cụ thể trong kho theo `id`.
+
+  ## Schema: Inventory
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `sku` | string | Ma SKU duy nhat cua ban ghi ton kho |
+  | `item_id` | integer | ID san pham (Costume hoac EquipmentProps) |
+  | `item_type` | enum | Loai san pham: `COSTUME` hoac `EQUIPMENT_PROPS` |
+  | `inventory_condition_id` | integer | Lien ket voi bang InventoryCondition |
+  | `warehouse_id` | integer | Lien ket voi kho luu tru (Warehouse) |
+  | `status` | enum | Trang thai: `AVAILABLE` (san sang), `RENTED` (dang thue), `MAINTENANCE` (bao tri), `DISPOSED` (da thanh ly) |
+  | `size` | enum / null | Kich co: `XS`, `S`, `M`, `L`, `XL`, `2XL`, `3XL` -- null doi voi dao cu |
+  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
+  | `created_at` | datetime | Thoi diem nhap kho |
+  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
+  | `created_by` | integer | ID nguoi nhap kho |
+  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
+  | `remark` | string | Ghi chu them |
+
+  ## Schema: InventoryCondition
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `code` | enum | Ma tinh trang: `A` (moi/tot), `B` (da qua su dung), `C` (cu/hong) |
+  | `label` | string | Mo ta chi tiet tinh trang san pham |
+  | `discount_rate` | number | Ty le chiet khau gia thue (0 - 0.5) |
+  | `rentable` | boolean | Co the cho thue khong (`false` khi code = `C`) |
+  | `badge_color` | string | Ma mau hex hien thi badge tinh trang |

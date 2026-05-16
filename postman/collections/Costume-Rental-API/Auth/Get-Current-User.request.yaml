@@ -1,5 +1,11 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Current User
+description: |-
+  Lay thong tin cua nguoi dung dang dang nhap dua tren access token hien tai trong moi truong. Tra ve day du thong tin tai khoan bao gom username, role, employee_id va trang thai hoat dong.
+
+  **Response:**
+  - 200 OK: Thong tin nguoi dung hien tai { id, username, role, employee_id, is_active, ... }.
+  - 401 Unauthorized: Token khong hop le hoac chua dang nhap.
 method: GET
-url: '{{baseUrl}}/api/auth/me'
+url: '{{baseUrl}}/auth/me'
 order: 5000

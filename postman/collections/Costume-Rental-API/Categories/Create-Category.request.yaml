@@ -1,7 +1,19 @@
-$kind: http-request
+﻿$kind: http-request
 name: Create Category
+description: |-
+  Tao moi mot danh muc san pham. Yeu cau quyen ADMIN. Slug se duoc tu dong sinh tu truong name.
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | name | string | Ten danh muc |
+  | type | enum | Loai danh muc: COSTUME hoac EQUIPMENT_PROPS |
+
+  **Response:**
+  - 201 Created: Danh muc moi duoc tao thanh cong.
+  - 400 Bad Request: Du lieu khong hop le.
 method: POST
-url: '{{baseUrl}}/api/categories'
+url: '{{baseUrl}}/categories'
 order: 3000
 headers:
   - key: Content-Type

@@ -1,5 +1,10 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Costumes
+description: |-
+  Lay danh sach tat ca trang phuc trong he thong. Ho tro loc theo danh muc, gioi tinh, kich co va tu khoa tim kiem.
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong Costume.
 method: GET
-url: '{{baseUrl}}/api/costumes'
+url: '{{baseUrl}}/costumes'
 order: 1000

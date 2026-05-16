@@ -1,0 +1,39 @@
+﻿$kind: collection
+name: Auth
+description: |-
+  ## Xác thực & Phân quyền
+
+  Nhóm các API xử lý xác thực và phân quyền người dùng trong hệ thống cho thuê trang phục. Các endpoint này quản lý vòng đời phiên đăng nhập, bao gồm đăng ký tài khoản, đăng nhập, làm mới token và đăng xuất.
+
+  ### Entity liên quan
+
+  - **User**: Tài khoản người dùng với các trường `username`, `password`, `role` (ADMIN/USER), `is_active`, liên kết với `Employee` qua `employee_id`.
+      
+
+  ### Endpoints
+
+  - **GET /api/auth/me** – Lấy thông tin người dùng hiện tại dựa trên access token đang hoạt động.
+      
+  - **POST /api/auth/login** – Đăng nhập bằng `username` và `password`, trả về `accessToken` và thông tin người dùng.
+      
+  - **POST /api/auth/logout** – Đăng xuất, hủy phiên làm việc hiện tại và vô hiệu hóa refresh token.
+      
+  - **POST /api/auth/refresh-token** – Làm mới access token bằng refresh token còn hiệu lực.
+      
+  - **POST /api/auth/register** – Đăng ký tài khoản mới với thông tin `username`, `password` và các thông tin cơ bản.
+
+  ### Schema: User
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `username` | string | Ten dang nhap, duy nhat trong he thong |
+  | `password` | string | Mat khau (da duoc hash) |
+  | `employee_id` | integer / null | Lien ket voi ho so nhan vien (Employee) |
+  | `role` | enum | Vai tro: `ADMIN` hoac `USER` |
+  | `is_active` | boolean | Trang thai kich hoat tai khoan (mac dinh: `true`) |
+  | `created_at` | datetime | Thoi diem tao tai khoan |
+  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
+  | `created_by` | integer | ID nguoi tao |
+  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
+  | `remark` | string | Ghi chu them |

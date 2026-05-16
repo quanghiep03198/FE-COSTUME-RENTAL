@@ -1,7 +1,17 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Users
+description: |-
+  Lay danh sach tat ca nguoi dung trong he thong. Ho tro mo rong thong tin nhan vien lien ket.
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | _expand | string | Mo rong du lieu lien ket (vi du: employee) |
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong User, co the kem thong tin Employee.
 method: GET
-url: "{{baseUrl}}/api/users?_expand=employee"
+url: '{{baseUrl}}/users?_expand=employee'
 queryParams:
   _expand: employee
 order: 1000

@@ -1,7 +1,18 @@
-$kind: http-request
+﻿$kind: http-request
 name: Get Category
+description: |-
+  Lay thong tin chi tiet cua mot danh muc san pham theo ID.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua danh muc can lay |
+
+  **Response:**
+  - 200 OK: Doi tuong ItemCategory tuong ung.
+  - 404 Not Found: Khong tim thay danh muc voi ID da cho.
 method: GET
-url: '{{baseUrl}}/api/categories/:id'
+url: '{{baseUrl}}/categories/:id'
 order: 2000
 pathVariables:
   - key: id

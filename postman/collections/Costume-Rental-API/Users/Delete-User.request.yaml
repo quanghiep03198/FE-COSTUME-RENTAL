@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete User
+description: |-
+  Xoa tai khoan nguoi dung theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua nguoi dung can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay nguoi dung.
 method: DELETE
-url: '{{baseUrl}}/api/users/:id'
+url: '{{baseUrl}}/users/:id'
 order: 5000
 pathVariables:
   - key: id

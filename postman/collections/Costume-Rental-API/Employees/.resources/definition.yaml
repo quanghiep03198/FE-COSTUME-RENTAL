@@ -1,0 +1,38 @@
+﻿$kind: collection
+name: Employees
+description: |-
+  ## Quản lý Nhân viên
+
+  Nhóm các API quản lý thông tin nhân viên trong hệ thống cho thuê trang phục. Nhân viên được phân chia theo vị trí công việc và trạng thái làm việc, liên kết trực tiếp với tài khoản người dùng trong hệ thống.
+
+  ### Entity liên quan
+  - **Employee**: Nhân viên với các trường `id`, `employee_code`, `user_id`, `full_name`, `email`, `phone`, `address`, `citizen_id_number`, `position` (MANAGER/WAREHOUSE_MANAGER/ORDER_PROCESSOR/TALENT/TECHICAL_CREW/WARDROBE), `work_status` (ACTIVE/SUSPENDED/EXITED).
+  - **User**: Tài khoản hệ thống liên kết với nhân viên qua `employee_id`.
+
+  ### Endpoints
+  - **GET /api/employees** – Lấy danh sách nhân viên, hỗ trợ lọc theo `position`, `work_status` và tìm kiếm theo tên.
+  - **GET /api/employees/:id** – Lấy thông tin chi tiết của một nhân viên theo `id`, bao gồm thông tin liên hệ và vị trí công việc.
+  - **POST /api/employees** – Tạo hồ sơ nhân viên mới với đầy đủ thông tin cá nhân và vị trí (yêu cầu quyền ADMIN).
+  - **PUT /api/employees/:id** – Cập nhật thông tin nhân viên theo `id`, bao gồm vị trí và trạng thái làm việc (yêu cầu quyền ADMIN).
+  - **DELETE /api/employees/:id** – Xóa hồ sơ nhân viên theo `id` (yêu cầu quyền ADMIN).
+
+  ## Schema: Employee
+
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | `id` | integer | Khoa chinh, dinh danh duy nhat |
+  | `employee_code` | string | Ma nhan vien, duy nhat trong he thong |
+  | `user_id` | integer / null | Lien ket voi tai khoan User (neu co) |
+  | `full_name` | string | Ho va ten day du |
+  | `email` | string (email) | Dia chi email lien he |
+  | `phone` | string | So dien thoai lien he |
+  | `address` | string | Dia chi thuong tru |
+  | `citizen_id_number` | string | So can cuoc cong dan / CMND |
+  | `position` | enum | Vi tri: `MANAGER`, `WAREHOUSE_MANAGER`, `ORDER_PROCESSOR`, `TALENT`, `TECHICAL_CREW`, `WARDROBE` |
+  | `work_status` | enum | Trang thai lam viec: `ACTIVE` (dang lam), `SUSPENDED` (tam nghi), `EXITED` (da nghi) |
+  | `is_active` | boolean | Trang thai kich hoat ho so (mac dinh: `true`) |
+  | `created_at` | datetime | Thoi diem tao ho so |
+  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
+  | `created_by` | integer | ID nguoi tao |
+  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
+  | `remark` | string | Ghi chu them |

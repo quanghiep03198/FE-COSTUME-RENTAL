@@ -1,5 +1,10 @@
-$kind: http-request
+﻿$kind: http-request
 name: List Equipment Props
+description: |-
+  Lay danh sach tat ca dao cu va thiet bi trong he thong. Ho tro loc theo danh muc va tu khoa tim kiem.
+
+  **Response:**
+  - 200 OK: Mang cac doi tuong EquipmentProps.
 method: GET
-url: '{{baseUrl}}/api/equipment-props'
+url: '{{baseUrl}}/equipment-props'
 order: 1000

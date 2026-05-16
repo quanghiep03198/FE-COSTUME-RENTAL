@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Delete Costume
+description: |-
+  Xoa mot trang phuc theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | id | integer | ID cua trang phuc can xoa |
+
+  **Query Params:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+
+  **Response:**
+  - 200 OK: Xoa thanh cong.
+  - 404 Not Found: Khong tim thay trang phuc.
 method: DELETE
-url: '{{baseUrl}}/api/costumes/:id'
+url: '{{baseUrl}}/costumes/:id'
 order: 5000
 pathVariables:
   - key: id

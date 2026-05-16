@@ -1,7 +1,23 @@
-$kind: http-request
+﻿$kind: http-request
 name: Update Inventory Condition
+description: |-
+  Cap nhat tinh trang chat luong cua mot san pham cu the trong kho theo SKU. Dung de ghi nhan tinh trang san pham sau khi kiem tra hoac bao tri.
+
+  **Path Variables:**
+  | Tham so | Kieu | Mo ta |
+  |---------|------|-------|
+  | sku | string | Ma SKU cua ban ghi ton kho can cap nhat |
+
+  **Body (JSON):**
+  | Truong | Kieu | Mo ta |
+  |--------|------|-------|
+  | inventory_condition_id | integer | ID tinh trang moi (InventoryCondition: A/B/C) |
+
+  **Response:**
+  - 200 OK: Ban ghi Inventory sau khi cap nhat tinh trang.
+  - 404 Not Found: Khong tim thay ban ghi voi SKU da cho.
 method: PATCH
-url: "{{baseUrl}}/api/inventory/condition/:sku"
+url: '{{baseUrl}}/inventory/condition/:sku'
 pathVariables:
   sku: TP-ADLT-VOL200-0001
 order: 4000
