@@ -1,4 +1,4 @@
-﻿$kind: http-request
+$kind: http-request
 name: Delete Employee
 description: |-
   Xóa hồ sơ nhân viên theo ID. Yêu cầu quyền ADMIN. Hỗ trợ xóa mềm hoặc xóa vĩnh viễn.
@@ -20,11 +20,7 @@ description: |-
   - 200 OK: Xóa thành công.
   - 404 Not Found: Không tìm thấy nhân viên.
 method: DELETE
-url: '{{baseUrl}}/employees/:id'
-order: 5000
+url: "{{baseUrl}}/employees/de:id"
 pathVariables:
-  - key: id
-    value: ''
-queryParams:
-  - key: permanantly
-    value: 'false'
+  id: ""
+order: 5000

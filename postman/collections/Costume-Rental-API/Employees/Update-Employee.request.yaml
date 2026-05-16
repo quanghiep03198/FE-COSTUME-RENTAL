@@ -1,4 +1,4 @@
-﻿$kind: http-request
+$kind: http-request
 name: Update Employee
 description: |-
   Cập nhật thông tin của một nhân viên theo ID. Yêu cầu quyền ADMIN.
@@ -22,19 +22,17 @@ description: |-
   - 200 OK: Hồ sơ nhân viên sau khi cập nhật.
   - 404 Not Found: Không tìm thấy nhân viên.
 method: PATCH
-url: '{{baseUrl}}/employees/:id'
+url: "{{baseUrl}}/employees/update/:id"
 order: 4000
 pathVariables:
-  - key: id
-    value: ''
+  id: "9"
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "full_name": "",
-      "phone": "",
+      "full_name": "Nguyễn Ngọc Đức Thành",
+      "phone": "0942899559",
       "work_status": "ACTIVE"
     }

@@ -14,8 +14,16 @@ description: |-
 
   - 200 OK: Mảng các đối tượng ItemCategory.
 method: GET
-url: "{{baseUrl}}/categories?_embed=costumes&type:eq=EQUIPMENT_PROPS"
+url: "{{baseUrl}}/categories?_embed=costumes&type:eq=COSTUME"
 queryParams:
-  _embed: costumes
-  type:eq: EQUIPMENT_PROPS
+  - key: _embed
+    value: equipment_props
+    disabled: true
+  - key: type:eq
+    value: EQUIPMENT_PROPS
+    disabled: true
+  - key: _embed
+    value: costumes
+  - key: type:eq
+    value: COSTUME
 order: 1000

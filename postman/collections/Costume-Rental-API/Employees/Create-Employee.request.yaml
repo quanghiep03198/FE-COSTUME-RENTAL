@@ -1,4 +1,4 @@
-﻿$kind: http-request
+$kind: http-request
 name: Create Employee
 description: |-
   Tạo mới hồ sơ nhân viên trong hệ thống. Yêu cầu quyền ADMIN. Mã nhân viên (employee_code) sẽ được tự động sinh.
@@ -20,20 +20,19 @@ description: |-
   - 201 Created: Hồ sơ nhân viên mới được tạo thành công.
   - 400 Bad Request: Dữ liệu không hợp lệ.
 method: POST
-url: '{{baseUrl}}/employees'
+url: "{{baseUrl}}/employees/create"
 order: 3000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "full_name": "",
-      "phone": "",
-      "email": "",
-      "address": "",
-      "citizen_id_number": "",
-      "position": "",
+      "full_name": "Đào Ngọc Linh",
+      "phone": "0964456768",
+      "email": "ngoclinh224@gmail.com",
+      "address": "Số 8/245 Nguyễn Văn Linh, Lê Chân Hải Phòng",
+      "citizen_id_number": "031446224890",
+      "position": "WAREHOUSE_MANAGER",
       "work_status": "ACTIVE"
     }

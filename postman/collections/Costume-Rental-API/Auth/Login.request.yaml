@@ -27,7 +27,7 @@ scripts:
 
       \    pm.response.to.have.status(200);\r
 
-      \    pm.expect(jsonData).to.have.property('accessToken');\r
+      \    pm.expect(jsonData).to.have.property('access_token');\r
 
       \    pm.expect(jsonData).to.have.property('user');\r
 
@@ -37,7 +37,7 @@ scripts:
 
       if (pm.response.code === 200 && jsonData) {\r
 
-      \    const token = jsonData.accessToken;\r
+      \    const token = jsonData.access_token;\r
 
       \    const user = jsonData.user || {};\r
 
@@ -62,6 +62,6 @@ body:
   type: json
   content: |-
     {
-      "username": "quanghiep031",
-      "password": "123123"
+    	"username": "quanghiep031",
+    	"password": "123123"
     }
