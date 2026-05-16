@@ -1,40 +1,18 @@
-import { Position, POSITION_OPTIONS } from '@/apis/employee/constants'
+import { POSITION_OPTIONS } from '@/apis/employee/constants'
 import { useCreateOrUpdateEmployeeMutataion } from '@/apis/employee/hooks/use-employee-request'
 import { createEmployeeSchema, type TCreateEmployeeSchema } from '@/apis/employee/schemas/create-employee.schema'
-import {
-  updateEmployeeSchema,
-  type TUpdateEmployeeSchema,
-  type TUpdateEmployeeValues,
-} from '@/apis/employee/schemas/update-employee.schema'
+import { updateEmployeeSchema, type TUpdateEmployeeSchema } from '@/apis/employee/schemas/update-employee.schema'
 import { CommonActions } from '@/common/constants/enums'
 import { standardizeName } from '@/common/helpers/standardize-name'
+import InputFieldControl from '@/components/forms/input-field-control'
+import SelectFieldControl from '@/components/forms/select-field-control'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from '@/components/ui/field'
+import { Field, FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
 import { Icon } from '@/components/ui/icon'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
-import { omit } from 'lodash-es'
 import React, { useRef, useState } from 'react'
-
-const DEFAULT_FORM_VALUES: TUpdateEmployeeValues = {
-  full_name: '',
-  citizen_id_number: '',
-  email: undefined,
-  phone: '',
-  address: '',
-  position: undefined,
-}
 
 const EmployeeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
@@ -45,13 +23,23 @@ const EmployeeFormDialog: React.FC = () => {
   const mutation = useCreateOrUpdateEmployeeMutataion(action)
 
   const form = useForm({
-    defaultValues: DEFAULT_FORM_VALUES,
+    defaultValues: {
+      full_name: '',
+      citizen_id_number: '',
+      email: '',
+      phone: '',
+      address: '',
+      position: {},
+    },
+    onSubmitInvalid: ({ value }) => {
+      console.log('value', value)
+    },
     onSubmit: async ({ value }) => {
       if (typeof mutation?.mutateAsync !== 'function') return
       await mutation.mutateAsync(value)
       setOpen(false)
     },
-    validators: { onSubmit: formSchemaRef.current! },
+    validators: { onSubmit: formSchemaRef.current as any },
   })
 
   event$.useSubscription((e) => {
@@ -101,138 +89,56 @@ const EmployeeFormDialog: React.FC = () => {
                     onChangeDebounceMs: 300,
                   }}
                 >
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field>
-                        <FieldLabel>Họ tên</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(standardizeName(e.target.value))}
-                          aria-invalid={isInvalid}
-                          type="text"
-                          placeholder="Nguyễn Văn A"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => <InputFieldControl field={field} label="Họ tên" type="text" placeholder="Nguyễn Văn A" />}
                 </FormField>
                 <FormField name="citizen_id_number">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field>
-                        <FieldLabel>Số CCCD</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="*** *** *** ***"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => (
+                    <InputFieldControl
+                      field={field}
+                      label="Số CCCD"
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="*** *** *** ***"
+                    />
+                  )}
                 </FormField>
                 <FormField name="phone">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field>
-                        <FieldLabel>Số điện thoại</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          type="tel"
-                          placeholder="09xx xxx xxx"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => (
+                    <InputFieldControl field={field} label="Số điện thoại" type="tel" placeholder="09xx xxx xxx" />
+                  )}
                 </FormField>
                 <FormField name="email">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field>
-                        <FieldLabel>Email</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          type="email"
-                          placeholder="example@gmail.com"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => (
+                    <InputFieldControl field={field} label="Email" type="email" placeholder="example@gmail.com" />
+                  )}
                 </FormField>
                 <FormField name="address">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field>
-                        <FieldLabel>Địa chỉ liên hệ</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          type="text"
-                          placeholder="Số 1, đường Lạch Tray, TP.Hải Phòng"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
+                  {(field) => (
+                    <InputFieldControl
+                      field={field}
+                      label="Địa chỉ liên hệ"
+                      type="text"
+                      placeholder="Số 1, đường Lạch Tray, TP.Hải Phòng"
+                    />
+                  )}
                 </FormField>
                 <FormField name="position">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
-                        <FieldLabel>Chức vụ</FieldLabel>
-                        <Select
-                          items={POSITION_OPTIONS.map((item) => omit(item, ['icon']))}
-                          value={field.state.value as Position}
-                          onValueChange={(value) => field.handleChange(value!)}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Chức vụ" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {POSITION_OPTIONS.map((item) => (
-                              <SelectItem key={item.value} value={item.value}>
-                                <div className="flex gap-x-2 items-center">
-                                  <Icon name={item.icon} />
-                                  {item.label}
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <SelectFieldControl
+                        field={field}
+                        label="Chức vụ"
+                        items={POSITION_OPTIONS}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Chức vụ"
+                        renderItem={(item) => (
+                          <div className="flex gap-x-2 items-center">
+                            <Icon name={item.icon} />
+                            {item.label}
+                          </div>
+                        )}
+                      />
                     )
                   }}
                 </FormField>

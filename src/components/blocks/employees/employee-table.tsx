@@ -123,7 +123,8 @@ const EmployeeTable: React.FC = () => {
       border="bottom-only"
       defaultFilterOpen={false}
       containerProps={{
-        style: { height: 'calc(var(--outlet-wrapper-height, 500px) - 9rem)' },
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
       }}
       virtualizerOptions={{ estimateSize: 56 }}
       toolbarProps={{

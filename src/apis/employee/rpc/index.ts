@@ -18,14 +18,25 @@ export const createEmployeeRpc = createServerFn({ method: 'POST' })
   .middleware([authMiddleware, requestMiddleware])
   .inputValidator(createEmployeeSchema)
   .handler(async ({ context, data }) => {
-    return await context.request({ url: '/employees', method: 'POST', data })
+    return await context.request({
+      url: '/employees',
+      method: 'POST',
+      data: {
+        ...data,
+        position: data.position.value,
+      },
+    })
   })
 
 export const updateEmployeeRpc = createServerFn({ method: 'POST' })
   .middleware([authMiddleware, requestMiddleware])
   .inputValidator(updateEmployeeSchema)
-  .handler(async ({ context, data: { id, ...update } }) => {
-    return await context.request({ url: `/employees/${id}`, method: 'PATCH', data: update })
+  .handler(async ({ context, data: { id, position, ...update } }) => {
+    return await context.request({
+      url: `/employees/${id}`,
+      method: 'PATCH',
+      data: { ...update, ...(position && { position: position.value }) },
+    })
   })
 
 export const deleteEmployeeRpc = createServerFn({ method: 'POST' })

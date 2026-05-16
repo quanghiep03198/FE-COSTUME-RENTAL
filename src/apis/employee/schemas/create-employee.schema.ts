@@ -26,7 +26,7 @@ export const createEmployeeSchema = object({
   address: string({ message: 'Vui lòng điền chỗ ở hiện nay' }).nonempty({
     message: 'Vui lòng điền chỗ ở hiện nay',
   }),
-  position: nativeEnum(Position, { message: 'Chọn 1 chức vụ làm việc' }),
+  position: object({ label: string(), value: nativeEnum(Position, { message: 'Chọn 1 chức vụ làm việc' }) }),
 })
 
 export type TCreateEmployeeSchema = typeof createEmployeeSchema
