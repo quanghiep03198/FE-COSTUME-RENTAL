@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils'
-import { type SelectRootProps } from '@base-ui/react'
+import type { SelectRootProps } from '@base-ui/react'
 import type { Group } from '@base-ui/react/internals/resolveValueLabel'
 import type { AnyFieldApi } from '@tanstack/react-form'
+import { sortBy } from 'lodash-es'
 import React, { Fragment } from 'react'
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field'
 import {
@@ -17,7 +18,7 @@ import {
 
 export type SelectFieldControlProps<T> = Pick<React.ComponentProps<typeof Field>, 'orientation'> & {
   field: AnyFieldApi
-  items: SelectRootProps<T>['items']
+  items: ReadonlyArray<T & { sortOrder?: number }> | Array<{ label: React.ReactNode; items: ReadonlyArray<T> }>
   disabled?: boolean
   multiple?: boolean
   label?: string
@@ -54,12 +55,14 @@ function SelectFieldControl<T>({
     <Field className={cn(classNames?.field)} orientation={orientation}>
       {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
       <Select
-        items={items}
+        items={items as SelectRootProps<T>['items']}
         itemToStringLabel={(item) => item[labelField]}
         itemToStringValue={(item) => item[valueField]}
         isItemEqualToValue={(itemValue, value) => itemValue[valueField] === value[valueField]}
         disabled={disabled}
-        value={field.state.value}
+        value={
+          Array.isArray(field.state.value) ? sortBy(field.state.value, (item) => item?.sortOrder) : field.state.value
+        }
         onValueChange={field.handleChange}
         multiple={multiple}
       >
@@ -88,10 +91,10 @@ function SelectFieldControl<T>({
               ) : (
                 <SelectItem
                   key={`${field.name}-item-${String(index)}`}
-                  value={item}
+                  value={item as T}
                   {...(typeof renderItem === 'function'
-                    ? { render: renderItem(item) }
-                    : { children: item[labelField] })}
+                    ? { render: renderItem(item as T) }
+                    : { children: (item as T)?.[labelField] as React.ReactNode })}
                 />
               )
             )}
