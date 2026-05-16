@@ -53,18 +53,6 @@ export const createCostumeSchema = z.object({
   hashtags: z.array(z.string()).nonempty(),
 })
 
-export const createCostumeReqSchema = createCostumeSchema
-  .omit({ category: true, images: true, sizes: true, unit: true })
-  .extend({
-    // category: z.object({ id: z.number() }),
-    category_id: z.number(),
-    images: z.array(z.number()),
-    sizes: z.array(z.nativeEnum(CostumeSize)),
-    unit: z.nativeEnum(CostumeUnit),
-  })
-
 export type TCreateCostumeSchema = typeof createCostumeSchema
 
 export type TCreateCostumeValues = z.infer<TCreateCostumeSchema>
-
-export type TCreateCostumeReqValues = z.infer<typeof createCostumeReqSchema>

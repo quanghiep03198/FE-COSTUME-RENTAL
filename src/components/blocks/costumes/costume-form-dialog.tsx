@@ -69,7 +69,7 @@ const CostumeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
   const [action, setAction] = useState<TDialogAction>('none')
-  const { data: categories, isLoading } = useGetCategoriesQuery(GET_COSTUME_CATEGORY_QUERY_KEY)
+  const { data: categories } = useGetCategoriesQuery(GET_COSTUME_CATEGORY_QUERY_KEY)
   const mutation = useCreateOrUpdateCostumeMutation(action)
   const formSchemaRef = useRef<TCreateCostumeSchema | TUpdateCostumeSchema | undefined>(undefined)
   const editorRef = useRef<{
@@ -83,10 +83,6 @@ const CostumeFormDialog: React.FC = () => {
       await mutation.mutateAsync({
         ...value,
         description: value.description || editorRef.current?.getHTML(),
-        category_id: value.category.id,
-        sizes: value.sizes.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => item.value),
-        unit: value.unit.value,
-        images: value.images?.map((img) => img.id),
       })
       setAction('none')
       setOpen(false)
