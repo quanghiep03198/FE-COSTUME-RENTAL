@@ -7,6 +7,7 @@ import {
 import { importInventorySchema, type TImportInventoryValues } from '@/apis/inventory/schemas/import-inventory.schema'
 import type { IInventoryCondition } from '@/apis/inventory/types/condition'
 import { useGetWarehouseQuery } from '@/apis/warehouse/hooks/use-warehouse-request'
+import type { IWarehouse } from '@/apis/warehouse/types'
 import { ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
@@ -179,7 +180,7 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
                 {(field) => (
                   <SelectFieldControl
                     field={field}
-                    items={warehouseOptions as unknown as SelectFieldControlProps<IInventoryCondition>['items']}
+                    items={warehouseOptions as unknown as SelectFieldControlProps<IWarehouse>['items']}
                     label="Kho hàng"
                     labelField="name"
                     valueField="id"

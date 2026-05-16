@@ -165,7 +165,8 @@ const ImageGalleryTable: React.FC = () => {
       toolbarProps={{ override: true, render: () => null }}
       virtualizerOptions={{ estimateSize: 75 }}
       containerProps={{
-        className: 'border-none h-[calc(100vh-14rem)]',
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
       }}
     />
   )

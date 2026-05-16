@@ -39,5 +39,4 @@ export const DEFAULT_COSTUME_DESCRIPTION: string = /* html */ `
          </tr>
       </tbody>
    </table>
-
 `

@@ -13,7 +13,7 @@ import {
   type TUpdateEquipmentPropsSchema,
 } from '@/apis/equipment-props/schemas/update-equipment-props.schema'
 import type { IImage } from '@/apis/image/types'
-import { DEFAULT_COSTUME_DESCRIPTION } from '@/assets/data/costume-description'
+import { DEFAULT_PROPS_DESCRIPTION } from '@/assets/data/props-description'
 import { CommonActions, ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
@@ -82,8 +82,6 @@ const CostumeFormDialog: React.FC = () => {
       await mutation.mutateAsync({
         ...value,
         description: editorRef.current?.getHTML(),
-        // category: value.category.id,
-        // images: value.images?.map((img) => img.id),
       })
       setAction('none')
       setOpen(false)
@@ -138,7 +136,7 @@ const CostumeFormDialog: React.FC = () => {
                   ? 'Điền thông tin để tạo mới trang phục'
                   : 'Cập nhật thông tin trang phục'}
               </FieldDescription>
-              <FieldGroup className="lg:max-xxl:max-h-[60vh] xxl:max-h-[75vh] overflow-auto">
+              <FieldGroup className="lg:max-xxl:max-h-[60vh] xxl:max-h-[75vh] overflow-auto grid grid-cols-6">
                 <FormField
                   name="name"
                   listeners={{
@@ -152,6 +150,7 @@ const CostumeFormDialog: React.FC = () => {
                         field={field}
                         label="Tên trang phục"
                         placeholder='Ví dụ: "Áo dài truyền thống"'
+                        classNames={{ field: 'col-span-2' }}
                       />
                     )
 
@@ -168,6 +167,7 @@ const CostumeFormDialog: React.FC = () => {
                         items={categories as unknown as SelectFieldControlProps<ICategory>['items']}
                         labelField="name"
                         valueField="id"
+                        classNames={{ field: 'col-span-2' }}
                       />
                     )
                   }}
@@ -176,7 +176,7 @@ const CostumeFormDialog: React.FC = () => {
                   {(field) => {
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field className="col-span-4">
+                      <Field className="col-span-2">
                         <FieldLabel htmlFor={field.name}>Hashtags</FieldLabel>
                         <TagsInput
                           value={field.state.value}
@@ -197,19 +197,27 @@ const CostumeFormDialog: React.FC = () => {
                         label="Giá thuê theo ngày (VNĐ)"
                         type="number"
                         placeholder={formatCurrency(100_000)}
+                        classNames={{ field: 'col-span-3' }}
                       />
                     )
                   }}
                 </FormField>
                 <FormField name="unit">
                   {(field) => {
-                    return <InputFieldControl field={field} label="Đơn vị" placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"' />
+                    return (
+                      <InputFieldControl
+                        field={field}
+                        label="Đơn vị"
+                        placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"'
+                        classNames={{ field: 'col-span-3' }}
+                      />
+                    )
                   }}
                 </FormField>
                 <FormField name="images">
                   {(field) => {
                     return (
-                      <Field className="col-span-12">
+                      <Field className="col-span-6">
                         <FieldLabel htmlFor={field.name}>Hình ảnh</FieldLabel>
                         {!Array.isArray(field.state.value) || !field.state.value.length ? (
                           <Empty className="border">
@@ -270,7 +278,7 @@ const CostumeFormDialog: React.FC = () => {
                   <FieldLabel>Mô tả</FieldLabel>
                   <Editor
                     ref={editorRef}
-                    defaultValue={form.getFieldValue('description') ?? DEFAULT_COSTUME_DESCRIPTION}
+                    defaultValue={form.getFieldValue('description') ?? DEFAULT_PROPS_DESCRIPTION}
                   />
                   {!editorRef.current?.isEmpty() === false && (
                     <FieldError errors={form.getFieldMeta('description')?.errors} />

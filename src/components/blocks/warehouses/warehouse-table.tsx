@@ -139,7 +139,8 @@ const WarehouseTable: React.FC = () => {
       virtualizerOptions={{ estimateSize: 60 }}
       toolbarProps={{ override: true, render: WarehouseTableToolbar }}
       containerProps={{
-        className: 'h-[calc(100vh-12rem)]',
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
       }}
     />
   )

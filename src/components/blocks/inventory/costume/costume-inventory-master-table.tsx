@@ -178,7 +178,10 @@ const CostumeInventoryMasterTable: React.FC = () => {
       loading={isLoading}
       virtualizerOptions={{ estimateSize: 80 }}
       enableExpanding
-      containerProps={{ className: 'h-[calc(100vh-12rem)] [&_table]:table-fixed' }}
+      containerProps={{
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)] [&_table]:table-fixed',
+      }}
       toolbarProps={{
         override: true,
         render: CostumeInventoryTableToolbar,

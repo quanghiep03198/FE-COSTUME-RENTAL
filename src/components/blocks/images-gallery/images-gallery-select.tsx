@@ -101,7 +101,7 @@ const ImageList: React.FC<TImageListProps> = ({ data, isLoading, type, selected,
             (img) => `${img.category_id}.${img?.category?.name}`
           )
         ).map(([category, images]) => (
-          <div className="flex flex-col space-y-3">
+          <div key={category} className="flex flex-col space-y-3">
             <Typography variant="small" color="muted">
               {category.split('.').at(-1)}
             </Typography>
