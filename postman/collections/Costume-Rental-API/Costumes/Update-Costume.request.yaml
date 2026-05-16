@@ -1,23 +1,26 @@
 ﻿$kind: http-request
 name: Update Costume
 description: |-
-  Cap nhat thong tin cua mot trang phuc theo ID. Yeu cau quyen ADMIN. Chi can gui cac truong can thay doi.
+  Cập nhật thông tin của một trang phục theo ID. Yêu cầu quyền ADMIN. Chỉ cần gửi các trường cần thay đổi.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua trang phuc can cap nhat |
+  | id | integer | ID của trang phục cần cập nhật |
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | name | string | Ten trang phuc moi |
-  | rental_price_per_day | integer | Gia thue moi (toi thieu 50.000 VND) |
-  | is_active | boolean | Trang thai kich hoat |
+  | name | string | Tên trang phục mới |
+  | rental_price_per_day | integer | Giá thuê mới (tối thiểu 50.000 VND) |
+  | is_active | boolean | Trạng thái kích hoạt |
 
   **Response:**
-  - 200 OK: Trang phuc sau khi cap nhat.
-  - 404 Not Found: Khong tim thay trang phuc.
+
+  - 200 OK: Trang phục sau khi cập nhật.
+  - 404 Not Found: Không tìm thấy trang phục.
 method: PATCH
 url: '{{baseUrl}}/costumes/:id'
 order: 4000

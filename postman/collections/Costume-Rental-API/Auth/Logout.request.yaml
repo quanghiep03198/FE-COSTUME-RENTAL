@@ -1,11 +1,13 @@
-﻿$kind: http-request
+$kind: http-request
 name: Logout
 description: |-
-  Dang xuat khoi he thong. Endpoint nay huy phien lam viec hien tai va vo hieu hoa refresh token dang hoat dong. Yeu cau gui kem access token hop le trong header Authorization.
+  Đăng xuất khỏi hệ thống. Endpoint này hủy phiên làm việc hiện tại và vô hiệu hóa refresh token đang hoạt động. Yêu cầu gửi kèm access token hợp lệ trong header Authorization.
 
   **Response:**
-  - 200 OK: Dang xuat thanh cong.
-  - 401 Unauthorized: Token khong hop le hoac da het han.
+
+  - 200 OK: Đăng xuất thành công.
+      
+  - 401 Unauthorized: Token không hợp lệ hoặc đã hết hạn.
 method: POST
-url: '{{baseUrl}}/auth/logout'
+url: "{{baseUrl}}/auth/logout"
 order: 3000

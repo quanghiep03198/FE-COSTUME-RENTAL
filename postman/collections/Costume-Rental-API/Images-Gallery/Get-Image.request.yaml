@@ -1,16 +1,18 @@
 ﻿$kind: http-request
 name: Get Image
 description: |-
-  Lay thong tin metadata cua mot hinh anh theo ID, bao gom ten file, kich thuoc, URL truy cap va danh muc lien ket.
+  Lấy thông tin metadata của một hình ảnh theo ID, bao gồm tên file, kích thước, URL truy cập và danh mục liên kết.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua hinh anh can lay |
+  | id | integer | ID của hình ảnh cần lấy |
 
   **Response:**
-  - 200 OK: Doi tuong ImageGallery voi day du metadata.
-  - 404 Not Found: Khong tim thay hinh anh.
+
+  - 200 OK: Đối tượng ImageGallery với đầy đủ metadata.
+  - 404 Not Found: Không tìm thấy hình ảnh.
 method: GET
 url: '{{baseUrl}}/images-gallery/:id'
 order: 2000

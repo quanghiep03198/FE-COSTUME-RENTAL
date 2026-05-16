@@ -3,4 +3,5 @@ workspace:
   id: 7314ad39-0426-4afe-8eb1-882d61f296d9
 
 localResources:
-  specs: []
+  specs:
+    - ..\postman\specs\Costume Rental API\Costume Rental API.yaml

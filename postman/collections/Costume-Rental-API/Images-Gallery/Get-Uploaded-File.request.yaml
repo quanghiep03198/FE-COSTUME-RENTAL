@@ -1,17 +1,19 @@
 ﻿$kind: http-request
 name: Get Uploaded File
 description: |-
-  Truy xuat truc tiep file anh da upload tu server theo ten thu muc va ten file. Endpoint nay khong yeu cau xac thuc (noauth) va tra ve binary stream cua file anh.
+  Truy xuất trực tiếp file ảnh đã upload từ server theo tên thư mục và tên file. Endpoint này không yêu cầu xác thực (noauth) và trả về binary stream của file ảnh.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | folder | string | Ten thu muc chua file tren server |
-  | fileName | string | Ten file anh can truy xuat |
+  | folder | string | Tên thư mục chứa file trên server |
+  | fileName | string | Tên file ảnh cần truy xuất |
 
   **Response:**
-  - 200 OK: Binary stream cua file anh voi Content-Type tuong ung.
-  - 404 Not Found: Khong tim thay file.
+
+  - 200 OK: Binary stream của file ảnh với Content-Type tương ứng.
+  - 404 Not Found: Không tìm thấy file.
 method: GET
 url: '{{baseUrl}}/upload/:folder/:fileName'
 order: 6000

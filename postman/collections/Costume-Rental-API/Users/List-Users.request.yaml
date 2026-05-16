@@ -1,15 +1,17 @@
 ﻿$kind: http-request
 name: List Users
 description: |-
-  Lay danh sach tat ca nguoi dung trong he thong. Ho tro mo rong thong tin nhan vien lien ket.
+  Lấy danh sách tất cả người dùng trong hệ thống. Hỗ trợ mở rộng thông tin nhân viên liên kết.
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | _expand | string | Mo rong du lieu lien ket (vi du: employee) |
+  | _expand | string | Mở rộng dữ liệu liên kết (ví dụ: employee) |
 
   **Response:**
-  - 200 OK: Mang cac doi tuong User, co the kem thong tin Employee.
+
+  - 200 OK: Mảng các đối tượng User, có thể kèm thông tin Employee.
 method: GET
 url: '{{baseUrl}}/users?_expand=employee'
 queryParams:

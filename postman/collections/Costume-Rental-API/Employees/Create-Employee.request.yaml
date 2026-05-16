@@ -1,22 +1,24 @@
 ﻿$kind: http-request
 name: Create Employee
 description: |-
-  Tao moi ho so nhan vien trong he thong. Yeu cau quyen ADMIN. Ma nhan vien (employee_code) se duoc tu dong sinh.
+  Tạo mới hồ sơ nhân viên trong hệ thống. Yêu cầu quyền ADMIN. Mã nhân viên (employee_code) sẽ được tự động sinh.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | full_name | string | Ho va ten day du cua nhan vien |
-  | phone | string | So dien thoai lien he |
-  | email | string | Dia chi email lien he |
-  | address | string | Dia chi thuong tru |
-  | citizen_id_number | string | So can cuoc cong dan / CMND |
-  | position | enum | Vi tri: MANAGER, WAREHOUSE_MANAGER, ORDER_PROCESSOR, TALENT, TECHICAL_CREW, WARDROBE |
-  | work_status | enum | Trang thai: ACTIVE, SUSPENDED, EXITED (mac dinh: ACTIVE) |
+  | full_name | string | Họ và tên đầy đủ của nhân viên |
+  | phone | string | Số điện thoại liên hệ |
+  | email | string | Địa chỉ email liên hệ |
+  | address | string | Địa chỉ thường trú |
+  | citizen_id_number | string | Số căn cước công dân / CMND |
+  | position | enum | Vị trí: MANAGER, WAREHOUSE_MANAGER, ORDER_PROCESSOR, TALENT, TECHICAL_CREW, WARDROBE |
+  | work_status | enum | Trạng thái: ACTIVE, SUSPENDED, EXITED (mặc định: ACTIVE) |
 
   **Response:**
-  - 201 Created: Ho so nhan vien moi duoc tao thanh cong.
-  - 400 Bad Request: Du lieu khong hop le.
+
+  - 201 Created: Hồ sơ nhân viên mới được tạo thành công.
+  - 400 Bad Request: Dữ liệu không hợp lệ.
 method: POST
 url: '{{baseUrl}}/employees'
 order: 3000

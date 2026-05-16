@@ -1,23 +1,25 @@
 ﻿$kind: http-request
 name: Create Category
 description: |-
-  Tao moi mot danh muc san pham. Yeu cau quyen ADMIN. Slug se duoc tu dong sinh tu truong name.
+  Tạo mới một danh mục sản phẩm. Yêu cầu quyền ADMIN. Slug sẽ được tự động sinh từ trường name.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
-  |--------|------|-------|
-  | name | string | Ten danh muc |
-  | type | enum | Loai danh muc: COSTUME hoac EQUIPMENT_PROPS |
+
+  | Trường | Kiểu | Mô tả |  
+  |--------|------|-------|  
+  | name | string | Tên danh mục |  
+  | type | enum | Loại danh mục: COSTUME hoặc EQUIPMENT_PROPS |
 
   **Response:**
-  - 201 Created: Danh muc moi duoc tao thanh cong.
-  - 400 Bad Request: Du lieu khong hop le.
+
+  - 201 Created: Danh mục mới được tạo thành công.
+      
+  - 400 Bad Request: Dữ liệu không hợp lệ.
 method: POST
-url: '{{baseUrl}}/categories'
+url: "{{baseUrl}}/categories"
 order: 3000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-

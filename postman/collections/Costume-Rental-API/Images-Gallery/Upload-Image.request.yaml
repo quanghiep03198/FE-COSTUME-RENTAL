@@ -1,17 +1,19 @@
 ﻿$kind: http-request
 name: Upload Image
 description: |-
-  Upload mot hoac nhieu hinh anh len he thong su dung multipart/form-data. Ho tro cac dinh dang PNG, JPG, JPEG, WEBP. Tra ve thong tin metadata cua cac anh da upload.
+  Upload một hoặc nhiều hình ảnh lên hệ thống sử dụng multipart/form-data. Hỗ trợ các định dạng PNG, JPG, JPEG, WEBP. Trả về thông tin metadata của các ảnh đã upload.
 
   **Form Data:**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | data | text (JSON) | Metadata kem theo: { category_id } |
-  | files | file | File anh can upload (PNG/JPG/JPEG/WEBP) |
+  | data | text (JSON) | Metadata kèm theo: { category_id } |
+  | files | file | File ảnh cần upload (PNG/JPG/JPEG/WEBP) |
 
   **Response:**
-  - 201 Created: Danh sach doi tuong ImageGallery cua cac anh da upload.
-  - 400 Bad Request: Dinh dang file khong hop le.
+
+  - 201 Created: Danh sách đối tượng ImageGallery của các ảnh đã upload.
+  - 400 Bad Request: Định dạng file không hợp lệ.
 method: POST
 url: '{{baseUrl}}/images-gallery/upload'
 order: 3000

@@ -1,19 +1,22 @@
-﻿$kind: http-request
+$kind: http-request
 name: Login
 description: |-
-  Dang nhap vao he thong bang ten dang nhap va mat khau. Khi thanh cong, server tra ve accessToken (JWT) va thong tin nguoi dung. Access token se duoc luu vao bien moi truong token tu dong qua script.
+  Đăng nhập vào hệ thống bằng tên đăng nhập và mật khẩu. Khi thành công, server trả về accessToken (JWT) và thông tin người dùng. Access token sẽ được lưu vào biến môi trường token tự động qua script.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
-  |--------|------|-------|
-  | username | string | Ten dang nhap cua tai khoan |
-  | password | string | Mat khau cua tai khoan |
+
+  | Trường | Kiểu | Mô tả |
+  | --- | --- | --- |
+  | username | string | Tên đăng nhập của tài khoản |
+  | password | string | Mật khẩu của tài khoản |
 
   **Response:**
-  - 200 OK: { accessToken, user } - dang nhap thanh cong, token duoc luu vao moi truong.
-  - 401 Unauthorized: Sai ten dang nhap hoac mat khau.
+
+  - 200 OK: { accessToken, user } - đăng nhập thành công, token được lưu vào môi trường.
+      
+  - 401 Unauthorized: Sai tên đăng nhập hoặc mật khẩu.
 method: POST
-url: '{{baseUrl}}/auth/login'
+url: "{{baseUrl}}/auth/login"
 scripts:
   - type: afterResponse
     code: "const jsonData = pm.response.json();\r

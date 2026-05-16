@@ -1,22 +1,25 @@
 ﻿$kind: http-request
 name: Update Category
 description: |-
-  Cap nhat thong tin cua mot danh muc san pham theo ID. Yeu cau quyen ADMIN.
+  Cập nhật thông tin của một danh mục sản phẩm theo ID. Yêu cầu quyền ADMIN.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua danh muc can cap nhat |
+  | id | integer | ID của danh mục cần cập nhật |
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | name | string | Ten danh muc moi |
-  | type | enum | Loai danh muc: COSTUME hoac EQUIPMENT_PROPS |
+  | name | string | Tên danh mục mới |
+  | type | enum | Loại danh mục: COSTUME hoặc EQUIPMENT_PROPS |
 
   **Response:**
-  - 200 OK: Danh muc sau khi cap nhat.
-  - 404 Not Found: Khong tim thay danh muc.
+
+  - 200 OK: Danh mục sau khi cập nhật.
+  - 404 Not Found: Không tìm thấy danh mục.
 method: PATCH
 url: '{{baseUrl}}/categories/:id'
 order: 4000

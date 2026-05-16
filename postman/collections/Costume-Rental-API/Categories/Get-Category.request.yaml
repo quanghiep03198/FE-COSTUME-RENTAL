@@ -1,19 +1,21 @@
 ﻿$kind: http-request
 name: Get Category
 description: |-
-  Lay thong tin chi tiet cua mot danh muc san pham theo ID.
+  Lấy thông tin chi tiết của một danh mục sản phẩm theo ID.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
-  |---------|------|-------|
-  | id | integer | ID cua danh muc can lay |
+
+  | Tham số | Kiểu | Mô tả |  
+  |---------|------|-------|  
+  | id | integer | ID của danh mục cần lấy |
 
   **Response:**
-  - 200 OK: Doi tuong ItemCategory tuong ung.
-  - 404 Not Found: Khong tim thay danh muc voi ID da cho.
+
+  - 200 OK: Đối tượng ItemCategory tương ứng.
+      
+  - 404 Not Found: Không tìm thấy danh mục với ID đã cho.
 method: GET
-url: '{{baseUrl}}/categories/:id'
+url: "{{baseUrl}}/categories/:id"
 order: 2000
 pathVariables:
-  - key: id
-    value: ''
+  id: ""

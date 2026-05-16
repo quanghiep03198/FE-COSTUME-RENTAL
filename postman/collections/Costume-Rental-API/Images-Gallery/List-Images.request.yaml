@@ -1,10 +1,11 @@
 ﻿$kind: http-request
 name: List Images
 description: |-
-  Lay danh sach tat ca hinh anh trong thu vien. Ho tro loc theo category_id va mime_type.
+  Lấy danh sách tất cả hình ảnh trong thư viện. Hỗ trợ lọc theo category_id và mime_type.
 
   **Response:**
-  - 200 OK: Mang cac doi tuong ImageGallery.
+
+  - 200 OK: Mảng các đối tượng ImageGallery.
 method: GET
 url: '{{baseUrl}}/images-gallery'
 examples: .resources/List-Images.resources/examples

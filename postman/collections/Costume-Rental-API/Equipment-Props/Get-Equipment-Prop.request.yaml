@@ -1,16 +1,18 @@
 ﻿$kind: http-request
 name: Get Equipment Prop
 description: |-
-  Lay thong tin chi tiet cua mot dao cu/thiet bi theo ID, bao gom hinh anh, mo ta va thong tin danh muc.
+  Lấy thông tin chi tiết của một đạo cụ/thiết bị theo ID, bao gồm hình ảnh, mô tả và thông tin danh mục.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua dao cu/thiet bi can lay |
+  | id | integer | ID của đạo cụ/thiết bị cần lấy |
 
   **Response:**
-  - 200 OK: Doi tuong EquipmentProps day du thong tin.
-  - 404 Not Found: Khong tim thay dao cu/thiet bi.
+
+  - 200 OK: Đối tượng EquipmentProps đầy đủ thông tin.
+  - 404 Not Found: Không tìm thấy đạo cụ/thiết bị.
 method: GET
 url: '{{baseUrl}}/equipment-props/:id'
 order: 2000

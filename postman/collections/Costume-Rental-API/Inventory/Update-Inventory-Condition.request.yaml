@@ -1,21 +1,24 @@
 ﻿$kind: http-request
 name: Update Inventory Condition
 description: |-
-  Cap nhat tinh trang chat luong cua mot san pham cu the trong kho theo SKU. Dung de ghi nhan tinh trang san pham sau khi kiem tra hoac bao tri.
+  Cập nhật tình trạng chất lượng của một sản phẩm cụ thể trong kho theo SKU. Dùng để ghi nhận tình trạng sản phẩm sau khi kiểm tra hoặc bảo trì.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | sku | string | Ma SKU cua ban ghi ton kho can cap nhat |
+  | sku | string | Mã SKU của bản ghi tồn kho cần cập nhật |
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | inventory_condition_id | integer | ID tinh trang moi (InventoryCondition: A/B/C) |
+  | inventory_condition_id | integer | ID tình trạng mới (InventoryCondition: A/B/C) |
 
   **Response:**
-  - 200 OK: Ban ghi Inventory sau khi cap nhat tinh trang.
-  - 404 Not Found: Khong tim thay ban ghi voi SKU da cho.
+
+  - 200 OK: Bản ghi Inventory sau khi cập nhật tình trạng.
+  - 404 Not Found: Không tìm thấy bản ghi với SKU đã cho.
 method: PATCH
 url: '{{baseUrl}}/inventory/condition/:sku'
 pathVariables:

@@ -18,17 +18,17 @@ description: |-
 
   ## Schema: ImageGallery
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `file_name` | string | Ten file anh tren server |
-  | `size` | integer | Kich thuoc file tinh bang byte |
-  | `dest` | string (url) | URL day du de truy cap file anh |
-  | `mime_type` | enum | Dinh dang file: `image/png`, `image/jpg`, `image/jpeg`, `image/webp` |
-  | `category_id` | integer | Lien ket voi danh muc (tuy chon) |
-  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
-  | `created_at` | datetime | Thoi diem upload |
-  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
-  | `created_by` | integer | ID nguoi upload |
-  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
-  | `remark` | string | Ghi chu them |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `file_name` | string | Tên file ảnh trên server |
+  | `size` | integer | Kích thước file tính bằng byte |
+  | `dest` | string (url) | URL đầy đủ để truy cập file ảnh |
+  | `mime_type` | enum | Định dạng file: `image/png`, `image/jpg`, `image/jpeg`, `image/webp` |
+  | `category_id` | integer | Liên kết với danh mục (tùy chọn) |
+  | `is_active` | boolean | Trạng thái kích hoạt (mặc định: `true`) |
+  | `created_at` | datetime | Thời điểm upload |
+  | `updated_at` | datetime / null | Thời điểm cập nhật gần nhất |
+  | `created_by` | integer | ID người upload |
+  | `updated_by` | integer | ID người cập nhật gần nhất |
+  | `remark` | string | Ghi chú thêm |

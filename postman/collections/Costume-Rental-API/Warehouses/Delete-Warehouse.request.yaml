@@ -1,21 +1,24 @@
 ﻿$kind: http-request
 name: Delete Warehouse
 description: |-
-  Xoa mot kho hang theo ID. Yeu cau quyen ADMIN va kho phai khong con ton kho. Ho tro xoa mem hoac xoa vinh vien.
+  Xóa một kho hàng theo ID. Yêu cầu quyền ADMIN và kho phải không còn tồn kho. Hỗ trợ xóa mềm hoặc xóa vĩnh viễn.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua kho can xoa |
+  | id | integer | ID của kho cần xóa |
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+  | permanantly | boolean | true để xóa vĩnh viễn, false để xóa mềm (mặc định: false) |
 
   **Response:**
-  - 200 OK: Xoa thanh cong.
-  - 404 Not Found: Khong tim thay kho.
+
+  - 200 OK: Xóa thành công.
+  - 404 Not Found: Không tìm thấy kho.
 method: DELETE
 url: '{{baseUrl}}/warehouses/:id'
 order: 5000

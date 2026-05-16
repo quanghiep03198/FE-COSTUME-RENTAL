@@ -18,19 +18,19 @@ description: |-
 
   ## Schema: EquipmentProps
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `name` | string | Ten dao cu/thiet bi |
-  | `slug` | string | Slug URL than thien, tu dong sinh tu `name` |
-  | `category_id` | integer | Lien ket voi danh muc (ItemCategory, type = EQUIPMENT_PROPS) |
-  | `unit` | string | Don vi tinh (vi du: cai, bo, chiec) |
-  | `description` | string | Mo ta chi tiet dao cu/thiet bi |
-  | `images` | array<integer> | Danh sach ID anh lien ket (ImageGallery) |
-  | `hashtags` | array<string> | Danh sach hashtag phan loai, khong trung lap |
-  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
-  | `created_at` | datetime | Thoi diem tao |
-  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
-  | `created_by` | integer | ID nguoi tao |
-  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
-  | `remark` | string | Ghi chu them |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `name` | string | Tên đạo cụ/thiết bị |
+  | `slug` | string | Slug URL thân thiện, tự động sinh từ `name` |
+  | `category_id` | integer | Liên kết với danh mục (ItemCategory, type = EQUIPMENT_PROPS) |
+  | `unit` | string | Đơn vị tính (ví dụ: cái, bộ, chiếc) |
+  | `description` | string | Mô tả chi tiết đạo cụ/thiết bị |
+  | `images` | array<integer> | Danh sách ID ảnh liên kết (ImageGallery) |
+  | `hashtags` | array<string> | Danh sách hashtag phân loại, không trùng lặp |
+  | `is_active` | boolean | Trạng thái kích hoạt (mặc định: `true`) |
+  | `created_at` | datetime | Thời điểm tạo |
+  | `updated_at` | datetime / null | Thời điểm cập nhật gần nhất |
+  | `created_by` | integer | ID người tạo |
+  | `updated_by` | integer | ID người cập nhật gần nhất |
+  | `remark` | string | Ghi chú thêm |

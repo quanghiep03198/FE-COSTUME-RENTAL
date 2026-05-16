@@ -1,20 +1,22 @@
 ﻿$kind: http-request
 name: List Costume Inventory
 description: |-
-  Lay danh sach ton kho trang phuc. Ho tro loc theo nhieu tieu chi va mo rong thong tin tinh trang san pham.
+  Lấy danh sách tồn kho trang phục. Hỗ trợ lọc theo nhiều tiêu chí và mở rộng thông tin tình trạng sản phẩm.
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | _expand | string | Mo rong du lieu lien ket (vi du: inventory_condition) |
-  | item_id | integer | Loc theo ID trang phuc |
-  | inventory_condition_id | integer | Loc theo ID tinh trang san pham |
-  | warehouse_id | integer | Loc theo ID kho |
-  | status | enum | Loc theo trang thai: AVAILABLE, RENTED, MAINTENANCE, DISPOSED |
-  | keyword | string | Tim kiem theo tu khoa (ten, SKU) |
+  | _expand | string | Mở rộng dữ liệu liên kết (ví dụ: inventory_condition) |
+  | item_id | integer | Lọc theo ID trang phục |
+  | inventory_condition_id | integer | Lọc theo ID tình trạng sản phẩm |
+  | warehouse_id | integer | Lọc theo ID kho |
+  | status | enum | Lọc theo trạng thái: AVAILABLE, RENTED, MAINTENANCE, DISPOSED |
+  | keyword | string | Tìm kiếm theo từ khóa (tên, SKU) |
 
   **Response:**
-  - 200 OK: Mang cac ban ghi Inventory cua trang phuc.
+
+  - 200 OK: Mảng các bản ghi Inventory của trang phục.
 method: GET
 url: '{{baseUrl}}/inventory/costumes'
 queryParams:

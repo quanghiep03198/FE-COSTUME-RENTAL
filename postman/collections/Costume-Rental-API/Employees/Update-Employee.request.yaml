@@ -1,23 +1,26 @@
 ﻿$kind: http-request
 name: Update Employee
 description: |-
-  Cap nhat thong tin cua mot nhan vien theo ID. Yeu cau quyen ADMIN.
+  Cập nhật thông tin của một nhân viên theo ID. Yêu cầu quyền ADMIN.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua nhan vien can cap nhat |
+  | id | integer | ID của nhân viên cần cập nhật |
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | full_name | string | Ho va ten moi |
-  | phone | string | So dien thoai moi |
-  | work_status | enum | Trang thai lam viec moi: ACTIVE, SUSPENDED, EXITED |
+  | full_name | string | Họ và tên mới |
+  | phone | string | Số điện thoại mới |
+  | work_status | enum | Trạng thái làm việc mới: ACTIVE, SUSPENDED, EXITED |
 
   **Response:**
-  - 200 OK: Ho so nhan vien sau khi cap nhat.
-  - 404 Not Found: Khong tim thay nhan vien.
+
+  - 200 OK: Hồ sơ nhân viên sau khi cập nhật.
+  - 404 Not Found: Không tìm thấy nhân viên.
 method: PATCH
 url: '{{baseUrl}}/employees/:id'
 order: 4000

@@ -1,25 +1,27 @@
 ﻿$kind: http-request
 name: Create Equipment Prop
 description: |-
-  Tao moi mot dao cu/thiet bi trong he thong. Yeu cau quyen ADMIN. Slug se duoc tu dong sinh tu truong name.
+  Tạo mới một đạo cụ/thiết bị trong hệ thống. Yêu cầu quyền ADMIN. Slug sẽ được tự động sinh từ trường name.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | name | string | Ten dao cu/thiet bi |
-  | category_id | integer | ID danh muc (ItemCategory, type = EQUIPMENT_PROPS) |
-  | rental_price_per_day | integer | Gia thue/ngay (toi thieu 50.000 VND) |
-  | weight_kg | number | Trong luong tinh bang kg |
-  | dimensions | object | Kich thuoc (dai x rong x cao) |
-  | is_fragile | boolean | Co de vo/hu khong (mac dinh: false) |
-  | description | string | Mo ta chi tiet |
-  | images | array | Danh sach ID anh (ImageGallery) |
-  | unit | string | Don vi tinh (vi du: cai, bo, chiec) |
-  | hashtags | array | Danh sach hashtag, khong trung lap |
+  | name | string | Tên đạo cụ/thiết bị |
+  | category_id | integer | ID danh mục (ItemCategory, type = EQUIPMENT_PROPS) |
+  | rental_price_per_day | integer | Giá thuê/ngày (tối thiểu 50.000 VND) |
+  | weight_kg | number | Trọng lượng tính bằng kg |
+  | dimensions | object | Kích thước (dài x rộng x cao) |
+  | is_fragile | boolean | Có dễ vỡ/hư không (mặc định: false) |
+  | description | string | Mô tả chi tiết |
+  | images | array | Danh sách ID ảnh (ImageGallery) |
+  | unit | string | Đơn vị tính (ví dụ: cái, bộ, chiếc) |
+  | hashtags | array | Danh sách hashtag, không trùng lặp |
 
   **Response:**
-  - 201 Created: Dao cu/thiet bi moi duoc tao thanh cong.
-  - 400 Bad Request: Du lieu khong hop le.
+
+  - 201 Created: Đạo cụ/thiết bị mới được tạo thành công.
+  - 400 Bad Request: Dữ liệu không hợp lệ.
 method: POST
 url: '{{baseUrl}}/equipment-props'
 order: 3000

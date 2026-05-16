@@ -1,19 +1,21 @@
 ﻿$kind: http-request
 name: List Props Inventory
 description: |-
-  Lay danh sach ton kho dao cu/thiet bi. Ho tro loc theo nhieu tieu chi.
+  Lấy danh sách tồn kho đạo cụ/thiết bị. Hỗ trợ lọc theo nhiều tiêu chí.
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | item_id | integer | Loc theo ID dao cu/thiet bi |
-  | inventory_condition_id | integer | Loc theo ID tinh trang san pham |
-  | warehouse_id | integer | Loc theo ID kho |
-  | status | enum | Loc theo trang thai: AVAILABLE, RENTED, MAINTENANCE, DISPOSED |
-  | keyword | string | Tim kiem theo tu khoa (ten, SKU) |
+  | item_id | integer | Lọc theo ID đạo cụ/thiết bị |
+  | inventory_condition_id | integer | Lọc theo ID tình trạng sản phẩm |
+  | warehouse_id | integer | Lọc theo ID kho |
+  | status | enum | Lọc theo trạng thái: AVAILABLE, RENTED, MAINTENANCE, DISPOSED |
+  | keyword | string | Tìm kiếm theo từ khóa (tên, SKU) |
 
   **Response:**
-  - 200 OK: Mang cac ban ghi Inventory cua dao cu/thiet bi.
+
+  - 200 OK: Mảng các bản ghi Inventory của đạo cụ/thiết bị.
 method: GET
 url: '{{baseUrl}}/inventory/props'
 order: 2000

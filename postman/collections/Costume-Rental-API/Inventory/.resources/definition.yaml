@@ -18,30 +18,30 @@ description: |-
 
   ## Schema: Inventory
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `sku` | string | Ma SKU duy nhat cua ban ghi ton kho |
-  | `item_id` | integer | ID san pham (Costume hoac EquipmentProps) |
-  | `item_type` | enum | Loai san pham: `COSTUME` hoac `EQUIPMENT_PROPS` |
-  | `inventory_condition_id` | integer | Lien ket voi bang InventoryCondition |
-  | `warehouse_id` | integer | Lien ket voi kho luu tru (Warehouse) |
-  | `status` | enum | Trang thai: `AVAILABLE` (san sang), `RENTED` (dang thue), `MAINTENANCE` (bao tri), `DISPOSED` (da thanh ly) |
-  | `size` | enum / null | Kich co: `XS`, `S`, `M`, `L`, `XL`, `2XL`, `3XL` -- null doi voi dao cu |
-  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
-  | `created_at` | datetime | Thoi diem nhap kho |
-  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
-  | `created_by` | integer | ID nguoi nhap kho |
-  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
-  | `remark` | string | Ghi chu them |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `sku` | string | Mã SKU duy nhất của bản ghi tồn kho |
+  | `item_id` | integer | ID sản phẩm (Costume hoặc EquipmentProps) |
+  | `item_type` | enum | Loại sản phẩm: `COSTUME` hoặc `EQUIPMENT_PROPS` |
+  | `inventory_condition_id` | integer | Liên kết với bảng InventoryCondition |
+  | `warehouse_id` | integer | Liên kết với kho lưu trữ (Warehouse) |
+  | `status` | enum | Trạng thái: `AVAILABLE` (sẵn sàng), `RENTED` (đang thuê), `MAINTENANCE` (bảo trì), `DISPOSED` (đã thanh lý) |
+  | `size` | enum / null | Kích cỡ: `XS`, `S`, `M`, `L`, `XL`, `2XL`, `3XL` -- null đối với đạo cụ |
+  | `is_active` | boolean | Trạng thái kích hoạt (mặc định: `true`) |
+  | `created_at` | datetime | Thời điểm nhập kho |
+  | `updated_at` | datetime / null | Thời điểm cập nhật gần nhất |
+  | `created_by` | integer | ID người nhập kho |
+  | `updated_by` | integer | ID người cập nhật gần nhất |
+  | `remark` | string | Ghi chú thêm |
 
   ## Schema: InventoryCondition
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `code` | enum | Ma tinh trang: `A` (moi/tot), `B` (da qua su dung), `C` (cu/hong) |
-  | `label` | string | Mo ta chi tiet tinh trang san pham |
-  | `discount_rate` | number | Ty le chiet khau gia thue (0 - 0.5) |
-  | `rentable` | boolean | Co the cho thue khong (`false` khi code = `C`) |
-  | `badge_color` | string | Ma mau hex hien thi badge tinh trang |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `code` | enum | Mã tình trạng: `A` (mới/tốt), `B` (đã qua sử dụng), `C` (cũ/hỏng) |
+  | `label` | string | Mô tả chi tiết tình trạng sản phẩm |
+  | `discount_rate` | number | Tỷ lệ chiết khấu giá thuê (0 - 0.5) |
+  | `rentable` | boolean | Có thể cho thuê không (`false` khi code = `C`) |
+  | `badge_color` | string | Mã màu hex hiển thị badge tình trạng |

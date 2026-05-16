@@ -1,18 +1,20 @@
 ﻿$kind: http-request
 name: Create Warehouse
 description: |-
-  Tao moi mot kho hang trong he thong. Yeu cau quyen ADMIN. Kho duoc phan loai theo loai san pham luu tru va giao cho mot quan ly kho phu trach.
+  Tạo mới một kho hàng trong hệ thống. Yêu cầu quyền ADMIN. Kho được phân loại theo loại sản phẩm lưu trữ và giao cho một quản lý kho phụ trách.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
+
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | name | string | Ten kho |
-  | type | enum | Loai kho: COSTUME (kho trang phuc) hoac EQUIPMENT_PROPS (kho dao cu) |
-  | managed_by | integer | ID nhan vien quan ly kho (vi tri WAREHOUSE_MANAGER) |
+  | name | string | Tên kho |
+  | type | enum | Loại kho: COSTUME (kho trang phục) hoặc EQUIPMENT_PROPS (kho đạo cụ) |
+  | managed_by | integer | ID nhân viên quản lý kho (vị trí WAREHOUSE_MANAGER) |
 
   **Response:**
-  - 201 Created: Kho moi duoc tao thanh cong.
-  - 400 Bad Request: Du lieu khong hop le.
+
+  - 201 Created: Kho mới được tạo thành công.
+  - 400 Bad Request: Dữ liệu không hợp lệ.
 method: POST
 url: '{{baseUrl}}/warehouses'
 order: 3000

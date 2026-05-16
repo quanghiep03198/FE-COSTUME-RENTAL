@@ -19,15 +19,15 @@ description: |-
 
   ## Schema: Warehouse
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `name` | string | Ten kho |
-  | `type` | enum | Loai kho: `COSTUME` (kho trang phuc) hoac `EQUIPMENT_PROPS` (kho dao cu) |
-  | `managed_by` | number | ID cua Employee quan ly kho (vi tri WAREHOUSE_MANAGER) |
-  | `is_active` | boolean | Trang thai kich hoat (mac dinh: `true`) |
-  | `created_at` | datetime | Thoi diem tao kho |
-  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
-  | `created_by` | integer | ID nguoi tao |
-  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
-  | `remark` | string | Ghi chu them |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `name` | string | Tên kho |
+  | `type` | enum | Loại kho: `COSTUME` (kho trang phục) hoặc `EQUIPMENT_PROPS` (kho đạo cụ) |
+  | `managed_by` | number | ID của Employee quản lý kho (vị trí WAREHOUSE_MANAGER) |
+  | `is_active` | boolean | Trạng thái kích hoạt (mặc định: `true`) |
+  | `created_at` | datetime | Thời điểm tạo kho |
+  | `updated_at` | datetime / null | Thời điểm cập nhật gần nhất |
+  | `created_by` | integer | ID người tạo |
+  | `updated_by` | integer | ID người cập nhật gần nhất |
+  | `remark` | string | Ghi chú thêm |

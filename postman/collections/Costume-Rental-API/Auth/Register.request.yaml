@@ -1,26 +1,28 @@
 ﻿$kind: http-request
 name: Register
 description: |-
-  Dang ky tai khoan nguoi dung moi trong he thong. Endpoint nay tao mot User moi voi vai tro mac dinh la USER.
+  Đăng ký tài khoản người dùng mới trong hệ thống. Endpoint này tạo một User mới với vai trò mặc định là USER.
 
   **Body (JSON):**
-  | Truong | Kieu | Mo ta |
-  |--------|------|-------|
-  | username | string | Ten dang nhap, phai duy nhat trong he thong |
-  | email | string | Dia chi email cua nguoi dung |
-  | password | string | Mat khau (se duoc hash truoc khi luu) |
-  | display_name | string | Ten hien thi cua nguoi dung |
-  | role | enum | Vai tro: ADMIN hoac USER (mac dinh: USER) |
+
+  | Trường | Kiểu | Mô tả |  
+  |--------|------|-------|  
+  | username | string | Tên đăng nhập, phải duy nhất trong hệ thống |  
+  | email | string | Địa chỉ email của người dùng |  
+  | password | string | Mật khẩu (sẽ được hash trước khi lưu) |  
+  | display_name | string | Tên hiển thị của người dùng |  
+  | role | enum | Vai trò: ADMIN hoặc USER (mặc định: USER) |
 
   **Response:**
-  - 201 Created: Tai khoan duoc tao thanh cong, tra ve thong tin user moi.
-  - 400 Bad Request: Du lieu khong hop le hoac username da ton tai.
+
+  - 201 Created: Tài khoản được tạo thành công, trả về thông tin user mới.
+      
+  - 400 Bad Request: Dữ liệu không hợp lệ hoặc username đã tồn tại.
 method: POST
-url: '{{baseUrl}}/register'
+url: "{{baseUrl}}/register"
 order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-

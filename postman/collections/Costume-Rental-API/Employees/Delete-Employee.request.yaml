@@ -1,21 +1,24 @@
 ﻿$kind: http-request
 name: Delete Employee
 description: |-
-  Xoa ho so nhan vien theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+  Xóa hồ sơ nhân viên theo ID. Yêu cầu quyền ADMIN. Hỗ trợ xóa mềm hoặc xóa vĩnh viễn.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua nhan vien can xoa |
+  | id | integer | ID của nhân viên cần xóa |
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+  | permanantly | boolean | true để xóa vĩnh viễn, false để xóa mềm (mặc định: false) |
 
   **Response:**
-  - 200 OK: Xoa thanh cong.
-  - 404 Not Found: Khong tim thay nhan vien.
+
+  - 200 OK: Xóa thành công.
+  - 404 Not Found: Không tìm thấy nhân viên.
 method: DELETE
 url: '{{baseUrl}}/employees/:id'
 order: 5000

@@ -26,16 +26,16 @@ description: |-
 
   ## Schema: User
 
-  | Truong | Kieu | Mo ta |
+  | Trường | Kiểu | Mô tả |
   |--------|------|-------|
-  | `id` | integer | Khoa chinh, dinh danh duy nhat |
-  | `username` | string | Ten dang nhap, duy nhat trong he thong |
-  | `password` | string | Mat khau (da duoc hash) |
-  | `employee_id` | integer / null | Lien ket voi ho so nhan vien (Employee) |
-  | `role` | enum | Vai tro: `ADMIN` hoac `USER` |
-  | `is_active` | boolean | Trang thai kich hoat tai khoan (mac dinh: `true`) |
-  | `created_at` | datetime | Thoi diem tao tai khoan |
-  | `updated_at` | datetime / null | Thoi diem cap nhat gan nhat |
-  | `created_by` | integer | ID nguoi tao |
-  | `updated_by` | integer | ID nguoi cap nhat gan nhat |
-  | `remark` | string | Ghi chu them |
+  | `id` | integer | Khóa chính, định danh duy nhất |
+  | `username` | string | Tên đăng nhập, duy nhất trong hệ thống |
+  | `password` | string | Mật khẩu (đã được hash) |
+  | `employee_id` | integer / null | Liên kết với hồ sơ nhân viên (Employee) |
+  | `role` | enum | Vai trò: `ADMIN` hoặc `USER` |
+  | `is_active` | boolean | Trạng thái kích hoạt tài khoản (mặc định: `true`) |
+  | `created_at` | datetime | Thời điểm tạo tài khoản |
+  | `updated_at` | datetime / null | Thời điểm cập nhật gần nhất |
+  | `created_by` | integer | ID người tạo |
+  | `updated_by` | integer | ID người cập nhật gần nhất |
+  | `remark` | string | Ghi chú thêm |

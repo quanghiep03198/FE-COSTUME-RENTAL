@@ -1,21 +1,24 @@
 ﻿$kind: http-request
 name: Delete Costume
 description: |-
-  Xoa mot trang phuc theo ID. Yeu cau quyen ADMIN. Ho tro xoa mem hoac xoa vinh vien.
+  Xóa một trang phục theo ID. Yêu cầu quyền ADMIN. Hỗ trợ xóa mềm hoặc xóa vĩnh viễn.
 
   **Path Variables:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | id | integer | ID cua trang phuc can xoa |
+  | id | integer | ID của trang phục cần xóa |
 
   **Query Params:**
-  | Tham so | Kieu | Mo ta |
+
+  | Tham số | Kiểu | Mô tả |
   |---------|------|-------|
-  | permanantly | boolean | true de xoa vinh vien, false de xoa mem (mac dinh: false) |
+  | permanantly | boolean | true để xóa vĩnh viễn, false để xóa mềm (mặc định: false) |
 
   **Response:**
-  - 200 OK: Xoa thanh cong.
-  - 404 Not Found: Khong tim thay trang phuc.
+
+  - 200 OK: Xóa thành công.
+  - 404 Not Found: Không tìm thấy trang phục.
 method: DELETE
 url: '{{baseUrl}}/costumes/:id'
 order: 5000
