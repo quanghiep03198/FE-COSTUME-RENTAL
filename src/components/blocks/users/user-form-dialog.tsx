@@ -3,63 +3,23 @@ import { getEmployeeQueryOptions } from '@/apis/employee/hooks/use-employee-requ
 import type { IEmployee } from '@/apis/employee/types'
 import { ROLE_OPTIONS } from '@/apis/user/constants'
 import { useCreateOrUpdateUserMutataion } from '@/apis/user/hooks/use-user-request'
-import {
-  createUserSchema,
-  type TCreateUserSchema,
-  type TCreateUserValues,
-} from '@/apis/user/schemas/create-user.schema'
-import {
-  updateUserSchema,
-  type TUpdateUserSchema,
-  type TUpdateUserValues,
-} from '@/apis/user/schemas/update-user.schema'
+import { createUserSchema, type TCreateUserSchema } from '@/apis/user/schemas/create-user.schema'
+import { updateUserSchema, type TUpdateUserSchema } from '@/apis/user/schemas/update-user.schema'
 import { CommonActions } from '@/common/constants/enums'
+import { ComboboxFieldControl } from '@/components/forms/combobox-field-control'
+import InputFieldControl from '@/components/forms/input-field-control'
+import SelectFieldControl from '@/components/forms/select-field-control'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import {
-  Combobox,
-  ComboboxCollection,
-  ComboboxContent,
-  ComboboxGroup,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxLabel,
-} from '@/components/ui/combobox'
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { Field, FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { usePageEventContext } from '@/contexts/event-context'
 import generateAvatar from '@/lib/generate-avatar'
 
 import { useForm } from '@tanstack/react-form'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { omit } from 'lodash-es'
 import React, { useRef, useState } from 'react'
-
-const DEFAULT_FORM_VALUES: Partial<TCreateUserValues> = {
-  username: '',
-  password: undefined,
-  role: undefined,
-  employee_id: undefined,
-}
 
 const UserFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
@@ -78,23 +38,20 @@ const UserFormDialog: React.FC = () => {
   const mutation = useCreateOrUpdateUserMutataion(action)
 
   const form = useForm({
-    defaultValues: DEFAULT_FORM_VALUES,
+    defaultValues: {
+      username: '',
+      password: '',
+      role: {},
+      employee: {},
+    },
     onSubmit: async ({ value }) => {
       if (typeof mutation?.mutateAsync !== 'function') return
 
-      if (action === CommonActions.CREATE) {
-        const createValue = value as unknown as TCreateUserValues
-        await mutation.mutateAsync({
-          ...createValue,
-          employee_id: createValue.employee_id?.id,
-          password: createValue.password ?? createValue.username,
-        })
-      } else {
-        await mutation.mutateAsync(value as unknown as TUpdateUserValues)
-      }
+      await mutation.mutateAsync(value)
+
       setOpen(false)
     },
-    validators: { onSubmit: formSchemaRef.current! },
+    validators: { onSubmit: formSchemaRef.current as any },
   })
 
   event$.useSubscription((e) => {
@@ -136,7 +93,7 @@ const UserFormDialog: React.FC = () => {
               <FieldDescription>Người dùng sẽ sử dụng thông tin này để đăng nhập vào tài khoản.</FieldDescription>
               <FieldGroup>
                 <FormField
-                  name="employee_id"
+                  name="employee"
                   listeners={{
                     onChange: ({ value }: { value: IEmployee }) => {
                       form.setFieldValue('username', value.employee_code)
@@ -145,139 +102,73 @@ const UserFormDialog: React.FC = () => {
                   }}
                 >
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field data-invalid={isInvalid}>
-                        <FieldLabel>Nhân viên</FieldLabel>
-                        <Combobox
-                          name={field.name}
-                          items={employees}
-                          value={field.state.value as IEmployee}
-                          itemToStringLabel={(value: IEmployee) => value.full_name}
-                          itemToStringValue={(value: IEmployee) => String(value.id)}
-                          isItemEqualToValue={(itemValue, value) => itemValue.id === value.id}
-                          onValueChange={(value: any) => field.handleChange(value)}
-                        >
-                          <ComboboxInput placeholder="Chọn nhân viên" showClear />
-                          <ComboboxContent>
-                            <ComboboxGroup>
-                              <ComboboxLabel>Nhân sự hiện có</ComboboxLabel>
-                              <ComboboxCollection>
-                                {(employee) => (
-                                  <ComboboxItem
-                                    key={employee.id}
-                                    value={employee}
-                                    render={
-                                      <Item size="xs">
-                                        <ItemMedia>
-                                          <Avatar>
-                                            <AvatarImage
-                                              src={generateAvatar({
-                                                name: employee.full_name,
-                                              })}
-                                            />
-                                            <AvatarFallback>
-                                              {employee.full_name.slice(0, 2).toUpperCase()}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        </ItemMedia>
-                                        <ItemContent>
-                                          <ItemTitle className="capitalize">{employee.full_name}</ItemTitle>
-                                          <ItemDescription>{employee.phone}</ItemDescription>
-                                        </ItemContent>
-                                      </Item>
-                                    }
-                                  />
-                                )}
-                              </ComboboxCollection>
-                            </ComboboxGroup>
-                          </ComboboxContent>
-                        </Combobox>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <ComboboxFieldControl
+                        field={field}
+                        label="Nhân viên"
+                        items={employees}
+                        labelField="full_name"
+                        valueField="id"
+                        renderItem={(employee: IEmployee) => (
+                          <Item size="xs">
+                            <ItemMedia>
+                              <Avatar>
+                                <AvatarImage
+                                  src={generateAvatar({
+                                    name: employee.full_name,
+                                  })}
+                                />
+                                <AvatarFallback>{employee.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                              </Avatar>
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="capitalize">{employee.full_name}</ItemTitle>
+                              <ItemDescription>{employee.phone}</ItemDescription>
+                            </ItemContent>
+                          </Item>
+                        )}
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="username">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
-                        <FieldLabel>Tài khoản</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          readOnly
-                          placeholder="Tên đăng nhập"
-                        />
-                        <FieldDescription>Tên đăng nhập mặc định sẽ là mã nhân viên</FieldDescription>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Tên đăng nhập"
+                        type="text"
+                        readOnly
+                        placeholder="Tên đăng nhập"
+                        description="Tên đăng nhập mặc định sẽ là mã nhân viên"
+                      />
                     )
                   }}
                 </FormField>
                 <FormField name="password">
                   {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field>
-                        <FieldLabel>Mật khẩu</FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value as string}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          aria-invalid={isInvalid}
-                          placeholder="******"
-                          type="password"
-                        />
-                        <FieldDescription>
-                          Mật khẩu đăng nhập mặc định sẽ là mã nhân viên. Bạn có thể đặt 1 mật khẩu tạm thời khác để
-                          người dùng dễ nhớ hơn, sau đó yêu cầu họ thay đổi đổi.
-                        </FieldDescription>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <InputFieldControl
+                        field={field}
+                        label="Mật khẩu"
+                        placeholder="******"
+                        type="password"
+                        description="Mật khẩu đăng nhập mặc định sẽ là mã nhân viên. Bạn có thể đặt 1 mật khẩu tạm thời khác để người dùng dễ nhớ hơn, sau đó yêu cầu họ thay đổi đổi."
+                      />
                     )
                   }}
                 </FormField>
                 <FormField
                   name="role"
                   children={(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
-                      <Field data-invalid={isInvalid} className="col-span-2">
-                        <FieldLabel>Vai trò</FieldLabel>
-                        <Select
-                          name={field.name}
-                          items={ROLE_OPTIONS.map((item) => omit(item, 'icon'))}
-                          value={field.state.value}
-                          onValueChange={({ value }: any) => field.handleChange(value)}
-                        >
-                          <SelectTrigger aria-invalid={isInvalid}>
-                            <SelectValue placeholder="Chọn vai trò" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Vai trò</SelectLabel>
-                              {ROLE_OPTIONS.length > 0 ? (
-                                ROLE_OPTIONS.map((role) => (
-                                  <SelectItem key={role.value} value={role}>
-                                    {role.label}
-                                  </SelectItem>
-                                ))
-                              ) : (
-                                <SelectItem disabled>Không có dữ liệu</SelectItem>
-                              )}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
+                      <SelectFieldControl
+                        field={field}
+                        label="Vai trò"
+                        items={ROLE_OPTIONS}
+                        labelField="label"
+                        valueField="value"
+                      />
                     )
                   }}
                 />
