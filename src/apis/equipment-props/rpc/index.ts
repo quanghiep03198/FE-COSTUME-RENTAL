@@ -4,19 +4,20 @@ import { createServerFn } from '@tanstack/react-start'
 import { omit } from 'lodash-es'
 import { number } from 'zod'
 import { updateEquipmentPropsSchema } from '../schemas/update-equipment-props.schema'
+import type { IEquipmentProps } from '../types'
 import { createEquipmentPropsSchema } from './../schemas/create-equipment-props.schema'
 
 export const getEquipmentPropsRpc = createServerFn({ method: 'GET' })
   .middleware([authMiddleware, requestMiddleware])
   .handler(async ({ context }) => {
-    return await context.request({ url: '/equipment-props' })
+    return await context.request<IEquipmentProps[]>({ url: '/equipment-props' })
   })
 
 export const createEquipmentPropsRpc = createServerFn({ method: 'POST' })
   .inputValidator(createEquipmentPropsSchema)
   .middleware([authMiddleware, requestMiddleware])
   .handler(async ({ data, context }) => {
-    return await context.request({
+    return await context.request<IEquipmentProps>({
       url: '/equipment-props',
       method: 'POST',
       data: omit(
@@ -34,7 +35,7 @@ export const updateEquipmentPropsRpc = createServerFn({ method: 'POST' })
   .middleware([requestMiddleware])
   .inputValidator(updateEquipmentPropsSchema)
   .handler(async ({ context, data: { id, ...update } }) => {
-    return await context.request({
+    return await context.request<IEquipmentProps>({
       url: `/equipment-props/${id}`,
       method: 'PATCH',
       data: update,
