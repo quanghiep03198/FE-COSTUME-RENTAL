@@ -21,6 +21,7 @@ import { TagsInputFieldControl } from '@/components/forms/tags-input-field-contr
 import Image from '@/components/shared/image'
 import { Editor } from '@/components/shared/text-editor'
 import { Button, buttonVariants } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogClose,
@@ -43,10 +44,12 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { typographyVariants } from '@/components/ui/typography'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore } from '@tanstack/react-form'
 import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
+import CategoryPopoverForm from '../categories/category-popover-form'
 import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
 import CostumeColorPlate from './costume-color-plate'
 
@@ -55,7 +58,7 @@ const DEFAULT_FORM_VALUES = {
   category_id: undefined,
   color: COLOR_PALETTE[0],
   sizes: [] as { label: CostumeSize; value: CostumeSize; sortOrder: number }[],
-  description: undefined,
+  description: DEFAULT_COSTUME_DESCRIPTION,
   gender: CostumeGender.FEMALE,
   rental_price_per_day: undefined,
   unit: undefined,
@@ -68,10 +71,12 @@ type TDialogAction = CommonActions.CREATE | CommonActions.UPDATE | 'none'
 const CostumeFormDialog: React.FC = () => {
   const { event$ } = usePageEventContext()
   const [open, setOpen] = useState<boolean>(false)
+  const [shouldShowImageActions, setShouldShowImageActions] = useState<boolean>(true)
   const [action, setAction] = useState<TDialogAction>('none')
   const { data: categories } = useGetCategoriesQuery(GET_COSTUME_CATEGORY_QUERY_KEY)
   const mutation = useCreateOrUpdateCostumeMutation(action)
   const formSchemaRef = useRef<TCreateCostumeSchema | TUpdateCostumeSchema | undefined>(undefined)
+  const submitButtonId = useId()
   const editorRef = useRef<{
     getHTML: () => string
     isEmpty: () => boolean
@@ -82,7 +87,8 @@ const CostumeFormDialog: React.FC = () => {
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
         ...value,
-        description: value.description || editorRef.current?.getHTML(),
+        name: standardizeName(value.name),
+        description: editorRef.current?.getHTML(),
       })
       setAction('none')
       setOpen(false)
@@ -145,220 +151,275 @@ const CostumeFormDialog: React.FC = () => {
     <>
       {/* Form Dialog */}
       <Dialog open={open && action !== 'none'} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-md:rounded-none sm:max-md:h-screen overflow-auto max-w-6xl">
-          <form onSubmit={handleSubmit}>
-            <FieldSet>
-              <FieldLegend>Thông tin trang phục</FieldLegend>
-              <FieldDescription>
-                {action === CommonActions.CREATE
-                  ? 'Điền thông tin để tạo mới trang phục'
-                  : 'Cập nhật thông tin trang phục'}
-              </FieldDescription>
-              <FieldGroup className="h-screen grid grid-cols-6 lg:max-xxl:max-h-[65vh] xxl:max-h-[75vh] overflow-auto">
-                <FormField
-                  name="name"
-                  listeners={{
-                    onChange: ({ value }: { value: string }) => form.setFieldValue('name', standardizeName(value)),
-                    onChangeDebounceMs: 200,
-                  }}
-                >
-                  {(field) => {
-                    return (
-                      <InputFieldControl
-                        field={field}
-                        label="Tên trang phục"
-                        placeholder='Ví dụ: "Áo dài truyền thống"'
-                        classNames={{ field: 'col-span-2' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="category">
-                  {(field) => {
-                    return (
-                      <SelectFieldControl
-                        field={field}
-                        items={categories}
-                        label="Bộ sưu tập"
-                        labelField="name"
-                        valueField="id"
-                        placeholder="Chọn bộ sưu tập"
-                        classNames={{ field: 'col-span-2' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="hashtags">
-                  {(field) => {
-                    return (
-                      <TagsInputFieldControl
-                        field={field}
-                        label="Hashtags"
-                        placeholder="#aoDaiVietNam"
-                        classNames={{ field: 'col-span-2' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="gender">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <FieldGroup className="col-span-6">
-                        <FieldLabel>Giới tính</FieldLabel>
-                        <RadioGroup
-                          defaultValue={CostumeGender.FEMALE}
-                          value={field.state.value}
-                          className="w-fit"
-                          onValueChange={field.handleChange}
-                        >
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.MALE} id={CostumeGender.MALE} />
+        <DialogContent className="rounded-none h-screen overflow-auto w-screen bg-muted p-0" showCloseButton={false}>
+          <DialogHeader className="flex-row sticky top-0 backdrop-blur-md px-6 pt-6">
+            <DialogTitle className={typographyVariants({ variant: 'h2' })}>
+              {action === CommonActions.CREATE ? 'Tạo mới trang phục' : 'Cập nhật trang phục'}
+            </DialogTitle>
+            <div className="ml-auto flex items-center gap-x-2">
+              <DialogClose
+                render={
+                  <Button type="button" variant="secondary">
+                    Đóng
+                  </Button>
+                }
+              />
+              <label htmlFor={submitButtonId} className={buttonVariants()}>
+                Lưu lại
+              </label>
+            </div>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="grid grid-cols-6 auto-rows-auto gap-6 px-6 pb-6 max-w-7xl mx-auto">
+            {/* Basic information */}
+            <Card className="col-span-4 row-start-1">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Thông tin chung</FieldLegend>
+                  <FieldGroup>
+                    <FormField name="name">
+                      {(field) => {
+                        return (
+                          <InputFieldControl
+                            field={field}
+                            label="Tên trang phục"
+                            placeholder='Ví dụ: "Áo dài truyền thống"'
+                            classNames={{ field: 'col-span-2' }}
+                          />
+                        )
+                      }}
+                    </FormField>
+
+                    <FormField name="hashtags">
+                      {(field) => {
+                        return (
+                          <TagsInputFieldControl
+                            field={field}
+                            label="Hashtags"
+                            placeholder="#aoDaiVietNam"
+                            classNames={{ field: 'col-span-2' }}
+                          />
+                        )
+                      }}
+                    </FormField>
+                  </FieldGroup>
+                </FieldSet>
+              </CardContent>
+            </Card>{' '}
+            {/* Attributes */}
+            <Card className="col-span-4 col-start-1 row-start-2">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Đặc tính</FieldLegend>
+
+                  <FieldGroup className="grid grid-cols-2 gap-6">
+                    <FormField name="sizes">
+                      {(field) => (
+                        <SelectFieldControl
+                          field={field}
+                          items={SIZE_RUN}
+                          label="Size"
+                          labelField="label"
+                          valueField="value"
+                          multiple
+                          placeholder="Chọn size"
+                        />
+                      )}
+                    </FormField>
+                    <FormField name="color">
+                      {(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (
+                          <Field>
+                            <FieldLabel htmlFor={field.name} className="w-fit inline-block">
+                              Màu sắc chủ đạo
+                            </FieldLabel>
                             <FieldContent>
-                              <FieldLabel htmlFor="desc-r1">Nam</FieldLabel>
-                              <FieldDescription>Trang phục danh riêng cho Nam</FieldDescription>
+                              <CostumeColorPlate value={field.state.value} onValueChange={field.handleChange} />
+                              {isInvalid && <FieldError errors={field.state.meta.errors} />}
                             </FieldContent>
                           </Field>
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.FEMALE} id={CostumeGender.MALE} />
-                            <FieldContent>
-                              <FieldLabel htmlFor="desc-r2">Nữ</FieldLabel>
-                              <FieldDescription>Trang phục dành riêng cho Nữ</FieldDescription>
-                            </FieldContent>
-                          </Field>
-                          <Field orientation="horizontal">
-                            <RadioGroupItem value={CostumeGender.UNISEX} id={CostumeGender.UNISEX} />
-                            <FieldContent>
-                              <FieldLabel htmlFor="desc-r2">Unisex</FieldLabel>
-                              <FieldDescription>Trang phục dành cho cả Nam & Nữ</FieldDescription>
-                            </FieldContent>
-                          </Field>
-                        </RadioGroup>
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </FieldGroup>
-                    )
-                  }}
-                </FormField>
-                <FormField name="color">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-3">
-                        <FieldLabel htmlFor={field.name} className="w-fit inline-block">
-                          Màu sắc chủ đạo
-                        </FieldLabel>
-                        <FieldContent>
-                          <CostumeColorPlate value={field.state.value} onValueChange={field.handleChange} />
+                        )
+                      }}
+                    </FormField>
+                  </FieldGroup>
+                  <FormField name="gender">
+                    {(field) => {
+                      const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                      return (
+                        <FieldGroup className="col-span-6">
+                          <FieldLabel>Giới tính</FieldLabel>
+                          <RadioGroup
+                            defaultValue={CostumeGender.FEMALE}
+                            value={field.state.value}
+                            className="w-fit"
+                            onValueChange={field.handleChange}
+                          >
+                            <Field orientation="horizontal">
+                              <RadioGroupItem value={CostumeGender.MALE} id={CostumeGender.MALE} />
+                              <FieldContent>
+                                <FieldLabel htmlFor={CostumeGender.MALE}>Nam</FieldLabel>
+                                <FieldDescription>Trang phục danh riêng cho Nam</FieldDescription>
+                              </FieldContent>
+                            </Field>
+                            <Field orientation="horizontal">
+                              <RadioGroupItem value={CostumeGender.FEMALE} id={CostumeGender.FEMALE} />
+                              <FieldContent>
+                                <FieldLabel htmlFor={CostumeGender.FEMALE}>Nữ</FieldLabel>
+                                <FieldDescription>Trang phục dành riêng cho Nữ</FieldDescription>
+                              </FieldContent>
+                            </Field>
+                            <Field orientation="horizontal">
+                              <RadioGroupItem value={CostumeGender.UNISEX} id={CostumeGender.UNISEX} />
+                              <FieldContent>
+                                <FieldLabel htmlFor={CostumeGender.UNISEX}>Unisex</FieldLabel>
+                                <FieldDescription>Trang phục dành cho cả Nam & Nữ</FieldDescription>
+                              </FieldContent>
+                            </Field>
+                          </RadioGroup>
                           {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                        </FieldContent>
-                      </Field>
-                    )
-                  }}
-                </FormField>
-                <FormField name="sizes">
-                  {(field) => (
-                    <SelectFieldControl
-                      field={field}
-                      items={SIZE_RUN}
-                      label="Size"
-                      labelField="label"
-                      valueField="value"
-                      multiple
-                      classNames={{ field: 'col-span-3' }}
-                      placeholder="Chọn size"
-                    />
-                  )}
-                </FormField>
-                <FormField name="rental_price_per_day">
-                  {(field) => {
-                    return (
-                      <InputFieldControl
-                        field={field}
-                        label="Giá thuê theo ngày (VNĐ)"
-                        type="number"
-                        placeholder={formatCurrency(100_000)}
-                        classNames={{ field: 'col-span-3' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="unit">
-                  {(field) => {
-                    return (
-                      <SelectFieldControl
-                        field={field}
-                        items={COSTUME_UNIT}
-                        label="Đơn vị"
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Chọn đơn vị"
-                        classNames={{ field: 'col-span-3' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="images">
-                  {(field) => {
-                    return (
-                      <Field className="col-span-6">
-                        <FieldLabel htmlFor={field.name}>Hình ảnh</FieldLabel>
-                        {!Array.isArray(field.state.value) || !field.state.value.length ? (
-                          <Empty className="border">
-                            <EmptyMedia variant="icon">
-                              <ImageIcon />
-                            </EmptyMedia>
-                            <EmptyHeader>
-                              <EmptyTitle>Chưa có hình ảnh nào được chọn</EmptyTitle>
-                              <EmptyDescription>Hãy chọn ít nhất 1 hình ảnh cho trang phục</EmptyDescription>
-                            </EmptyHeader>
-                            <EmptyContent>
-                              <label className={buttonVariants({ size: 'sm' })} htmlFor="image-gallery-dialog-trigger">
+                        </FieldGroup>
+                      )
+                    }}
+                  </FormField>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Pricing */}
+            <Card className=" col-span-2 col-start-5 row-start-2">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Giá thuê</FieldLegend>
+                  <FormField name="rental_price_per_day">
+                    {(field) => {
+                      return (
+                        <InputFieldControl
+                          field={field}
+                          label="Giá thuê theo ngày (VNĐ)"
+                          type="number"
+                          placeholder={formatCurrency(100_000)}
+                          classNames={{ field: 'col-span-3' }}
+                        />
+                      )
+                    }}
+                  </FormField>
+                  <FormField name="unit">
+                    {(field) => {
+                      return (
+                        <SelectFieldControl
+                          field={field}
+                          items={COSTUME_UNIT}
+                          label="Đơn vị"
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Chọn đơn vị"
+                          classNames={{ field: 'col-span-3' }}
+                        />
+                      )
+                    }}
+                  </FormField>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Category */}
+            <Card className="col-span-2 col-start-5 row-start-1">
+              <CardContent className="flex flex-col items-stretch space-y-6">
+                <FieldSet>
+                  <FieldLegend>Danh mục</FieldLegend>
+                  <FormField name="category">
+                    {(field) => {
+                      return (
+                        <SelectFieldControl
+                          field={field}
+                          items={categories}
+                          labelField="name"
+                          valueField="id"
+                          placeholder="Chọn bộ sưu tập"
+                          classNames={{ field: 'col-span-2' }}
+                        />
+                      )
+                    }}
+                  </FormField>
+                </FieldSet>
+                <CategoryPopoverForm type={ItemType.COSTUMES} />
+              </CardContent>
+            </Card>
+            {/* Image */}
+            <Card className="col-start-1 row-start-3 col-span-full">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Hình ảnh</FieldLegend>
+                  <FormField name="images">
+                    {(field) => {
+                      return (
+                        <Field className="col-span-6">
+                          {!Array.isArray(field.state.value) || !field.state.value.length ? (
+                            <Empty className="border">
+                              <EmptyMedia variant="icon">
+                                <ImageIcon />
+                              </EmptyMedia>
+                              <EmptyHeader>
+                                <EmptyTitle>Chưa có hình ảnh nào được chọn</EmptyTitle>
+                                <EmptyDescription>Hãy chọn ít nhất 1 hình ảnh cho trang phục</EmptyDescription>
+                              </EmptyHeader>
+                              <EmptyContent>
+                                <label
+                                  className={buttonVariants({ size: 'sm' })}
+                                  htmlFor="image-gallery-dialog-trigger"
+                                >
+                                  <ImagePlusIcon />
+                                  Thêm hình ảnh
+                                </label>
+                              </EmptyContent>
+                            </Empty>
+                          ) : (
+                            <div className="grid grid-flow-col auto-cols-[160px] gap-4">
+                              <label
+                                className="w-full aspect-square size-40! flex flex-col text-sm justify-center items-center gap-2 rounded-lg bg-accent text-accent-foreground"
+                                role="button"
+                                htmlFor="image-gallery-dialog-trigger"
+                              >
                                 <ImagePlusIcon />
                                 Thêm hình ảnh
                               </label>
-                            </EmptyContent>
-                          </Empty>
-                        ) : (
-                          <div className="grid grid-flow-col auto-cols-[160px] gap-4">
-                            <label
-                              className="w-full aspect-square size-40! flex flex-col text-sm justify-center items-center gap-2 rounded-lg bg-accent text-accent-foreground"
-                              role="button"
-                              htmlFor="image-gallery-dialog-trigger"
-                            >
-                              <ImagePlusIcon />
-                              Thêm hình ảnh
-                            </label>
-                            {field.state.value.map((image) => (
-                              <div className="relative size-40 overflow-hidden rounded-lg">
-                                <Button
-                                  variant="secondary"
-                                  size="icon-xs"
-                                  className="absolute top-2 right-2 z-20"
-                                  onClick={() => {
-                                    const afterDelete = field.state.value!.filter(
-                                      (img) => img.id !== image.id
-                                    ) as unknown as TCreateCostumeValues['images']
-                                    field.handleChange(afterDelete)
-                                  }}
-                                >
-                                  <XIcon />
-                                </Button>
-                                <Image
-                                  key={image.id}
-                                  src={getImageUrl(image.dest)}
-                                  alt={image.file_name}
-                                  className="max-w-full aspect-square object-cover rounded-lg hover:scale-105 transition-transform duration-150 ease-out"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </Field>
-                    )
-                  }}
-                </FormField>
-                <Field className="col-span-6">
-                  <FieldLabel>Mô tả</FieldLabel>
+                              {field.state.value.map((image) => (
+                                <div className="relative size-40 overflow-hidden rounded-lg">
+                                  <Button
+                                    variant="secondary"
+                                    size="icon-xs"
+                                    className="absolute top-2 right-2 z-20"
+                                    onClick={() => {
+                                      const afterDelete = field.state.value!.filter(
+                                        (img) => img.id !== image.id
+                                      ) as unknown as TCreateCostumeValues['images']
+                                      field.handleChange(afterDelete)
+                                    }}
+                                  >
+                                    <XIcon />
+                                  </Button>
+                                  <Image
+                                    key={image.id}
+                                    src={getImageUrl(image.dest)}
+                                    alt={image.file_name}
+                                    className="max-w-full aspect-square object-cover rounded-lg hover:scale-105 transition-transform duration-150 ease-out"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </Field>
+                      )
+                    }}
+                  </FormField>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Description */}
+            <Card className="col-span-full">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Mô tả</FieldLegend>
+                </FieldSet>
+                <Field>
                   <Editor
                     ref={editorRef}
                     defaultValue={form.getFieldValue('description') ?? DEFAULT_COSTUME_DESCRIPTION}
@@ -367,20 +428,11 @@ const CostumeFormDialog: React.FC = () => {
                     <FieldError errors={form.getFieldMeta('description')?.errors} />
                   )}
                 </Field>
-              </FieldGroup>
-              <FieldGroup>
-                <Field orientation={'horizontal'} className="justify-end">
-                  <DialogClose
-                    render={
-                      <Button type="button" variant="secondary">
-                        Đóng
-                      </Button>
-                    }
-                  />
-                  <Button type="submit">Xác nhận</Button>
-                </Field>
-              </FieldGroup>
-            </FieldSet>
+              </CardContent>
+            </Card>
+            <Button type="submit" className="hidden" id={submitButtonId}>
+              Xác nhận
+            </Button>
           </form>
         </DialogContent>
       </Dialog>
@@ -394,28 +446,32 @@ const CostumeFormDialog: React.FC = () => {
               Hãy chọn các hình ảnh liên quan áp dụng cho trang phục hoặc tải lên nếu muốn
             </DialogDescription>
           </DialogHeader>
-          <div className="h-[60vh] overflow-auto">
+          <div className="bg-card">
             <ImagesGallary
               type={ItemType.COSTUMES}
-              className=""
+              selected={(selectedImages ?? []) as unknown as IImage[]}
               onSelect={(images) => {
                 form.setFieldValue('images', images as any)
               }}
-              selected={(selectedImages ?? []) as unknown as IImage[]}
+              onTabChange={(currentTab) => {
+                setShouldShowImageActions(currentTab === ItemType.COSTUMES)
+              }}
             />
           </div>
-          <DialogFooter>
-            <DialogClose render={<Button variant="secondary">Hủy</Button>} />
-            <DialogClose
-              nativeButton={false}
-              role="button"
-              render={
-                <label className={buttonVariants()} htmlFor={IMAGE_SELECTION_SUBMIT_BTN_ID}>
-                  Sử dụng các ảnh đã chọn
-                </label>
-              }
-            />
-          </DialogFooter>
+          {shouldShowImageActions && (
+            <DialogFooter>
+              <DialogClose render={<Button variant="secondary">Hủy</Button>} />
+              <DialogClose
+                nativeButton={false}
+                role="button"
+                render={
+                  <label className={buttonVariants()} htmlFor={IMAGE_SELECTION_SUBMIT_BTN_ID}>
+                    Sử dụng các ảnh đã chọn
+                  </label>
+                }
+              />
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
     </>

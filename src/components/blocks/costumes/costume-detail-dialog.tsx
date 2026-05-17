@@ -11,6 +11,7 @@ const CostumeDetailDialog: React.FC = () => {
   event$.useSubscription((e) => {
     if (e.action === CommonActions.READ) {
       setDescription(e.payload)
+      console.log('e.payload', e.payload)
     }
   })
 
@@ -24,7 +25,7 @@ const CostumeDetailDialog: React.FC = () => {
       <DialogContent className="max-w-6xl h-[90vh] overflow-auto">
         <div
           dangerouslySetInnerHTML={{ __html: description }}
-          className="space-y-3 [&_table]:mb-6 [&_table_th]:text-left prose-h3:text-lg"
+          className="space-y-3 [&_table]:mb-6 [&_table_th]:text-left prose-h3:text-lg [&_table]:text-foreground"
         />
       </DialogContent>
     </Dialog>
