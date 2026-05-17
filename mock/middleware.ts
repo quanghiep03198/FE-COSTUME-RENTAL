@@ -1,9 +1,10 @@
 // Auth middleware: verify token + check revoked
+import type { IUser } from '@/apis/user/types'
 import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { router } from './app'
 
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET!
 
 export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
@@ -15,7 +16,7 @@ export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
   const accessToken = authHeader.split(' ')[1]
 
   try {
-    const payload = jwt.verify(accessToken, JWT_SECRET!) as jwt.JwtPayload
+    const payload = jwt.verify(accessToken, JWT_SECRET) as Pick<IUser, 'id' | 'username' | 'role'>
 
     const db = router.db as any
     const isRevoked = db.get('revoke_tokens').find({ access_token: accessToken }).value()
@@ -23,8 +24,8 @@ export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
       return res.status(403).json({ message: 'Token has been revoked' })
     }
 
-    ;(req as any).user = payload
-    ;(req as any).token = accessToken
+    req.user = payload
+    req.token = accessToken
     return next()
   } catch (e) {
     // console.error(e)

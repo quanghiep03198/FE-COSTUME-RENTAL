@@ -7,7 +7,7 @@ import { deleteUploadedFile, saveUploadedFile } from '../utils/file-upload'
 
 export function registerImageGalleryRoutes(app: Application) {
   // * GET /images-gallery/file/:fileName
-  app.get('/upload/:folder/:fileName', (req: Request, res: Response) => {
+  app.get('/storage/images-gallery/:folder/:fileName', (req: Request, res: Response) => {
     const rawImageFolder = req.params.folder
     const rawFileName = req.params.fileName
     const fileName = Array.isArray(rawFileName) ? rawFileName[0] : rawFileName

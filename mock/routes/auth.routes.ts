@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import { router } from '../app'
 import { jwtMiddleware } from '../middleware'
 
-const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRES_IN = '1d'
+const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET!
+const JWT_EXPIRES_IN: jwt.SignOptions['expiresIn'] = '1d'
 
 const cookieOptions = {
   httpOnly: true,
@@ -54,7 +54,7 @@ export function registerAuthRoutes(app: Application) {
     const { password: _, ...userWithoutPassword } = user
 
     return res.status(200).json({
-      accessToken,
+      access_token: accessToken,
       user: {
         ...userWithoutPassword,
         avatar: generateAvatar({ name: userWithoutPassword.display_name }),
@@ -145,9 +145,9 @@ export function registerAuthRoutes(app: Application) {
         expiresIn: JWT_EXPIRES_IN,
       })
 
-      res.cookie('accessToken', accessToken, cookieOptions)
+      res.cookie('access_token', accessToken, cookieOptions)
 
-      return res.status(200).json({ accessToken })
+      return res.status(200).json({ access_token: accessToken })
     } catch (error) {
       return res.status(403).json(error)
     }
