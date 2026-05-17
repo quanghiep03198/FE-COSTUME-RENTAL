@@ -19,7 +19,7 @@ export const createEmployeeRpc = createServerFn({ method: 'POST' })
   .inputValidator(createEmployeeSchema)
   .handler(async ({ context, data }) => {
     return await context.request({
-      url: '/employees',
+      url: '/employees/create',
       method: 'POST',
       data: {
         ...data,
@@ -33,7 +33,7 @@ export const updateEmployeeRpc = createServerFn({ method: 'POST' })
   .inputValidator(updateEmployeeSchema)
   .handler(async ({ context, data: { id, position, ...update } }) => {
     return await context.request({
-      url: `/employees/${id}`,
+      url: `/employees/update/${id}`,
       method: 'PATCH',
       data: { ...update, ...(position && { position: position.value }) },
     })
@@ -43,5 +43,5 @@ export const deleteEmployeeRpc = createServerFn({ method: 'POST' })
   .middleware([authMiddleware, requestMiddleware])
   .inputValidator(number())
   .handler(async ({ context, data: id }) => {
-    return await context.request({ url: `/employees/${id}`, method: 'DELETE' })
+    return await context.request({ url: `/employees/delete/${id}`, method: 'DELETE' })
   })
