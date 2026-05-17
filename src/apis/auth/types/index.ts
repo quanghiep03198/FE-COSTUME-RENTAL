@@ -1,9 +1,8 @@
 import type { IUser } from '@/apis/user/types'
 
 export type TLoginResponse = {
-  accessToken: string
+  access_token: string
   user: IUser
-  // accessToken: string
-  // token_type: 'bearer'
-  // expires_in: number
+  token_type: 'bearer'
+  expires_in: number
 }
