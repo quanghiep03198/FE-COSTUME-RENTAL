@@ -45,8 +45,8 @@ const UpdateImageFormDialog: React.FC = () => {
       !Array.isArray(categories)
         ? []
         : categories?.map((category) => ({
-            label: category.name,
-            value: category.id,
+            label: category?.name,
+            value: category?.id,
           })),
     [categories]
   )

@@ -1,16 +1,32 @@
+import { useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
 import { ImageMimeType } from '@/apis/image/constants'
+import { useGetImagesQuery } from '@/apis/image/hooks/use-image-request'
 import type { TSearchImagesValues } from '@/apis/image/schemas/search.schema'
+import { ItemType } from '@/common/constants/enums'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import {
+  Combobox,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+} from '@/components/ui/combobox'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { format, subDays } from 'date-fns'
-import { isNil, omit, omitBy } from 'lodash-es'
-import { CalendarIcon, FileIcon, XIcon } from 'lucide-react'
-import { Activity, useMemo, useState } from 'react'
+import { groupBy, isNil, omit, omitBy } from 'lodash-es'
+import { CalendarIcon, FileIcon, RefreshCcwIcon, XIcon } from 'lucide-react'
+import { Activity, useMemo, useRef, useState } from 'react'
 
 const ImageGalleryToolbar: React.FC = () => {
+  const { refetch } = useGetImagesQuery()
+
   const search = useSearch({
     from: '/_private-layout/images-gallery',
     select: (state) => ({ mime_type: state.mime_type, from: state.from, to: state.to }),
@@ -22,6 +38,7 @@ const ImageGalleryToolbar: React.FC = () => {
     <div className="flex h-(--gallery-toolbar-height) items-center gap-x-2">
       <MimeTypeSelect />
       <CreateDateSelect />
+      <CategoryCombobox />
       <Activity mode={Object.values(search).every(isNil) ? 'hidden' : 'visible'}>
         <Button
           variant="secondary"
@@ -31,18 +48,81 @@ const ImageGalleryToolbar: React.FC = () => {
           Clear filters
         </Button>
       </Activity>
+      <Button variant="outline" className="ml-auto" onClick={() => refetch()}>
+        <RefreshCcwIcon />
+        Tải lại
+      </Button>
     </div>
   )
 }
 
-const imageFormatOptions: Array<{ label: string; value: ImageMimeType }> = [
-  { label: '.avif', value: ImageMimeType.AVIF },
-  { label: '.bmp', value: ImageMimeType.BMP },
-  { label: '.jpeg', value: ImageMimeType.JPEG },
-  { label: '.jpg', value: ImageMimeType.JPG },
-  { label: '.png', value: ImageMimeType.PNG },
-  { label: '.webp', value: ImageMimeType.WEBP },
-]
+const CategoryCombobox: React.FC = () => {
+  const [open, setOpen] = useState<boolean>(false)
+  const { data } = useGetCategoriesQuery()
+  const navigate = useNavigate({ from: '/images-gallery' })
+  const category = useSearch({
+    from: '/_private-layout/images-gallery',
+    select: (state) => state.category,
+  })
+
+  const optionGroups = useMemo(() => {
+    if (!Array.isArray(data)) return []
+
+    const categoryLabelMap = new Map<ItemType, string>([
+      [ItemType.COSTUMES, 'Trang phục'],
+      [ItemType.EQUIPMENT_PROPS, 'Đạo cụ'],
+    ])
+
+    return Object.entries(groupBy(data, (category) => category.type)).map(([type, items]) => ({
+      label: categoryLabelMap.get(type as ItemType),
+      items: items.map((item) => ({
+        label: item.name,
+        value: item.slug,
+      })),
+    }))
+  }, [])
+
+  const currentCategory = useMemo(() => {
+    if (!Array.isArray(data) || !category) return null
+
+    return {
+      label: data.find((cate) => cate.slug === category)?.name ?? '',
+      value: category,
+    }
+  }, [category, data])
+
+  return (
+    <Combobox
+      open={open}
+      onOpenChange={setOpen}
+      items={optionGroups}
+      value={currentCategory}
+      itemToStringLabel={(item: { label: string; value: string }) => item.label}
+      itemToStringValue={(item: { label: string; value: string }) => item.value}
+      isItemEqualToValue={(itemValue, value) => itemValue.value === value.value}
+      onValueChange={(value) =>
+        navigate({
+          search: (old) => ({ ...old, category: value?.value }),
+        })
+      }
+    >
+      <ComboboxInput placeholder="Tất cả danh mục" />
+      <ComboboxContent className="w-fit">
+        <ComboboxEmpty>Không có kết quả phù hợp</ComboboxEmpty>
+        <ComboboxList>
+          {(group: { label: string; items: Array<Record<'label' | 'value', string>> }) => (
+            <ComboboxGroup key={group.label.toLowerCase().replace(' ', '-')} items={group.items}>
+              <ComboboxLabel>{group.label}</ComboboxLabel>
+              <ComboboxCollection>
+                {(option) => <ComboboxItem value={option}>{option.label}</ComboboxItem>}
+              </ComboboxCollection>
+            </ComboboxGroup>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  )
+}
 
 const MimeTypeSelect: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -54,15 +134,22 @@ const MimeTypeSelect: React.FC = () => {
   })
   const navigate = useNavigate({ from: '/images-gallery' })
 
+  const imageFormatOptions = useRef<Array<{ label: string; value: ImageMimeType }>>([
+    { label: '.avif', value: ImageMimeType.AVIF },
+    { label: '.bmp', value: ImageMimeType.BMP },
+    { label: '.jpeg', value: ImageMimeType.JPEG },
+    { label: '.jpg', value: ImageMimeType.JPG },
+    { label: '.png', value: ImageMimeType.PNG },
+    { label: '.webp', value: ImageMimeType.WEBP },
+  ])
+
   return (
     <Select
       open={open}
       onOpenChange={setOpen}
-      items={imageFormatOptions}
-      // value={table?.getState()?.columnFilters?.find((f) => f.id === 'mime_type')?.value}
+      items={imageFormatOptions.current}
       value={mimeType ?? ''}
       onValueChange={(value) =>
-        // table.setColumnFilters((prev) => [...prev.filter((f) => f.id !== 'mime_type'), { id: 'mime_type', value }])
         navigate({
           search: (old) => ({ ...old, mime_type: value as ImageMimeType }),
         })
@@ -74,13 +161,13 @@ const MimeTypeSelect: React.FC = () => {
           <Button variant="outline">
             <span className="inline-flex items-center gap-x-2" onClick={() => setOpen(!open)}>
               <FileIcon />
-              {imageFormatOptions.find((format) => format?.value === mimeType)?.label ?? 'Tất cả định dạng'}
+              {imageFormatOptions.current.find((format) => format?.value === mimeType)?.label ?? 'Tất cả định dạng'}
             </span>
           </Button>
         }
       />
       <SelectContent>
-        {imageFormatOptions.map((option) => (
+        {imageFormatOptions.current.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             <span className="flex items-center gap-x-2">
               <FileIcon />

@@ -21,11 +21,16 @@ import ImageDialog from './image-dialog'
  * Only includes filters when values are provided.
  */
 const buildColumnFilters = (
+  category: Nullable<string>,
   mimeType: Nullable<string>,
   fromDate: Nullable<string>,
   toDate: Nullable<string>
 ): ColumnFiltersState => {
   const filters: ColumnFiltersState = []
+
+  if (category) {
+    filters.push({ id: 'category', value: category })
+  }
 
   // Add mime_type filter only if provided
   if (mimeType) {
@@ -54,7 +59,7 @@ const ImageGalleryTable: React.FC = () => {
   const { user } = useAuth()
   const search = useSearch({
     from: '/_private-layout/images-gallery',
-    select: (state) => pick(state, ['from', 'to', 'mime_type']),
+    select: (state) => pick(state, ['category', 'mime_type', 'from', 'to']),
     structuralSharing: false,
   })
 
@@ -92,10 +97,11 @@ const ImageGalleryTable: React.FC = () => {
         filterFn: 'equalsString',
       }),
       columnHelper.accessor('category.slug', {
+        id: 'category',
         header: 'Danh mục',
         enableSorting: true,
         enableColumnFilter: true,
-        cell: ({ row }) => row.original.category.name,
+        cell: ({ row }) => row.original.category?.name,
       }),
       columnHelper.accessor('size', {
         header: 'Kích thước',
@@ -118,15 +124,15 @@ const ImageGalleryTable: React.FC = () => {
             <Item size="xs" className="p-0">
               <ItemMedia>
                 <Avatar>
-                  <AvatarImage src={generateAvatar({ name: owner.employee.full_name })} />
-                  <AvatarFallback>{owner.employee.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  <AvatarImage src={generateAvatar({ name: owner?.employee?.full_name })} />
+                  <AvatarFallback>{owner.employee?.full_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>
-                  {owner.employee.full_name} {user?.id === owner.id && '(Bạn)'}
+                  {owner.employee?.full_name} {user?.id === owner.id && '(Bạn)'}
                 </ItemTitle>
-                <ItemDescription>{owner.email}</ItemDescription>
+                <ItemDescription>{owner?.email}</ItemDescription>
               </ItemContent>
             </Item>
           )
@@ -161,7 +167,7 @@ const ImageGalleryTable: React.FC = () => {
       data={data}
       loading={isLoading}
       // manualFiltering={true}
-      columnFilters={buildColumnFilters(search.mime_type, search.from, search.to)}
+      columnFilters={buildColumnFilters(search.category, search.mime_type, search.from, search.to)}
       toolbarProps={{ override: true, render: () => null }}
       virtualizerOptions={{ estimateSize: 75 }}
       containerProps={{
