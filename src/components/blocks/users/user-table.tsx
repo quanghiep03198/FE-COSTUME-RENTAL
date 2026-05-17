@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Icon, type IconProps } from '@/components/ui/icon'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Typography } from '@/components/ui/typography'
+import generateAvatar from '@/lib/generate-avatar'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
 import { format, isValid } from 'date-fns'
@@ -26,13 +27,16 @@ const UserTable: React.FC = () => {
     () => [
       columnHelper.accessor('employee.full_name', {
         header: 'Tài khoản',
-        size: 200,
+        size: 250,
         cell: ({ getValue, row }) => {
           return (
-            <Item size="xs" className="p-0">
+            <Item size="xs" className="p-0 flex-nowrap">
               <ItemMedia>
                 <Avatar className="col-start-1 row-span-2">
-                  <AvatarImage src={row.original.avatar} alt={row.original.employee?.full_name} />
+                  <AvatarImage
+                    src={generateAvatar({ name: row.original.employee?.full_name })}
+                    alt={row.original.employee?.full_name}
+                  />
                   <AvatarFallback>G</AvatarFallback>
                 </Avatar>
               </ItemMedia>
@@ -142,10 +146,8 @@ const UserTable: React.FC = () => {
       border="bottom-only"
       defaultFilterOpen={false}
       containerProps={{
-        style: {
-          height:
-            'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
-        },
+        className:
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
       }}
       virtualizerOptions={{ estimateSize: 48 }}
       toolbarProps={{
