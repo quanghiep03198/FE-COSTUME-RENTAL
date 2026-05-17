@@ -1,14 +1,7 @@
 import CreateUserFormDialogTrigger from '@/components/blocks/users/create-user-dialog-form-trigger'
 import UserFormDialog from '@/components/blocks/users/user-form-dialog'
 import UserTable from '@/components/blocks/users/user-table'
-import {
-  PageAction,
-  PageDescription,
-  PageHeader,
-  PageSeparator,
-  PageTitle,
-  PageWrapper,
-} from '@/components/layouts/app/app-page'
+import { PageAction, PageHeader, PageSeparator, PageTitle, PageWrapper } from '@/components/layouts/app/app-page'
 import { PageEventProvider } from '@/contexts/event-context'
 
 const UserPage: React.FC = () => {
@@ -17,7 +10,6 @@ const UserPage: React.FC = () => {
       <PageWrapper>
         <PageHeader>
           <PageTitle>Quản lý truy cập</PageTitle>
-          <PageDescription>Quản lý người dùng và quyền truy cập của họ vào hệ thống</PageDescription>
           <PageAction>
             <CreateUserFormDialogTrigger />
           </PageAction>

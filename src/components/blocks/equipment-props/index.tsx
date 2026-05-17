@@ -1,12 +1,5 @@
 import { ItemType } from '@/common/constants/enums'
-import {
-  PageAction,
-  PageDescription,
-  PageHeader,
-  PageSeparator,
-  PageTitle,
-  PageWrapper,
-} from '@/components/layouts/app/app-page'
+import { PageAction, PageHeader, PageSeparator, PageTitle, PageWrapper } from '@/components/layouts/app/app-page'
 import { PageEventProvider } from '@/contexts/event-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import tw from '@/lib/tw'
@@ -25,7 +18,6 @@ const EquipmentPropsPage: React.FC = () => {
       <PageWrapper>
         <PageHeader>
           <PageTitle>{title}</PageTitle>
-          <PageDescription>{description}</PageDescription>
           <PageAction>
             <CategorySheet type={ItemType.EQUIPMENT_PROPS} />
             <EquipmentPropsFormDialogTrigger />

@@ -1,12 +1,5 @@
 import type { TUpdateImageValues } from '@/apis/image/schemas/update-image.schema'
-import {
-  PageAction,
-  PageDescription,
-  PageHeader,
-  PageSeparator,
-  PageTitle,
-  PageWrapper,
-} from '@/components/layouts/app/app-page'
+import { PageAction, PageHeader, PageSeparator, PageTitle, PageWrapper } from '@/components/layouts/app/app-page'
 import { createPubSubContext } from '@/contexts/pubsub-context'
 import { usePageHelperText } from '@/hooks/use-page-helper-text'
 import ImageDeletionAlert from './image-deletion-alert'
@@ -26,14 +19,13 @@ export const { PubSubProvider, usePubSub, usePubSubSubscription } =
   createPubSubContext<GlobalPubSubEventMap>('GalleryPubSubContext')
 
 const ImagesGalleryPage: React.FC = () => {
-  const { title, description } = usePageHelperText('main')
+  const { title } = usePageHelperText('main')
 
   return (
     <PubSubProvider>
       <PageWrapper>
         <PageHeader>
           <PageTitle>{title}</PageTitle>
-          <PageDescription>{description}</PageDescription>
           <PageAction>
             <ImageUploadDialogTrigger />
           </PageAction>
