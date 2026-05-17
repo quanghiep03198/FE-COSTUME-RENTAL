@@ -17,19 +17,20 @@ export default function generateAvatar({
   format = 'svg',
   name,
 }: TAvatarGenOptions) {
-  const BASE_AVATAR_URL = 'https://api.dicebear.com/9.x/initials/svg'
-  return (
-    BASE_AVATAR_URL +
-    stringify(
-      {
-        background,
-        color,
-        length,
-        bold,
-        format,
-        seed: name,
-      },
-      { addQueryPrefix: true }
-    )
+  const BASE_AVATAR_URL = 'https://api.dicebear.com'
+  const avatarURL = new URL('/9.x/initials/svg', BASE_AVATAR_URL)
+
+  avatarURL.search = stringify(
+    {
+      background,
+      color,
+      length,
+      bold,
+      format,
+      seed: name,
+    },
+    { addQueryPrefix: true }
   )
+
+  return avatarURL.toString()
 }
