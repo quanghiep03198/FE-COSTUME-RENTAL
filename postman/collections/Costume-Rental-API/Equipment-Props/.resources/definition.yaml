@@ -14,7 +14,7 @@ description: |-
   - **GET /api/equipment-props/:id** – Lấy thông tin chi tiết của một đạo cụ/thiết bị theo `id`, bao gồm hình ảnh và mô tả.
   - **POST /api/equipment-props** – Tạo mới đạo cụ/thiết bị với đầy đủ thông tin sản phẩm (yêu cầu quyền ADMIN).
   - **PUT /api/equipment-props/:id** – Cập nhật thông tin đạo cụ/thiết bị theo `id` (yêu cầu quyền ADMIN).
-  - **DELETE /api/equipment-props/:id** – Xóa đạo cụ/thiết bị theo `id` (yêu cầu quyền ADMIN).
+  - **DELETE /api/equipment-props/:id** - Xóa đạo cụ/thiết bị theo `id` (yêu cầu quyền ADMIN).
 
   ## Schema: EquipmentProps
 
