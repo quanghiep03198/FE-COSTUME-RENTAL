@@ -13,27 +13,35 @@ import { groupBy } from 'lodash-es'
 import { ImageIcon } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
+import UploadImageForm from './upload-image-form'
 
 type TImagesGalleryProps = {
   type: 'any' | ItemType
   selected?: IImage[]
   onSelect?: (value: IImage[]) => any
+  onTabChange?: (value: 'any' | ItemType) => any
 } & React.ComponentProps<'div'>
 
 export const IMAGE_SELECTION_SUBMIT_BTN_ID = 'image-select-submit-btn'
 
-const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect }) => {
+const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect, onTabChange }) => {
   const { data: images, isLoading } = useGetImagesQuery()
   const [selectedImages, setSelectedImages] = useState<IImage[]>(selected ?? [])
 
   return (
     <>
-      <Tabs defaultValue={type}>
-        <TabsList variant="line">
+      <Tabs
+        defaultValue={type}
+        onValueChange={(value) => {
+          if (typeof onTabChange === 'function') onTabChange(value)
+        }}
+      >
+        <TabsList variant="line" className="sticky top-0 z-20 bg-inherit ">
           <TabsTrigger value={ItemType.COSTUMES}>Trang Phục</TabsTrigger>
           <TabsTrigger value={ItemType.EQUIPMENT_PROPS}>Đạo Cụ</TabsTrigger>
+          <TabsTrigger value={'UPLOAD'}>Tải lên</TabsTrigger>
         </TabsList>
-        <TabsContent value={ItemType.COSTUMES} className="py-6">
+        <TabsContent value={ItemType.COSTUMES} className="py-6 max-h-125 overflow-auto">
           <ImageList
             data={images ?? []}
             isLoading={isLoading}
@@ -42,7 +50,7 @@ const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect
             type={ItemType.COSTUMES}
           />
         </TabsContent>
-        <TabsContent value={ItemType.EQUIPMENT_PROPS} className="py-6">
+        <TabsContent value={ItemType.EQUIPMENT_PROPS} className="py-6 max-h-125 overflow-auto">
           <ImageList
             data={images ?? []}
             isLoading={isLoading}
@@ -50,6 +58,11 @@ const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect
             onSelect={setSelectedImages}
             type={ItemType.EQUIPMENT_PROPS}
           />
+        </TabsContent>
+        <TabsContent value={'UPLOAD'} className="py-6 max-h-125 overflow-auto">
+          <div className="max-w-3xl mx-auto">
+            <UploadImageForm />
+          </div>
         </TabsContent>
       </Tabs>
 
