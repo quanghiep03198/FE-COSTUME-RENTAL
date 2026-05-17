@@ -51,6 +51,7 @@ const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
 
   const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
+    e.stopPropagation()
     form.handleSubmit()
   }
 
@@ -63,7 +64,7 @@ const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
           </Button>
         }
       />
-      <PopoverContent className="w-fit">
+      <PopoverContent className="w-fit" align="end">
         <form onSubmit={handleSubmit}>
           <FieldSet>
             <FieldLegend>Tạo mới danh mục {getCategoryTypeName(type)}</FieldLegend>
@@ -102,7 +103,13 @@ const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
                 <Button type="button" variant="secondary" disabled={isPending}>
                   Hủy
                 </Button>
-                <Button type="submit" size="lg" disabled={isPending} className="group/submit-btn">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isPending}
+                  className="group/submit-btn"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Spinner className="hidden group-disabled/submit-btn:inline-block" />
                   Xác nhận
                 </Button>
