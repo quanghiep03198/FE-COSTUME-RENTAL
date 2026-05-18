@@ -16,7 +16,7 @@ import {
 import { Typography } from '@/components/ui/typography'
 import { Link } from '@tanstack/react-router'
 import { groupBy } from 'lodash-es'
-import { ArrowUpRightIcon, FilesIcon, HomeIcon } from 'lucide-react'
+import { ArrowUpRightIcon, BoxIcon, FilesIcon, GiftIcon, HomeIcon } from 'lucide-react'
 import React, { useMemo } from 'react'
 import { SearchDialog } from './search-dialog'
 
@@ -42,58 +42,70 @@ const Header: React.FC = () => {
   return (
     <header className="border-b">
       {/* Top header nav */}
-      <nav className="bg-accent text-accent-foreground p-2">
+      <nav className="bg-primary text-primary-foreground p-2">
         <ul className="flex items-center container mx-auto">
           <li>
-            <Link to="/" hash="thanh-toan" className={buttonVariants({ variant: 'link' })}>
-              Thanh toán <ArrowUpRightIcon size={14} />
+            <Link
+              to="/"
+              hash="thanh-toan"
+              className={buttonVariants({ variant: 'link', size: 'sm', className: 'text-primary-foreground!' })}
+            >
+              Về chúng tôi <ArrowUpRightIcon size={14} />
             </Link>
           </li>
           <li>
-            <Link to="/" hash="chinh-sach" className={buttonVariants({ variant: 'link' })}>
-              Chính sách <ArrowUpRightIcon size={14} />
-            </Link>
-          </li>
-          <li>
-            <Link to="/" hash="lien-he" className={buttonVariants({ variant: 'link' })}>
+            <Link
+              to="/"
+              hash="lien-he"
+              className={buttonVariants({ variant: 'link', size: 'sm', className: 'text-primary-foreground!' })}
+            >
               Liên hệ <ArrowUpRightIcon size={14} />
             </Link>
           </li>
-
+          <li>
+            <Link
+              to="/"
+              hash="chinh-sach"
+              className={buttonVariants({ variant: 'link', size: 'sm', className: 'text-primary-foreground!' })}
+            >
+              Chính sách <ArrowUpRightIcon size={14} />
+            </Link>
+          </li>
           <li className="ml-auto">
             <a
-              href=""
+              href="#"
               className={buttonVariants({
                 variant: 'ghost',
                 size: 'icon',
-                className: 'hover:bg-primary [&:hover_svg]:stroke-primary-foreground',
               })}
             >
-              <FaceBookIcon className="stroke-primary size-5" strokeWidth={2} />
+              <FaceBookIcon className="size-5" strokeWidth={2} />
             </a>
           </li>
           <li>
             <a
-              href=""
+              href="#"
               className={buttonVariants({
                 variant: 'ghost',
                 size: 'icon',
-                className: 'hover:bg-primary [&:hover_svg]:stroke-primary-foreground',
               })}
             >
-              <InstagramIcon className="stroke-primary size-5" strokeWidth={2} />
+              <InstagramIcon className="size-5" strokeWidth={2} />
             </a>
           </li>
         </ul>
       </nav>
       {/* Main header nav */}
-      <nav className="bg-primary text-primary-foreground">
+      <nav className="">
         <div className="container mx-auto p-2 flex gap-4">
-          <Link to="/" className="inline-flex items-center gap-1 hover:drop-shadow-[0_0_4px_var(--primary-foreground)]">
+          <Link
+            to="/"
+            className="inline-flex px-2 items-center gap-1 hover:drop-shadow-[0_0_4px_var(--primary-foreground)]"
+          >
             <span className="font-medium">Diamond Studio</span>
           </Link>
           {/* Navigation menu */}
-          <NavigationMenu className='[&_*[data-slot="navigation-menu-link"]]:hover:bg-accent [&_*[data-slot="navigation-menu-link"]]:hover:text-primary [&_*[data-slot="navigation-menu-trigger"]]:hover:bg-accent [&_*[data-slot="navigation-menu-trigger"]]:hover:text-primary'>
+          <NavigationMenu className="">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuLink render={<Link to="/" className="font-medium" />}>
@@ -125,11 +137,13 @@ const Header: React.FC = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink render={<Link to="/" hash="san-pham-moi" className="font-medium" />}>
+                  <BoxIcon className="size-4" />
                   Sản phẩm mới
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink render={<Link to="/" hash="xu-huong" className="font-medium" />}>
+                  <GiftIcon className="size-4" />
                   Ưu đãi
                 </NavigationMenuLink>
               </NavigationMenuItem>

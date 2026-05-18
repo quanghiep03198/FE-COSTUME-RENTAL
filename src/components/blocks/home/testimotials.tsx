@@ -20,7 +20,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <section
       id="testimonials"
-      className="before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3 before:border-b sm:py-28 lg:py-36"
+      className="before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3  sm:py-28 lg:py-36"
     >
       <Carousel
         className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:items-center sm:gap-6 sm:px-6 lg:flex-row lg:gap-24 lg:px-8"
@@ -31,7 +31,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
       >
         {/* Left Content */}
         <div className="w-full space-y-4 lg:w-1/3">
-          <Badge variant="outline" className="text-sm font-normal">
+          <Badge variant="outline" className=" font-normal">
             Khách hàng nói gì
           </Badge>
 
@@ -58,7 +58,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
           <CarouselContent className="sm:-ml-6">
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className="sm:pl-6 lg:basis-1/2">
-                <Card className="hover:border-primary h-full rounded-none transition-colors duration-300">
+                <Card className="hover:border-primary h-full rounded-none transition-colors duration-300 shadow-none">
                   <CardContent className="space-y-5">
                     <div className="flex items-center gap-3">
                       <Avatar className="size-10 rounded-full">

@@ -1,4 +1,3 @@
-import SplitText from '@/components/animated/split-text'
 import { buttonVariants } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
 import { ArrowRightIcon } from 'lucide-react'
@@ -12,38 +11,23 @@ const HeroBanner: React.FC = () => {
             to="/"
             className={buttonVariants({
               variant: 'outline',
+              size: 'sm',
               className:
-                'bg-transparent rounded-r-full rounded-l-full border-white mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-75 duration-500 delay-100',
+                'bg-transparent rounded-r-full rounded-l-full border-white mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-75 duration-500 ',
             })}
           >
             Khám phá bộ sưu tập <ArrowRightIcon className="size-3" />
           </Link>
 
-          <SplitText
-            tag="h1"
-            text="Gói Trọn Nét Thơ – Tôn Vinh Bản Sắc"
-            ease="power3.out"
-            splitType="lines"
-            className="text-5xl font-bold text-white"
-            delay={0}
-            from={{ opacity: 0, y: 40 }}
-            to={{ opacity: 1, y: 0 }}
-          />
-          <SplitText
-            text="Cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn dáng."
-            className="xxl:text-lg text-white"
-            delay={5}
-            duration={0.75}
-            ease="power3.out"
-            splitType="chars"
-            from={{ opacity: 0, y: 40 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0}
-            tag="p"
-            textAlign="center"
-          />
+          <h1 className="text-5xl font-bold text-white animate-in fade-in-0 slide-in-from-bottom-50 duration-500">
+            Gói Trọn Nét Thơ - Tôn Vinh Bản Sắc
+          </h1>
+          <p className=" text-lg text-white animate-in fade-in-0 slide-in-from-bottom-50 duration-700">
+            Cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn dáng.
+          </p>
+
           <div className="flex justify-center items-center gap-2 mt-6">
-            <Link to="/san-pham" className={buttonVariants()}>
+            <Link to="/san-pham" className={buttonVariants({ size: 'lg', effect: 'glass' })}>
               Cửa hàng
             </Link>
             <Link to="/" hash="" className={buttonVariants({ variant: 'link', className: 'text-white' })}>
@@ -53,7 +37,7 @@ const HeroBanner: React.FC = () => {
         </div>
       </div>
 
-      <img src="/hero-banner.jpg" className="w-full h-135 xxl:h-[90vh] object-cover -z-10" />
+      <img src="/hero-banner.jpg" className="w-full h-150 xxl:h-[90vh] object-cover -z-10" />
     </section>
   )
 }

@@ -18,7 +18,7 @@ export const contactInfo: ContactInfo = [
     slug: 'address',
     title: 'Địa chỉ cửa hàng',
     icon: 'MapPin',
-    description: '233A Trần Nguyên Hãn, Quận Lê Chân\nTP. Hải Phòng',
+    description: '215 Lạch Tray, Ngô Quyền, Hải Phòng',
   },
   {
     slug: 'email',

@@ -13,12 +13,12 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
   return (
     <section
       id="about-us"
-      className="before:bg-accent relative py-8 before:absolute before:inset-0 before:-z-10 before:skew-y-3 sm:py-16 lg:py-24"
+      className="before:bg-accent relative py-8 before:absolute before:inset-0 before:-z-10 before:skew-y-3 before:translate-y-10 sm:py-16 lg:py-24"
     >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-12 flex max-w-3xl flex-col items-center justify-center space-y-4 text-center md:mb-16 lg:mb-24">
-          <Badge variant="outline" className="text-sm font-normal">
+          <Badge variant="outline" className="font-normal">
             Về chúng tôi
           </Badge>
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl">
@@ -35,12 +35,12 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
           <Image
             src="/our-story.jpg"
             alt="Hình minh họa về cửa hàng món nhanh"
-            className="h-full w-full rounded-lg brightness-80 sm:max-md:mb-6 max-h-135 object-cover object-center"
+            className="h-full w-full grayscale-75 sm:max-lg:rounded-b-none rounded-lg brightness-80 sm:max-md:mb-6 max-h-135 object-cover object-center"
             loading="lazy"
           />
 
           {/* Stats card overlapping the video section */}
-          <div className="bg-background grid gap-10 rounded-lg border sm:p-6 sm:max-lg:grid-cols-2 md:p-8 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10">
+          <div className="bg-background grid gap-10 sm:max-lg:rounded-t-none rounded-lg border sm:p-6 sm:max-lg:grid-cols-2 md:p-8 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10">
             {stats.map((stat, index) => (
               <div key={index} className="flex flex-col items-center justify-start gap-2.5 text-center">
                 <div className="flex size-7 items-center justify-center [&>svg]:size-7">
@@ -115,10 +115,7 @@ const OurStory: React.FC = () => {
       </CollapsibleContent>
       <CollapsibleTrigger
         render={
-          <Button
-            size="lg"
-            className="group relative mt-4 w-fit overflow-hidden rounded-full text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-size-[250%_250%,100%_100%] before:bg-position-[200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-position-[-100%_0,0_0] has-[>svg]:px-6 dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
-          >
+          <Button size="lg" effect="glass" className="mt-4 w-fit overflow-hidden">
             {open ? 'Thu gọn' : 'Xem thêm'}
             <Icon
               name={open ? 'ArrowUp' : 'ArrowDown'}

@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_public-layout/')({
 
 function App() {
   return (
-    <div className="space-y-10 ">
+    <div className="space-y-16">
       <HeroBanner />
       <BentoGridHero />
       <AboutUs stats={stats} />

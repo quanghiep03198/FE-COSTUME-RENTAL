@@ -1,6 +1,6 @@
+import Footer from '@/components/layouts/public/footer'
 import Header from '@/components/layouts/public/header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { Fragment } from 'react'
 
 export const Route = createFileRoute('/_public-layout')({
   component: RouteComponent,
@@ -8,11 +8,10 @@ export const Route = createFileRoute('/_public-layout')({
 
 function RouteComponent() {
   return (
-    <Fragment>
+    <div className="flex flex-col">
       <Header />
-      <main>
-        <Outlet />
-      </main>
-    </Fragment>
+      <Outlet />
+      <Footer />
+    </div>
   )
 }

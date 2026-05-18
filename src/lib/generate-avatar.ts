@@ -3,6 +3,7 @@ import { stringify } from 'qs'
 type TAvatarGenOptions = {
   name: string
   background?: string
+  variant?: 'initials' | 'glass'
   color?: string
   length?: number
   bold?: boolean
@@ -15,10 +16,11 @@ export default function generateAvatar({
   length = 1,
   bold = true,
   format = 'svg',
+  variant = 'initials',
   name,
 }: TAvatarGenOptions) {
   const BASE_AVATAR_URL = 'https://api.dicebear.com'
-  const avatarURL = new URL('/9.x/initials/svg', BASE_AVATAR_URL)
+  const avatarURL = new URL(`/9.x/${variant}/svg`, BASE_AVATAR_URL)
 
   avatarURL.search = stringify(
     {
