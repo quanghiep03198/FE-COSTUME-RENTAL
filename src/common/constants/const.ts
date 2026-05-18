@@ -1,4 +1,5 @@
 import type { IconProps } from '@/components/ui/icon'
+import { ItemType } from './enums'
 
 export const STATUS_OPTIONS: Array<{
   label: string
@@ -16,6 +17,11 @@ export const STATUS_OPTIONS: Array<{
     icon: 'CircleMinus',
   },
 ]
+
+export const ITEM_TYPE_MAP: Map<ItemType, { label: string; icon: IconProps['name'] }> = new Map([
+  [ItemType.COSTUMES, { label: 'Trang phục', icon: 'Shirt' }],
+  [ItemType.EQUIPMENT_PROPS, { label: 'Đạo cụ', icon: 'ToolCase' }],
+])
 
 export type TColorPateItem = { hex: string; code: string; intensity: number }
 

@@ -53,7 +53,10 @@ const AppSidebar: React.FC = () => {
     >
       <SidebarHeader>
         <Item size="xs">
-          <ItemMedia variant="image" className="size-10! bg-primary text-primary-foreground">
+          <ItemMedia
+            variant="image"
+            className="size-10! bg-radial from-primary/50 to-primary rounded-full text-primary-foreground shadow-lg"
+          >
             <Gem size={24} strokeWidth={1.5} />
           </ItemMedia>
           <ItemContent>

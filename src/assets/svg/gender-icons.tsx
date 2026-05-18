@@ -1,3 +1,5 @@
+import { CostumeGender } from '@/apis/costume/constants'
+
 export const GenderFemaleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -48,3 +50,9 @@ export const GenderUnisexIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props)
     />
   </svg>
 )
+
+export const GENDER_ICONS: ReadonlyMap<CostumeGender, React.FC<React.SVGProps<SVGSVGElement>>> = new Map([
+  [CostumeGender.MALE, GenderMaleIcon],
+  [CostumeGender.FEMALE, GenderFemaleIcon],
+  [CostumeGender.UNISEX, GenderUnisexIcon],
+])

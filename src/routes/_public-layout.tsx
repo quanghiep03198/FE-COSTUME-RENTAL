@@ -1,4 +1,6 @@
+import Header from '@/components/layouts/public/header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { Fragment } from 'react'
 
 export const Route = createFileRoute('/_public-layout')({
   component: RouteComponent,
@@ -6,8 +8,11 @@ export const Route = createFileRoute('/_public-layout')({
 
 function RouteComponent() {
   return (
-    <>
-      <Outlet />
-    </>
+    <Fragment>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </Fragment>
   )
 }

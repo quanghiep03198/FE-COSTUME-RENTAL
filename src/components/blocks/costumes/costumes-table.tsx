@@ -1,7 +1,7 @@
-import { COSTUME_GENDER_LABEL_MAP, COSTUME_UNIT_LABEL_MAP, CostumeGender } from '@/apis/costume/constants'
+import { COSTUME_GENDER_LABEL_MAP, COSTUME_UNIT_LABEL_MAP } from '@/apis/costume/constants'
 import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
 import type { ICostume } from '@/apis/costume/types'
-import { GenderFemaleIcon, GenderMaleIcon, GenderUnisexIcon } from '@/assets/svg/genders'
+import { GENDER_ICONS } from '@/assets/svg/gender-icons'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
@@ -16,11 +16,6 @@ import React, { useMemo } from 'react'
 import CostumeDropdownOptions from './costume-dropdown-options'
 import CostumeTableToolbar from './costume-table-toolbar'
 
-export const GENDER_ICONS: ReadonlyMap<CostumeGender, React.FC<React.SVGProps<SVGSVGElement>>> = new Map([
-  [CostumeGender.MALE, GenderMaleIcon],
-  [CostumeGender.FEMALE, GenderFemaleIcon],
-  [CostumeGender.UNISEX, GenderUnisexIcon],
-])
 const CostumeTable: React.FC = () => {
   const { data, isLoading } = useGetCostumesQuery()
 

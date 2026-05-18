@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PublicLayoutRouteImport } from './routes/_public-layout'
 import { Route as PrivateLayoutRouteImport } from './routes/_private-layout'
 import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.index'
+import { Route as PublicLayoutSanPhamRouteImport } from './routes/_public-layout.san-pham'
 import { Route as PrivateLayoutUsersRouteImport } from './routes/_private-layout.users'
 import { Route as PrivateLayoutStatisticsRouteImport } from './routes/_private-layout.statistics'
 import { Route as PrivateLayoutRentalReceiptsRouteImport } from './routes/_private-layout.rental-receipts'
@@ -42,6 +43,11 @@ const PrivateLayoutRoute = PrivateLayoutRouteImport.update({
 const PublicLayoutIndexRoute = PublicLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => PublicLayoutRoute,
+} as any)
+const PublicLayoutSanPhamRoute = PublicLayoutSanPhamRouteImport.update({
+  id: '/san-pham',
+  path: '/san-pham',
   getParentRoute: () => PublicLayoutRoute,
 } as any)
 const PrivateLayoutUsersRoute = PrivateLayoutUsersRouteImport.update({
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/san-pham': typeof PublicLayoutSanPhamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/san-pham': typeof PublicLayoutSanPhamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -159,6 +167,7 @@ export interface FileRoutesById {
   '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
+  '/_public-layout/san-pham': typeof PublicLayoutSanPhamRoute
   '/_public-layout/': typeof PublicLayoutIndexRoute
 }
 export interface FileRouteTypes {
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/san-pham'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/san-pham'
   id:
     | '__root__'
     | '/_private-layout'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/_private-layout/rental-receipts'
     | '/_private-layout/statistics'
     | '/_private-layout/users'
+    | '/_public-layout/san-pham'
     | '/_public-layout/'
   fileRoutesById: FileRoutesById
 }
@@ -248,6 +260,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof PublicLayoutIndexRouteImport
+      parentRoute: typeof PublicLayoutRoute
+    }
+    '/_public-layout/san-pham': {
+      id: '/_public-layout/san-pham'
+      path: '/san-pham'
+      fullPath: '/san-pham'
+      preLoaderRoute: typeof PublicLayoutSanPhamRouteImport
       parentRoute: typeof PublicLayoutRoute
     }
     '/_private-layout/users': {
@@ -373,10 +392,12 @@ const PrivateLayoutRouteWithChildren = PrivateLayoutRoute._addFileChildren(
 )
 
 interface PublicLayoutRouteChildren {
+  PublicLayoutSanPhamRoute: typeof PublicLayoutSanPhamRoute
   PublicLayoutIndexRoute: typeof PublicLayoutIndexRoute
 }
 
 const PublicLayoutRouteChildren: PublicLayoutRouteChildren = {
+  PublicLayoutSanPhamRoute: PublicLayoutSanPhamRoute,
   PublicLayoutIndexRoute: PublicLayoutIndexRoute,
 }
 

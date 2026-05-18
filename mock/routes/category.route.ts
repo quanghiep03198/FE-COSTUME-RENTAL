@@ -3,9 +3,9 @@ import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
 
-export function registerItemCategoryRoutes(app: Application) {
+export function registerCategoryRoutes(app: Application) {
   // * GET /categories
-  app.get('/api/categories', jwtMiddleware, (req: Request, res: Response) => {
+  app.get('/api/categories', (req: Request, res: Response) => {
     const result = queryCollection('categories', req.query, {
       transform: (record) => {
         const embedFields = (req.query._embed as string)?.split(',') || []
@@ -45,7 +45,7 @@ export function registerItemCategoryRoutes(app: Application) {
   })
 
   // * GET /categories/:id
-  app.get('/api/categories/:id', jwtMiddleware, (req: Request, res: Response) => {
+  app.get('/api/categories/:id', (req: Request, res: Response) => {
     const result = queryRecord('categories', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Item category not found' })
     return res.status(200).json(result)

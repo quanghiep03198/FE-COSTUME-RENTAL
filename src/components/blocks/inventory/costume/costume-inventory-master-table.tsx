@@ -1,6 +1,7 @@
 import { COSTUME_GENDER_LABEL_MAP, COSTUME_UNIT_LABEL_MAP } from '@/apis/costume/constants'
 import { useGetCostumeInventoryQuery } from '@/apis/inventory/hooks/use-inventory-request'
 import type { ICostumeInventory } from '@/apis/inventory/types/costume'
+import { GENDER_ICONS } from '@/assets/svg/gender-icons'
 import { formatCurrency } from '@/common/helpers/format-intl'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
@@ -122,8 +123,15 @@ const CostumeInventoryMasterTable: React.FC = () => {
         header: 'Giới tính',
         size: 100,
         cell: ({ getValue }) => {
-          const value = COSTUME_GENDER_LABEL_MAP.get(getValue())
-          return <Badge>{value}</Badge>
+          const value = getValue()
+          const gender = COSTUME_GENDER_LABEL_MAP.get(value)
+          const GenderIcon = GENDER_ICONS.get(value)!
+          return (
+            <Badge>
+              <GenderIcon className="font-medium" />
+              {gender}
+            </Badge>
+          )
         },
       }),
       columnHelper.accessor('original_rental_price_per_day', {

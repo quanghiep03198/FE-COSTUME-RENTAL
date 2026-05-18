@@ -1,5 +1,12 @@
-import { Button } from '@/components/ui/button'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { stats } from '@/assets/data/about-us'
+import { contactInfo } from '@/assets/data/contact-us'
+import { testimonials } from '@/assets/data/testimoials'
+import AboutUs from '@/components/blocks/home/about-us'
+import BentoGridHero from '@/components/blocks/home/bento-grid-hero'
+import ContactUs from '@/components/blocks/home/contact-us'
+import HeroBanner from '@/components/blocks/home/hero-banner'
+import Testimonials from '@/components/blocks/home/testimotials'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_public-layout/')({
   component: App,
@@ -7,15 +14,12 @@ export const Route = createFileRoute('/_public-layout/')({
 
 function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2" nativeButton={false} role="button" render={<Link to="/login">Login</Link>} />
-        </div>
-      </div>
+    <div className="space-y-10 ">
+      <HeroBanner />
+      <BentoGridHero />
+      <AboutUs stats={stats} />
+      <Testimonials testimonials={testimonials} />
+      <ContactUs contactInfo={contactInfo} />
     </div>
   )
 }
