@@ -19,7 +19,7 @@ const CostumeTableToolbar: React.FC<{ table: Table<ICostume> }> = ({ table }) =>
   }, [categories])
 
   return (
-    <div className="flex gap-1 items-center">
+    <div className="flex gap-2 items-center">
       <GlobalFilterInput table={table} />
       <DataTableFacetedFilter column={table.getColumn('category.name')} title="Danh mục" options={categoryOptions} />
       <div className="ml-auto">

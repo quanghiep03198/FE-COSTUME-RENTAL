@@ -129,7 +129,7 @@ const CostumeTable: React.FC = () => {
       enableMultiSort={true}
       containerProps={{
         className:
-          'xxl:h-[calc(var(--outlet-wrapper-height)-5rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-9rem)]',
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-9rem)]',
       }}
       toolbarProps={{
         override: true,
