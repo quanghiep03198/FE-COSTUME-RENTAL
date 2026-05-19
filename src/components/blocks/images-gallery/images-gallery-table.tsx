@@ -4,6 +4,7 @@ import type { IImage } from '@/apis/image/types'
 import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
 import { ROW_ACTIONS_COLUMN_ID } from '@/components/shared/data-grid/constants'
+import Image from '@/components/shared/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import generateAvatar from '@/lib/generate-avatar'
@@ -75,9 +76,9 @@ const ImageGalleryTable: React.FC = () => {
         cell: ({ row }) => (
           <Item size="xs" className="p-0 flex-nowrap">
             <ItemMedia variant={'icon'}>
-              <img
+              <Image
                 src={getImageUrl(row.original.dest)}
-                className="size-14 rounded-lg object-cover object-center"
+                className="size-16 rounded-lg object-cover object-center"
                 loading="lazy"
               />
             </ItemMedia>
