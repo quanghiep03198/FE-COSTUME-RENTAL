@@ -10,7 +10,7 @@ import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout')({
-  component: RouteComponent,
+  component: PrivateLayout,
   server: { middleware: [authMiddleware] },
   loader: async ({ context }) => {
     const user = await context.queryClient.ensureQueryData(getAuthUserQueryOptions())
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/_private-layout')({
   },
 })
 
-function RouteComponent() {
+function PrivateLayout() {
   return (
     <Suspense fallback={<div className="h-screen w-full grid place-content-center text-center">Đang tải ...</div>}>
       <SidebarProvider
