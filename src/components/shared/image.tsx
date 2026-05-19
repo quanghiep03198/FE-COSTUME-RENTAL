@@ -14,7 +14,7 @@ const FallbackIcon: React.FC<React.ComponentProps<'div'>> = ({ className, title,
     className={cn('bg-muted/80 text-muted-foreground place-content-center place-items-center', className)}
     {...props}
   >
-    <Icon name="Image" size={28} strokeWidth={1.5} />
+    <Icon name="Image" size={24} className="size-6" strokeWidth={1.5} />
   </div>
 )
 
