@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Rating } from '@/components/ui/rating'
 import type React from 'react'
+import { useInView } from 'react-intersection-observer'
 
 export type TestimonialItem = {
   name: string
@@ -17,8 +18,16 @@ type TestimonialsProps = {
 }
 
 const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
+  const { ref, inView } = useInView({
+    threshold: 0.25,
+    rootMargin: '-100px',
+    delay: 200,
+    triggerOnce: true,
+  })
+
   return (
     <section
+      ref={ref}
       id="testimonials"
       className="before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3  sm:py-28 lg:py-36"
     >
@@ -35,9 +44,17 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
             Khách hàng nói gì
           </Badge>
 
-          <h2 className="text-2xl font-semibold sm:text-3xl lg:text-4xl">Phản hồi từ khách hàng</h2>
+          <h2
+            aria-current={inView}
+            className="animate-in hidden aria-current:block transition-discrete paused aria-current:running fade-in-0 slide-in-from-left-20 blur-in-lg duration-700 text-2xl font-semibold sm:text-3xl lg:text-4xl"
+          >
+            Phản hồi từ khách hàng
+          </h2>
 
-          <p className="text-muted-foreground text-xl">
+          <p
+            aria-current={inView}
+            className="animate-in hidden aria-current:block transition-discrete paused aria-current:running fade-in-0 slide-in-from-left-20 blur-in-lg duration-700 text-muted-foreground text-xl"
+          >
             Chúng tôi tự hào về sự hài lòng của khách hàng và luôn nỗ lực để mang đến trải nghiệm thuê áo dài tốt nhất.
           </p>
 

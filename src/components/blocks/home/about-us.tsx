@@ -6,12 +6,28 @@ import { useState } from 'react'
 
 import type { Stat } from '@/assets/data/about-us'
 import { cn } from '@/lib/utils'
+import { useInView } from 'react-intersection-observer'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../ui/collapsible'
 import { Typography } from '../../ui/typography'
 
 const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
+  const { ref, inView } = useInView({
+    threshold: 0,
+    // rootMargin: '-10px',
+    delay: 200,
+    triggerOnce: true,
+  })
+
+  const { ref: statsRef, inView: statsInView } = useInView({
+    threshold: 0,
+    // rootMargin: '-10px',
+    delay: 200,
+    triggerOnce: true,
+  })
+
   return (
     <section
+      ref={ref}
       id="about-us"
       className="before:bg-accent relative py-8 before:absolute before:inset-0 before:-z-10 before:skew-y-3 before:translate-y-10 sm:py-16 lg:py-24"
     >
@@ -21,10 +37,16 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
           <Badge variant="outline" className="font-normal">
             Về chúng tôi
           </Badge>
-          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl">
+          <h2
+            aria-current={inView}
+            className="text-2xl font-semibold hidden aria-current:block transition-discrete tracking-tight md:text-3xl lg:text-4xl animate-in duration-700 paused aria-current:running fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+          >
             Diamond Studio - Tôn Vinh Bản Sắc Việt
           </h2>
-          <p className="text-muted-foreground text-xl">
+          <p
+            aria-current={inView}
+            className="text-muted-foreground text-xl hidden aria-current:block transition-discrete animate-in paused aria-current:running duration-1000 fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+          >
             Chuyên cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn
             dáng.
           </p>
@@ -40,9 +62,16 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
           />
 
           {/* Stats card overlapping the video section */}
-          <div className="bg-background grid gap-10 sm:max-lg:rounded-t-none rounded-lg border sm:p-6 sm:max-lg:grid-cols-2 md:p-8 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10">
+          <div
+            ref={statsRef}
+            className="bg-background grid gap-10 sm:max-lg:rounded-t-none rounded-lg border sm:p-6 sm:max-lg:grid-cols-2 md:p-8 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10"
+          >
             {stats.map((stat, index) => (
-              <div key={index} className="flex flex-col items-center justify-start gap-2.5 text-center">
+              <div
+                aria-current={statsInView}
+                key={index}
+                className="hidden aria-current:flex transition-discrete animate-in paused aria-current:running fade-in-0 duration-1000 slide-in-from-bottom-4 flex-col items-center justify-start gap-2.5 text-center"
+              >
                 <div className="flex size-7 items-center justify-center [&>svg]:size-7">
                   <Icon name={stat.icon} />
                 </div>

@@ -14,12 +14,12 @@ export const Route = createFileRoute('/_public-layout/')({
 
 function App() {
   return (
-    <div className="space-y-16">
+    <main className="space-y-16">
       <HeroBanner />
       <BentoGridHero />
       <AboutUs stats={stats} />
       <Testimonials testimonials={testimonials} />
       <ContactUs contactInfo={contactInfo} />
-    </div>
+    </main>
   )
 }

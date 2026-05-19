@@ -3,15 +3,15 @@ import Header from '@/components/layouts/public/header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_public-layout')({
-  component: RouteComponent,
+  component: PublicLayout,
 })
 
-function RouteComponent() {
+function PublicLayout() {
   return (
-    <div className="flex flex-col">
+    <>
       <Header />
       <Outlet />
       <Footer />
-    </div>
+    </>
   )
 }

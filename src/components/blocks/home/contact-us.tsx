@@ -3,10 +3,20 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
+import { useInView } from 'react-intersection-observer'
 
 const ContactUs: React.FC<{ contactInfo: ContactInfo }> = ({ contactInfo }) => {
+  const { ref, inView } = useInView({
+    threshold: 0.25,
+    rootMargin: '-50px',
+    delay: 100,
+    triggerOnce: true,
+    // skip: !hyderated,
+  })
+
   return (
     <section
+      ref={ref}
       id="contact-us"
       className="before:bg-muted relative py-8 before:absolute before:inset-0 before:-z-10 before:skew-y-3 before:translate-y-10 sm:py-16 lg:py-24"
     >
@@ -16,10 +26,16 @@ const ContactUs: React.FC<{ contactInfo: ContactInfo }> = ({ contactInfo }) => {
           <Badge variant="outline" className="text-sm font-normal">
             Liên hệ
           </Badge>
-          <h2 className="text-2xl font-semibold md:text-3xl lg:text-4xl">
+          <h2
+            aria-current={inView}
+            className="text-2xl hidden aria-current:block transition-discrete font-semibold md:text-3xl lg:text-4xl aria-current:animate-in duration-700 paused aria-current:running fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+          >
             Kết nối với chúng tôi - Hỗ trợ tận tâm cho mọi nhu cầu thuê áo dài của bạn
           </h2>
-          <p className="text-muted-foreground text-xl">
+          <p
+            aria-current={inView}
+            className="text-muted-foreground hidden aria-current:block transition-discrete text-xl animate-in paused aria-current:running duration-1000 fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+          >
             Hãy liên hệ với chúng tôi nếu bạn cần tư vấn, báo giá combo hoặc hỗ trợ đặt trước theo khung giờ. Đội ngũ
             của chúng tôi sẽ phản hồi nhanh chóng để đảm bảo bạn có trải nghiệm tốt nhất với dịch vụ của chúng tôi.
           </p>
@@ -33,8 +49,16 @@ const ContactUs: React.FC<{ contactInfo: ContactInfo }> = ({ contactInfo }) => {
           />
 
           <div>
-            <h3 className="mb-2 text-2xl font-semibold">Chúng tôi luôn sẵn sàng phục vụ</h3>
-            <p className="text-muted-foreground mb-10 text-lg">
+            <h3
+              aria-current={inView}
+              className="hidden aria-current:block transition-discrete paused aria-current:running animate-in slide-in-from-left-10 fade-in-0 blur-in-lg duration-700 mb-2 text-2xl font-semibold"
+            >
+              Chúng tôi luôn sẵn sàng phục vụ
+            </h3>
+            <p
+              aria-current={inView}
+              className="hidden aria-current:block transition-discrete paused aria-current:running animate-in slide-in-from-left-10 fade-in-0 blur-in-lg duration-700 text-muted-foreground mb-10 text-lg"
+            >
               Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ bạn với mọi thắc mắc và yêu cầu liên quan đến dịch vụ thuê áo
               dài của chúng tôi. Dù bạn cần tư vấn về sản phẩm, báo giá combo hay hỗ trợ đặt trước theo khung giờ, chúng
               tôi sẽ phản hồi nhanh chóng để đảm bảo bạn có trải nghiệm tốt nhất với dịch vụ của chúng tôi.

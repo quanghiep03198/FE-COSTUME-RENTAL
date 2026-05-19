@@ -40,7 +40,7 @@ const Header: React.FC = () => {
   }, [categories])
 
   return (
-    <header className="border-b">
+    <header className="border-b sticky top-0 z-50">
       {/* Top header nav */}
       <nav className="bg-primary text-primary-foreground p-2">
         <ul className="flex items-center container mx-auto">
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
         </ul>
       </nav>
       {/* Main header nav */}
-      <nav className="">
+      <nav className="bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto p-2 flex gap-4">
           <Link
             to="/"

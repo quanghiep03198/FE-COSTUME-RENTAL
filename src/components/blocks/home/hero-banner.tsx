@@ -13,20 +13,20 @@ const HeroBanner: React.FC = () => {
               variant: 'outline',
               size: 'sm',
               className:
-                'bg-transparent rounded-r-full rounded-l-full border-white mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-75 duration-500 ',
+                'bg-transparent rounded-r-full rounded-l-full border-white mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-90 duration-500',
             })}
           >
             Khám phá bộ sưu tập <ArrowRightIcon className="size-3" />
           </Link>
 
-          <h1 className="text-5xl font-bold text-white animate-in fade-in-0 slide-in-from-bottom-50 duration-500">
+          <h1 className="text-5xl font-bold text-white blur-in-lg animate-in fade-in-0 slide-in-from-bottom-50 ease-out duration-500">
             Gói Trọn Nét Thơ - Tôn Vinh Bản Sắc
           </h1>
-          <p className=" text-lg text-white animate-in fade-in-0 slide-in-from-bottom-50 duration-700">
+          <p className=" text-lg text-white animate-in blur-in-lg fade-in-0 slide-in-from-bottom-50 ease-out duration-700">
             Cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn dáng.
           </p>
 
-          <div className="flex justify-center items-center gap-2 mt-6">
+          <div className="flex justify-center items-center gap-2 mt-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-95 duration-500">
             <Link to="/san-pham" className={buttonVariants({ size: 'lg', effect: 'glass' })}>
               Cửa hàng
             </Link>
