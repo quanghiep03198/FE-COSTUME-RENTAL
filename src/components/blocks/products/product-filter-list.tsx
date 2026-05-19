@@ -1,8 +1,10 @@
 import { useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
+import { SIZE_RUN } from '@/apis/costume/constants'
 import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
 import type { ICostume } from '@/apis/costume/types'
 import { useGetPropsQuery } from '@/apis/equipment-props/hooks/use-equipment-props-request'
 import type { IEquipmentProps } from '@/apis/equipment-props/types'
+import { COLOR_PALETTE } from '@/common/constants/const'
 import { ItemType } from '@/common/constants/enums'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
@@ -15,7 +17,7 @@ import { Typography } from '@/components/ui/typography'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { omit } from 'lodash-es'
 import { SearchIcon } from 'lucide-react'
-import { useMemo } from 'react'
+import { Activity, useMemo } from 'react'
 
 const useGetRentalPriceRange = (products: Array<ICostume | IEquipmentProps>) => {
   const maxPrice = useMemo(
@@ -30,7 +32,7 @@ const useGetRentalPriceRange = (products: Array<ICostume | IEquipmentProps>) => 
   const roundDown = (value: number, step: number) => Math.floor(value / step) * step
   const roundUp = (value: number, step: number) => Math.ceil(value / step) * step
 
-  const STEP = 20000
+  const STEP = 100000
   const roundedMin = roundDown(minPrice, STEP)
   const roundedMax = roundUp(maxPrice, STEP)
 
@@ -46,8 +48,8 @@ const useGetRentalPriceRange = (products: Array<ICostume | IEquipmentProps>) => 
 }
 
 const ProductFilterList = () => {
-  const search = useSearch({ from: '/_public-layout/san-pham' })
-  const navigate = useNavigate({ from: '/san-pham' })
+  const search = useSearch({ from: '/_public-layout/products' })
+  const navigate = useNavigate({ from: '/products' })
 
   const { data: categories } = useGetCategoriesQuery({ 'type:eq': search['item_type'] })
   const { data: costumes } = useGetCostumesQuery()
@@ -66,11 +68,13 @@ const ProductFilterList = () => {
   const productRentalPriceRange = useGetRentalPriceRange(dataSet[search.item_type!])
 
   return (
-    <div className="xl:h-[calc(100vh-var(--header-top-height)-var(--header-bottom-height))] overflow-y-auto scrollbar-none w-96 space-y-6">
+    <div className="xl:h-[calc(100vh-var(--header-top-height)-var(--header-bottom-height)-48px)] pr-2 overflow-y-auto w-96 space-y-6">
       {/* Filter header */}
       <div className="flex justify-between items-center">
         <Typography variant="h3">Bộ lọc ({filteredPropertysCount})</Typography>
-        <Button size="sm">Xóa lọc</Button>
+        <Button size="sm" variant="destructive">
+          Xóa lọc
+        </Button>
       </div>
 
       {/* Filter input group */}
@@ -78,7 +82,7 @@ const ProductFilterList = () => {
         <InputGroupAddon>
           <SearchIcon className="size-4" />
         </InputGroupAddon>
-        <InputGroupInput placeholder="Tìm giá trị lọc" type="search" />
+        <InputGroupInput placeholder="Tìm theo tên" type="search" />
       </InputGroup>
 
       {/**
@@ -86,7 +90,7 @@ const ProductFilterList = () => {
        * --------------------------------------------------------------
        */}
 
-      <Accordion multiple className="w-full" defaultValue={['item_type', 'category_slug:in']}>
+      <Accordion multiple className="w-full" defaultValue={['item_type', 'category_slug', 'rental_price_per_day']}>
         {/* Product type */}
         <AccordionItem value="item_type">
           <AccordionTrigger className="xl:text-base font-semibold">Loại sản phẩm</AccordionTrigger>
@@ -111,7 +115,7 @@ const ProductFilterList = () => {
           </AccordionContent>
         </AccordionItem>
         {/* Categories */}
-        <AccordionItem value="category_slug:in" className="border-none">
+        <AccordionItem value="category_slug" className="border-none">
           <AccordionTrigger className="xl:text-base font-semibold">Danh mục ({categoriesSelected})</AccordionTrigger>
           <AccordionContent>
             {!Array.isArray(categories) || categories.length === 0 ? (
@@ -133,10 +137,15 @@ const ProductFilterList = () => {
           </AccordionContent>
         </AccordionItem>
         {/* Pricing */}
-        <AccordionItem value="rental_price_per_day:between" className="border-none">
+        <AccordionItem value="rental_price_per_day" className="border-none">
           <AccordionTrigger className="xl:text-base font-semibold">Giá thuê (VND/ngày)</AccordionTrigger>
           <AccordionContent>
             <RadioGroup
+              value={
+                search['rental_price_per_day:gte']
+                  ? JSON.stringify({ min: search['rental_price_per_day:gte'], max: search['rental_price_per_day:lte'] })
+                  : null
+              }
               onValueChange={(value) =>
                 navigate({
                   search: (prev) => {
@@ -169,6 +178,81 @@ const ProductFilterList = () => {
             </RadioGroup>
           </AccordionContent>
         </AccordionItem>
+        {/* Color */}
+        <Activity mode={search.item_type === ItemType.COSTUMES ? 'visible' : 'hidden'}>
+          <AccordionItem value="color:eq" className="border-none">
+            <AccordionTrigger className="text-lg">Màu sắc</AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-10 gap-2! max-w-fit">
+                {COLOR_PALETTE.map((color) => (
+                  <button
+                    key={color.hex}
+                    style={{
+                      border: 'none',
+                      backgroundColor: color.hex,
+                      width: 20,
+                      height: 20,
+                      aspectRatio: '1 / 1',
+                      borderRadius: 2,
+                      ...(search['color:eq'] === color.hex && {
+                        outlineColor: color.hex,
+                        outlineOffset: 2,
+                        outlineWidth: 1,
+                        outlineStyle: 'solid',
+                      }),
+                    }}
+                    onClick={() => navigate({ search: (prev) => ({ ...prev, 'color:eq': color.hex }) })}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Activity>
+        {/* Size */}
+        <Activity mode={search.item_type === ItemType.COSTUMES ? 'visible' : 'hidden'}>
+          <AccordionItem value="size:eq">
+            <AccordionTrigger className="text-lg">Size</AccordionTrigger>
+            <AccordionContent>
+              <div className="flex gap-2 flex-wrap">
+                {SIZE_RUN.map((size) => {
+                  const isActive =
+                    typeof search['size:in'] === 'string' && search['size:in'].split(',').includes(size.value)
+
+                  return (
+                    <Button
+                      key={size.value}
+                      size="sm"
+                      variant={isActive ? 'default' : 'outline'}
+                      onClick={() => {
+                        navigate({
+                          search: (prev) => {
+                            return {
+                              ...prev,
+                              'size:in': isActive
+                                ? search['size:in']
+                                    ?.split(',')
+                                    .filter((s) => s !== size.value)
+                                    .join(',')
+                                : [
+                                    ...(typeof search['size:in'] === 'string' ? search['size:in'].split(',') : []),
+                                    size.value,
+                                  ].join(','),
+                              // typeof prev['size:in'] === 'string'
+                              //   ? [...prev['size:in'].split(','), size.value].join(',')
+                              //   : size.value,
+                            }
+                          },
+                        })
+                      }}
+                    >
+                      {size.label}
+                    </Button>
+                  )
+                })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Activity>
       </Accordion>
     </div>
   )

@@ -33,7 +33,7 @@ const Header: React.FC = () => {
         items: items.map((item) => ({
           id: item.id,
           title: item.name,
-          href: `/san-pham?danh-muc=${item.slug}`,
+          href: `/products?danh-muc=${item.slug}`,
         })),
       }
     })
@@ -136,7 +136,7 @@ const Header: React.FC = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink render={<Link to="/" hash="san-pham-moi" className="font-medium" />}>
+                <NavigationMenuLink render={<Link to="/" hash="products-moi" className="font-medium" />}>
                   <BoxIcon className="size-4" />
                   Sản phẩm mới
                 </NavigationMenuLink>

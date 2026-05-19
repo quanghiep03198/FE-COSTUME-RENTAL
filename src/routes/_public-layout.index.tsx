@@ -2,9 +2,9 @@ import { stats } from '@/assets/data/about-us'
 import { contactInfo } from '@/assets/data/contact-us'
 import { testimonials } from '@/assets/data/testimoials'
 import AboutUs from '@/components/blocks/home/about-us'
-import BentoGridHero from '@/components/blocks/home/bento-grid-hero'
 import ContactUs from '@/components/blocks/home/contact-us'
 import HeroBanner from '@/components/blocks/home/hero-banner'
+import Masonry from '@/components/blocks/home/masonry'
 import Testimonials from '@/components/blocks/home/testimotials'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -16,7 +16,7 @@ function App() {
   return (
     <main className="space-y-16">
       <HeroBanner />
-      <BentoGridHero />
+      <Masonry />
       <AboutUs stats={stats} />
       <Testimonials testimonials={testimonials} />
       <ContactUs contactInfo={contactInfo} />
