@@ -48,7 +48,7 @@ const WarehouseActionsDropdown: React.FC<CellContext<IWarehouse, unknown>> = ({ 
           onClick={() =>
             publish('warehouse:update', {
               ...row.original,
-              managed_by: pick(row.original.managed_by, ['id', 'full_name']),
+              managed_by: pick(row.original.manager, ['id', 'full_name']),
               type: pick(WAREHOUSE_TYPE_OPTIONS.find((opt) => opt.value === row.original.type)!, ['label', 'value']),
             })
           }

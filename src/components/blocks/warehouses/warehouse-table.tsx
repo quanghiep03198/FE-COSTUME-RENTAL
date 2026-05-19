@@ -44,12 +44,12 @@ const WarehouseTable: React.FC = () => {
           return warehouseTypeRef.current.get(value)
         },
       }),
-      columnHelper.accessor('managed_by.id', {
+      columnHelper.accessor('manager.id', {
         header: 'Người quản lý',
         enableColumnFilter: true,
         filterFn: 'equals',
         cell: ({ row }) => {
-          const employee = row.original.managed_by
+          const employee = row.original.manager
 
           if (!employee)
             return (
