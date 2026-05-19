@@ -1961,6 +1961,1398 @@ paths:
 
         - 200 OK: Xóa thành công.
         - 404 Not Found: Không tìm thấy kho.
+  /customers:
+    get:
+      summary: List Workflow Customers
+      responses: {}
+      tags:
+        - Workflow Customers
+      description: Liệt kê khách hàng cho quy trình cho thuê.
+      parameters:
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: khách
+        - name: type
+          in: query
+          schema:
+            type: string
+          example: INDIVIDUAL
+        - name: include_inactive
+          in: query
+          schema:
+            type: boolean
+          example: false
+  '/customers/{id}':
+    get:
+      summary: Show Workflow Customer
+      responses: {}
+      tags:
+        - Workflow Customers
+      description: Hiển thị một khách hàng theo ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+  /inventory/available:
+    get:
+      summary: List Available Inventory
+      responses: {}
+      tags:
+        - Workflow Inventory
+      description: Liệt kê các vật tư trong kho có sẵn cho luồng phân bổ.
+      parameters:
+        - name: warehouse_id
+          in: query
+          schema:
+            type: integer
+          example: 1
+        - name: item_type
+          in: query
+          schema:
+            type: string
+          example: COSTUME
+        - name: equipment_prop_id
+          in: query
+          schema:
+            type: integer
+          example: 15
+        - name: size
+          in: query
+          schema:
+            type: string
+          example: M
+        - name: inventory_condition_id
+          in: query
+          schema:
+            type: integer
+          example: 1
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: TP
+  '/inventory/{id}':
+    get:
+      summary: Show Inventory Item
+      responses: {}
+      tags:
+        - Workflow Inventory
+      description: Hiển thị một vật tư trong kho.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/inventory/{id}/timeline':
+    get:
+      summary: Inventory Timeline
+      responses: {}
+      tags:
+        - Workflow Inventory
+      description: Hiển thị dòng thời gian của vật tư trong kho, bao gồm giao dịch, sự cố và bảo trì.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  /inventory-transactions:
+    get:
+      summary: List Inventory Transactions
+      responses: {}
+      tags:
+        - Workflow Inventory
+      description: Liệt kê các giao dịch kho, có thể lọc theo vật tư trong kho.
+      parameters:
+        - name: inventory_item_id
+          in: query
+          schema:
+            type: integer
+          example: 3
+        - name: reference_type
+          in: query
+          schema:
+            type: string
+          example: RENTAL_SLIP
+        - name: reference_id
+          in: query
+          schema:
+            type: integer
+          example: 1
+  /internal-borrow-slips:
+    get:
+      summary: List Internal Borrow Slips
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Liệt kê các phiếu mượn nội bộ.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: BORROWING
+        - name: employee_id
+          in: query
+          schema:
+            type: integer
+          example: 2
+        - name: warehouse_id
+          in: query
+          schema:
+            type: integer
+          example: 2
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: PMN
+        - name: from_date
+          in: query
+          schema:
+            type: string
+          example: '2026-05-19'
+        - name: to_date
+          in: query
+          schema:
+            type: string
+          example: '2026-05-22'
+    post:
+      summary: Create Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Tạo phiếu mượn nội bộ mới.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employee_id:
+                  type: integer
+                warehouse_id:
+                  type: integer
+                borrow_date:
+                  type: string
+                due_date:
+                  type: string
+                purpose:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              employee_id: 2
+              warehouse_id: 2
+              borrow_date: '2026-05-19'
+              due_date: '2026-05-22'
+              purpose: Sử dụng nội bộ
+              remarks: null
+  '/internal-borrow-slips/{id}':
+    get:
+      summary: Show Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Hiển thị một phiếu mượn nội bộ.
+    patch:
+      summary: Update Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Cập nhật các trường có thể chỉnh sửa trên phiếu nháp hoặc phiếu đang chờ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                borrow_date:
+                  type: string
+                due_date:
+                  type: string
+                purpose:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              due_date: '2026-05-23'
+              purpose: Cập nhật mục đích
+              remarks: Điều chỉnh hạn trả
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/details':
+    post:
+      summary: Add Internal Borrow Detail
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Thêm một dòng chi tiết vào phiếu mượn nội bộ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                equipment_prop_id:
+                  type: integer
+                borrowed_quantity:
+                  type: integer
+                remarks:
+                  type: string
+            example:
+              equipment_prop_id: 19
+              borrowed_quantity: 1
+              remarks: Đạo cụ cần mượn
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/details/{detailId}':
+    patch:
+      summary: Update Internal Borrow Detail
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Cập nhật số lượng hoặc ghi chú của một dòng chi tiết.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                borrowed_quantity:
+                  type: integer
+                remarks:
+                  type: string
+            example:
+              borrowed_quantity: 2
+              remarks: Tăng thêm số lượng
+    delete:
+      summary: Delete Internal Borrow Detail
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Xóa một dòng chi tiết khỏi phiếu.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+      - name: detailId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+  '/internal-borrow-slips/{id}/assign-items':
+    post:
+      summary: Assign Internal Borrow Items
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Gán các vật tư cụ thể trong kho vào các dòng chi tiết của phiếu.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignments:
+                  type: array
+            example:
+              assignments:
+                - detail_id: 1
+                  inventory_item_ids:
+                    - 44
+                  condition_on_borrow_id: 1
+                  remarks: Gán item cụ thể
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/approve':
+    post:
+      summary: Approve Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Duyệt phiếu mượn nội bộ.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/reject':
+    post:
+      summary: Reject Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Từ chối phiếu mượn nội bộ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Không đủ tồn kho
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/cancel':
+    post:
+      summary: Cancel Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Hủy phiếu mượn nội bộ trước khi xuất kho.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Không còn nhu cầu mượn
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/checkout':
+    post:
+      summary: Checkout Internal Borrow Slip
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Xuất kho cho phiếu và chuyển các vật tư đã gán ra khỏi kho.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkout_at:
+                  type: string
+                note:
+                  type: string
+            example:
+              checkout_at: '2026-05-19'
+              note: Xuất kho
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/internal-borrow-slips/{id}/return':
+    post:
+      summary: Return Internal Borrow Items
+      responses: {}
+      tags:
+        - Internal Borrow
+      description: Trả các vật tư mượn nội bộ đã gán với trạng thái bình thường, hư hỏng hoặc thất lạc.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+            example:
+              items:
+                - inventory_item_id: 44
+                  return_action: DAMAGED
+                  condition_on_return_id: 1
+                  compensation_amount: 120000
+                  note: Hỏng khóa dây
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  /rental-slips:
+    get:
+      summary: List Rental Slips
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Liệt kê các phiếu thuê.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: ACTIVE
+        - name: payment_status
+          in: query
+          schema:
+            type: string
+          example: PARTIALLY_PAID
+        - name: customer_id
+          in: query
+          schema:
+            type: integer
+          example: 1
+        - name: warehouse_id
+          in: query
+          schema:
+            type: integer
+          example: 1
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: PTH
+    post:
+      summary: Create Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Tạo phiếu thuê mới.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                warehouse_id:
+                  type: integer
+                rental_date:
+                  type: string
+                start_date:
+                  type: string
+                due_date:
+                  type: string
+                deposit_amount:
+                  type: number
+                terms_and_conditions:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              customer_id: 1
+              warehouse_id: 1
+              rental_date: '2026-05-19'
+              start_date: '2026-05-19'
+              due_date: '2026-05-21'
+              deposit_amount: 50000
+              terms_and_conditions: Dieu khoan thue
+              remarks: null
+  '/rental-slips/{id}':
+    get:
+      summary: Show Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Hiển thị một phiếu thuê.
+    patch:
+      summary: Update Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Cập nhật các trường có thể chỉnh sửa trên phiếu thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                due_date:
+                  type: string
+                terms_and_conditions:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              due_date: '2026-05-22'
+              terms_and_conditions: Dieu khoan moi
+              remarks: Gia hạn
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/details':
+    post:
+      summary: Add Rental Detail
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Thêm một dòng chi tiết thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                equipment_prop_id:
+                  type: integer
+                rented_quantity:
+                  type: integer
+                rental_unit_price:
+                  type: number
+                rental_days:
+                  type: integer
+                deposit_amount:
+                  type: number
+                remarks:
+                  type: string
+            example:
+              equipment_prop_id: 15
+              rented_quantity: 2
+              rental_unit_price: 100000
+              rental_days: 2
+              deposit_amount: 50000
+              remarks: null
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/details/{detailId}':
+    patch:
+      summary: Update Rental Detail
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Cập nhật một dòng chi tiết thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rental_unit_price:
+                  type: number
+                rental_days:
+                  type: integer
+                deposit_amount:
+                  type: number
+                remarks:
+                  type: string
+            example:
+              rental_unit_price: 120000
+              rental_days: 3
+              deposit_amount: 100000
+              remarks: Điều chỉnh đơn giá
+    delete:
+      summary: Delete Rental Detail
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Xóa một dòng chi tiết thuê.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+      - name: detailId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+  '/rental-slips/{id}/assign-items':
+    post:
+      summary: Assign Rental Items
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Gán các vật tư cụ thể trong kho vào các dòng chi tiết thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignments:
+                  type: array
+            example:
+              assignments:
+                - detail_id: 1
+                  inventory_item_ids:
+                    - 3
+                    - 4
+                  condition_on_rent_id: 1
+                  remarks: Giao 2 bộ
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/submit':
+    post:
+      summary: Submit Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Gửi phiếu thuê để duyệt.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/approve':
+    post:
+      summary: Approve Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Duyệt phiếu thuê.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/cancel':
+    post:
+      summary: Cancel Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Hủy phiếu thuê trước khi xuất kho và trước khi ghi nhận thanh toán.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Khách đổi lịch
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/checkout':
+    post:
+      summary: Checkout Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Xuất kho phiếu thuê và chuyển vật tư sang trạng thái đang được thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkout_at:
+                  type: string
+                note:
+                  type: string
+            example:
+              checkout_at: '2026-05-19'
+              note: Bàn giao hàng
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/return':
+    post:
+      summary: Return Rental Items
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Trả vật tư thuê và tạo sự cố cho các vật tư bị hư hỏng hoặc thất lạc.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+            example:
+              items:
+                - inventory_item_id: 3
+                  return_action: RETURNED
+                  condition_on_return_id: 1
+                - inventory_item_id: 4
+                  return_action: DAMAGED
+                  condition_on_return_id: 1
+                  compensation_amount: 150000
+                  note: Rách vải
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/close':
+    post:
+      summary: Close Rental Slip
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Đóng phiếu thuê đã trả sau khi tất cả sự cố đã được đóng và số dư đã được thanh toán đầy đủ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+            example:
+              note: Đóng phiếu sau khi quyết toán
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  '/rental-slips/{id}/payments':
+    get:
+      summary: List Rental Payments
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Hiển thị các khoản thanh toán của một phiếu thuê.
+    post:
+      summary: Add Rental Payment
+      responses: {}
+      tags:
+        - Rental Workflow
+      description: Thêm một khoản thanh toán vào phiếu thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_type:
+                  type: string
+                payment_date:
+                  type: string
+                amount:
+                  type: number
+                payment_method:
+                  type: string
+                reference_no:
+                  type: string
+                note:
+                  type: string
+            example:
+              payment_type: DEPOSIT
+              payment_date: '2026-05-19'
+              amount: 50000
+              payment_method: CASH
+              reference_no: DEP-001
+              note: Tiền cọc
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+  /internal-incidents:
+    get:
+      summary: List Internal Incidents
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Liệt kê các sự cố nội bộ.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: OPEN
+        - name: incident_type
+          in: query
+          schema:
+            type: string
+          example: DAMAGED
+        - name: inventory_item_id
+          in: query
+          schema:
+            type: integer
+          example: 44
+    post:
+      summary: Create Internal Incident
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Tạo sự cố trực tiếp cho một vật tư thuộc chi tiết mượn nội bộ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                internal_borrow_detail_id:
+                  type: integer
+                inventory_item_id:
+                  type: integer
+                incident_type:
+                  type: string
+                incident_description:
+                  type: string
+                compensation_amount:
+                  type: number
+            example:
+              internal_borrow_detail_id: 1
+              inventory_item_id: 44
+              incident_type: DAMAGED
+              incident_description: Hỏng khi sử dụng
+              compensation_amount: 120000
+  '/internal-incidents/{id}':
+    get:
+      summary: Show Internal Incident
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Hiển thị một sự cố nội bộ.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/internal-incidents/{id}/resolve':
+    post:
+      summary: Resolve Internal Incident
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Xử lý một sự cố nội bộ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resolution:
+                  type: string
+                compensation_amount:
+                  type: number
+            example:
+              resolution: Đã xử lý sự cố
+              compensation_amount: 120000
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/internal-incidents/{id}/close':
+    post:
+      summary: Close Internal Incident
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Đóng một sự cố nội bộ đã được xử lý.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+            example:
+              note: Đóng sự cố nội bộ
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/internal-incidents/{id}/create-maintenance-ticket':
+    post:
+      summary: Create Maintenance Ticket From Internal Incident
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Tạo phiếu bảo trì từ một sự cố nội bộ bị hư hỏng.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maintenance_type:
+                  type: string
+                reported_date:
+                  type: string
+                expected_return_date:
+                  type: string
+                vendor:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              maintenance_type: REPAIR
+              reported_date: '2026-05-19'
+              expected_return_date: '2026-05-22'
+              vendor: Xưởng sửa
+              remarks: Sửa khóa
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/internal-incidents/{id}/write-off':
+    post:
+      summary: Write Off Internal Incident Item
+      responses: {}
+      tags:
+        - Internal Incidents
+      description: Ghi giảm vật tư trong kho của một sự cố nội bộ.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+            example:
+              note: Không thể sửa
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  /rental-incidents:
+    get:
+      summary: List Rental Incidents
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Liệt kê các sự cố thuê.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: OPEN
+        - name: incident_type
+          in: query
+          schema:
+            type: string
+          example: DAMAGED
+        - name: inventory_item_id
+          in: query
+          schema:
+            type: integer
+          example: 4
+    post:
+      summary: Create Rental Incident
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Tạo sự cố trực tiếp cho một vật tư thuộc chi tiết thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rental_detail_id:
+                  type: integer
+                inventory_item_id:
+                  type: integer
+                incident_type:
+                  type: string
+                incident_description:
+                  type: string
+                compensation_amount:
+                  type: number
+            example:
+              rental_detail_id: 1
+              inventory_item_id: 4
+              incident_type: DAMAGED
+              incident_description: Rách vải khi trả
+              compensation_amount: 150000
+  '/rental-incidents/{id}':
+    get:
+      summary: Show Rental Incident
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Hiển thị một sự cố thuê.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/rental-incidents/{id}/resolve':
+    post:
+      summary: Resolve Rental Incident
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Xử lý một sự cố thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resolution:
+                  type: string
+                compensation_amount:
+                  type: number
+            example:
+              resolution: Đã xử lý và cập nhật bồi thường
+              compensation_amount: 150000
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/rental-incidents/{id}/close':
+    post:
+      summary: Close Rental Incident
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Đóng một sự cố thuê đã được xử lý.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+            example:
+              note: Đóng sự cố thuê
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/rental-incidents/{id}/create-maintenance-ticket':
+    post:
+      summary: Create Maintenance Ticket From Rental Incident
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Tạo phiếu bảo trì từ một sự cố thuê bị hư hỏng.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maintenance_type:
+                  type: string
+                reported_date:
+                  type: string
+                expected_return_date:
+                  type: string
+                vendor:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              maintenance_type: REPAIR
+              reported_date: '2026-05-19'
+              expected_return_date: '2026-05-22'
+              vendor: Máy nhanh
+              remarks: Sửa vết rách
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/rental-incidents/{id}/write-off':
+    post:
+      summary: Write Off Rental Incident Item
+      responses: {}
+      tags:
+        - Rental Incidents
+      description: Ghi giảm vật tư trong kho của một sự cố thuê.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+            example:
+              note: Không thể sửa
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  /maintenance-tickets:
+    get:
+      summary: List Maintenance Tickets
+      responses: {}
+      tags:
+        - Maintenance
+      description: Liệt kê các phiếu bảo trì.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: OPEN
+        - name: maintenance_type
+          in: query
+          schema:
+            type: string
+          example: REPAIR
+        - name: inventory_item_id
+          in: query
+          schema:
+            type: integer
+          example: 4
+        - name: item_id
+          in: query
+          schema:
+            type: integer
+          example: 15
+    post:
+      summary: Create Maintenance Ticket
+      responses: {}
+      tags:
+        - Maintenance
+      description: Tạo trực tiếp một phiếu bảo trì.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: integer
+                inventory_item_id:
+                  type: integer
+                maintenance_type:
+                  type: string
+                reported_date:
+                  type: string
+                expected_return_date:
+                  type: string
+                vendor:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              inventory_item_id: 4
+              maintenance_type: REPAIR
+              reported_date: '2026-05-19'
+              expected_return_date: '2026-05-22'
+              vendor: Máy nhanh
+              remarks: Kiểm tra và sửa
+  '/maintenance-tickets/{id}':
+    get:
+      summary: Show Maintenance Ticket
+      responses: {}
+      tags:
+        - Maintenance
+      description: Hiển thị một phiếu bảo trì.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/maintenance-tickets/{id}/start':
+    post:
+      summary: Start Maintenance
+      responses: {}
+      tags:
+        - Maintenance
+      description: Bắt đầu xử lý một phiếu bảo trì.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                started_date:
+                  type: string
+                vendor:
+                  type: string
+                remarks:
+                  type: string
+            example:
+              started_date: '2026-05-19'
+              vendor: Máy nhanh
+              remarks: Bắt đầu xử lý
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/maintenance-tickets/{id}/complete':
+    post:
+      summary: Complete Maintenance
+      responses: {}
+      tags:
+        - Maintenance
+      description: Đánh dấu một phiếu bảo trì là đã hoàn thành.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                return_date:
+                  type: string
+                cost:
+                  type: number
+                remarks:
+                  type: string
+            example:
+              return_date: '2026-05-21'
+              cost: 80000
+              remarks: Đã sửa xong
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/maintenance-tickets/{id}/cancel':
+    post:
+      summary: Cancel Maintenance Ticket
+      responses: {}
+      tags:
+        - Maintenance
+      description: Hủy phiếu bảo trì đang mở hoặc đang xử lý.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inventory_condition_id:
+                  type: integer
+                note:
+                  type: string
+            example:
+              inventory_condition_id: 1
+              note: Không cần sửa nữa
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
+  '/maintenance-tickets/{id}/return-to-stock':
+    post:
+      summary: Return Maintenance Item To Stock
+      responses: {}
+      tags:
+        - Maintenance
+      description: Nhập lại kho khả dụng một vật tư đã hoàn tất bảo trì.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inventory_condition_id:
+                  type: integer
+                note:
+                  type: string
+            example:
+              inventory_condition_id: 1
+              note: Nhập lại kho
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 2
 components:
   securitySchemes:
     BearerAuth:

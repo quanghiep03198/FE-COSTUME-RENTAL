@@ -9,8 +9,18 @@ workflows:
       collection: ..\postman\collections\Costume-Rental-API
       options:
         syncExamples: false
+    - spec: ..\postman\specs\Costume Rental API\Costume Rental API.yaml
+      collection: ..\postman\collections\Costume Rental API v2
+      options:
+        folderStrategy: Tags
+        syncExamples: false
   syncCollectionToSpec:
     - spec: ..\postman\specs\Costume Rental API\Costume Rental API.yaml
       collection: ..\postman\collections\Costume-Rental-API
       options:
+        syncExamples: false
+    - spec: ..\postman\specs\Costume Rental API\Costume Rental API.yaml
+      collection: ..\postman\collections\Costume Rental API v2
+      options:
+        folderStrategy: Tags
         syncExamples: false
