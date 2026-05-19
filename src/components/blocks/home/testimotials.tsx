@@ -29,10 +29,10 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
     <section
       ref={ref}
       id="testimonials"
-      className="before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3  sm:py-28 lg:py-36"
+      className="before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3 sm:py-28 lg:py-36"
     >
       <Carousel
-        className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:items-center sm:gap-6 sm:px-6 lg:flex-row lg:gap-24 lg:px-8"
+        className="mx-auto flex container flex-col gap-12 px-4 sm:items-center sm:gap-6 sm:px-6 lg:flex-row lg:gap-24 lg:px-8"
         opts={{
           align: 'start',
           slidesToScroll: 1,

@@ -22,12 +22,13 @@ const HeroBanner: React.FC = () => {
           <h1 className="text-5xl font-bold text-white blur-in-lg animate-in fade-in-0 slide-in-from-bottom-50 ease-out duration-500">
             Gói Trọn Nét Thơ - Tôn Vinh Bản Sắc
           </h1>
-          <p className=" text-lg text-white animate-in blur-in-lg fade-in-0 slide-in-from-bottom-50 ease-out duration-700">
-            Cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn dáng.
+          <p className=" text-lg text-white animate-in blur-in-lg fade-in-0 slide-in-from-bottom-50 ease-out duration-700 max-w-5xl text-pretty">
+            Cho thuê áo dài thiết kế và trang phục truyền thống cao cấp. Sắc sảo từng đường kim, chuẩn phom tôn dáng. Đa
+            dạng mẫu mã, màu sắc, phù hợp mọi dịp. Trọn gói trải nghiệm áo dài đẳng cấp, tôn vinh vẻ đẹp Việt.
           </p>
 
           <div className="flex justify-center items-center gap-2 mt-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-95 duration-500">
-            <Link to="/san-pham" className={buttonVariants({ size: 'lg', effect: 'glass' })}>
+            <Link to="/products" className={buttonVariants({ size: 'lg', effect: 'glass' })}>
               Cửa hàng
             </Link>
             <Link to="/" hash="" className={buttonVariants({ variant: 'link', className: 'text-white' })}>
