@@ -1,5 +1,6 @@
 import { requestMiddleware } from '@/middlewares/request.middleware'
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { createCategorySchema } from '../schemas/create-category.schema'
 import { deleteCategorySchema } from '../schemas/delete-category.schema'
 import { getCategoryQuerySchema } from '../schemas/get-category-type.schema'
@@ -11,6 +12,13 @@ export const getCategoriesRpc = createServerFn({ method: 'GET' })
   .inputValidator(getCategoryQuerySchema)
   .handler(async ({ context, data }) => {
     return await context.request<ICategory[]>({ url: '/categories', params: data })
+  })
+
+export const getOneCategoryRpc = createServerFn({ method: 'GET' })
+  .middleware([requestMiddleware])
+  .inputValidator(z.number())
+  .handler(async ({ context, data: id }) => {
+    return await context.request<ICategory>({ url: `/categories/${id}` })
   })
 
 export const createCategoryRpc = createServerFn({ method: 'POST' })

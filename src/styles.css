@@ -60,10 +60,10 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-table-head: var(--table-head);
   --color-table-head-foreground: var(--table-head-foreground);
-  --success: var(--success);
-  --success-foreground: var(--success-foreground);
-  --warning: var(--warning);
-  --warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
 }
 
 :root {
@@ -105,7 +105,7 @@
   --font-sans: AR One Sans, ui-sans-serif, sans-serif, system-ui;
   --font-serif: Adamina, ui-serif, serif;
   --font-mono: Fragment Mono, ui-monospace, monospace;
-  --radius: 0.75rem;
+  --radius: 0.6rem;
   --shadow-x: 0;
   --shadow-y: 1px;
   --shadow-blur: 3px;

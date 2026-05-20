@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
       {/* Footer main */}
       <div className="space-y-6 bg-primary text-primary-foreground xl:p-10 xxl:p-16 lg:p-6 p-4">
         <div className="space-y-6 mb-12!">
-          <h1 className="text-3xl font-semibold">Diamond Studio</h1>
+          <h1 className="text-3xl font-semibold font-serif">Diamond Studio</h1>
           <p className="text-sm text-input">
             Tôn vinh bản sắc văn hóa Việt Nam qua từng bộ sưu tập áo dài độc đáo và chất lượng hàng đầu. Hãy để chúng
             tôi giúp bạn tỏa sáng và thể hiện bản sắc riêng của mình qua những thiết kế áo dài tinh tế và đẳng cấp.

@@ -69,7 +69,7 @@ const ProductList: React.FC = () => {
         type: item.category.type,
         hashtags: item.hashtags,
         gender: (item as ICostume).gender,
-        color: (item as ICostume)?.color?.hex,
+        color: (item as ICostume)?.color,
         sizes: (item as ICostume)?.sizes,
       }))
 
@@ -91,7 +91,7 @@ const ProductList: React.FC = () => {
             item.rental_price_per_day <= search['rental_price_per_day:lte']!
         )
 
-      if (search['color:eq']) filteredData = filteredData.filter((item) => item.color === search['color:eq'])
+      if (search['color:eq']) filteredData = filteredData.filter((item) => item.color?.hex === search['color:eq'])
 
       if (typeof search['gender:eq']) return filteredData.filter((item) => item.gender)
 

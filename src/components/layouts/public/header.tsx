@@ -102,7 +102,7 @@ const Header: React.FC = () => {
             to="/"
             className="inline-flex px-2 items-center gap-1 hover:drop-shadow-[0_0_4px_var(--primary-foreground)]"
           >
-            <span className="font-medium">Diamond Studio</span>
+            <span className="font-bold font-serif text-primary">Diamond Studio</span>
           </Link>
           {/* Navigation menu */}
           <NavigationMenu className="">

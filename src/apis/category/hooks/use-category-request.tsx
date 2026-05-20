@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { createCategoryRpc, deleteCategoryRpc, getCategoriesRpc, updateCategoryRpc } from '../rpc'
+import { createCategoryRpc, deleteCategoryRpc, getCategoriesRpc, getOneCategoryRpc, updateCategoryRpc } from '../rpc'
 import type { TCreateCategoryValues } from '../schemas/create-category.schema'
 import type { TDeleteCategoryReqValues } from '../schemas/delete-category.schema'
 import type { TGetCategoryQueryValue } from '../schemas/get-category-type.schema'
@@ -31,6 +31,13 @@ export const getCategoriesQueryOptions = (params?: TGetCategoryQueryValue) => {
   return queryOptions({
     queryKey: [GET_CATEGORIES_QUERY_KEY, params],
     queryFn: () => getCategoriesRpc({ data: params }),
+  })
+}
+
+export const getOneCategoryQueryOptions = (id: number) => {
+  return queryOptions({
+    queryKey: [GET_CATEGORIES_QUERY_KEY, id],
+    queryFn: () => getOneCategoryRpc({ data: id }),
   })
 }
 

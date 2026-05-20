@@ -1,5 +1,7 @@
+import type { ICategory } from '@/apis/category/types'
 import type { CostumeGender, CostumeSize } from '@/apis/costume/constants'
 import type { IImage } from '@/apis/image/types'
+import type { TColorPateItem } from '@/common/constants/const'
 import type { ItemType } from '@/common/constants/enums'
 
 export interface IProduct {
@@ -10,8 +12,9 @@ export interface IProduct {
   images?: Array<IImage>
   type: ItemType
   slug: string
+  category?: ICategory
   hashtags: string[]
-  color?: string
+  color?: TColorPateItem
   sizes?: CostumeSize[]
   gender: CostumeGender | null
   description: string

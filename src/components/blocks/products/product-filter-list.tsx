@@ -1,5 +1,5 @@
 import { useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
-import { COSTUME_GENDER_LABEL_MAP, SIZE_RUN } from '@/apis/costume/constants'
+import { COSTUME_GENDER_OPTIONS, SIZE_RUN } from '@/apis/costume/constants'
 import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
 import type { ICostume } from '@/apis/costume/types'
 import { useGetPropsQuery } from '@/apis/equipment-props/hooks/use-equipment-props-request'
@@ -61,12 +61,7 @@ const ProductFilterList = () => {
 
   const filteredPropertysCount = Object.keys(omit(search, ['item_type'])).length
 
-  const categoriesSelected: number =
-    typeof search['category_slug:eq'] === 'string' ? search['category_slug:eq'].split(',').length : 0
-
   const productRentalPriceRange = useGetRentalPriceRange(dataSet[search.item_type!])
-
-  console.log(Object.fromEntries(COSTUME_GENDER_LABEL_MAP))
 
   return (
     <div className="xl:h-[calc(100vh-var(--header-top-height)-var(--header-bottom-height)-48px)] pr-2 overflow-y-auto w-96 space-y-6 sticky top-[calc(var(--header-top-height)+var(--header-bottom-height))]">
@@ -82,10 +77,7 @@ const ProductFilterList = () => {
       {/* Filter input group */}
       <DebouncedSearchInput />
 
-      {/**
-       * * Filter list
-       * --------------------------------------------------------------
-       */}
+      {/* Filter list */}
 
       <Accordion multiple className="w-full" defaultValue={['item_type', 'category_slug', 'rental_price_per_day']}>
         {/* Product type */}
@@ -113,7 +105,7 @@ const ProductFilterList = () => {
         </AccordionItem>
         {/* Categories */}
         <AccordionItem value="category_slug" className="border-none">
-          <AccordionTrigger className="xl:text-base font-semibold">Danh mục ({categoriesSelected})</AccordionTrigger>
+          <AccordionTrigger className="xl:text-base font-semibold">Danh mục</AccordionTrigger>
           <AccordionContent>
             <FieldGroup>
               <RadioGroup
@@ -167,15 +159,14 @@ const ProductFilterList = () => {
                   })
                 }
               >
-                {/* {
-                Object.entries(COSTUME_GENDER_LABEL_MAP).map(([]) => (
-                  // <Field orientation="horizontal" key={index}>
-                  //   <RadioGroupItem value={JSON.stringify(range)} id={`${range.min}-${range.max}`} />
-                  //   <FieldLabel htmlFor={`${range.min}-${range.max}`} className="text-sm">
-                      
-                  //   </FieldLabel>
-                  // </Field>
-                ))} */}
+                {COSTUME_GENDER_OPTIONS.map((gender) => (
+                  <Field orientation="horizontal" key={gender.value}>
+                    <RadioGroupItem value={gender.value} id={gender.value} />
+                    <FieldLabel htmlFor={gender.value} className="text-sm">
+                      {gender.label}
+                    </FieldLabel>
+                  </Field>
+                ))}
               </RadioGroup>
             </AccordionContent>
           </AccordionItem>
