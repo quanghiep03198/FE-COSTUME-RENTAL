@@ -8,9 +8,16 @@ import type { IEquipmentProps } from '../types'
 import { createEquipmentPropsSchema } from './../schemas/create-equipment-props.schema'
 
 export const getEquipmentPropsRpc = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware, requestMiddleware])
+  .middleware([requestMiddleware])
   .handler(async ({ context }) => {
     return await context.request<IEquipmentProps[]>({ url: '/equipment-props' })
+  })
+
+export const getPropsDetailRpc = createServerFn({ method: 'GET' })
+  .middleware([requestMiddleware])
+  .inputValidator(number())
+  .handler(async ({ context, data }) => {
+    return await context.request<IEquipmentProps>({ url: `/equipment-props/${data}` })
   })
 
 export const createEquipmentPropsRpc = createServerFn({ method: 'POST' })

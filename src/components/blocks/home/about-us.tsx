@@ -40,6 +40,7 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
           <h2
             aria-current={inView}
             className="text-2xl font-semibold hidden aria-current:block transition-discrete tracking-tight md:text-3xl lg:text-4xl animate-in duration-700 paused aria-current:running fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+            style={{ fontFamily: 'initial' }}
           >
             Diamond Studio - Tôn Vinh Bản Sắc Việt
           </h2>
@@ -70,7 +71,7 @@ const AboutUs: React.FC<{ stats: Stat[] }> = ({ stats }) => {
               <div
                 aria-current={statsInView}
                 key={index}
-                className="hidden aria-current:flex transition-discrete animate-in paused aria-current:running fade-in-0 duration-1000 slide-in-from-bottom-4 flex-col items-center justify-start gap-2.5 text-center"
+                className="hidden aria-current:flex transition-discrete animate-in paused aria-current:running fade-in-0 duration-500 slide-in-from-bottom-4 flex-col items-center justify-start gap-2.5 text-center"
               >
                 <div className="flex size-7 items-center justify-center [&>svg]:size-7">
                   <Icon name={stat.icon} />

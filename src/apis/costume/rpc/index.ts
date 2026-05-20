@@ -9,9 +9,16 @@ import { updateCostumeSchema } from '../schemas/update-costume.schema'
 import type { ICostume } from '../types'
 
 export const getCostumesRpc = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware, requestMiddleware])
+  .middleware([requestMiddleware])
   .handler(async ({ context }) => {
     return await context.request<ICostume[]>({ url: '/costumes' })
+  })
+
+export const getCostumeDetailRpc = createServerFn({ method: 'GET' })
+  .middleware([requestMiddleware])
+  .inputValidator(z.number())
+  .handler(async ({ context, data }) => {
+    return await context.request<ICostume>({ url: `/costumes/${data}` })
   })
 
 export const createCostumeRpc = createServerFn({ method: 'POST' })

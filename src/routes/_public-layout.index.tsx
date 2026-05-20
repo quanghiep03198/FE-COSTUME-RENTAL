@@ -1,3 +1,4 @@
+import { getCategoriesQueryOptions } from '@/apis/category/hooks/use-category-request'
 import { stats } from '@/assets/data/about-us'
 import { contactInfo } from '@/assets/data/contact-us'
 import { testimonials } from '@/assets/data/testimoials'
@@ -9,10 +10,13 @@ import Testimonials from '@/components/blocks/home/testimotials'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_public-layout/')({
-  component: App,
+  component: HomePage,
+  loader: async ({ context }) => {
+    return await context.queryClient.ensureQueryData(getCategoriesQueryOptions())
+  },
 })
 
-function App() {
+function HomePage() {
   return (
     <main className="space-y-16">
       <HeroBanner />

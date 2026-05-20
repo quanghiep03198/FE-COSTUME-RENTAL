@@ -77,8 +77,6 @@ const CostumeFormDialog: React.FC = () => {
   const form = useForm({
     defaultValues: DEFAULT_FORM_VALUES as unknown as TCreateEquipmentPropsValues,
     onSubmit: async ({ value }) => {
-      console.log('value.category', value.category)
-
       await mutation.mutateAsync({
         ...value,
         description: editorRef.current?.getHTML(),

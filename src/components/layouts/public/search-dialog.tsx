@@ -46,8 +46,8 @@ export function SearchDialog() {
     <>
       <Button
         onClick={() => setOpen(true)}
-        variant="outline"
-        className="min-w-xs w-full justify-start text-muted-foreground hover:text-muted-foreground"
+        variant="secondary"
+        className="w-full justify-start text-muted-foreground hover:text-muted-foreground bg-muted hover:bg-muted/50"
       >
         <SearchIcon />
         Tìm kiếm ...

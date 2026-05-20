@@ -1,5 +1,5 @@
 import { useGetCategoriesQuery } from '@/apis/category/hooks/use-category-request'
-import { SIZE_RUN } from '@/apis/costume/constants'
+import { COSTUME_GENDER_LABEL_MAP, SIZE_RUN } from '@/apis/costume/constants'
 import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
 import type { ICostume } from '@/apis/costume/types'
 import { useGetPropsQuery } from '@/apis/equipment-props/hooks/use-equipment-props-request'
@@ -8,16 +8,15 @@ import { COLOR_PALETTE } from '@/common/constants/const'
 import { ItemType } from '@/common/constants/enums'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Typography } from '@/components/ui/typography'
 
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { omit } from 'lodash-es'
-import { SearchIcon } from 'lucide-react'
-import { Activity, useMemo } from 'react'
+import { omit, pick } from 'lodash-es'
+import { SearchIcon, XIcon } from 'lucide-react'
+import { Activity, useEffect, useMemo, useState } from 'react'
 
 const useGetRentalPriceRange = (products: Array<ICostume | IEquipmentProps>) => {
   const maxPrice = useMemo(
@@ -56,34 +55,32 @@ const ProductFilterList = () => {
   const { data: equipmentProps } = useGetPropsQuery()
 
   const dataSet = {
-    [ItemType.COSTUMES]: costumes,
+    [ItemType.COSTUME]: costumes,
     [ItemType.EQUIPMENT_PROPS]: equipmentProps,
   }
 
   const filteredPropertysCount = Object.keys(omit(search, ['item_type'])).length
 
   const categoriesSelected: number =
-    typeof search['category_slug:in'] === 'string' ? search['category_slug:in'].split(',').length : 0
+    typeof search['category_slug:eq'] === 'string' ? search['category_slug:eq'].split(',').length : 0
 
   const productRentalPriceRange = useGetRentalPriceRange(dataSet[search.item_type!])
 
+  console.log(Object.fromEntries(COSTUME_GENDER_LABEL_MAP))
+
   return (
-    <div className="xl:h-[calc(100vh-var(--header-top-height)-var(--header-bottom-height)-48px)] pr-2 overflow-y-auto w-96 space-y-6">
+    <div className="xl:h-[calc(100vh-var(--header-top-height)-var(--header-bottom-height)-48px)] pr-2 overflow-y-auto w-96 space-y-6 sticky top-[calc(var(--header-top-height)+var(--header-bottom-height))]">
       {/* Filter header */}
       <div className="flex justify-between items-center">
         <Typography variant="h3">Bộ lọc ({filteredPropertysCount})</Typography>
-        <Button size="sm" variant="destructive">
+        <Button size="sm" variant="outline" onClick={() => navigate({ search: (prev) => pick(prev, ['item_type']) })}>
+          <XIcon />
           Xóa lọc
         </Button>
       </div>
 
       {/* Filter input group */}
-      <InputGroup>
-        <InputGroupAddon>
-          <SearchIcon className="size-4" />
-        </InputGroupAddon>
-        <InputGroupInput placeholder="Tìm theo tên" type="search" />
-      </InputGroup>
+      <DebouncedSearchInput />
 
       {/**
        * * Filter list
@@ -100,8 +97,8 @@ const ProductFilterList = () => {
               onValueChange={(value) => navigate({ search: (prev) => ({ ...prev, item_type: value }) })}
             >
               <Field orientation="horizontal">
-                <RadioGroupItem value={ItemType.COSTUMES} id={ItemType.COSTUMES} />
-                <FieldLabel htmlFor={ItemType.COSTUMES} className="font-normal">
+                <RadioGroupItem value={ItemType.COSTUME} id={ItemType.COSTUME} />
+                <FieldLabel htmlFor={ItemType.COSTUME} className="font-normal">
                   Trang phục
                 </FieldLabel>
               </Field>
@@ -118,24 +115,71 @@ const ProductFilterList = () => {
         <AccordionItem value="category_slug" className="border-none">
           <AccordionTrigger className="xl:text-base font-semibold">Danh mục ({categoriesSelected})</AccordionTrigger>
           <AccordionContent>
-            {!Array.isArray(categories) || categories.length === 0 ? (
-              <Typography variant="small" color="muted">
-                Chưa có danh mục nào
-              </Typography>
-            ) : (
-              <FieldGroup>
-                {categories.map((cate) => (
-                  <Field orientation={'horizontal'}>
-                    <Checkbox id={cate.slug} value={cate.slug} name={cate.slug} defaultChecked />
-                    <FieldLabel htmlFor={cate.slug} className="text-sm">
-                      {cate.name}
-                    </FieldLabel>
-                  </Field>
-                ))}
-              </FieldGroup>
-            )}
+            <FieldGroup>
+              <RadioGroup
+                defaultValue={search['category_slug:eq']}
+                value={search['category_slug:eq'] ?? null}
+                onValueChange={(value) =>
+                  navigate({
+                    search: (prev) => {
+                      if (!value) return omit(prev, ['category_slug:eq'])
+                      return { ...prev, 'category_slug:eq': value }
+                    },
+                  })
+                }
+              >
+                <Field orientation="horizontal">
+                  <RadioGroupItem value={null} id={'all-categories'} />
+                  <FieldLabel htmlFor={'all-categories'} className="text-sm">
+                    Tất cả danh mục
+                  </FieldLabel>
+                </Field>
+                {Array.isArray(categories) &&
+                  categories.map((cate) => (
+                    <Field orientation={'horizontal'}>
+                      <RadioGroupItem id={cate.slug} value={cate.slug} />
+                      <FieldLabel htmlFor={cate.slug} className="text-sm">
+                        {cate.name}
+                      </FieldLabel>
+                    </Field>
+                  ))}
+              </RadioGroup>
+            </FieldGroup>
           </AccordionContent>
         </AccordionItem>
+        {/* Gender */}
+        <Activity mode={search.item_type === ItemType.COSTUME ? 'visible' : 'hidden'}>
+          <AccordionItem value="gender" className="border-none">
+            <AccordionTrigger className="xl:text-base font-semibold">Giới tính</AccordionTrigger>
+            <AccordionContent>
+              <RadioGroup
+                value={search['gender:eq']!}
+                onValueChange={(value) =>
+                  navigate({
+                    search: (prev) => {
+                      const priceRange = value ? JSON.parse(value) : null
+                      if (!priceRange) return omit(prev, ['gender:eq'])
+                      return {
+                        ...prev,
+                        'gender:eq': value,
+                      }
+                    },
+                  })
+                }
+              >
+                {/* {
+                Object.entries(COSTUME_GENDER_LABEL_MAP).map(([]) => (
+                  // <Field orientation="horizontal" key={index}>
+                  //   <RadioGroupItem value={JSON.stringify(range)} id={`${range.min}-${range.max}`} />
+                  //   <FieldLabel htmlFor={`${range.min}-${range.max}`} className="text-sm">
+                      
+                  //   </FieldLabel>
+                  // </Field>
+                ))} */}
+              </RadioGroup>
+            </AccordionContent>
+          </AccordionItem>
+        </Activity>
         {/* Pricing */}
         <AccordionItem value="rental_price_per_day" className="border-none">
           <AccordionTrigger className="xl:text-base font-semibold">Giá thuê (VND/ngày)</AccordionTrigger>
@@ -179,7 +223,7 @@ const ProductFilterList = () => {
           </AccordionContent>
         </AccordionItem>
         {/* Color */}
-        <Activity mode={search.item_type === ItemType.COSTUMES ? 'visible' : 'hidden'}>
+        <Activity mode={search.item_type === ItemType.COSTUME ? 'visible' : 'hidden'}>
           <AccordionItem value="color:eq" className="border-none">
             <AccordionTrigger className="text-lg">Màu sắc</AccordionTrigger>
             <AccordionContent>
@@ -209,7 +253,7 @@ const ProductFilterList = () => {
           </AccordionItem>
         </Activity>
         {/* Size */}
-        <Activity mode={search.item_type === ItemType.COSTUMES ? 'visible' : 'hidden'}>
+        <Activity mode={search.item_type === ItemType.COSTUME ? 'visible' : 'hidden'}>
           <AccordionItem value="size:eq">
             <AccordionTrigger className="text-lg">Size</AccordionTrigger>
             <AccordionContent>
@@ -226,7 +270,7 @@ const ProductFilterList = () => {
                       onClick={() => {
                         navigate({
                           search: (prev) => {
-                            return {
+                            const _search = {
                               ...prev,
                               'size:in': isActive
                                 ? search['size:in']
@@ -237,10 +281,12 @@ const ProductFilterList = () => {
                                     ...(typeof search['size:in'] === 'string' ? search['size:in'].split(',') : []),
                                     size.value,
                                   ].join(','),
-                              // typeof prev['size:in'] === 'string'
-                              //   ? [...prev['size:in'].split(','), size.value].join(',')
-                              //   : size.value,
                             }
+
+                            if (_search['size:in'] === '') {
+                              return omit(_search, ['size:in'])
+                            }
+                            return _search
                           },
                         })
                       }}
@@ -255,6 +301,41 @@ const ProductFilterList = () => {
         </Activity>
       </Accordion>
     </div>
+  )
+}
+
+const DebouncedSearchInput: React.FC = () => {
+  const search = useSearch({ from: '/_public-layout/products', select: (search) => search.q, structuralSharing: false })
+
+  const navigate = useNavigate({ from: '/products' })
+
+  const [inputValue, setInputValue] = useState<string>(search ?? '')
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate({
+        search: (prev) => {
+          if (!inputValue) return omit(prev, ['q'])
+          return { ...prev, q: inputValue }
+        },
+      })
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  }, [inputValue])
+
+  return (
+    <InputGroup>
+      <InputGroupAddon>
+        <SearchIcon className="size-4" />
+      </InputGroupAddon>
+      <InputGroupInput
+        placeholder="Tìm theo tên"
+        type="search"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.currentTarget.value)}
+      />
+    </InputGroup>
   )
 }
 

@@ -32,7 +32,7 @@ const EmployeeFormDialog: React.FC = () => {
       position: {},
     },
     onSubmitInvalid: ({ value }) => {
-      console.log('value', value)
+      console.debug('value', value)
     },
     onSubmit: async ({ value }) => {
       if (typeof mutation?.mutateAsync !== 'function') return

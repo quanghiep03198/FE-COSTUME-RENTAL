@@ -47,6 +47,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
           <h2
             aria-current={inView}
             className="animate-in hidden aria-current:block transition-discrete paused aria-current:running fade-in-0 slide-in-from-left-20 blur-in-lg duration-700 text-2xl font-semibold sm:text-3xl lg:text-4xl"
+            style={{ fontFamily: 'initial' }}
           >
             Phản hồi từ khách hàng
           </h2>

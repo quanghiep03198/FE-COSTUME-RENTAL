@@ -11,7 +11,6 @@ const CostumeDetailDialog: React.FC = () => {
   event$.useSubscription((e) => {
     if (e.action === CommonActions.READ) {
       setDescription(e.payload)
-      console.log('e.payload', e.payload)
     }
   })
 

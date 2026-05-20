@@ -15,6 +15,12 @@ export const COSTUME_GENDER_LABEL_MAP = new Map<CostumeGender, string>([
   [CostumeGender.UNISEX, 'Unisex'],
 ])
 
+export const COSTUME_GENDER_OPTIONS: Array<{ value: CostumeGender; label: string }> = [
+  { value: CostumeGender.MALE, label: 'Nam' },
+  { value: CostumeGender.FEMALE, label: 'Nữ' },
+  { value: CostumeGender.UNISEX, label: 'Unisex' },
+]
+
 export const COSTUME_UNIT_LABEL_MAP = new Map<CostumeUnit, string>([
   [CostumeUnit.SET, 'Bộ'],
   [CostumeUnit.PIECE, 'Chiếc'],

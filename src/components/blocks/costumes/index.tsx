@@ -19,7 +19,7 @@ const CostumePage: React.FC = () => {
         <PageHeader>
           <PageTitle>{title}</PageTitle>
           <PageAction>
-            <CategorySheet type={ItemType.COSTUMES} />
+            <CategorySheet type={ItemType.COSTUME} />
             <CostumeFormDialogTrigger />
           </PageAction>
         </PageHeader>

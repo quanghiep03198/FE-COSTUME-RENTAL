@@ -18,6 +18,6 @@ export enum CommonActions {
 }
 
 export enum ItemType {
-  COSTUMES = 'COSTUME',
+  COSTUME = 'COSTUME',
   EQUIPMENT_PROPS = 'EQUIPMENT_PROPS',
 }

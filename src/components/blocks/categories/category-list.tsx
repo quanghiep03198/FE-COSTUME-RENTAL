@@ -16,7 +16,7 @@ type TCategoryListProps = {
 
 const CategoryList: React.FC<TCategoryListProps> = ({ type, searchTerm }) => {
   const queryParams = new Map<typeof type, TGetCategoryQueryValue>([
-    [ItemType.COSTUMES, { 'type:eq': ItemType.COSTUMES, _embed: 'costumes' }],
+    [ItemType.COSTUME, { 'type:eq': ItemType.COSTUME, _embed: 'costumes' }],
     [ItemType.EQUIPMENT_PROPS, { 'type:eq': ItemType.EQUIPMENT_PROPS, _embed: 'equipment_props' }],
   ])
 

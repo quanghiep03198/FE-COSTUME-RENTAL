@@ -37,17 +37,17 @@ const ImagesGallary: React.FC<TImagesGalleryProps> = ({ type, selected, onSelect
         }}
       >
         <TabsList variant="line" className="sticky top-0 z-20 bg-inherit ">
-          <TabsTrigger value={ItemType.COSTUMES}>Trang Phục</TabsTrigger>
+          <TabsTrigger value={ItemType.COSTUME}>Trang Phục</TabsTrigger>
           <TabsTrigger value={ItemType.EQUIPMENT_PROPS}>Đạo Cụ</TabsTrigger>
           <TabsTrigger value={'UPLOAD'}>Tải lên</TabsTrigger>
         </TabsList>
-        <TabsContent value={ItemType.COSTUMES} className="py-6 max-h-125 overflow-auto">
+        <TabsContent value={ItemType.COSTUME} className="py-6 max-h-125 overflow-auto">
           <ImageList
             data={images ?? []}
             isLoading={isLoading}
             selected={selectedImages}
             onSelect={setSelectedImages}
-            type={ItemType.COSTUMES}
+            type={ItemType.COSTUME}
           />
         </TabsContent>
         <TabsContent value={ItemType.EQUIPMENT_PROPS} className="py-6 max-h-125 overflow-auto">

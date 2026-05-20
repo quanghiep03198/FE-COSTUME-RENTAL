@@ -66,7 +66,7 @@ const InventoryConditionFilter: React.FC<{ table: Table<ICostumeInventory> }> = 
 }
 
 const CategoryFilter: React.FC<{ table: Table<ICostumeInventory> }> = ({ table }) => {
-  const { data } = useGetCategoriesQuery({ 'type:eq': ItemType.COSTUMES })
+  const { data } = useGetCategoriesQuery({ 'type:eq': ItemType.COSTUME })
 
   const inventoryConditionOptions = useMemo(() => {
     if (!Array.isArray(data)) return []

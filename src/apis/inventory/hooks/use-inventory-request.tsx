@@ -56,7 +56,7 @@ export const useImportInventoryMutation = (type: ItemType) => {
 
   const invalidates = (() => {
     switch (type) {
-      case ItemType.COSTUMES:
+      case ItemType.COSTUME:
         return [[GET_COSTUME_INVENTORY_QUERY_KEY]]
       case ItemType.EQUIPMENT_PROPS:
         return [[GET_PROPS_INVENTORY_QUERY_KEY]]
@@ -76,7 +76,7 @@ export const useUpdateInventoryItemConditionMutation = (type: ItemType) => {
 
   const invalidates = (() => {
     switch (type) {
-      case ItemType.COSTUMES:
+      case ItemType.COSTUME:
         return [[GET_COSTUME_INVENTORY_QUERY_KEY]]
       case ItemType.EQUIPMENT_PROPS:
         return [[GET_PROPS_INVENTORY_QUERY_KEY]]

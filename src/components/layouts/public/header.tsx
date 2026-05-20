@@ -4,7 +4,6 @@ import { InstagramIcon } from '@/assets/svg/instagram-icon'
 import { ITEM_TYPE_MAP } from '@/common/constants/const'
 import type { ItemType } from '@/common/constants/enums'
 import { buttonVariants } from '@/components/ui/button'
-import { Icon } from '@/components/ui/icon'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,7 +15,7 @@ import {
 import { Typography } from '@/components/ui/typography'
 import { Link } from '@tanstack/react-router'
 import { groupBy } from 'lodash-es'
-import { ArrowUpRightIcon, BoxIcon, FilesIcon, GiftIcon, HomeIcon } from 'lucide-react'
+import { ArrowUpRightIcon, GiftIcon, HomeIcon, NotepadTextIcon, SparklesIcon } from 'lucide-react'
 import React, { useMemo } from 'react'
 import { SearchDialog } from './search-dialog'
 
@@ -33,7 +32,8 @@ const Header: React.FC = () => {
         items: items.map((item) => ({
           id: item.id,
           title: item.name,
-          href: `/products?danh-muc=${item.slug}`,
+          href: `/products`,
+          slug: item.slug,
         })),
       }
     })
@@ -114,20 +114,29 @@ const Header: React.FC = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="gap-2">
-                  <FilesIcon size={16} /> Danh mục
+                  <NotepadTextIcon size={16} /> Danh mục
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="grid grid-cols-2 gap-10">
+                <NavigationMenuContent className="grid grid-cols-4 gap-10 rounded-none">
                   {categoryGroups.map((group) => (
                     <div className="space-y-3" key={group.id}>
-                      <Typography variant="small" color="muted" className="inline-flex items-center gap-2 text-xs">
-                        <Icon name={group.icon} />
+                      <Typography variant="small" className="inline-flex items-center gap-2 font-medium px-2">
                         {group.label}
                       </Typography>
 
-                      <ul className="">
+                      <ul>
                         {group.items.map((item) => (
                           <li>
-                            <NavigationMenuLink render={<Link to={item.href} />}>{item.title}</NavigationMenuLink>
+                            <NavigationMenuLink
+                              render={
+                                <Link
+                                  to={item.href}
+                                  search={{ item_type: group.id as ItemType, 'category_slug:eq': item.slug }}
+                                />
+                              }
+                              className="text-muted-foreground hover:text-primary"
+                            >
+                              {item.title}
+                            </NavigationMenuLink>
                           </li>
                         ))}
                       </ul>
@@ -137,7 +146,7 @@ const Header: React.FC = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink render={<Link to="/" hash="products-moi" className="font-medium" />}>
-                  <BoxIcon className="size-4" />
+                  <SparklesIcon className="size-4" />
                   Sản phẩm mới
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -150,7 +159,7 @@ const Header: React.FC = () => {
             </NavigationMenuList>
           </NavigationMenu>
           {/* Search command dialog */}
-          <div className="flex flex-col gap-4 ml-auto">
+          <div className="ml-auto md:basis-1/6 basis-auto">
             <SearchDialog />
           </div>
         </div>

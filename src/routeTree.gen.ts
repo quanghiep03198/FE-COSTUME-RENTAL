@@ -26,7 +26,7 @@ import { Route as PrivateLayoutEmployeesRouteImport } from './routes/_private-la
 import { Route as PrivateLayoutDashboardRouteImport } from './routes/_private-layout.dashboard'
 import { Route as PrivateLayoutCustomerRentalAgreementRouteImport } from './routes/_private-layout.customer-rental-agreement'
 import { Route as PrivateLayoutCostumesRouteImport } from './routes/_private-layout.costumes'
-import { Route as PublicLayoutProductsTypeSlugRouteImport } from './routes/_public-layout.products.$type.$slug'
+import { Route as PublicLayoutProductDetailTypeProductIdRouteImport } from './routes/_public-layout.product-detail.$type.$productId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -116,11 +116,11 @@ const PrivateLayoutCostumesRoute = PrivateLayoutCostumesRouteImport.update({
   path: '/costumes',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
-const PublicLayoutProductsTypeSlugRoute =
-  PublicLayoutProductsTypeSlugRouteImport.update({
-    id: '/$type/$slug',
-    path: '/$type/$slug',
-    getParentRoute: () => PublicLayoutProductsRoute,
+const PublicLayoutProductDetailTypeProductIdRoute =
+  PublicLayoutProductDetailTypeProductIdRouteImport.update({
+    id: '/product-detail/$type/$productId',
+    path: '/product-detail/$type/$productId',
+    getParentRoute: () => PublicLayoutRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -138,8 +138,8 @@ export interface FileRoutesByFullPath {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
-  '/products': typeof PublicLayoutProductsRouteWithChildren
-  '/products/$type/$slug': typeof PublicLayoutProductsTypeSlugRoute
+  '/products': typeof PublicLayoutProductsRoute
+  '/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
@@ -156,8 +156,8 @@ export interface FileRoutesByTo {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
-  '/products': typeof PublicLayoutProductsRouteWithChildren
-  '/products/$type/$slug': typeof PublicLayoutProductsTypeSlugRoute
+  '/products': typeof PublicLayoutProductsRoute
+  '/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -176,9 +176,9 @@ export interface FileRoutesById {
   '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
-  '/_public-layout/products': typeof PublicLayoutProductsRouteWithChildren
+  '/_public-layout/products': typeof PublicLayoutProductsRoute
   '/_public-layout/': typeof PublicLayoutIndexRoute
-  '/_public-layout/products/$type/$slug': typeof PublicLayoutProductsTypeSlugRoute
+  '/_public-layout/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -198,7 +198,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/users'
     | '/products'
-    | '/products/$type/$slug'
+    | '/product-detail/$type/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -216,7 +216,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/users'
     | '/products'
-    | '/products/$type/$slug'
+    | '/product-detail/$type/$productId'
   id:
     | '__root__'
     | '/_private-layout'
@@ -236,7 +236,7 @@ export interface FileRouteTypes {
     | '/_private-layout/users'
     | '/_public-layout/products'
     | '/_public-layout/'
-    | '/_public-layout/products/$type/$slug'
+    | '/_public-layout/product-detail/$type/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,12 +366,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutCostumesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
-    '/_public-layout/products/$type/$slug': {
-      id: '/_public-layout/products/$type/$slug'
-      path: '/$type/$slug'
-      fullPath: '/products/$type/$slug'
-      preLoaderRoute: typeof PublicLayoutProductsTypeSlugRouteImport
-      parentRoute: typeof PublicLayoutProductsRoute
+    '/_public-layout/product-detail/$type/$productId': {
+      id: '/_public-layout/product-detail/$type/$productId'
+      path: '/product-detail/$type/$productId'
+      fullPath: '/product-detail/$type/$productId'
+      preLoaderRoute: typeof PublicLayoutProductDetailTypeProductIdRouteImport
+      parentRoute: typeof PublicLayoutRoute
     }
   }
 }
@@ -411,25 +411,17 @@ const PrivateLayoutRouteWithChildren = PrivateLayoutRoute._addFileChildren(
   PrivateLayoutRouteChildren,
 )
 
-interface PublicLayoutProductsRouteChildren {
-  PublicLayoutProductsTypeSlugRoute: typeof PublicLayoutProductsTypeSlugRoute
-}
-
-const PublicLayoutProductsRouteChildren: PublicLayoutProductsRouteChildren = {
-  PublicLayoutProductsTypeSlugRoute: PublicLayoutProductsTypeSlugRoute,
-}
-
-const PublicLayoutProductsRouteWithChildren =
-  PublicLayoutProductsRoute._addFileChildren(PublicLayoutProductsRouteChildren)
-
 interface PublicLayoutRouteChildren {
-  PublicLayoutProductsRoute: typeof PublicLayoutProductsRouteWithChildren
+  PublicLayoutProductsRoute: typeof PublicLayoutProductsRoute
   PublicLayoutIndexRoute: typeof PublicLayoutIndexRoute
+  PublicLayoutProductDetailTypeProductIdRoute: typeof PublicLayoutProductDetailTypeProductIdRoute
 }
 
 const PublicLayoutRouteChildren: PublicLayoutRouteChildren = {
-  PublicLayoutProductsRoute: PublicLayoutProductsRouteWithChildren,
+  PublicLayoutProductsRoute: PublicLayoutProductsRoute,
   PublicLayoutIndexRoute: PublicLayoutIndexRoute,
+  PublicLayoutProductDetailTypeProductIdRoute:
+    PublicLayoutProductDetailTypeProductIdRoute,
 }
 
 const PublicLayoutRouteWithChildren = PublicLayoutRoute._addFileChildren(

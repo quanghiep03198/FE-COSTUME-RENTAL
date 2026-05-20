@@ -69,7 +69,7 @@ const CategoryCombobox: React.FC = () => {
     if (!Array.isArray(data)) return []
 
     const categoryLabelMap = new Map<ItemType, string>([
-      [ItemType.COSTUMES, 'Trang phục'],
+      [ItemType.COSTUME, 'Trang phục'],
       [ItemType.EQUIPMENT_PROPS, 'Đạo cụ'],
     ])
 

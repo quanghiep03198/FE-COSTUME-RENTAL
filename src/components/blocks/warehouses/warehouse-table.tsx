@@ -21,7 +21,7 @@ const WarehouseTable: React.FC = () => {
 
   const warehouseTypeRef = useRef<Map<ItemType, string>>(
     new Map<ItemType, string>([
-      [ItemType.COSTUMES, 'Kho trang phục'],
+      [ItemType.COSTUME, 'Kho trang phục'],
       [ItemType.EQUIPMENT_PROPS, 'Kho đạo cụ'],
     ])
   )

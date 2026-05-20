@@ -10,7 +10,7 @@ import type { QueryKey } from '@tanstack/react-query'
 
 export const getCategoryItemCount = (item: ICategory) => {
   switch (item.type) {
-    case ItemType.COSTUMES:
+    case ItemType.COSTUME:
       return formatIntlNumber((item as Required<Omit<ICategory, 'equipment_props'>>).costumes?.length ?? 0)
     case ItemType.EQUIPMENT_PROPS:
       return formatIntlNumber((item as Required<Omit<ICategory, 'costumes'>>).equipment_props?.length ?? 0)
@@ -21,7 +21,7 @@ export const getCategoryItemCount = (item: ICategory) => {
 
 export const getCategoryTypeName = (type: ItemType): string | undefined => {
   switch (type) {
-    case ItemType.COSTUMES:
+    case ItemType.COSTUME:
       return 'Trang phục'
     case ItemType.EQUIPMENT_PROPS:
       return 'Đạo cụ'
@@ -32,7 +32,7 @@ export const getCategoryTypeName = (type: ItemType): string | undefined => {
 
 export const getMutationKeys = (type: ItemType): Array<QueryKey> => {
   switch (type) {
-    case ItemType.COSTUMES:
+    case ItemType.COSTUME:
       return [[GET_CATEGORIES_QUERY_KEY, GET_COSTUME_CATEGORY_QUERY_KEY]]
 
     case ItemType.EQUIPMENT_PROPS:

@@ -13,7 +13,7 @@ const CategoryItem: React.FC<{ data: ICategory }> = ({ data }) => {
   return (
     <Item aria-disabled={!data.is_active} className="aria-disabled:opacity-50">
       <ItemMedia variant="image" className="bg-accent text-accent-foreground">
-        {data.type === ItemType.COSTUMES ? <Shirt /> : <ToolCase />}
+        {data.type === ItemType.COSTUME ? <Shirt /> : <ToolCase />}
       </ItemMedia>
       <ItemContent>
         <ItemTitle className="group-aria-disabled/item:line-through">{data.name}</ItemTitle>

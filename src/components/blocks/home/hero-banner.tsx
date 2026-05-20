@@ -10,16 +10,19 @@ const HeroBanner: React.FC = () => {
           <Link
             to="/"
             className={buttonVariants({
-              variant: 'outline',
+              variant: 'link',
               size: 'sm',
               className:
-                'bg-transparent rounded-r-full rounded-l-full border-white mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-90 duration-500',
+                'bg-transparent  mb-6 animate-in fade-in-0 slide-in-from-bottom-100 zoom-in-90 duration-500 text-white',
             })}
           >
-            Khám phá bộ sưu tập <ArrowRightIcon className="size-3" />
+            Khám phá bộ sưu tập
           </Link>
 
-          <h1 className="text-5xl font-bold text-white blur-in-lg animate-in fade-in-0 slide-in-from-bottom-50 ease-out duration-500">
+          <h1
+            className="text-5xl font-bold text-white blur-in-lg animate-in fade-in-0 slide-in-from-bottom-50 ease-out duration-500"
+            style={{ fontFamily: 'initial' }}
+          >
             Gói Trọn Nét Thơ - Tôn Vinh Bản Sắc
           </h1>
           <p className=" text-lg text-white animate-in blur-in-lg fade-in-0 slide-in-from-bottom-50 ease-out duration-700 max-w-5xl text-pretty">
@@ -31,7 +34,11 @@ const HeroBanner: React.FC = () => {
             <Link to="/products" className={buttonVariants({ size: 'lg', effect: 'glass' })}>
               Cửa hàng
             </Link>
-            <Link to="/" hash="" className={buttonVariants({ variant: 'link', className: 'text-white' })}>
+            <Link
+              to="/"
+              hash=""
+              className={buttonVariants({ variant: 'outline', className: 'bg-transparent text-white' })}
+            >
               Khám phá <ArrowRightIcon className="size-3" />
             </Link>
           </div>

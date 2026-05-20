@@ -340,7 +340,7 @@ const CostumeFormDialog: React.FC = () => {
                     }}
                   </FormField>
                 </FieldSet>
-                <CategoryPopoverForm type={ItemType.COSTUMES} />
+                <CategoryPopoverForm type={ItemType.COSTUME} />
               </CardContent>
             </Card>
             {/* Image */}
@@ -448,13 +448,13 @@ const CostumeFormDialog: React.FC = () => {
           </DialogHeader>
           <div className="bg-card">
             <ImagesGallary
-              type={ItemType.COSTUMES}
+              type={ItemType.COSTUME}
               selected={(selectedImages ?? []) as unknown as IImage[]}
               onSelect={(images) => {
                 form.setFieldValue('images', images as any)
               }}
               onTabChange={(currentTab) => {
-                setShouldShowImageActions(currentTab === ItemType.COSTUMES)
+                setShouldShowImageActions(currentTab === ItemType.COSTUME)
               }}
             />
           </div>

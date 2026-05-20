@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/products"
                 className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
               >
                 Sản phẩm
@@ -50,6 +50,7 @@ const Footer: React.FC = () => {
             <li>
               <Link
                 to="/"
+                hash="about-us"
                 className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
               >
                 Về chúng tôi
@@ -69,6 +70,14 @@ const Footer: React.FC = () => {
                 className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
               >
                 Chính sách
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/login"
+                className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
+              >
+                Đăng nhập
               </Link>
             </li>
           </ul>

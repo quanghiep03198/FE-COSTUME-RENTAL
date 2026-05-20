@@ -19,7 +19,7 @@ export const STATUS_OPTIONS: Array<{
 ]
 
 export const ITEM_TYPE_MAP: Map<ItemType, { label: string; icon: IconProps['name'] }> = new Map([
-  [ItemType.COSTUMES, { label: 'Trang phục', icon: 'Shirt' }],
+  [ItemType.COSTUME, { label: 'Trang phục', icon: 'Shirt' }],
   [ItemType.EQUIPMENT_PROPS, { label: 'Đạo cụ', icon: 'ToolCase' }],
 ])
 

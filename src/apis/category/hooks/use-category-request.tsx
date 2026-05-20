@@ -18,7 +18,7 @@ import type { ICategory } from '../types'
 export const GET_CATEGORIES_QUERY_KEY = 'categories'
 
 export const GET_COSTUME_CATEGORY_QUERY_KEY: TGetCategoryQueryValue = {
-  'type:eq': ItemType.COSTUMES,
+  'type:eq': ItemType.COSTUME,
   _embed: 'costumes',
 }
 

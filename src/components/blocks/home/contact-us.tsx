@@ -29,6 +29,7 @@ const ContactUs: React.FC<{ contactInfo: ContactInfo }> = ({ contactInfo }) => {
           <h2
             aria-current={inView}
             className="text-2xl hidden aria-current:block transition-discrete font-semibold md:text-3xl lg:text-4xl aria-current:animate-in duration-700 paused aria-current:running fade-in-0 blur-in-lg slide-in-from-bottom-50 ease-out"
+            style={{ fontFamily: 'initial' }}
           >
             Kết nối với chúng tôi - Hỗ trợ tận tâm cho mọi nhu cầu thuê áo dài của bạn
           </h2>
@@ -52,6 +53,7 @@ const ContactUs: React.FC<{ contactInfo: ContactInfo }> = ({ contactInfo }) => {
             <h3
               aria-current={inView}
               className="hidden aria-current:block transition-discrete paused aria-current:running animate-in slide-in-from-left-10 fade-in-0 blur-in-lg duration-700 mb-2 text-2xl font-semibold"
+              style={{ fontFamily: 'initial' }}
             >
               Chúng tôi luôn sẵn sàng phục vụ
             </h3>

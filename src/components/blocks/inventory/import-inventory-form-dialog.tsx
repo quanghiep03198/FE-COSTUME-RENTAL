@@ -25,7 +25,7 @@ import { CirclePlusIcon } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
 
 const embedFieldMap = new Map<ItemType, 'costumes' | 'equipment_props'>([
-  [ItemType.COSTUMES, 'costumes'],
+  [ItemType.COSTUME, 'costumes'],
   [ItemType.EQUIPMENT_PROPS, 'equipment_props'],
 ])
 
@@ -49,16 +49,12 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
 
   const form = useForm({
     defaultValues: {
-      ...(type === ItemType.COSTUMES && { size: null as unknown as TImportInventoryValues['size'] }),
+      ...(type === ItemType.COSTUME && { size: null as unknown as TImportInventoryValues['size'] }),
       item: null as unknown as TImportInventoryValues['item'],
       item_type: type,
       inventory_condition: inventoryConditions?.[0],
       warehouse: warehouseOptions[0],
       quantity: 1,
-    },
-    onSubmitInvalid: ({ value, formApi }) => {
-      console.log('value', value)
-      console.log('error', formApi.getAllErrors())
     },
     onSubmit: async ({ value }) => {
       await importInventory(value as unknown as TImportInventoryValues).then(() => dialogActionRef.current?.close())
@@ -138,7 +134,7 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
                   />
                 )}
               </FieldItem>
-              {type === ItemType.COSTUMES && (
+              {type === ItemType.COSTUME && (
                 <FieldItem name="size">
                   {(field) => (
                     <SelectFieldControl
@@ -193,7 +189,7 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
                   className={buttonVariants({ variant: 'secondary' })}
                   onClick={() => {
                     form.reset()
-                    if (type === ItemType.COSTUMES) setSizes([])
+                    if (type === ItemType.COSTUME) setSizes([])
                   }}
                 >
                   Hủy

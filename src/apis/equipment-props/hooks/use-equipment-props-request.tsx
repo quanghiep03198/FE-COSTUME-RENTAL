@@ -2,7 +2,13 @@ import { CommonActions } from '@/common/constants/enums'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { createEquipmentPropsRpc, deleteEquipmentPropsRpc, getEquipmentPropsRpc, updateEquipmentPropsRpc } from '../rpc'
+import {
+  createEquipmentPropsRpc,
+  deleteEquipmentPropsRpc,
+  getEquipmentPropsRpc,
+  getPropsDetailRpc,
+  updateEquipmentPropsRpc,
+} from '../rpc'
 import type { TCreateEquipmentPropsValues } from '../schemas/create-equipment-props.schema'
 import type { TUpdateEquipmentPropsValues } from '../schemas/update-equipment-props.schema'
 import type { IEquipmentProps } from '../types'
@@ -17,8 +23,19 @@ export const getPropsQueryOptions = () => {
   })
 }
 
+export const getPropsDetailQueryOptions = (id: number) => {
+  return queryOptions({
+    queryKey: [GET_PROPS_QUERY_KEY, id],
+    queryFn: () => getPropsDetailRpc({ data: id }),
+  })
+}
+
 export const useGetPropsQuery = () => {
   return useSuspenseQuery(getPropsQueryOptions())
+}
+
+export const useGetPropsDetailQuery = (id: number) => {
+  return useSuspenseQuery(getPropsDetailQueryOptions(id))
 }
 
 type TMutationEventMap = {

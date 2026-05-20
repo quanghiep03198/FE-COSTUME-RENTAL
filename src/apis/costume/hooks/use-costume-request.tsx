@@ -2,9 +2,9 @@ import { CommonActions } from '@/common/constants/enums'
 import { queryOptions, useMutation, useSuspenseQuery, type MutationFunction } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
-import { createCostumeRpc, deleteCostumeRpc, getCostumesRpc, updateCostumeRpc } from '../rpc'
-import type { TCreateCostumeReqValues } from '../schemas/create-costume.schema'
-import type { TUpdateCostumeReqValues } from '../schemas/update-costume.schema'
+import { createCostumeRpc, deleteCostumeRpc, getCostumeDetailRpc, getCostumesRpc, updateCostumeRpc } from '../rpc'
+import type { TCreateCostumeValues } from '../schemas/create-costume.schema'
+import type { TUpdateCostumeValues } from '../schemas/update-costume.schema'
 import type { ICostume } from '../types'
 
 export const GET_COSTUMES_QUERY_KEY = 'costumes' as const
@@ -16,17 +16,28 @@ export const getCostumesQueryOptions = () => {
   })
 }
 
+export const getCostumeDetailQueryOptions = (id: number) => {
+  return queryOptions({
+    queryKey: [GET_COSTUMES_QUERY_KEY, id],
+    queryFn: () => getCostumeDetailRpc({ data: id }),
+  })
+}
+
 export const useGetCostumesQuery = () => {
   return useSuspenseQuery(getCostumesQueryOptions())
 }
 
+export const useGetCostumeDetailQuery = (id: number) => {
+  return useSuspenseQuery(getCostumeDetailQueryOptions(id))
+}
+
 type TMutationEventMap = {
   [CommonActions.CREATE]: {
-    handler: (data: TCreateCostumeReqValues) => Promise<ICostume>
+    handler: (data: TCreateCostumeValues) => Promise<ICostume>
     message: string
   }
   [CommonActions.UPDATE]: {
-    handler: (data: TUpdateCostumeReqValues) => Promise<ICostume>
+    handler: (data: TUpdateCostumeValues) => Promise<ICostume>
     message: string
   }
   none: {
@@ -41,11 +52,11 @@ export const useCreateOrUpdateCostumeMutation = (action: CommonActions.CREATE | 
 
   const mutationEventMap: TMutationEventMap = {
     [CommonActions.CREATE]: {
-      handler: (data: TCreateCostumeReqValues) => createCostumeFn({ data }),
+      handler: (data: TCreateCostumeValues) => createCostumeFn({ data }),
       message: 'Thêm mới trang phục thành công',
     },
     [CommonActions.UPDATE]: {
-      handler: async (data: TUpdateCostumeReqValues) => updateCostumeFn({ data }),
+      handler: async (data: TUpdateCostumeValues) => updateCostumeFn({ data }),
       message: 'Cập nhật trang phục thành công',
     },
     none: {
