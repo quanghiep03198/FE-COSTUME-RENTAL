@@ -59,6 +59,7 @@
     "color": "^5.0.3",
     "copy-to-clipboard": "^4.0.2",
     "date-fns": "^4.1.0",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "filesize": "^11.0.17",
     "gsap": "^3.13.0",
