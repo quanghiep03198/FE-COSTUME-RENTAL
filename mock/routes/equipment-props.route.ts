@@ -44,8 +44,6 @@ export function registerEquipmentPropsRoutes(app: Application) {
   app.post('/api/equipment-props', jwtMiddleware, (req: Request, res: Response) => {
     const { name, category_id, rental_price_per_day, description, images, unit, hashtags } = req.body
 
-    console.log({ name, category_id, rental_price_per_day })
-
     if (!name || !category_id || !rental_price_per_day) {
       return res.status(400).json({
         message: 'name, category_id and rental_price_per_day are required',

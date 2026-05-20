@@ -29,7 +29,6 @@ export function registerCategoryRoutes(app: Application) {
             { 'category_id:eq': record.id },
             {
               transform: (props) => {
-                console.log(props)
                 props.images = queryCollection('images', { 'id:in': props?.images?.join(',') }, { pick: ['dest'] })
                 return props
               },
