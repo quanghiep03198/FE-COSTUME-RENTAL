@@ -34,10 +34,14 @@ export const getCategoriesQueryOptions = (params?: TGetCategoryQueryValue) => {
   })
 }
 
-export const getOneCategoryQueryOptions = (id: number) => {
+export const getOneCategoryQueryOptions = (id: number, _expand?: 'costumes' | 'equipment_props') => {
+  const queryKey = [GET_CATEGORIES_QUERY_KEY, id]
+
+  if (_expand) queryKey.push(_expand)
+
   return queryOptions({
-    queryKey: [GET_CATEGORIES_QUERY_KEY, id],
-    queryFn: () => getOneCategoryRpc({ data: id }),
+    queryKey,
+    queryFn: () => getOneCategoryRpc({ data: { id, _expand } }),
   })
 }
 

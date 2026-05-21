@@ -27,7 +27,7 @@ export const useUploadImagesMutation = () => {
       uploadImageFn({
         data: createFormData({
           category_id: data.category.value,
-          files: data.files,
+          'files[]': data.files,
         }),
       }),
   })

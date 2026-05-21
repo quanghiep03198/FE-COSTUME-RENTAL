@@ -16,9 +16,9 @@ export const getCategoriesRpc = createServerFn({ method: 'GET' })
 
 export const getOneCategoryRpc = createServerFn({ method: 'GET' })
   .middleware([requestMiddleware])
-  .inputValidator(z.number())
-  .handler(async ({ context, data: id }) => {
-    return await context.request<ICategory>({ url: `/categories/${id}` })
+  .inputValidator(z.object({ id: z.number(), _expand: z.enum(['costumes', 'equipment_props']).optional() }))
+  .handler(async ({ context, data: { id, _expand } }) => {
+    return await context.request<ICategory>({ url: `/categories/${id}`, ...(_expand && { params: { _expand } }) })
   })
 
 export const createCategoryRpc = createServerFn({ method: 'POST' })
