@@ -18,7 +18,7 @@ export const getCostumeDetailRpc = createServerFn({ method: 'GET' })
   .middleware([requestMiddleware])
   .inputValidator(z.number())
   .handler(async ({ context, data }) => {
-    return await context.request<ICostume>({ url: `/costumes/${data}` })
+    return await context.request<ICostume>({ url: `/costumes/${data}`, params: { _expand: 'category' } })
   })
 
 export const createCostumeRpc = createServerFn({ method: 'POST' })
