@@ -10,7 +10,6 @@ import { useGetWarehouseQuery } from '@/apis/warehouse/hooks/use-warehouse-reque
 import type { IWarehouse } from '@/apis/warehouse/types'
 import { ItemType } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/helpers/format-intl'
-import { getImageUrl } from '@/common/helpers/get-image-url'
 import { ComboboxFieldControl } from '@/components/forms/combobox-field-control'
 import InputFieldControl from '@/components/forms/input-field-control'
 import SelectFieldControl, { type SelectFieldControlProps } from '@/components/forms/select-field-control'
@@ -74,13 +73,15 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
       label: cate.name,
       items:
         itemsField && Array.isArray(cate[itemsField])
-          ? cate[itemsField].map((item) => ({
-              id: item.id,
-              name: item.name,
-              rental_price_per_day: item.rental_price_per_day,
-              image: getImageUrl(item.images[0]?.dest),
-              ...(item.sizes && { sizes: item.sizes.map((size) => ({ label: size, value: size })) }),
-            }))
+          ? cate[itemsField].map((item) => {
+              return {
+                id: item.id,
+                name: item.name,
+                rental_price_per_day: item.rental_price_per_day,
+                image: item.images[0]?.url,
+                ...(item.sizes && { sizes: item.sizes.map((size) => ({ label: size, value: size })) }),
+              }
+            })
           : [],
     }))
   }, [])
@@ -115,22 +116,28 @@ const ImportInventoryFormDialog: React.FC<{ type: ItemType }> = ({ type }) => {
                       rental_price_per_day: number
                       image: string
                       sizes?: Array<{ label: string; value: CostumeSize }>
-                    }) => (
-                      <Item
-                        size="xs"
-                        onClick={() => {
-                          if (Array.isArray(product.sizes)) setSizes(product.sizes)
-                        }}
-                      >
-                        <ItemMedia>
-                          <Image src={product.image} alt={product.name} className="size-10 aspect-square rounded-md" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle>{product.name}</ItemTitle>
-                          <ItemDescription>{formatCurrency(product.rental_price_per_day)} / ngày</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    )}
+                    }) => {
+                      return (
+                        <Item
+                          size="xs"
+                          onClick={() => {
+                            if (Array.isArray(product.sizes)) setSizes(product.sizes)
+                          }}
+                        >
+                          <ItemMedia>
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              className="size-10 aspect-square rounded-md"
+                            />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemTitle>{product.name}</ItemTitle>
+                            <ItemDescription>{formatCurrency(product.rental_price_per_day)} / ngày</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      )
+                    }}
                   />
                 )}
               </FieldItem>
