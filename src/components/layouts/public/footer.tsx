@@ -59,6 +59,7 @@ const Footer: React.FC = () => {
             <li>
               <Link
                 to="/"
+                hash="contact-us"
                 className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
               >
                 Liên hệ
@@ -66,7 +67,7 @@ const Footer: React.FC = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/policies"
                 className={buttonVariants({ variant: 'link', className: 'text-input! hover:text-primary-foreground!' })}
               >
                 Chính sách
