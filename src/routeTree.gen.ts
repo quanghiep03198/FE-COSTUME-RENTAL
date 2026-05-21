@@ -14,6 +14,7 @@ import { Route as PublicLayoutRouteImport } from './routes/_public-layout'
 import { Route as PrivateLayoutRouteImport } from './routes/_private-layout'
 import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.index'
 import { Route as PublicLayoutProductsRouteImport } from './routes/_public-layout.products'
+import { Route as PublicLayoutPoliciesRouteImport } from './routes/_public-layout.policies'
 import { Route as PrivateLayoutUsersRouteImport } from './routes/_private-layout.users'
 import { Route as PrivateLayoutStatisticsRouteImport } from './routes/_private-layout.statistics'
 import { Route as PrivateLayoutRentalReceiptsRouteImport } from './routes/_private-layout.rental-receipts'
@@ -49,6 +50,11 @@ const PublicLayoutIndexRoute = PublicLayoutIndexRouteImport.update({
 const PublicLayoutProductsRoute = PublicLayoutProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => PublicLayoutRoute,
+} as any)
+const PublicLayoutPoliciesRoute = PublicLayoutPoliciesRouteImport.update({
+  id: '/policies',
+  path: '/policies',
   getParentRoute: () => PublicLayoutRoute,
 } as any)
 const PrivateLayoutUsersRoute = PrivateLayoutUsersRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/policies': typeof PublicLayoutPoliciesRoute
   '/products': typeof PublicLayoutProductsRoute
   '/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
 }
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/statistics': typeof PrivateLayoutStatisticsRoute
   '/users': typeof PrivateLayoutUsersRoute
+  '/policies': typeof PublicLayoutPoliciesRoute
   '/products': typeof PublicLayoutProductsRoute
   '/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
 }
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/_private-layout/rental-receipts': typeof PrivateLayoutRentalReceiptsRoute
   '/_private-layout/statistics': typeof PrivateLayoutStatisticsRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
+  '/_public-layout/policies': typeof PublicLayoutPoliciesRoute
   '/_public-layout/products': typeof PublicLayoutProductsRoute
   '/_public-layout/': typeof PublicLayoutIndexRoute
   '/_public-layout/product-detail/$type/$productId': typeof PublicLayoutProductDetailTypeProductIdRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/policies'
     | '/products'
     | '/product-detail/$type/$productId'
   fileRoutesByTo: FileRoutesByTo
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/rental-receipts'
     | '/statistics'
     | '/users'
+    | '/policies'
     | '/products'
     | '/product-detail/$type/$productId'
   id:
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_private-layout/rental-receipts'
     | '/_private-layout/statistics'
     | '/_private-layout/users'
+    | '/_public-layout/policies'
     | '/_public-layout/products'
     | '/_public-layout/'
     | '/_public-layout/product-detail/$type/$productId'
@@ -280,6 +292,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof PublicLayoutProductsRouteImport
+      parentRoute: typeof PublicLayoutRoute
+    }
+    '/_public-layout/policies': {
+      id: '/_public-layout/policies'
+      path: '/policies'
+      fullPath: '/policies'
+      preLoaderRoute: typeof PublicLayoutPoliciesRouteImport
       parentRoute: typeof PublicLayoutRoute
     }
     '/_private-layout/users': {
@@ -412,12 +431,14 @@ const PrivateLayoutRouteWithChildren = PrivateLayoutRoute._addFileChildren(
 )
 
 interface PublicLayoutRouteChildren {
+  PublicLayoutPoliciesRoute: typeof PublicLayoutPoliciesRoute
   PublicLayoutProductsRoute: typeof PublicLayoutProductsRoute
   PublicLayoutIndexRoute: typeof PublicLayoutIndexRoute
   PublicLayoutProductDetailTypeProductIdRoute: typeof PublicLayoutProductDetailTypeProductIdRoute
 }
 
 const PublicLayoutRouteChildren: PublicLayoutRouteChildren = {
+  PublicLayoutPoliciesRoute: PublicLayoutPoliciesRoute,
   PublicLayoutProductsRoute: PublicLayoutProductsRoute,
   PublicLayoutIndexRoute: PublicLayoutIndexRoute,
   PublicLayoutProductDetailTypeProductIdRoute:
