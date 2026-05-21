@@ -48,6 +48,8 @@ const ProductList: React.FC = () => {
   const { data: costumes } = useGetCostumesQuery()
   const { data: equipmentProps } = useGetPropsQuery()
 
+  const itemType = search.item_type ?? ItemType.COSTUME
+
   const dataset = {
     [ItemType.COSTUME]: costumes,
     [ItemType.EQUIPMENT_PROPS]: equipmentProps,
@@ -83,7 +85,7 @@ const ProductList: React.FC = () => {
         typeof search['rental_price_per_day:gte'] === 'number' &&
         typeof search['rental_price_per_day:lte'] === 'number'
       )
-        return filteredData.filter(
+        filteredData = filteredData.filter(
           (item) =>
             item.rental_price_per_day >= search['rental_price_per_day:gte']! &&
             item.rental_price_per_day <= search['rental_price_per_day:lte']!
@@ -91,7 +93,9 @@ const ProductList: React.FC = () => {
 
       if (search['color:eq']) filteredData = filteredData.filter((item) => item.color?.hex === search['color:eq'])
 
-      if (typeof search['gender:eq']) return filteredData.filter((item) => item.gender)
+      if (search['gender:eq']) {
+        filteredData = filteredData.filter((item) => item.gender === search['gender:eq'])
+      }
 
       if (typeof search['size:in'] === 'string' && search['size:in'].split(',').length > 0)
         filteredData = filteredData.filter((item) =>
@@ -122,10 +126,10 @@ const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Array<TProductCardData>>([])
 
   useDeepCompareEffect(() => {
-    processFilterAndSort(dataset[search.item_type!], search).then((prods) =>
-      setProducts(prods as Array<TProductCardData>)
-    )
-  }, [search, dataset])
+    processFilterAndSort(dataset[itemType], search).then((prods) => setProducts(prods as Array<TProductCardData>))
+  }, [search, dataset, itemType])
+
+  console.log(products)
 
   return (
     <div className="space-y-6 flex flex-col">
