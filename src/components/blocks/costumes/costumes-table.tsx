@@ -3,7 +3,6 @@ import { useGetCostumesQuery } from '@/apis/costume/hooks/use-costume-request'
 import type { ICostume } from '@/apis/costume/types'
 import { GENDER_ICONS } from '@/assets/svg/gender-icons'
 import { formatCurrency } from '@/common/helpers/format-intl'
-import { getImageUrl } from '@/common/helpers/get-image-url'
 import { DataGrid } from '@/components/shared/data-grid'
 import { ROW_ACTIONS_COLUMN_ID } from '@/components/shared/data-grid/constants'
 import { fuzzySort } from '@/components/shared/data-grid/utils'
@@ -32,12 +31,12 @@ const CostumeTable: React.FC = () => {
         sortingFn: fuzzySort,
         cell: ({ row }) => {
           const costumeName = row.original.name
-          const image = row.original.images[0]?.dest
+          const image = row.original.images[0]?.url
           const color = row.original.color
           return (
             <Item size="sm" className="p-0 flex-nowrap!">
               <ItemMedia>
-                <Image src={getImageUrl(image)} className="size-16 rounded" />
+                <Image src={image} className="size-16 rounded" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle className="line-clamp-1">{costumeName}</ItemTitle>

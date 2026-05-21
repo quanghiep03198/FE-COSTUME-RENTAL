@@ -47,7 +47,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { typographyVariants } from '@/components/ui/typography'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore } from '@tanstack/react-form'
-import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
+import { CircleFadingPlusIcon, ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useId, useRef, useState } from 'react'
 import CategoryPopoverForm from '../categories/category-popover-form'
 import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
@@ -340,7 +340,15 @@ const CostumeFormDialog: React.FC = () => {
                     }}
                   </FormField>
                 </FieldSet>
-                <CategoryPopoverForm type={ItemType.COSTUME} />
+                <CategoryPopoverForm
+                  type={ItemType.COSTUME}
+                  action={CommonActions.CREATE}
+                  render={
+                    <Button>
+                      <CircleFadingPlusIcon /> Thêm danh mục
+                    </Button>
+                  }
+                />
               </CardContent>
             </Card>
             {/* Image */}
@@ -388,7 +396,8 @@ const CostumeFormDialog: React.FC = () => {
                                     size="icon-xs"
                                     className="absolute top-2 right-2 z-20"
                                     onClick={() => {
-                                      const afterDelete = field.state.value!.filter(
+                                      const fieldValue = field.state.value as unknown as TCreateCostumeValues['images']
+                                      const afterDelete = fieldValue.filter(
                                         (img) => img.id !== image.id
                                       ) as unknown as TCreateCostumeValues['images']
                                       field.handleChange(afterDelete)
