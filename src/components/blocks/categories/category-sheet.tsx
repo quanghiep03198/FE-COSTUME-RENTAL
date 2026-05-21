@@ -1,8 +1,8 @@
-import type { ItemType } from '@/common/constants/enums'
+import { CommonActions, type ItemType } from '@/common/constants/enums'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { PageEventProvider } from '@/contexts/event-context'
-import { PanelRightDashed } from 'lucide-react'
+import { CircleFadingPlusIcon, PanelRightDashed } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import CategoryList from './category-list'
 import CategoryPopoverForm from './category-popover-form'
@@ -32,7 +32,15 @@ const CategorySheet: React.FC<{ type: ItemType }> = ({ type }) => {
           <CategorySearchInput searchTerm={search} onSearchTermChange={handleSearchChange} />
           <CategoryList type={type} searchTerm={search} />
           <SheetFooter>
-            <CategoryPopoverForm type={type} />
+            <CategoryPopoverForm
+              type={type}
+              action={CommonActions.CREATE}
+              render={
+                <Button>
+                  <CircleFadingPlusIcon /> Thêm danh mục
+                </Button>
+              }
+            />
           </SheetFooter>
         </SheetContent>
       </Sheet>

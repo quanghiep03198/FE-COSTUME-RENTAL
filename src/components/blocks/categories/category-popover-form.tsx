@@ -3,42 +3,35 @@ import {
   useCreateOrUpdateCategoryMutation,
 } from '@/apis/category/hooks/use-category-request'
 import { createCategorySchema } from '@/apis/category/schemas/create-category.schema'
+import type { ICategory } from '@/apis/category/types'
 import { CommonActions, ItemType } from '@/common/constants/enums'
 import { standardizeName } from '@/common/helpers/standardize-name'
+import InputFieldControl from '@/components/forms/input-field-control'
 import { Button } from '@/components/ui/button'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { Field, FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Spinner } from '@/components/ui/spinner'
 import { useForm } from '@tanstack/react-form'
-import { CircleFadingPlus } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { getCategoryTypeName } from './utils'
 
-const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
+const CategoryPopoverForm: React.FC<{
+  type: ItemType
+  action: CommonActions.CREATE | CommonActions.UPDATE
+  defaultValues?: ICategory
+  render: React.ComponentProps<typeof PopoverTrigger>['render']
+}> = ({ type, action, defaultValues = { name: '', type: type }, render }) => {
   const [open, setOpen] = useState<boolean>(false)
-  const { mutateAsync, isPending } = useCreateOrUpdateCategoryMutation(
-    CommonActions.CREATE,
-    GET_COSTUME_CATEGORY_QUERY_KEY
-  )
+  const { mutateAsync, isPending } = useCreateOrUpdateCategoryMutation(action, GET_COSTUME_CATEGORY_QUERY_KEY)
+
+  const defaultFormValues = action === CommonActions.UPDATE && defaultValues ? defaultValues : { name: '', type }
 
   const form = useForm({
-    defaultValues: {
-      name: '',
-      type,
-    },
+    defaultValues: defaultFormValues,
     onSubmit: async ({ value, formApi }) => {
       try {
-        await mutateAsync(value)
+        await mutateAsync({ ...value, name: standardizeName(value.name) })
         toast.success('Thêm danh mục thành công')
         setOpen(false)
         formApi.reset()
@@ -57,13 +50,7 @@ const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        render={
-          <Button>
-            <CircleFadingPlus /> Thêm danh mục
-          </Button>
-        }
-      />
+      <PopoverTrigger render={render} />
       <PopoverContent className="w-fit" align="end">
         <form onSubmit={handleSubmit}>
           <FieldSet>
@@ -72,30 +59,15 @@ const CategoryPopoverForm: React.FC<{ type: ItemType }> = ({ type }) => {
               Nhập các thông tin vào biểu phía dưới để thêm mới 1 danh mục {getCategoryTypeName(type)}
             </FieldDescription>
             <FieldGroup>
-              <form.Field
-                name="name"
-                listeners={{
-                  onBlur: ({ value }) => {
-                    form.setFieldValue('name', standardizeName(value))
-                  },
-                  onBlurDebounceMs: 200,
-                }}
-              >
+              <form.Field name="name">
                 {(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
-                    <Field>
-                      <FieldLabel htmlFor={field.name}>Tên danh mục</FieldLabel>
-                      <Input
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.currentTarget.value)}
-                        placeholder="Tên danh mục không quá 6 ký tự."
-                        aria-invalid={isInvalid}
-                      />
-                      <FieldDescription>Tên danh mục nên ngắn gọn rõ nghĩa và dễ nhớ</FieldDescription>
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                    </Field>
+                    <InputFieldControl
+                      field={field}
+                      label="Tên danh mục"
+                      placeholder="Tên danh mục không quá 6 ký tự."
+                      description="Tên danh mục nên ngắn gọn rõ nghĩa và dễ nhớ"
+                    />
                   )
                 }}
               </form.Field>

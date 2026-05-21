@@ -5,6 +5,7 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle }
 import { usePageEventContext } from '@/contexts/event-context'
 import { Shirt, ToolCase, Trash2 } from 'lucide-react'
 import React from 'react'
+import CategoryPopoverForm from './category-popover-form'
 import { getCategoryItemCount } from './utils'
 
 const CategoryItem: React.FC<{ data: ICategory }> = ({ data }) => {
@@ -16,7 +17,12 @@ const CategoryItem: React.FC<{ data: ICategory }> = ({ data }) => {
         {data.type === ItemType.COSTUME ? <Shirt /> : <ToolCase />}
       </ItemMedia>
       <ItemContent>
-        <ItemTitle className="group-aria-disabled/item:line-through">{data.name}</ItemTitle>
+        <CategoryPopoverForm
+          type={data.type}
+          action={CommonActions.UPDATE}
+          defaultValues={data}
+          render={<ItemTitle className="hover:underline">{data.name}</ItemTitle>}
+        />
         <ItemDescription>{getCategoryItemCount(data)} sản phẩm</ItemDescription>
       </ItemContent>
       <ItemActions>
