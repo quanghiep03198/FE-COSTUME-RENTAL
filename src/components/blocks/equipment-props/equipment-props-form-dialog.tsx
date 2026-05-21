@@ -24,6 +24,7 @@ import Image from '@/components/shared/image'
 import { TagsInput } from '@/components/shared/tags-input'
 import { Editor } from '@/components/shared/text-editor'
 import { Button, buttonVariants } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogClose,
@@ -35,19 +36,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from '@/components/ui/field'
+import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
+import { typographyVariants } from '@/components/ui/typography'
 import { usePageEventContext } from '@/contexts/event-context'
 import { useForm, useStore, type Updater } from '@tanstack/react-form'
-import { ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import { CircleFadingPlusIcon, ImageIcon, ImagePlusIcon, XIcon } from 'lucide-react'
+import React, { useEffect, useId, useRef, useState } from 'react'
+import CategoryPopoverForm from '../categories/category-popover-form'
 import ImagesGallary, { IMAGE_SELECTION_SUBMIT_BTN_ID } from '../images-gallery/images-gallery-select'
 
 const DEFAULT_FORM_VALUES = {
@@ -87,6 +82,8 @@ const CostumeFormDialog: React.FC = () => {
     validators: { onSubmit: formSchemaRef.current as any },
   })
 
+  const submitButtonId = useId()
+
   event$.useSubscription(
     (e: { action: CommonActions.CREATE; payload: never } | { action: CommonActions.UPDATE; payload: ICostume }) => {
       if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE) {
@@ -125,177 +122,231 @@ const CostumeFormDialog: React.FC = () => {
     <>
       {/* Form Dialog */}
       <Dialog open={open && action !== 'none'} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-md:rounded-none sm:max-md:h-screen overflow-auto max-w-6xl">
-          <form onSubmit={handleSubmit}>
-            <FieldSet>
-              <FieldLegend>Thông tin trang phục</FieldLegend>
-              <FieldDescription>
-                {action === CommonActions.CREATE
-                  ? 'Điền thông tin để tạo mới trang phục'
-                  : 'Cập nhật thông tin trang phục'}
-              </FieldDescription>
-              <FieldGroup className="lg:max-xxl:max-h-[60vh] xxl:max-h-[75vh] overflow-auto grid grid-cols-6">
-                <FormField
-                  name="name"
-                  listeners={{
-                    onChange: ({ value }: { value: string }) => form.setFieldValue('name', standardizeName(value)),
-                    onChangeDebounceMs: 200,
-                  }}
-                >
-                  {(field) => {
-                    return (
-                      <InputFieldControl
-                        field={field}
-                        label="Tên trang phục"
-                        placeholder='Ví dụ: "Áo dài truyền thống"'
-                        classNames={{ field: 'col-span-2' }}
-                      />
-                    )
+        <DialogContent className="rounded-none h-screen overflow-auto w-screen bg-muted">
+          <DialogHeader className="flex-row sticky top-0 backdrop-blur-md px-6 pt-6">
+            <DialogTitle className={typographyVariants({ variant: 'h2' })}>
+              {action === CommonActions.CREATE ? 'Tạo mới đạo cụ' : 'Cập nhật đạo cụ'}
+            </DialogTitle>
+            <div className="ml-auto flex items-center gap-x-2">
+              <DialogClose
+                render={
+                  <Button type="button" variant="secondary">
+                    Đóng
+                  </Button>
+                }
+              />
+              <label htmlFor={submitButtonId} className={buttonVariants()}>
+                Lưu lại
+              </label>
+            </div>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="grid grid-cols-6  gap-6 px-6 pb-6 max-w-7xl mx-auto">
+            {/* Base Info */}
+            <Card className="col-start-1 col-span-2">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Thông tin trang phục</FieldLegend>
+                  <FieldGroup>
+                    <FormField
+                      name="name"
+                      listeners={{
+                        onChange: ({ value }: { value: string }) => form.setFieldValue('name', standardizeName(value)),
+                        onChangeDebounceMs: 200,
+                      }}
+                    >
+                      {(field) => {
+                        return (
+                          <InputFieldControl
+                            field={field}
+                            label="Tên trang phục"
+                            placeholder='Ví dụ: "Áo dài truyền thống"'
+                            classNames={{ field: 'col-span-2' }}
+                          />
+                        )
 
-                    //
-                  }}
-                </FormField>
-                <FormField name="category">
-                  {(field) => {
-                    return (
-                      <SelectFieldControl
-                        field={field}
-                        label="Bộ sưu tập"
-                        placeholder="Chọn một danh mục"
-                        items={categories as unknown as SelectFieldControlProps<ICategory>['items']}
-                        labelField="name"
-                        valueField="id"
-                        classNames={{ field: 'col-span-2' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="hashtags">
-                  {(field) => {
-                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                    return (
-                      <Field className="col-span-2">
-                        <FieldLabel htmlFor={field.name}>Hashtags</FieldLabel>
-                        <TagsInput
-                          value={field.state.value}
-                          onValueChange={field.handleChange as (updater: Updater<string[]>) => void}
-                          onBlur={field.handleBlur}
-                          placeholder="#aoDaiVietNam"
-                        />
-                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                      </Field>
-                    )
-                  }}
-                </FormField>
-                <FormField name="rental_price_per_day">
-                  {(field) => {
-                    return (
-                      <InputFieldControl
-                        field={field}
-                        label="Giá thuê theo ngày (VNĐ)"
-                        type="number"
-                        placeholder={formatCurrency(100_000)}
-                        classNames={{ field: 'col-span-3' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="unit">
-                  {(field) => {
-                    return (
-                      <InputFieldControl
-                        field={field}
-                        label="Đơn vị"
-                        placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"'
-                        classNames={{ field: 'col-span-3' }}
-                      />
-                    )
-                  }}
-                </FormField>
-                <FormField name="images">
-                  {(field) => {
-                    return (
-                      <Field className="col-span-6">
-                        <FieldLabel htmlFor={field.name}>Hình ảnh</FieldLabel>
-                        {!Array.isArray(field.state.value) || !field.state.value.length ? (
-                          <Empty className="border">
-                            <EmptyMedia variant="icon">
-                              <ImageIcon />
-                            </EmptyMedia>
-                            <EmptyHeader>
-                              <EmptyTitle>Chưa có hình ảnh nào được chọn</EmptyTitle>
-                              <EmptyDescription>Hãy chọn ít nhất 1 hình ảnh cho trang phục</EmptyDescription>
-                            </EmptyHeader>
-                            <EmptyContent>
-                              <label className={buttonVariants({ size: 'sm' })} htmlFor="image-gallery-dialog-trigger">
+                        //
+                      }}
+                    </FormField>
+                    <FormField name="hashtags">
+                      {(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (
+                          <Field className="col-span-2">
+                            <FieldLabel htmlFor={field.name}>Hashtags</FieldLabel>
+                            <TagsInput
+                              value={field.state.value}
+                              onValueChange={field.handleChange as (updater: Updater<string[]>) => void}
+                              onBlur={field.handleBlur}
+                              placeholder="#aoDaiVietNam"
+                            />
+                            {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                          </Field>
+                        )
+                      }}
+                    </FormField>
+                  </FieldGroup>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Pricing */}
+            <Card className="col-start-1 row-start-2 col-span-2">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Giá thuê</FieldLegend>
+                  <FieldGroup>
+                    <FormField name="rental_price_per_day">
+                      {(field) => {
+                        return (
+                          <InputFieldControl
+                            field={field}
+                            label="Giá thuê theo ngày (VNĐ)"
+                            type="number"
+                            placeholder={formatCurrency(100_000)}
+                            classNames={{ field: 'col-span-3' }}
+                          />
+                        )
+                      }}
+                    </FormField>
+                    <FormField name="unit">
+                      {(field) => {
+                        return (
+                          <InputFieldControl
+                            field={field}
+                            label="Đơn vị"
+                            placeholder='Ví dụ: "Bộ", "Cái", "Chiếc"'
+                            classNames={{ field: 'col-span-3' }}
+                          />
+                        )
+                      }}
+                    </FormField>
+                  </FieldGroup>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Category */}
+            <Card className="col-start-3 row-start-1 col-span-4">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Danh mục</FieldLegend>
+                  <FieldGroup>
+                    <FormField name="category">
+                      {(field) => {
+                        return (
+                          <SelectFieldControl
+                            field={field}
+                            placeholder="Chọn một danh mục"
+                            items={categories as unknown as SelectFieldControlProps<ICategory>['items']}
+                            labelField="name"
+                            valueField="id"
+                            classNames={{ field: 'col-span-2' }}
+                          />
+                        )
+                      }}
+                    </FormField>
+                    <CategoryPopoverForm
+                      action={CommonActions.CREATE}
+                      type={ItemType.EQUIPMENT_PROPS}
+                      render={
+                        <Button>
+                          <CircleFadingPlusIcon /> Thêm danh mục
+                        </Button>
+                      }
+                    />
+                  </FieldGroup>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Images */}
+            <Card className="col-start-3 row-start-2 col-span-4">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Hình ảnh</FieldLegend>
+                  <FieldGroup>
+                    <FormField name="images">
+                      {(field) => (
+                        <Field>
+                          {!Array.isArray(field.state.value) || !field.state.value.length ? (
+                            <Empty className="border">
+                              <EmptyMedia variant="icon">
+                                <ImageIcon />
+                              </EmptyMedia>
+                              <EmptyHeader>
+                                <EmptyTitle>Chưa có hình ảnh nào được chọn</EmptyTitle>
+                                <EmptyDescription>Hãy chọn ít nhất 1 hình ảnh cho trang phục</EmptyDescription>
+                              </EmptyHeader>
+                              <EmptyContent>
+                                <label
+                                  className={buttonVariants({ size: 'sm' })}
+                                  htmlFor="image-gallery-dialog-trigger"
+                                >
+                                  <ImagePlusIcon />
+                                  Thêm hình ảnh
+                                </label>
+                              </EmptyContent>
+                            </Empty>
+                          ) : (
+                            <div className="grid grid-flow-col auto-cols-[160px] gap-4">
+                              <label
+                                className="w-full aspect-square size-40! flex flex-col text-sm justify-center items-center gap-2 rounded-lg bg-accent text-accent-foreground"
+                                role="button"
+                                htmlFor="image-gallery-dialog-trigger"
+                              >
                                 <ImagePlusIcon />
                                 Thêm hình ảnh
                               </label>
-                            </EmptyContent>
-                          </Empty>
-                        ) : (
-                          <div className="grid grid-flow-col auto-cols-[160px] gap-4">
-                            <label
-                              className="w-full aspect-square size-40! flex flex-col text-sm justify-center items-center gap-2 rounded-lg bg-accent text-accent-foreground"
-                              role="button"
-                              htmlFor="image-gallery-dialog-trigger"
-                            >
-                              <ImagePlusIcon />
-                              Thêm hình ảnh
-                            </label>
-                            {field.state.value.map((image) => (
-                              <div className="relative size-40">
-                                <Button
-                                  variant="secondary"
-                                  size="icon-xs"
-                                  className="absolute top-2 right-2"
-                                  onClick={() => {
-                                    const afterDelete = field.state.value!.filter(
-                                      (img) => img.id !== image.id
-                                    ) as unknown as TCreateCostumeValues['images']
-                                    field.handleChange(afterDelete)
-                                  }}
-                                >
-                                  <XIcon />
-                                </Button>
-                                <Image
-                                  key={image.id}
-                                  src={getImageUrl(image.dest)}
-                                  alt={image.file_name}
-                                  className="w-full object-cover rounded-lg "
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </Field>
-                    )
-                  }}
-                </FormField>
-                <Field className="col-span-12">
-                  <FieldLabel>Mô tả</FieldLabel>
-                  <Editor
-                    ref={editorRef}
-                    defaultValue={form.getFieldValue('description') ?? DEFAULT_PROPS_DESCRIPTION}
-                  />
-                  {!editorRef.current?.isEmpty() === false && (
-                    <FieldError errors={form.getFieldMeta('description')?.errors} />
-                  )}
-                </Field>
-              </FieldGroup>
-              <FieldGroup>
-                <Field orientation={'horizontal'} className="justify-end">
-                  <DialogClose
-                    render={
-                      <Button type="button" variant="secondary">
-                        Đóng
-                      </Button>
-                    }
-                  />
-                  <Button type="submit">Xác nhận</Button>
-                </Field>
-              </FieldGroup>
-            </FieldSet>
+                              {field.state.value.map((image) => (
+                                <div className="relative size-40">
+                                  <Button
+                                    variant="secondary"
+                                    size="icon-xs"
+                                    className="absolute top-2 right-2"
+                                    onClick={() => {
+                                      const afterDelete = field.state.value!.filter(
+                                        (img) => img.id !== image.id
+                                      ) as unknown as TCreateCostumeValues['images']
+                                      field.handleChange(afterDelete)
+                                    }}
+                                  >
+                                    <XIcon />
+                                  </Button>
+                                  <Image
+                                    key={image.id}
+                                    src={getImageUrl(image.dest)}
+                                    alt={image.file_name}
+                                    className="w-full object-cover rounded-lg "
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </Field>
+                      )}
+                    </FormField>
+                  </FieldGroup>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            {/* Description */}
+            <Card className="col-span-full row-start-3">
+              <CardContent>
+                <FieldSet>
+                  <FieldLegend>Mô tả</FieldLegend>
+                  <Field className="col-span-12">
+                    <FieldLabel>Mô tả</FieldLabel>
+                    <Editor
+                      ref={editorRef}
+                      defaultValue={form.getFieldValue('description') ?? DEFAULT_PROPS_DESCRIPTION}
+                    />
+                    {!editorRef.current?.isEmpty() === false && (
+                      <FieldError errors={form.getFieldMeta('description')?.errors} />
+                    )}
+                  </Field>
+                </FieldSet>
+              </CardContent>
+            </Card>
+            <Button type="submit" className="hidden" id={submitButtonId}>
+              Xác nhận
+            </Button>
           </form>
         </DialogContent>
       </Dialog>

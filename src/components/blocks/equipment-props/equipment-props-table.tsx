@@ -49,6 +49,7 @@ const CostumeTable: React.FC = () => {
         header: 'Danh mục',
         enableColumnFilter: true,
         enableGlobalFilter: true,
+        size: 200,
         filterFn: 'fuzzy',
       }),
       columnHelper.accessor('rental_price_per_day', {
@@ -56,19 +57,21 @@ const CostumeTable: React.FC = () => {
         enableSorting: true,
         enableMultiSort: true,
         enableHiding: false,
+        size: 200,
         cell: ({ getValue }) => formatCurrency(getValue()),
       }),
       columnHelper.accessor('unit', {
         header: 'Đơn vị',
-        size: 100,
+        size: 200,
       }),
 
       columnHelper.accessor('hashtags', {
         header: 'Hashtag',
+        size: 400,
         cell: ({ getValue }) => (
           <EllipsisList
             data={getValue()}
-            threshhold={1}
+            threshhold={3}
             template={(item) => (
               <Badge variant="outline" className='before:content-["#"]'>
                 {item.data}
@@ -102,7 +105,7 @@ const CostumeTable: React.FC = () => {
       isMultiSortEvent={() => true}
       containerProps={{
         className:
-          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)]',
+          'xxl:h-[calc(var(--outlet-wrapper-height)-4rem)] h-96 md:max-xxl:h-[calc(var(--outlet-wrapper-height)-8rem)] [&_table]:table-fixed',
       }}
       toolbarProps={{
         override: true,
