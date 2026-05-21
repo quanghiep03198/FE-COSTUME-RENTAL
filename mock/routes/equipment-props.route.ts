@@ -1,4 +1,5 @@
 import type { Application, Request, Response } from 'express'
+import path from 'node:path'
 import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
@@ -18,6 +19,10 @@ export function registerEquipmentPropsRoutes(app: Application) {
           { 'id:in': record.images },
           {
             pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+            transform: (image) => ({
+              ...image,
+              url: new URL(path.join('/storage/images-gallery', image.dest), `http://localhost:8000`),
+            }),
           }
         )
 
@@ -31,8 +36,17 @@ export function registerEquipmentPropsRoutes(app: Application) {
   app.get('/api/equipment-props/:id', (req: Request, res: Response) => {
     const result = queryRecord('equipment_props', Number(req.params.id), req.query, {
       transform: (record) => {
-        const db = getDb()
-        const images = db.get('images').filter({ id: record.id, item_type: 'EQUIPMENT_PROPS' }).value()
+        const images = queryCollection(
+          'images',
+          { 'id:in': record.images },
+          {
+            pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+            transform: (image) => ({
+              ...image,
+              url: new URL(path.join('/storage/images-gallery', image.dest), `http://localhost:8000`),
+            }),
+          }
+        )
         return { ...record, images }
       },
     })

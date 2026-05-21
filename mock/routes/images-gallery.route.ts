@@ -1,4 +1,5 @@
 import type { Application, Request, Response } from 'express'
+import type { UploadedFile } from 'express-fileupload'
 import { renameSync } from 'fs'
 import path, { join, resolve } from 'path'
 import { getDb, queryCollection, queryRecord } from '../lib'
@@ -35,7 +36,11 @@ export function registerImageGalleryRoutes(app: Application) {
     const result = queryCollection('images', req.query, {
       transform: (record) => {
         const user = queryRecord('users', record.created_by, { _expand: 'employee' })
-        return { ...record, created_by: user }
+        return {
+          ...record,
+          created_by: user,
+          url: new URL(path.join('/storage/images-gallery', record.dest), `http://localhost:8000`),
+        }
       },
     })
     return res.status(200).json(result)
@@ -61,16 +66,16 @@ export function registerImageGalleryRoutes(app: Application) {
       })
     }
 
+    const uploadedFiles = Object.values(req.files ?? {}).flatMap((entry) =>
+      Array.isArray(entry) ? entry : [entry]
+    ) as UploadedFile[]
+
     // Check if file is uploaded
-    if (!req.files || (!req.files.files && !req.files.file)) {
+    if (uploadedFiles.length === 0) {
       return res.status(400).json({
         message: 'No file uploaded',
       })
     }
-
-    // Handle both single file and multiple files — field name: 'files' (từ createFormData) hoặc 'file'
-    const rawFiles = req.files.files ?? req.files.file
-    const uploadedFiles = Array.isArray(rawFiles) ? rawFiles : [rawFiles]
 
     const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
     const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB

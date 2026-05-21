@@ -1,11 +1,12 @@
 import type { Application, Request, Response } from 'express'
+import path from 'node:path'
 import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
 
 export function registerCostumeRoutes(app: Application) {
   // * GET /costumes
-  app.get('/api/costumes', jwtMiddleware, (req: Request, res: Response) => {
+  app.get('/api/costumes', (req: Request, res: Response) => {
     const db = getDb()
     const result = queryCollection('costumes', req.query, {
       transform: (record) => {
@@ -18,6 +19,10 @@ export function registerCostumeRoutes(app: Application) {
           { 'id:in': record.images },
           {
             pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+            transform: (image) => ({
+              ...image,
+              url: new URL(path.join('/storage/images-gallery', image.dest), `http://localhost:8000`),
+            }),
           }
         )
 
@@ -29,12 +34,53 @@ export function registerCostumeRoutes(app: Application) {
   })
 
   // * GET /costumes/:id
-  app.get('/api/costumes/:id', jwtMiddleware, (req: Request, res: Response) => {
+  app.get('/api/costumes/:id', (req: Request, res: Response) => {
     const result = queryRecord('costumes', Number(req.params.id), req.query, {
       transform: (record) => {
-        const db = getDb()
-        const images = db.get('images').filter({ id: record.id, item_type: 'COSTUME' }).value()
-        return { ...record, images }
+        const images = queryCollection(
+          'images',
+          { 'id:in': record.images },
+          {
+            pick: ['id', 'file_name', 'size', 'dest', 'mime_type'],
+            transform: (image) => ({
+              ...image,
+              url: new URL(path.join('/storage/images-gallery', image.dest), `http://localhost:8000`),
+            }),
+          }
+        )
+        const inventory = queryCollection('inventory', { 'item_id:eq': record.id, _expand: 'inventory_condition' })
+
+        const availableQty = (inventory as any[])
+          .filter((item) => item.status === 'AVAILABLE')
+          .reduce((sum, item) => sum + item.quantity, 0)
+        const totalQty = (inventory as any[]).reduce((sum, item) => sum + item.quantity, 0)
+
+        const inventoryDetails = {
+          total_quantity: totalQty,
+          available_quantity: availableQty,
+          is_available: availableQty > 0,
+          by_size: Object.entries(
+            Object.fromEntries(
+              record.sizes?.map((size: any) => {
+                const sizeInventory = (inventory as any[]).filter((item) => item.size === size)
+                const sizeAvailableQty = sizeInventory
+                  .filter((item) => item.status === 'AVAILABLE')
+                  .reduce((sum, item) => sum + item.quantity, 0)
+                const sizeTotalQty = sizeInventory.reduce((sum, item) => sum + item.quantity, 0)
+                return [
+                  size,
+                  {
+                    total_quantity: sizeTotalQty ?? 0,
+                    available_quantity: sizeAvailableQty ?? 0,
+                    is_available: sizeAvailableQty > 0,
+                  },
+                ]
+              }) || []
+            )
+          ).map(([size, data]) => ({ size, ...data })),
+        }
+
+        return { ...record, images, inventory: inventoryDetails }
       },
     })
     if (!result) return res.status(404).json({ message: 'Costume not found' })

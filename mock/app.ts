@@ -24,6 +24,7 @@ app.use(
   fileUpload({
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     abortOnLimit: true,
+
     responseOnLimit: 'File size exceeded the limit of 5MB',
     // parseNested: true,
   })

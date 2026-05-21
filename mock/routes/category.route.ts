@@ -1,4 +1,5 @@
 import type { Application, Request, Response } from 'express'
+import path from 'node:path'
 import { getDb, queryCollection, queryRecord } from '../lib'
 import { jwtMiddleware } from '../middleware'
 import { generateUniqueSlug } from '../utils/slug-generator'
@@ -15,7 +16,17 @@ export function registerCategoryRoutes(app: Application) {
             { 'category_id:eq': record.id },
             {
               transform: (costume) => {
-                costume.images = queryCollection('images', { 'id:in': costume.images.join(',') }, { pick: ['dest'] })
+                costume.images = queryCollection(
+                  'images',
+                  { 'id:in': costume.images.join(',') },
+                  {
+                    pick: ['dest'],
+                    transform: (image) => ({
+                      ...image,
+                      url: new URL(path.join('/storage/images-gallery', image.dest), `http://localhost:8000`),
+                    }),
+                  }
+                )
                 return costume
               },
               pick: ['id', 'name', 'rental_price_per_day', 'images', 'sizes'],
@@ -45,8 +56,10 @@ export function registerCategoryRoutes(app: Application) {
 
   // * GET /categories/:id
   app.get('/api/categories/:id', (req: Request, res: Response) => {
+    // req.query ??= { _embed: 'costumes,equipment_props' }
     const result = queryRecord('categories', Number(req.params.id), req.query)
     if (!result) return res.status(404).json({ message: 'Item category not found' })
+    result.products = result.costumes ?? result.equipment_props ?? []
     return res.status(200).json(result)
   })
 
