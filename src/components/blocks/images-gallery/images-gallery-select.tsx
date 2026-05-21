@@ -95,16 +95,14 @@ const ImageList: React.FC<TImageListProps> = ({ data, isLoading, type, selected,
           <EmptyMedia variant="icon">
             <ImageIcon />
           </EmptyMedia>
-          <EmptyContent>
-            <EmptyHeader>
-              <EmptyTitle>Không tìm thấy hình ảnh nào</EmptyTitle>
-              <EmptyDescription>
-                Có vẻ như bạn chưa tải lên hình ảnh nào. Hãy bắt đầu bằng cách thêm một hình ảnh mới để hiển thị ở đây.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <GalleryUpload />
-            </EmptyContent>
+          <EmptyHeader>
+            <EmptyTitle>Không tìm thấy hình ảnh nào</EmptyTitle>
+            <EmptyDescription>
+              Có vẻ như bạn chưa tải lên hình ảnh nào. Hãy bắt đầu bằng cách thêm một hình ảnh mới để hiển thị ở đây.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent className="max-w-4xl">
+            <GalleryUpload />
           </EmptyContent>
         </Empty>
       ) : (
