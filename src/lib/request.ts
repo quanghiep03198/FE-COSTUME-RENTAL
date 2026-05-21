@@ -1,6 +1,6 @@
 import { cookieOptions } from '@/apis/auth/configs/cookie.config'
 import { HttpStatusCode } from '@/common/constants/http-code'
-import { redirect } from '@tanstack/react-router'
+import { notFound, redirect } from '@tanstack/react-router'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 import { isNil } from 'lodash-es'
 import { join } from 'path'
@@ -64,6 +64,8 @@ export default async function request<R = any, D = any>({
     ]
 
     const response = await fetch(...requestConfig)
+
+    if (response.status === HttpStatusCode.NOT_FOUND) throw notFound()
 
     if (response.status === HttpStatusCode.UNAUTHORIZED) {
       const res = await fetch(baseURL + '/auth/refresh', {
