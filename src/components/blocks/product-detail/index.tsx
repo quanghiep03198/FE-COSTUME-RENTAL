@@ -12,9 +12,10 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Typography } from '@/components/ui/typography'
 import { cn } from '@/lib/utils'
-import { BookmarkCheckIcon, CheckIcon, LightbulbIcon, ShoppingBagIcon, XIcon } from 'lucide-react'
+import { CheckIcon, LightbulbIcon, ShoppingBagIcon, XIcon } from 'lucide-react'
 
 import React, { Suspense, useCallback, useEffect, useState } from 'react'
+import RelatedProducts from './related-products'
 
 const ProductDetailPage: React.FC = () => {
   const productDetailQuery = useGetProductDetailQuery()
@@ -86,9 +87,7 @@ const ProductDetailPage: React.FC = () => {
             <Carousel
               className="relative w-full max-lg:order-2 lg:col-span-3"
               setApi={setThumbApi}
-              opts={{
-                loop: true,
-              }}
+              opts={{ loop: true }}
             >
               <CarouselContent className="flex justify-center p-2">
                 {Array.isArray(data?.images) &&
@@ -157,6 +156,7 @@ const ProductDetailPage: React.FC = () => {
                   data.inventory.by_size.length > 0 &&
                   data.inventory.by_size.map((size) => (
                     <Badge
+                      key={size.size}
                       variant="outline"
                       aria-disabled={!size.is_available}
                       className=" aria-disabled:bg-muted text-sm px-3 py-2 aria-disabeld:text-muted-foreground relative aria-disabled:line-through "
@@ -189,8 +189,7 @@ const ProductDetailPage: React.FC = () => {
       {/* Policies */}
       <div className="grid lg:grid-cols-[1.5fr_1fr] gap-10 items-start">
         <div className="space-y-3">
-          <Typography variant="h2" as="h1" className="text-lg flex items-center gap-2">
-            <BookmarkCheckIcon />
+          <Typography variant="h2" as="h1" className="text-lg">
             Chính sách thuê
           </Typography>
           <Typography>
@@ -208,6 +207,9 @@ const ProductDetailPage: React.FC = () => {
         </div>
         <Image src="/rental-policies.jpg" className="grayscale-100 basis-1/3 max-w-full rounded-lg aspect-square" />
       </div>
+
+      {/* Related products */}
+      <RelatedProducts category={data?.category!} />
     </div>
   )
 }

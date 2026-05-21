@@ -47,10 +47,10 @@ const ProductCard: React.FC<{
             style={{
               width: 12,
               height: 12,
-              outline: `1px solid ${data.color}`,
+              outline: `1px solid ${data.color?.hex}`,
               outlineOffset: 2,
               borderRadius: '100%',
-              backgroundColor: data.color,
+              backgroundColor: data.color?.hex,
             }}
           />
           <Separator orientation="vertical" />

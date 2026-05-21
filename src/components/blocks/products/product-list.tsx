@@ -57,8 +57,6 @@ const ProductList: React.FC = () => {
     (data: Array<ICostume> | Array<IEquipmentProps>, search: TSearchProductValues) => {
       if (!Array.isArray(data)) return []
 
-      console.log(data)
-
       let filteredData: Array<TProductCardData> = data.map((item) => ({
         id: item.id,
         name: item.name,
