@@ -9,7 +9,7 @@ export interface IProduct {
   name: string
   rental_price_per_day: number
   image: string
-  images?: Array<IImage>
+  images: Array<IImage>
   type: ItemType
   slug: string
   category?: ICategory
